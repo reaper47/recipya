@@ -15,7 +15,7 @@ func scrapeMyPlate(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Description.Value = root.Find(".mp-recipe-full__description p").Text()
 	rs.Name = root.Find(".field--name-title").First().Text()
-	rs.Image.Value, _ = root.Find(".field--name-field-recipe-image img").Attr("src")
+	rs.Image.Value = root.Find(".field--name-field-recipe-image img").AttrOr("src", "")
 
 	yieldStr := root.Find(".mp-recipe-full__detail--yield .mp-recipe-full__detail--data").Text()
 	yieldStr = strings.ReplaceAll(yieldStr, "\n", "")

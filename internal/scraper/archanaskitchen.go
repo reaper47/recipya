@@ -14,7 +14,7 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 	description = strings.ReplaceAll(description, "\u00a0", " ")
 	rs.Description.Value = strings.TrimSpace(description)
 
-	image, _ := root.Find("img[itemprop=image]").Attr("src")
+	image := root.Find("img[itemprop=image]").AttrOr("src", "")
 	rs.Image.Value = "https://www.archanaskitchen.com" + image
 
 	root.Find("li[itemprop=keywords] a").Each(func(_ int, s *goquery.Selection) {
@@ -33,10 +33,10 @@ func scrapeArchanasKitchen(root *goquery.Document) (models.RecipeSchema, error) 
 		{" .", "."},
 	}...)
 
-	rs.PrepTime, _ = root.Find("span[itemprop=prepTime]").Attr("content")
-	rs.CookTime, _ = root.Find("span[itemprop=cookTime]").Attr("content")
-	rs.DatePublished, _ = root.Find("span[itemprop=datePublished]").Attr("content")
-	rs.DateModified, _ = root.Find("span[itemprop=dateModified]").Attr("content")
+	rs.PrepTime = root.Find("span[itemprop=prepTime]").AttrOr("content", "")
+	rs.CookTime = root.Find("span[itemprop=cookTime]").AttrOr("content", "")
+	rs.DatePublished = root.Find("span[itemprop=datePublished]").AttrOr("content", "")
+	rs.DateModified = root.Find("span[itemprop=dateModified]").AttrOr("content", "")
 	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield] p").Text())
 	rs.Name = root.Find("h1[itemprop=name]").Text()
 	rs.Category = &models.Category{Value: root.Find(".recipeCategory a").Text()}

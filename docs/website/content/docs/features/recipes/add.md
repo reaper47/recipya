@@ -22,7 +22,21 @@ You will be presented with four different ways of adding a recipe to your collec
 ### Manual
 
 The simplest method of inputting a recipe involves completing a form that outlines your dish.
-Mandatory fields are indicated with an asterisk (*).
+
+The following fields, indicated with an asterisk (*), are mandatory:
+- Title
+- Ingredients
+- Instructions
+
+The following presents the default values of empty fields after submitting:
+- Media → Default sushi image
+- Category → "uncategorized"
+- Servings → 1
+- Source → "Unknown"
+- Keywords → none
+- Time → 15m (prep), 30m (cooking)
+- Description → empty
+- Tools → none
 
 ![](images/add-recipe-manual.webp)
 
@@ -40,7 +54,7 @@ You can also reorder the ingredients and the instructions by dragging the arrow 
 You can upload an image or a scan of a handwritten or printed recipe to add it to your collection. 
 This option is useful for digitizing your and your family's paper recipes.
 
-To do so, click the *Upload* button and select an image in your computer.
+To do so, click the *Upload* button and select a document on your computer.
 
 ![](images/add-recipe-scan.webp)
 
@@ -64,8 +78,8 @@ operation succeeds, the action will redirect you to the recipe. Otherwise, you w
 to the latest report.
 
 To view all supported websites, please click on the <ins>supported</ins> word. You can scrape a 
-website not in the supported list, but recipe extraction may fail. If it does, you can request 
-support for the website by clicking the button that appears.
+website not in the supported list, but recipe extraction may fail. Please open an issue on GitHub if
+it does.
 
 ![](images/add-recipe-website.gif)
 
@@ -81,14 +95,22 @@ You can import recipes in the following formats:
 ![](images/add-recipe-import.webp)
 
 You can upload either a single file or a zip archive containing multiple recipes. The recipes in a zip file may be 
-organized by folder. Each folder may contain the `.json` recipe file and an image file. All other files in a folder 
-will be ignored during processing. Here is an [example](https://sea.musicavis.ca/f/683b9b9a7cc84e1bac0c/?dl=1) of 
-how such zip may look like.
+organized by folder. Each folder can contain the recipe's `.json` file. All other files in a folder 
+will be ignored during processing.
 
 You may also upload exported recipes from the following applications:
+- AccuChef
+- ChefTap
+- Crouton
+- Easy Recipe Deluxe
+- Kalorio
 - MasterCook
 - Paprika
 - Recipe Keeper
+- RecipeSage
+- Saffron
+
+Please refer to the [integrations page](/guide/docs/features/integrations/) for application-specific instructions.
 
 #### Recipya Bookmarklet
 

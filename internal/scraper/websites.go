@@ -190,6 +190,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		}
 	case 'j':
 		switch host {
+		case "jamieoliver":
+			return scrapeJamieOliver(doc)
 		case "jaimyskitchen":
 			return scrapeJaimysKitchen(doc)
 		case "juliegoodwin":
@@ -294,6 +296,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapePlentyVegan(doc)
 		case "ploetzblog":
 			return scrapePloetzblog(doc)
+		case "popsugar":
+			return scrapePopsugar(doc)
 		case "potatorolls":
 			return scrapePotatoRolls(doc)
 		case "projectgezond":

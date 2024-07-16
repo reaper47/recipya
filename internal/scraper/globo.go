@@ -43,7 +43,7 @@ func scrapeGlobo(root *goquery.Document) (rs models.RecipeSchema, err error) {
 			chYield <- yield
 		}()
 
-		yieldStr, _ := root.Find("span[itemprop=recipeYield]").Attr("content")
+		yieldStr := root.Find("span[itemprop=recipeYield]").AttrOr("content", "")
 		i, _ := strconv.ParseInt(yieldStr, 10, 16)
 		yield = int16(i)
 	}()

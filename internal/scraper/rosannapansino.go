@@ -10,8 +10,8 @@ func scrapeRosannapansino(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Name = getPropertyContent(root, "og:title")
-	rs.DatePublished, _ = root.Find(".article__date time").First().Attr("datetime")
-	rs.Image.Value, _ = root.Find("div.article__body img").First().Attr("src")
+	rs.DatePublished = root.Find(".article__date time").First().AttrOr("datetime", "")
+	rs.Image.Value = root.Find("div.article__body img").First().AttrOr("src", "")
 	rs.Yield.Value = findYield(root.Find("p:contains('Makes')").Text())
 
 	description := getPropertyContent(root, "og:description")

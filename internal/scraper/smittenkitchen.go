@@ -16,7 +16,7 @@ func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.Yield.Value = int16(parsed)
 	}
 
-	rs.PrepTime, _ = root.Find("time[itemprop=totalTime]").Attr("datetime")
+	rs.PrepTime = root.Find("time[itemprop=totalTime]").AttrOr("datetime", "")
 	rs.Description.Value = root.Find(".smittenkitchen-print-hide p").First().Text()
 
 	nodes := root.Find(".jetpack-recipe-ingredients").Last().Find("ul")
@@ -36,9 +36,9 @@ func scrapeSmittenKitchen(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	})
 
-	rs.Image.Value, _ = root.Find(".post-thumbnail-container").First().Find("img").Attr("src")
-	rs.DatePublished, _ = root.Find(".entry-date.published").First().Attr("datetime")
-	rs.DateModified, _ = root.Find(".updated").First().Attr("datetime")
+	rs.Image.Value = root.Find(".post-thumbnail-container").First().Find("img").AttrOr("src", "")
+	rs.DatePublished = root.Find(".entry-date.published").First().AttrOr("datetime", "")
+	rs.DateModified = root.Find(".updated").First().AttrOr("datetime", "")
 
 	title := root.Find("h3[itemprop='name']").Text()
 	if title == "" {

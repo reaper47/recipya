@@ -31,8 +31,8 @@ func scrapeRecipeCommunity(root *goquery.Document) (models.RecipeSchema, error) 
 
 	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield]").Parent().Text())
 
-	rs.PrepTime, _ = root.Find("#preparation-time-final meta[itemprop=performTime]").Attr("content")
-	rs.CookTime, _ = root.Find("#preparation-time-final meta[itemprop=totalTime]").Attr("content")
+	rs.PrepTime = strings.Replace(root.Find("meta[itemprop=performTime]").AttrOr("content", ""), "min", "M", 1)
+	rs.CookTime = strings.Replace(root.Find("meta[itemprop=totalTime]").AttrOr("content", ""), "min", "M", 1)
 
 	nodes := root.Find(".catText")
 	allKeywords := make([]string, nodes.Length())

@@ -10,7 +10,7 @@ func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Name = root.Find(".page-title").Text()
-	rs.DatePublished, _ = root.Find("time.entry-date").Attr("datetime")
+	rs.DatePublished = root.Find("time.entry-date").AttrOr("datetime", "")
 
 	nodes := root.Find("a[rel='category']")
 	xc := make([]string, 0, nodes.Length())
@@ -19,7 +19,7 @@ func scrapeCooktalk(root *goquery.Document) (models.RecipeSchema, error) {
 	})
 
 	rs.Category.Value = xc[0]
-	rs.Image.Value, _ = root.Find("img[itemprop=image]").Attr("src")
+	rs.Image.Value = root.Find("img[itemprop=image]").AttrOr("src", "")
 
 	description := root.Find("div[itemprop=description]").Text()
 	rs.Description.Value = strings.TrimSpace(strings.Trim(description, "\n"))

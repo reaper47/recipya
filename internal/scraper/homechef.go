@@ -9,9 +9,8 @@ func scrapeHomechef(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Description.Value = getNameContent(root, "description")
-	yield, _ := root.Find("meta[itemprop=recipeYield]").Attr("content")
-	rs.Yield.Value = findYield(yield)
-	rs.Image.Value, _ = root.Find("div img").First().Attr("data-srcset")
+	rs.Yield.Value = findYield(root.Find("meta[itemprop=recipeYield]").AttrOr("content", ""))
+	rs.Image.Value = root.Find("div img").First().AttrOr("data-srcset", "")
 	rs.Name = root.Find("h1").First().Text()
 
 	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"), []models.Replace{

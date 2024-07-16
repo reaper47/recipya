@@ -11,8 +11,8 @@ func scrapeGrouprecipes(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	rs.Description.Value = getNameContent(root, "description")
-	rs.Image.Value, _ = root.Find(".photos img").First().Attr("src")
-	rs.CookTime, _ = root.Find(".cooktime .value-title").Attr("title")
+	rs.Image.Value = root.Find(".photos img").First().AttrOr("src", "")
+	rs.CookTime = root.Find(".cooktime .value-title").AttrOr("title", "")
 	rs.Name = root.Find("title").Text()
 	rs.Yield.Value = findYield(root.Find(".servings").Text())
 

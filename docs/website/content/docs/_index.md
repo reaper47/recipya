@@ -14,7 +14,7 @@ share your favorite recipes. It is focussed on simplicity for the whole family t
 - [Import recipes from around the web](/guide/docs/features/recipes/add#website)
 - [Digitize paper recipes](/guide/docs/features/recipes/add#scan)
 - [Organize your recipes into cookbooks](/guide/docs/features/cookbooks)
-- [Works seamlessly with Nextcloud Cookbook](/guide/docs/features/integrations)
+- [Easily migrate your recipes from Mealie, Tandoor and Nextcloud Cookbook](/guide/docs/features/integrations)
 - [Automatic conversion to your preferred measurement system](/guide/docs/features/measurement-systems) (imperial/metric)
 - [Calculate nutritional information automatically](/guide/docs/features/nutrition-facts)
 - [Print any recipe in your collection](/guide/docs/features/recipes/print)

@@ -4,30 +4,56 @@ weight: 4
 next: /docs/installation
 ---
 
-Recipya offers integrations with other recipe manager applications. You can access them from the **Recipes** side tab
-in the settings.
+Recipya offers data import integrations with other recipe manager applications. 
+
+You can import your recipes from Nextcloud Cookbook, Mealie and Tandoor using their respective APIs from the `Data` tab in the settings.
+All you have to do is to select the solution you wish to import from, along with its base URL and your credentials.
 
 ![](images/settings-integrations.webp)
 
+As for the other applications, you can do so from the [Add recipe → Import](/guide/docs/features/recipes/add/#import) functionality.
+
 ## Compatibility
 
-| Integration                                                            |        Import        |      Export      |
-|------------------------------------------------------------------------|:--------------------:|:----------------:|
- | [AccuChef](https://www.accuchef.com)                                   | {{< icon "check" >}} | {{< icon "x" >}} |
-| [ChefTap](https://cheftap.com)                                         | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Crouton](https://crouton.app)                                         | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Easy Recipe Deluxe](https://easy-recipe-deluxe.software.informer.com) | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Kalorio](https://www.kalorio.de)                                      | {{< icon "check" >}} | {{< icon "x" >}} |
-| [MasterCook](https://www.mastercook.com)                               | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Mealie](https://mealie.io)                                            | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)         | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Paprika](https://www.paprikaapp.com)                                  | {{< icon "check" >}} | {{< icon "x" >}} |
-| [Recipe Keeper](https://www.paprikaapp.com)                            | {{< icon "check" >}} | {{< icon "x" >}} |
-| [RecipeSage](https://recipesage.com/#/welcome)                         | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Saffron](https://www.mysaffronapp.com)                                | {{< icon "check" >}} | {{< icon "x" >}} |
- | [Tandoor](https://tandoor.dev)                                         | {{< icon "check" >}} | {{< icon "x" >}} |
+| Integration                                                            |        Import        |         Location         |  
+|------------------------------------------------------------------------|:--------------------:|:------------------------:|
+ | [AccuChef](https://www.accuchef.com)                                   | {{< icon "check" >}} |   Add recipe → Import    |
+| [ChefTap](https://cheftap.com)                                         | {{< icon "check" >}} |   Add recipe → Import    |
+| [Crouton](https://crouton.app)                                         | {{< icon "check" >}} |   Add recipe → Import    |
+| [Easy Recipe Deluxe](https://easy-recipe-deluxe.software.informer.com) | {{< icon "check" >}} |   Add recipe → Import    |
+ | [Kalorio](https://www.kalorio.de)                                      | {{< icon "check" >}} |   Add recipe → Import    |
+| [MasterCook](https://www.mastercook.com)                               | {{< icon "check" >}} |   Add recipe → Import    |
+ | [Mealie](https://mealie.io)                                            | {{< icon "check" >}} | Settings → Data → Import |
+| [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)         | {{< icon "check" >}} | Settings → Data → Import |
+ | [Paprika](https://www.paprikaapp.com)                                  | {{< icon "check" >}} |   Add recipe → Import    |
+| [Recipe Keeper](https://www.paprikaapp.com)                            | {{< icon "check" >}} |   Add recipe → Import    |
+| [RecipeSage](https://recipesage.com/#/welcome)                         | {{< icon "check" >}} |   Add recipe → Import    |
+ | [Saffron](https://www.mysaffronapp.com)                                | {{< icon "check" >}} |   Add recipe → Import    |
+ | [Tandoor](https://tandoor.dev)                                         | {{< icon "check" >}} | Settings → Data → Import |
 
-## Crouton
+## Application-specific instructions.
+
+### AccuChef
+
+Follow these steps to import your recipes from AccuChef:
+
+1. Export your recipes in `AccuChef`.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.txt` file.
+5. Click `Submit`.
+
+### ChefTap
+
+Follow these steps to import your recipes from ChefTap:
+
+1. From the `ChefTap` mobile application, export your recipes in the text format.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+### Crouton
 
 Follow these steps to import your recipes from Crouton:
 
@@ -35,6 +61,16 @@ Follow these steps to import your recipes from Crouton:
 2. Within Recipya, click the `Add recipe` button.
 3. Click the `Import` button.
 4. Select the exported `.zip` file.
+5. Click `Submit`.
+
+### Easy Recipe Deluxe
+
+Follow these steps to import your recipes from Easy Recipe Deluxe:
+
+1. Export your recipes in `Easy Recipe Deluxe`: Publish -> Text.
+2. Within Recipya, click the `Add recipe` button.
+3. Click the `Import` button.
+4. Select the exported `.txt` file.
 5. Click `Submit`.
 
 ## ChefTap
@@ -57,7 +93,7 @@ Follow these steps to import your recipes from Easy Recipe Deluxe:
 4. Select the exported `.txt` file.
 5. Click `Submit`.
 
-#### Kalorio
+### Kalorio
 
 Follow these steps to import recipes from Kalorio.
 
@@ -75,18 +111,18 @@ containing multiple `.mxp` files.
 
 This [website](https://www.grassrootsrecipes.com/) contains endless MasterCook recipe collections for you to try.
 
-## Mealie
+### Mealie
 
 Follow these steps to import your recipes from a Mealie instance:
 
 1. Go to the **Integrations** setting and select the **Mealie** option.
-2. Click the adjacent button.
+2. Click the button adjacent to the menu of options.
 3. In the dialog that appears, enter the URL and credentials of a Mealie instance.
 4. Click the **Import** button.
 
 ## Nextcloud Cookbook
 
-[Nextcloud Cookbook](https://github.com/nextcloud/cookbook) is an app for [Nextcloud](https://nextcloud.com/). 
+[Nextcloud Cookbook](https://github.com/nextcloud/cookbook) is an app for [Nextcloud](https://nextcloud.com/).
 Follow these steps to import your recipes from a Nextcloud Cookbook instance:
 
 1. Go to the **Integrations** setting and select the **Nextcloud** option.
@@ -95,7 +131,7 @@ Follow these steps to import your recipes from a Nextcloud Cookbook instance:
    ![](images/settings-integrations-nextcloud.webp)
 4. Click the **Import** button.
 
-## Paprika
+### Paprika
 
 Follow these steps to import recipes from Paprika.
 
@@ -105,7 +141,7 @@ Follow these steps to import recipes from Paprika.
 4. Select your `.paprikarecipes` file. You may also zip many `.paprikarecipes` together and select the resulting file.
 5. Click `Submit`.
 
-## Recipe Keeper
+### Recipe Keeper
 
 Follow these steps to import recipes from Recipe Keeper.
 
@@ -118,7 +154,7 @@ Follow these steps to import recipes from Recipe Keeper.
 7. Select the zip file you saved.
 8. Click `Submit`.
 
-#### RecipeSage
+### RecipeSage
 
 Follow these steps to import recipes from RecipeSage.
 
@@ -128,7 +164,7 @@ Follow these steps to import recipes from RecipeSage.
 4. Select the exported file.
 5. Click `Submit`.
 
-## Saffron
+### Saffron
 
 Follow these steps to import recipes from Saffron.
 
@@ -138,7 +174,7 @@ Follow these steps to import recipes from Saffron.
 4. Select the exported `.zip` file.
 5. Click `Submit`.
 
-## Tandoor
+### Tandoor
 
 Follow these steps to import your recipes from a Tandoor instance:
 

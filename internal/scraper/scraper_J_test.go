@@ -85,6 +85,64 @@ func TestScraper_J(t *testing.T) {
 			},
 		},
 		{
+			name: "jamieoliver2.com",
+			in:   "https://www.jamieoliver.com/recipes/pork-recipes/outrageous-pulled-pork/",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "pork"},
+				CookTime:      "PT5H",
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				Description:   &models.Description{Value: "A batch cook beauty, Jamie's outrageously good pulled pork is the gift that keeps on giving."},
+				Keywords:      &models.Keywords{Values: "Pork,One-pan recipes"},
+				Image:         &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"½ a pork shoulder, bone in (4.5kg)",
+						"1 whole nutmeg , for grating",
+						"4 red onions",
+						"4 large carrots",
+						"4 eating apples",
+						"1 bunch of sage (20g)",
+						"1 bulb of garlic",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{
+							Text: "Preheat the oven to 200°C/400°F/gas 6. It’s important to use a snug-fitting roasting tray for this recipe. Sit the pork shoulder in the tray and drizzle with 2 tablespoons each of olive oil and red wine vinegar, finely grate over the whole nutmeg, season generously with sea salt and black pepper, and rub well. Peel and halve the onions. Wash, trim and halve the carrots lengthways. Quarter and core the apples. Pick the sage leaves. Lift up the pork and sit the onions, carrots, apples, sage leaves and whole unpeeled garlic bulb underneath the meat. Roast for 2 hours, then reduce the heat to 150°C/300°F/gas 2 and cook for another 3 hours, or until the meat effortlessly pulls apart, adding splashes of water occasionally to prevent it from drying out, if needed.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Lift off all the crackling and put aside. Remove the pork to a board to rest. Spoon the excess fat off the tray into a jam jar (save for tasty cooking another day), then squeeze the soft garlic cloves out of the skins, and mush up the carrots, onions and apples. Return the pork to the tray, then shred and pull apart with two forks, removing any gristly bits and bones. Mix well until beautifully dressed in all the outrageous tray juices, then season to perfection. Snap up the crackling and place back on top, then enjoy as is or hold in the oven until needed. Batch up the extra portions to stash in the fridge or freezer for future meals.",
+							Type: "HowToStep",
+						},
+						{
+							Text: "Here are my favourite ways to celebrate it:\n\n\n\nPULLED PORK BAP\n\nIn a pan, heat up some pork with a splash of water until piping hot and lightly golden, then pile into a bap or bun with a gesture of wholegrain mustard, some cheese and onion crisps, a wodge of rocket and a few cornichons or pickles.\n\n\n\nPORK NOODLE CUPS\n\nIn a frying pan, heat up some pork with a splash of water, sliced fresh chilli and peanuts till crisp and piping hot, then toss with red wine vinegar, runny honey, and cooked noodles. Serve in an iceberg lettuce cup with a wedge of lime.\n\n\n\nPORK FRIED RICE\n\nIn a frying pan, heat up some pork with a splash of water, hoisin sauce, frozen peas and cooked rice until piping hot, then crack and toss in an egg until cooked. Serve sprinkled with sliced spring onion, with a wedge of orange.\n\n\n\nPORK &amp; BEANS\n\nIn a frying pan, heat up some pork with a splash of water till crisp and piping hot, then remove. Next, simmer tinned cannellini beans, juice and all, until the liquid has reduced. Serve with fresh soft herbs and finely chopped quick pickled red onion.\n\n\n\nPORK, BENEDICT-STYLE\n\nIn a frying pan, heat up some pork with a splash of water until crisp and piping hot, then fry an egg and wilt some baby spinach alongside. Mix a little English mustard into crème fraîche, then layer it all into a toasted and buttered English muffin.\n\n\n\nPULLED PORK PIZZA\n\nEmbellish a margherita pizza by scattering over some pork, sliced fresh chilli and tenderstem broccoli (halved lengthways), before cooking according to the packet instructions, or make your own. Serve with a drizzle of extra virgin olive oil.",
+							Type: "HowToStep",
+						},
+					},
+				},
+				Name: "Outrageous pulled pork",
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "376",
+					Carbohydrates: "7.2",
+					Fat:           "26.2",
+					Fiber:         "1.6",
+					Protein:       "28.6",
+					SaturatedFat:  "8.4",
+					Sodium:        "0.4",
+				},
+				PrepTime:     "PT15M",
+				ThumbnailURL: &models.ThumbnailURL{},
+				Tools:        &models.Tools{Values: []models.HowToItem{}},
+				Yield:        &models.Yield{Value: 14},
+				URL:          "https://www.jamieoliver.com/recipes/pork-recipes/outrageous-pulled-pork/",
+				Video:        &models.Videos{},
+			},
+		},
+		{
 			name: "jaimyskitchen.nl",
 			in:   "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu",
 			want: models.RecipeSchema{
@@ -208,7 +266,7 @@ func TestScraper_J(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT15M",
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DatePublished: "2023-05-09T12:58:13+00:00",
+				DatePublished: "2024-05-20T12:58:13+00:00",
 				Description:   &models.Description{Value: "Quick easy and delicious"},
 				Keywords:      &models.Keywords{Values: "#healthyrecipe"},
 				Image:         &models.Image{Value: anUploadedImage.String()},
@@ -445,7 +503,7 @@ func TestScraper_J(t *testing.T) {
 				},
 				Name:      "Jambalaya Biscuits",
 				PrepTime:  "PT40M",
-				TotalTime: "PT-477869H29M13S",
+				TotalTime: "PT-477923H54M4S",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://joythebaker.com/2023/01/jambalaya-biscuits/",
 				Video: &models.Videos{
@@ -742,6 +800,20 @@ func TestScraper_J(t *testing.T) {
 				TotalTime: "PT60M",
 				Yield:     &models.Yield{Value: 2},
 				URL:       "https://www.justonecookbook.com/teriyaki-tofu-bowl/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=VfdAc2S_H2s",
+							Description:  "Smothered with sweet-savory homemade teriyaki sauce, this Pan-Fried Teriyaki Tofu Bowl is amazingly easy and delicious! It’s also a great way to incorporate tofu into your weeknight dinner rotation. Bonus: I’ll show you the best way to cook crispy tofu.\n\nRECIPE: https://www.justonecookbook.com/teriyaki-tofu-bowl/\n\nIngredients:\n\n14 oz medium-firm tofu (momen tofu) (1 block for 2 servings)\n⅓ cup (60 g) potato starch or cornstarch\n3 Tbsp neutral-flavored oil (vegetable, rice bran, canola, etc.) (divided)\n\nFor the Teriyaki Sauce\n¼ cup sake\n¼ cup mirin\n¼ cup soy sauce\n4 tsp sugar\n\nFor the Garnish\n1 green onion/scallion\n½ tsp toasted white sesame seeds",
+							Duration:     "PT1M",
+							EmbedURL:     "https://www.youtube.com/embed/VfdAc2S_H2s?feature=oembed",
+							Name:         "Pan-Fried Teriyaki Tofu Bowl 照り焼き豆腐丼",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/VfdAc2S_H2s/hqdefault.jpg"},
+							UploadDate:   time.Date(2022, 3, 22, 20, 43, 10, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 	}

@@ -63,15 +63,12 @@ func TestScraper_G(t *testing.T) {
 			in:   "https://www.gazoakleychef.com/recipes/vegan-brisket/",
 			want: models.RecipeSchema{
 				AtContext:     "https://schema.org",
-				AtGraph:       nil,
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "Mains"},
 				CookTime:      "PT3H",
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
-				DateCreated:   "",
 				DateModified:  "2022-12-09T19:00:39+00:00",
-				DatePublished: "",
 				Description: &models.Description{
 					Value: "This is the ultimate vegan meat recipe. Smoky, succulent, & MEATY. It will fool all non-vegans – it’s that realistic. I use vital wheat gluten (seitan) & jackfruit for a different dimension of texture. See the below video tutorial for extra tips. Makes enough to serve 10-15 people at a special occasion dinner, so half the recipe if you like or feel free to freeze portions after cooking. The meat lasts up to a week in the fridge & 3 months in the freezer (cut the meat before freezing for convenience).",
 				},
@@ -116,7 +113,7 @@ func TestScraper_G(t *testing.T) {
 						{Text: "If kneading by hand, the tougher you are the more of a bite/meat-like texture your brisket will have when cooked, so be firm!", Type: "HowToStep"},
 						{Text: "Once kneaded, turn the dough out onto your work surface & shape it into a long rectangle shape, around an inch thick using your hands & a rolling pin if needed.", Type: "HowToStep"},
 						{
-							Text: "After shaping, sprinkle over then spice rub ingredients  & rub them into the brisket.",
+							Text: "After shaping, sprinkle over then spice rub ingredients \u00a0& rub them into the brisket.",
 							Type: "HowToStep",
 						},
 						{
@@ -162,7 +159,7 @@ func TestScraper_G(t *testing.T) {
 						{Text: "Slice, serve & enjoy.", Type: "HowToStep"},
 					},
 				},
-				Name:            "VEGAN BRISKETElderflower CocktailElderflower PannacottaPearl Barley Nettle Risotto",
+				Name:            "VEGAN BRISKETChicken Of The Woods SchnitzelCilantro Marinated TempehElderflower Cocktail",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H",
 				ThumbnailURL:    &models.ThumbnailURL{},
@@ -217,8 +214,8 @@ func TestScraper_G(t *testing.T) {
 			want: models.RecipeSchema{
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "Sweets and desserts"},
-				CookingMethod: &models.CookingMethod{},
+				Category:      &models.Category{Value: "Cakes & Baking"},
+				CookingMethod: &models.CookingMethod{Value: "Baked"},
 				Cuisine:       &models.Cuisine{},
 				CookTime:      "PT15M",
 				DateModified:  "2022-12-10 00:00:00",
@@ -232,7 +229,7 @@ func TestScraper_G(t *testing.T) {
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"Flour 00 2 &frac14; cups",
+						"Type 00 flour 2 &frac14; cups",
 						"Butter cold ½ cup",
 						"Brown sugar ½ cup",
 						"Eggs 1",
@@ -496,7 +493,7 @@ func TestScraper_G(t *testing.T) {
 				Description: &models.Description{
 					Value: "Koteletter kler mange smaker, også pærer. Brunede koteletter, pærer og sjalottløk legges sammen i en ildfast form. Supergod og enkel kosemiddag!",
 				},
-				Keywords: &models.Keywords{Values: "Svin, Helgemat, Rask, Enkel"},
+				Keywords: &models.Keywords{Values: "Svin, Rask, Helgemat, Enkel"},
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
@@ -762,9 +759,10 @@ func TestScraper_G(t *testing.T) {
 				AtContext:     "https://schema.org",
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "dinner"},
+				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT0S",
 				Cuisine:       &models.Cuisine{},
-				DatePublished: "2023-08-08T15:26:30.306375Z EST",
+				DatePublished: "2023-08-08T15:26:30.306375 EDT",
 				Description: &models.Description{
 					Value: "Balsamic Chicken Caprese is roasted to perfection and topped with melty mozzarella, fresh basil and ripe heirloom tomatoes.",
 				},
@@ -795,9 +793,11 @@ func TestScraper_G(t *testing.T) {
 				ThumbnailURL: &models.ThumbnailURL{
 					Value: "https://hips.hearstapps.com/hmg-prod/images/balsamic-chicken-caprese-64c91c95d79f4.jpg?crop=1.00xw:0.668xh;0,0.192xh&resize=100:*",
 				},
+				Tools:     &models.Tools{Values: []models.HowToItem{}},
 				TotalTime: "PT30M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.goodhousekeeping.com/food-recipes/a44652479/balsamic-chicken-caprese-recipe/",
+				Video:     &models.Videos{},
 			},
 		},
 		{

@@ -11,9 +11,7 @@ func scrapeReddit(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	node := root.Find(".commentarea").First()
-
-	datePub, _ := node.Find("time").First().Attr("datetime")
-	rs.DatePublished, _, _ = strings.Cut(datePub, "T")
+	rs.DatePublished, _, _ = strings.Cut(node.Find("time").First().AttrOr("datetime", ""), "T")
 	rs.Name = root.Find("a[data-event-action='title']").Text()
 
 	form := node.Find(".sitetable.nestedlisting form").First()

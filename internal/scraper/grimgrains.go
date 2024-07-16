@@ -32,7 +32,7 @@ func scrapeGrimGrains(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	rs.Image.Value, _ = root.Find("img").First().Attr("src")
+	rs.Image.Value = root.Find("img").First().AttrOr("src", "")
 	if strings.HasPrefix(rs.Image.Value, "../") {
 		rs.Image.Value = "https://grimgrains.com/" + strings.TrimPrefix(rs.Image.Value, "../")
 	}

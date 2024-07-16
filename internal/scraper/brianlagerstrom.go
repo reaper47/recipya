@@ -19,14 +19,14 @@ func scrapeBrianLagerstrom(root *goquery.Document) (models.RecipeSchema, error) 
 	}
 	rs.Name = strings.TrimSpace(name)
 
-	datePub, _ := root.Find("meta[itemprop='datePublished']").Attr("content")
+	datePub := root.Find("meta[itemprop='datePublished']").AttrOr("content", "")
 	before, _, ok = strings.Cut(datePub, "T")
 	if ok {
 		datePub = before
 	}
 	rs.DatePublished = datePub
 
-	dateMod, _ := root.Find("meta[itemprop='dateModified']").Attr("content")
+	dateMod := root.Find("meta[itemprop='dateModified']").AttrOr("content", "")
 	before, _, ok = strings.Cut(dateMod, "T")
 	if ok {
 		dateMod = before

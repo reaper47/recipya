@@ -380,8 +380,8 @@ func TestScraper_L(t *testing.T) {
 				Category:      &models.Category{Value: "Hoofdgerechten"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
-				CookTime:      "PT0M",
-				DatePublished: "2024-03-17T22:00:52+01:00",
+				CookTime:      "PT0H0M",
+				DatePublished: "2024-03-17T21:00:52+01:00",
 				Description: &models.Description{
 					Value: "Dit recept voor pita tandoori is ideaal als je weinig tijd hebt en toch iets lekkers wil maken. Met kip, een kruidige tandoori marinade en verfrissende yoghurtsaus in een knapperig pitabroodje.",
 				},
@@ -480,12 +480,12 @@ func TestScraper_L(t *testing.T) {
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"0.25 watermeloen",
-						"150 gfeta",
-						"1 rode ui",
-						"100 golijven",
-						"3 takjesmunt",
-						"5 gtijm",
+						"0.25\u00a0watermeloen",
+						"150\u00a0gfeta",
+						"1\u00a0rode ui",
+						"100\u00a0golijven",
+						"3\u00a0takjesmunt",
+						"5\u00a0gtijm",
 						"zout",
 						"peper",
 					},
@@ -525,10 +525,10 @@ func TestScraper_L(t *testing.T) {
 				Category:  &models.Category{Value: "Mittagessen, Abendessen"},
 				Cuisine:   &models.Cuisine{Value: "Deutschland"},
 				Description: &models.Description{
-					Value: "Rezept für Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln » Über 562x nachgekocht » 40min Zubereitung » 10 Zutaten » 558 kcal/Portion",
+					Value: "Rezept für Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln » Über 597x nachgekocht » 40min Zubereitung » 10 Zutaten » 558 kcal/Portion",
 				},
 				Keywords: &models.Keywords{
-					Values: "Bohnen, Buschbohnen, Kartoffeln, Schwein, Schweinelende, Schweinefilet, einfach, lecker, leicht, Mittagessen, Abendessen, NährwertKompass 7-8, Deutschland, Gäste, Familie, Hauptspeise, Fleisch, Gemüse, Schweinefleisch, Einfaches Mittagessen, Einfaches Abendessen, Einfache Familienrezepte, Abendessen für Gäste, Familien Mittagessen",
+					Values: "Bohnen, Buschbohnen, Kartoffeln, Schwein, Schweinelende, Schweinefilet, einfach, lecker, leicht, Mittagessen, Abendessen, NährwertKompass 7-8, Deutschland, Gäste, Familie, Hauptspeise, Fleisch, Gemüse, Schweinefleisch, Einfaches Mittagessen, Einfaches Abendessen, Einfache Familienrezepte, Abendessen für Gäste, Familien Mittagessen, Familien Abendessen",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -612,7 +612,7 @@ func TestScraper_L(t *testing.T) {
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						{Text: "In one bowl mix together farmer’s cheese, butter, sugar, salt and vanilla sugar. Mash it with a fork. Then gradually add flour. To me, it was enough 200 g (7 oz) of flour, but my used farmer’s cheese was quite dry, so if you use moist farmer’s cheese, then it’ll need a little more flour. The dough should be soft, elastic, but barely stick to the hands. You can put the dough in the refrigerator for some time, to get harden, but it’s not necessary.", Type: "HowToStep"},
+						{Text: "In one bowl mix together farmer’s cheese, butter, sugar, salt and vanilla sugar. Mash it with a fork. Then gradually add flour. To me, it was enough 200 g (7 oz) of flour, but my used farmer’s cheese was quite dry, so if you use moist farmer’s cheese, then it’ll need a little more flour. The dough should be soft, elastic, but barely\u00a0stick to the hands. You can put the dough in the refrigerator for some time, to get harden, but it’s not necessary.", Type: "HowToStep"},
 						{Text: "Peel the apples, chop in thicker slices.", Type: "HowToStep"},
 						{Text: "Lay a parchment paper on a baking tray.", Type: "HowToStep"},
 						{Text: "Preheat the oven to 180 C (350 F).", Type: "HowToStep"},

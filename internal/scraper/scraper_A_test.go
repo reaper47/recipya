@@ -20,7 +20,7 @@ func TestScraper_A(t *testing.T) {
 				CookingMethod: &models.CookingMethod{Value: "Refogado"},
 				Cuisine:       &models.Cuisine{Value: "Brasileira"},
 				DateModified:  "2020-02-05T07:51:35-0300",
-				DatePublished: "2008-10-24",
+				DatePublished: "2008-10-24T20:47:00-0200",
 				Description: &models.Description{
 					Value: "Derreta a manteiga e refogue a cebola até ficar transparente. Junte a carne e tempere " +
 						"com o sal. Mexa até a carne dourar de todos os lados. Acrescente a mostarda, o catchup, " +
@@ -343,10 +343,10 @@ func TestScraper_A(t *testing.T) {
 						},
 						{Text: "Melt one tablespoon of butter in a medium sauce pan over medium heat. Stir in finely chopped shallots and a pinch of salt. Cook the shallots, stirring occasionally, until softened and slightly charred (about 4-6 minutes.)", Type: "HowToStep"},
 						{Text: "Stir in minced garlic and cook for one minute. Pour in orzo and stir to combine it into the shallots and garlic. Toast the orzo for a couple of minutes.", Type: "HowToStep"},
-						{Text: "Stir in vegetable broth and allow the broth to come to a simmer. Stir frequently so the orzo does not stick to the bottom of the pan.", Type: "HowToStep"},
+						{Text: "Stir in vegetable broth and allow the broth to come to a simmer.Stir frequently so the orzo does not stick to the bottom of the pan.", Type: "HowToStep"},
 						{Text: "Once the broth is simmering, continue stirring frequently until the broth is totally absorbed into the orzo. The orzo should be al dente, and have just the tiniest bite to it.", Type: "HowToStep"},
 						{
-							Text: "Stir in the lemon zest, ¼ cup of grated cheese, another pinch of salt and a crack of black pepper, and the remaining tablespoon of butter. Squeeze the charred lemon halves into the orzo, holding one hand beneath each half as you squeeze to catch any seeds. Stir to combine. If the orzo seems too thick, thin it out with one tablespoon of water at a time until it reaches your desired consistency. For a creamier texture: stir in half and half, one tablespoon at a time, until the orzo is as creamy as you like it.",
+							Text: "Stir in the lemon zest, ¼ cup of grated cheese, another pinch of salt and a crack of black pepper, and the remaining tablespoon of butter.Squeeze the charred lemon halves into the orzo, holding one hand beneath each half as you squeeze to catch any seeds. Stir to combine. If the orzo seems too thick, thin it out with one tablespoon of water at a time until it reaches your desired consistency.For a creamier texture:stir in half and half, one tablespoon at a time, until the orzo is as creamy as you like it.",
 							Type: "HowToStep",
 						},
 						{
@@ -519,7 +519,7 @@ func TestScraper_A(t *testing.T) {
 				Cuisine:       &models.Cuisine{Value: "American"},
 				DatePublished: "2018-08-16",
 				Description: &models.Description{
-					Value: "Equipment Notes:\r\nAs noted above, I find a scale to be imperative here: I use it to weigh not only the flour but also the water, salt, and yeast.\r\nA large sheet pan is so handy — it fits all 12 bagels at once. If you don't have a large one, use two standard sheet pans, and bake 6 on each. \r\nYou'll need a spider or a slotted spoon to remove the bagels from the boiling water to a sheet pan.\r\nA food processor or stand mixer will allow you to knead the dough quickly and powerfully.  I love my 14-cup Cuisinart.\r\nNote: Watch your food processor closely! If you make the larger amount (12 bagels), it's a lot of dough for even a large food processor. You'll only run the machine for 90 seconds, but it will work hard during those 90 seconds and may jump around a bit — at any sign of the blade jamming, stop the machine and remove the dough. Also, after you add the liquids to the food processor, begin the kneading immediately to prevent the liquid from escaping through the center hole.\r\nIf you don't have a food processor or a stand mixer, knead the dough by hand briefly, using as little additional flour as possible.\r\nIngredient Notes:\r\nMany bread authorities swear by using high-gluten flour. This is something I have yet to try, but I imagine it would only improve the chewiness. But if you don't feel like picking up another product, don't hesitate to use all-purpose flour, which is what I typically use in all of the breads I bake.\r\nBarley malt syrup is hard to find. Shops like Whole Foods Market typically sell it. I order it online. Also, as one commenter noted, beer making supply stores carry barley malt syrup.\r\nFor homemade everything bagel seasoning, combine:\r\n\r\n1/4 cup sesame seeds\r\n1/4 cup poppy seeds\r\n3 tablespoons dried onion flakes\r\n3 tablespoons dried garlic flakes\r\n2 tablespoons flaky sea salt",
+					Value: "Equipment Notes:\r\nAs noted above, I find a scale to be imperative here: I use it to weigh not only the flour but also the water, salt, and yeast.\r\nA large sheet pan is so handy — it fits all 12 bagels at once. If you don't have a large one, use two standard sheet pans, and bake 6 on each.\r\nYou'll need a spider or a slotted spoon to remove the bagels from the boiling water to a sheet pan.\r\nA food processor or stand mixer will allow you to knead the dough quickly and powerfully. I love my 14-cup Cuisinart.\r\nNote: Watch your food processor closely! If you make the larger amount (12 bagels), it's a lot of dough for even a large food processor. You'll only run the machine for 90 seconds, but it will work hard during those 90 seconds and may jump around a bit — at any sign of the blade jamming, stop the machine and remove the dough. Also, after you add the liquids to the food processor, begin the kneading immediately to prevent the liquid from escaping through the center hole.\r\nIf you don't have a food processor or a stand mixer, knead the dough by hand briefly, using as little additional flour as possible.\r\nIngredient Notes:\r\nMany bread authorities swear by using high-gluten flour.This is something I have yet to try, but I imagine it would only improve the chewiness. But if you don't feel like picking up another product, don't hesitate to use all-purpose flour, which is what I typically use in all of the breads I bake.\r\nBarley malt syrup is hard to find. Shops like Whole Foods Market typically sell it. I order it online. Also, as one commenter noted, beer making supply stores carry barley malt syrup.\r\nFor homemade everything bagel seasoning, combine:\r\n\r\n1/4 cup sesame seeds\r\n1/4 cup poppy seeds\r\n3 tablespoons dried onion flakes\r\n3 tablespoons dried garlic flakes\r\n2 tablespoons flaky sea salt",
 				},
 				Keywords: &models.Keywords{Values: "bagels, everything, sesame, food processor, stand mixer"},
 				Image:    &models.Image{Value: anUploadedImage.String()},
@@ -533,7 +533,7 @@ func TestScraper_A(t *testing.T) {
 						"3 teaspoons (20 g) kosher salt, I use Diamond Crystal",
 						"1.5 tsp (6 g) instant yeast",
 						"2 cups (454 g) lukewarm water",
-						"1 heaping teaspoon barley malt syrup, maple syrup, or honey + more for boiling",
+						"1  heaping teaspoon barley malt syrup, maple syrup, or honey + more for boiling",
 						"grapeseed or olive or other neutral oil",
 						"1 egg whisked with 1 tablespoon water",
 						"various toppings: everything bagel seasoning, sesame seeds, dukkah, etc.",
@@ -552,7 +552,7 @@ func TestScraper_A(t *testing.T) {
 				},
 				Name:      "Foolproof Homemade Bagels Recipe",
 				PrepTime:  "PT20M",
-				TotalTime: "PT-477847H22M46S",
+				TotalTime: "PT-477909H17M45S",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://alexandracooks.com/2018/08/16/very-good-bagels-easy-ish-too/",
 				Video: &models.Videos{
@@ -583,7 +583,7 @@ func TestScraper_A(t *testing.T) {
 				DateModified:  "2023-02-03T00:00:00+00:00",
 				DatePublished: "2015-08-05T00:00:00+00:00",
 				Description: &models.Description{
-					Value: "This blueberry crumble slice is just so yummy –  no one will be able to tell it’s low FODMAP, gluten and dairy free!",
+					Value: "This blueberry crumble slice is just so yummy – no one will be able to tell it’s low FODMAP, gluten and dairy free!",
 				},
 				Keywords: &models.Keywords{
 					Values: "gluten free, low fodmap, dairy free, nut free, fruity options, sweet treats, vegetarian, soy free, all things sweet, protein, eggs, snacks, baking, dessert, vegetarian options, cakes & slices",
@@ -624,7 +624,7 @@ func TestScraper_A(t *testing.T) {
 							Type: "HowToStep",
 						},
 						{
-							Text: "Add the blueberries evenly to the baking pan until they cover the dough. In a small bowl mix together the 3 teaspoons of corn starch and 1/4 cup of sugar. Then evenly sprinkle the sugar mixture on top.",
+							Text: "Add the blueberries evenly to the baking pan until they cover the dough. In a small bowl mix together the 3 teaspoons of\u00a0corn starch and 1/4 cup of sugar. Then evenly sprinkle the sugar mixture on top.",
 							Type: "HowToStep",
 						},
 						{
@@ -663,8 +663,8 @@ func TestScraper_A(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
 				DatePublished: "2021-04-19",
-				Description:   &models.Description{Value: "dfinocchiaro"},
-				Keywords:      &models.Keywords{Values: "dfinocchiaro"},
+				Description:   &models.Description{},
+				Keywords:      &models.Keywords{},
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
@@ -848,7 +848,7 @@ func TestScraper_A(t *testing.T) {
 				Category:      &models.Category{Value: "Dessert"},
 				CookTime:      "PT10M",
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DateModified:  "2023-08-28T17:26:15.610-04:00",
+				DateModified:  "2024-05-22T05:19:05.080-04:00",
 				DatePublished: "1998-04-18T16:10:32.000-04:00",
 				Description: &models.Description{
 					Value: "This chocolate chip cookie recipe makes delicious cookies with crisp edges and chewy middles. Try this wildly-popular cookie recipe for yourself!",
@@ -907,7 +907,7 @@ func TestScraper_A(t *testing.T) {
 							Description:  "When it comes to fresh and delicious cookies, nothing beats homemade. In this video, Nicole shows you how to make Allrecipes’s top rated recipe for chocolate chip cookies. Using a deliciously sweet cookie dough that’s beaten with brown sugar and vanilla, fold in mini chocolate chips. Once the dough has been chilled in the fridge, distribute it onto a baking sheet and bake for ten minutes in the oven. With a tender texture and a rich, buttery taste, they're the ultimate comfort snack!",
 							Duration:     "PT3M33S",
 							Name:         "How to Make the Best Chocolate Chip Cookies",
-							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/qHQSNVCK/poster.jpg?width=720"},
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://cdn.jwplayer.com/v2/media/qHQSNVCK/thumbnails/tibAvzY8.jpg"},
 							UploadDate:   time.Date(2023, 8, 24, 22, 27, 49, 0, time.FixedZone("UTC-4", -4*60*60)),
 						},
 					},
@@ -1036,6 +1036,20 @@ func TestScraper_A(t *testing.T) {
 				PrepTime: "PT120M",
 				Yield:    &models.Yield{Value: 6},
 				URL:      "https://amazingribs.com/tested-recipes-chicken-recipes-crispy-grilled-buffalo-wings-recipe/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=IqF2kiXh0oQ",
+							Description:  "Unbelievable Buffalo Chicken Wings and Sauce recipe made on the grill. Perfect for this years BBQ season. Watch Now. For the full tested recipe, visit http://amazingribs.com/wings\n\nDid you enjoy this video?  Subscribe to our channel. \n\nAlso, subscribe to our newsletter, Smoke Signals and receive tested recipes, proven techniques, reviews, and so much more. Click here: https://tinyurl.com/y8ctxfzf\n\nLearn everything you need to know about outdoor cooking and up your BBQ IQ at: https://amazingribs.com\n\nGet a free 30 day trial to our Pitmaster Club: https://pitmaster.amazingribs.com/join-pitmaster",
+							Duration:     "PT1M50S",
+							EmbedURL:     "https://www.youtube.com/embed/IqF2kiXh0oQ?feature=oembed",
+							Name:         "Ultimate Buffalo Chicken Wings On The Grill",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/IqF2kiXh0oQ/hqdefault.jpg"},
+							UploadDate:   time.Date(2017, 6, 5, 17, 27, 57, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -1047,7 +1061,7 @@ func TestScraper_A(t *testing.T) {
 				Category:      &models.Category{Value: "Dinner"},
 				CookTime:      "PT18M",
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DatePublished: "2022-05-05T11:00:05+00:00",
+				DatePublished: "2024-04-07T11:00:05+00:00",
 				Description: &models.Description{
 					Value: "Wonderful honey lemon garlic salmon covered in an easy lemon garlic butter marinade and baked to flaky " +
 						"perfection. This flavorful lemon garlic salmon recipe makes a delicious, protein packed dinner served " +
@@ -1254,11 +1268,11 @@ func TestScraper_A(t *testing.T) {
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
 						{
-							Text: "Najpierw podam bardzo skróconą wersję przepisu:\n        1 - W jednym garnku umieść razem: około kilograma mięsa (tylko z kurczaka lub z dodatkiem wołowiny z kością); dwie obrane marchewki; korzeń pietruszki; cebulę; kawałek korzenia selera. Dodaj też dwa ziarna ziela angielskiego, listek laurowy, łyżeczkę soli oraz pół łyżeczki pieprzu. Wlej 1500 ml wody. Garnek przykryj przykrywką i zagotuj zupę. Zmniejsz moc palnika do takiej, by zupa tylko mrugała i gotuj ją przez 90 minut - jeśli dodany był tylko kurczak, lub 120 minut - jeśli użyta była też wołowina z kością.",
+							Text: "Najpierw podam bardzo skróconą wersję przepisu:\n 1 - W jednym garnku umieść razem: około kilograma mięsa (tylko z kurczaka lub z dodatkiem wołowiny z kością); dwie obrane marchewki; korzeń pietruszki; cebulę; kawałek korzenia selera. Dodaj też dwa ziarna ziela angielskiego, listek laurowy, łyżeczkę soli oraz pół łyżeczki pieprzu. Wlej 1500 ml wody. Garnek przykryj przykrywką i zagotuj zupę. Zmniejsz moc palnika do takiej, by zupa tylko mrugała i gotuj ją przez 90 minut - jeśli dodany był tylko kurczak, lub 120 minut - jeśli użyta była też wołowina z kością.",
 							Type: "HowToStep",
 						},
 						{
-							Text: "2 - Po dwóch godzinach z brzegów garnka usuń szumowiny. Przy pomocy cedzaka wyłów z zupy całe mięso, warzywa i przyprawy. Powinno zostać około 1200 ml bulionu. Jeśli odparowało więcej wywaru, to ubytek uzupełnij wrzątkiem. Warzywa i mięso z rosołu można zmielić i wykorzystać do zrobienia pasztetu, czy też jako farsz do pierogów lub naleśników.\u00a0\n        3 - Do bulionu dodaj mały słoik koncentratu pomidorowego o wadze 200 gramów. Zanim pomidorówka zacznie się ponownie gotować wlej cztery łyżki (lub więcej) śmietanki kremówki 30 %. Jeśli używasz śmietany kwaśnej 18 %, to przed dodaniem należy ja zahartować. Zamieszaj zupę i sprawdź jej smak. W razie potrzeby dopraw ją solą, pieprzem, może odrobiną cukru.",
+							Text: "2 - Po dwóch godzinach z brzegów garnka usuń szumowiny. Przy pomocy cedzaka wyłów z zupy całe mięso, warzywa i przyprawy. Powinno zostać około 1200 ml bulionu. Jeśli odparowało więcej wywaru, to ubytek uzupełnij wrzątkiem. Warzywa i mięso z rosołu można zmielić i wykorzystać do zrobienia pasztetu, czy też jako farsz do pierogów lub naleśników.\u00a0\n 3 - Do bulionu dodaj mały słoik koncentratu pomidorowego o wadze 200 gramów. Zanim pomidorówka zacznie się ponownie gotować wlej cztery łyżki (lub więcej) śmietanki kremówki 30 %. Jeśli używasz śmietany kwaśnej 18 %, to przed dodaniem należy ja zahartować. Zamieszaj zupę i sprawdź jej smak. W razie potrzeby dopraw ją solą, pieprzem, może odrobiną cukru.",
 							Type: "HowToStep",
 						},
 						{

@@ -11,8 +11,6 @@ func scrapeRobinasBell(root *goquery.Document) (models.RecipeSchema, error) {
 		return models.RecipeSchema{}, err
 	}
 
-	img, _ := root.Find(".wp-caption img").First().Attr("data-src")
-	rs.Image = &models.Image{Value: img}
-
+	rs.Image = &models.Image{Value: root.Find(".wp-caption img").First().AttrOr("data-src", "")}
 	return rs, nil
 }

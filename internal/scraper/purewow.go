@@ -11,7 +11,7 @@ import (
 func scrapePureWow(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 	rs.Name = root.Find(".hed").Text()
-	rs.Image.Value, _ = root.Find(".recipe-img-container img").First().Attr("src")
+	rs.Image.Value = root.Find(".recipe-img-container img").First().AttrOr("src", "")
 
 	root.Find(".recipe-text p").Each(func(_ int, sel *goquery.Selection) {
 		rs.Description.Value += sel.Text() + "\n\n"

@@ -44,8 +44,7 @@ var excludedURIs = map[string]struct{}{
 	"/settings/calculate-nutrition":      {},
 	"/settings/convert-automatically":    {},
 	"/settings/measurement-system":       {},
-	"/settings/tabs/profile":             {},
-	"/settings/tabs/recipes":             {},
+	"/update/check":                      {},
 	"/user-initials":                     {},
 	"/ws":                                {},
 }

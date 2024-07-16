@@ -350,6 +350,9 @@ func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
 			}
 		}
 
+		if r.Name == "" || len(r.Ingredients) == 0 || len(r.Instructions) == 0 {
+			continue
+		}
 		xr = append(xr, *r)
 	}
 

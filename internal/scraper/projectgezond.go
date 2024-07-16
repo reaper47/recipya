@@ -20,8 +20,7 @@ func scrapeProjectgezond(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Description.Value = getPropertyContent(root, "og:description")
 	rs.Category.Value = getPropertyContent(root, "article:section")
-	rs.Image.Value, _ = root.Find(".wp-post-image").First().Attr("src")
-
+	rs.Image.Value = root.Find(".wp-post-image").First().AttrOr("src", "")
 	rs.DatePublished = getPropertyContent(root, "og:published_time")
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 

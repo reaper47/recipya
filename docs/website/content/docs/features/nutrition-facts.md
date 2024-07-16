@@ -6,7 +6,7 @@ weight: 6
 Many recipes lack nutritional information users may be unwilling to calculate themselves. To address this issue,
 Recipya can calculate the nutrition facts for you automatically when adding a recipe.
 
-To enable this feature, access your settings via your avatar, click the `Recipes` tab on the left, and 
+To enable this feature, access the settings dialog from the avatar, click the `Recipes` tab on the left, and 
 check the **Calculate nutrition facts** setting's checkbox. 
 
 ![](images/settings-nutrition-facts.webp)

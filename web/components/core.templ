@@ -431,14 +431,16 @@ templ SettingsAbout(data templates.Data) {
 						Read the <a class="link" href="https://recipes.musicavis.ca/guide/about/changelog/v1.2.0" target="_blank">release notes</a>
 					</p>
 				</div>
-				if data.About.IsUpdateAvailable {
-					<button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button>
-				} else {
-					<div class="flex flex-row self-start">
+				<div class="flex flex-row self-start">
+					if data.About.IsUpdateAvailable {
+						<button class="btn btn-sm" hx-get="/update" hx-swap="none" hx-indicator="#fullscreen-loader">Update</button>
+					} else {
 						<img id="settings_about_update_check" class="htmx-indicator mr-1" src="/static/img/bars.svg" alt="Checking..."/>
-						<button class="btn btn-sm" hx-get="/update/check" hx-target="#settings_about" hx-swap="outerHTML" hx-indicator="#settings_about_update_check">Check for updates</button>
-					</div>
-				}
+						<button class="btn btn-sm" hx-get="/update/check" hx-target="#settings_about" hx-swap="outerHTML" hx-indicator="#settings_about_update_check">
+							Check for updates
+						</button>
+					}
+				</div>
 			</div>
 		</div>
 		<div class="divider m-0"></div>

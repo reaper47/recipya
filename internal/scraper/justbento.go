@@ -11,8 +11,8 @@ func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.Name = getPropertyContent(root, "og:title")
 	rs.Description.Value = getPropertyContent(root, "og:description")
-	rs.DateModified, _ = root.Find("meta[property='og:updated_time']").Attr("content")
-	rs.DatePublished, _ = root.Find("meta[property='og:published_time']").Attr("content")
+	rs.DateModified = root.Find("meta[property='og:updated_time']").AttrOr("content", "")
+	rs.DatePublished = root.Find("meta[property='og:published_time']").AttrOr("content", "")
 
 	category := root.Find("nav.breadcrumb").Find("a:contains('Recipe collection:')").Text()
 	_, after, found := strings.Cut(category, ":")
@@ -41,7 +41,7 @@ func scrapeJustbento(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	}
 
-	rs.Image.Value, _ = root.Find(".field-name-body img").First().Attr("src")
+	rs.Image.Value = root.Find(".field-name-body img").First().AttrOr("src", "")
 	rs.Cuisine.Value = "Japanese"
 	rs.Category.Value = category
 	rs.Yield.Value = findYield(root.Find("*:contains('portions')").Text())

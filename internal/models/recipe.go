@@ -1588,8 +1588,10 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 		nodes := sel.Find("meta[itemprop='recipeCategory']")
 		keywords := make([]string, 0, nodes.Length()+1)
 		nodes.Each(func(_ int, sub *goquery.Selection) {
-			s, _ := sub.Attr("content")
-			keywords = append(keywords, s)
+			s := sub.AttrOr("content", "")
+			if s != "" {
+				keywords = append(keywords, s)
+			}
 		})
 
 		course := sel.Find("span[itemprop='recipeCourse']").Text()
@@ -1604,14 +1606,14 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 		}
 
 		var prep time.Duration
-		rs.PrepTime, _ = sel.Find("meta[itemprop='prepTime']").Attr("content")
+		rs.PrepTime = sel.Find("meta[itemprop='prepTime']").AttrOr("content", "")
 		_, after, ok := strings.Cut(rs.PrepTime, "PT")
 		if ok {
 			prep, _ = time.ParseDuration(strings.ToLower(after))
 		}
 
 		var cook time.Duration
-		cookTime, _ := sel.Find("meta[itemprop='cookTime']").Attr("content")
+		cookTime := sel.Find("meta[itemprop='cookTime']").AttrOr("content", "")
 		_, after, ok = strings.Cut(cookTime, "PT")
 		if ok {
 			cook, _ = time.ParseDuration(strings.ToLower(after))
@@ -1648,7 +1650,7 @@ func NewRecipesFromRecipeKeeper(root *goquery.Document) Recipes {
 		}
 
 		extractNut := func(selector, unit string) string {
-			v, _ := sel.Find("meta[itemprop='" + selector + "']").Attr("content")
+			v := sel.Find("meta[itemprop='"+selector+"']").AttrOr("content", "")
 			if v != "" {
 				v += unit
 			}

@@ -27,17 +27,16 @@ This section will help you understand how to add this website to the list of sup
 ### Database
 
 Initially, a SQLite migration file needs to be created using Goose to insert the desired website into the 
-websites table. To do so, open a terminal and navigate to `internal/services/migrations`. Then, generate
+websites table. To do so, open a terminal and navigate to the root of the project. Then, generate
 the migration file.
 
 ```bash
-cd internal/services/migrations
-goose create support-website sql
+task new-migration name=support_website
 ```
 
-The `support-website` is the name of the migration. It can be anything else. The command will create a new file of the 
-form `timestamp_name_of_migration.sql`. It will be embedded into the executable on build and will be executed when the 
-user starts the server. 
+The `support_website` is the name of the migration. It can be anything else. The command will create a new file of the 
+form `timestamp_name_of_migration.sql` under `internal/services/migrations`. It will be embedded into the executable on build 
+and will be executed when the user starts the server. 
 
 The final step involves inserting the website into the database:
 
@@ -48,8 +47,7 @@ VALUES ('example.com', 'https://www.example.com/recipes/declicious-bbq-steak');
 
 -- +goose Down
 DELETE FROM websites
-WHERE host = 'example.com' 
-  AND url = 'https://www.example.com/recipes/declicious-bbq-steak';
+WHERE host IN ('example.com');
 ```
 
 The host field could eventually be removed because we can determine it from Go using 

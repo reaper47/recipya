@@ -13,7 +13,7 @@ func scrapePrzepisy(root *goquery.Document) (models.RecipeSchema, error) {
 		return rs, err
 	}
 
-	rs.Image.Value, _ = root.Find(".recipe-img img").Attr("src")
+	rs.Image.Value = root.Find(".recipe-img img").AttrOr("src", "")
 
 	yield := findYield(root.Find(".person-count").Text())
 

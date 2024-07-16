@@ -49,10 +49,10 @@ func scrapeBodybuilding(root *goquery.Document) (models.RecipeSchema, error) {
 	}...)
 
 	node := root.Find(".bb-recipe__directions-timing--prep").Find("time")
-	rs.PrepTime, _ = node.Attr("datetime")
+	rs.PrepTime = node.AttrOr("datetime", "")
 
 	node = root.Find(".bb-recipe__directions-timing--cook").Find("time")
-	rs.CookTime, _ = node.Attr("datetime")
+	rs.CookTime = node.AttrOr("datetime", "")
 
 	nodes = root.Find(".bb-recipe__topic")
 	xk := make([]string, 0, nodes.Length())

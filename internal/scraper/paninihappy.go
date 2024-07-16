@@ -12,7 +12,7 @@ func scrapePaniniHappy(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
 	content := root.Find(".entry-content")
-	rs.Image.Value, _ = content.Find("img").First().Attr("src")
+	rs.Image.Value = content.Find("img").First().AttrOr("src", "")
 
 	recipe := content.Find(".hrecipe")
 	rs.Name = recipe.Find("h2").Last().Text()

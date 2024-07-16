@@ -2,7 +2,7 @@ package scraper_test
 
 import (
 	"testing"
-  "time"
+	"time"
 
 	"github.com/reaper47/recipya/internal/models"
 )
@@ -20,10 +20,10 @@ func TestScraper_V(t *testing.T) {
 				Cuisine:       &models.Cuisine{},
 				Name:          "Butter chicken",
 				CookTime:      "PT30M",
-				DateModified:  "2023-03-30T10:56:42+00:00",
+				DateModified:  "2024-05-17T09:56:36+00:00",
 				DatePublished: "2014-06-25T05:51:40+00:00",
 				Description: &models.Description{
-					Value: "Krydret og lækker butter chicken med ris, indisk salat og godt brød til – det er virkelig en skøn ret.Selv om butter chicken måske umiddelbart tager lidt tid, så er det mest af alt tiden hvor kyllingen skal marinere, for selve arbejdstiden er hverdagsvenlig. Sæt evt kyllingen i marinade allerede aftenen før eller fra morgenstunden – det bliver den blot bedre af.Det er også en herlig weekendret og god til gæster, hvor man kan servere flere skål med lækkert indisk mad at samles om.Prøv også: min bedste opskrift på lækkert naan brød >>",
+					Value: "Krydret og cremet butter chicken er virkelig en skøn ret og en af mine favoritter fra det indiske køkken.Selv om butter chicken måske umiddelbart tager lidt tid, så er det mest af alt tiden hvor kyllingen skal marinere, for selve arbejdstiden er hverdagsvenlig. Sæt gerne kyllingen i marinade allerede aftenen før eller fra morgenstunden – det bliver den blot bedre af.Det er også en herlig weekendret og god til gæster, hvor man kan servere flere skål med lækkert indisk mad at samles om.Prøv også: min bedste opskrift på lækkert naan brød >>",
 				},
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Keywords: &models.Keywords{},
@@ -32,7 +32,7 @@ func TestScraper_V(t *testing.T) {
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"100 g græsk yoghurt 10 %",
-						"2 tsk chiliflager",
+						"0,50 tsk chiliflager, *se note til opskrift",
 						"0,50 tsk stødt nellike",
 						"2 tsk stødt spidskommen",
 						"1 tsk stødt kardemomme",

@@ -12,7 +12,7 @@ func scrapeDk(root *goquery.Document) (models.RecipeSchema, error) {
 
 	content := root.Find("section[itemtype='http://schema.org/Recipe']")
 
-	yieldStr, _ := content.Find("section[itemprop=recipeYield]").Attr("content")
+	yieldStr := content.Find("section[itemprop=recipeYield]").AttrOr("content", "")
 	yield, _ := strconv.ParseInt(yieldStr, 10, 16)
 	rs.Yield.Value = int16(yield)
 

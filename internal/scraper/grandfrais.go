@@ -47,7 +47,7 @@ func scrapeGrandfrais(root *goquery.Document) (models.RecipeSchema, error) {
 
 	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] li"))
 
-	image, _ := root.Find("img[itemprop=image]").Attr("src")
+	image := root.Find("img[itemprop=image]").AttrOr("src", "")
 	if !strings.HasPrefix(image, "https://") {
 		image = "https://www.grandfrais.com" + image
 	}

@@ -25,7 +25,7 @@ func scrapeCostco(root *goquery.Document) (models.RecipeSchema, error) {
 	name := h1.Text()
 	rs.Name = name
 
-	rs.Image.Value, _ = div.Prev().Find("img").Attr("src")
+	rs.Image.Value = div.Prev().Find("img").AttrOr("src", "")
 	getIngredients(&rs, div.Find("ul li"))
 	getInstructions(&rs, div.Find("p"))
 

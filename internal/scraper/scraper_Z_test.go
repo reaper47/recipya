@@ -95,7 +95,7 @@ func TestScraper_Z(t *testing.T) {
 				DatePublished:   "2020-09-01",
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				TotalTime:       "PT-475409H3M24S",
+				TotalTime:       "PT-477927H13M52S",
 				URL:             "https://www.zenbelly.com/short-ribs/",
 				Video:           &models.Videos{},
 			},

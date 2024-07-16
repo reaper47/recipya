@@ -21,7 +21,7 @@ func scrapeDherbs(root *goquery.Document) (models.RecipeSchema, error) {
 	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
 	getInstructions(&rs, root.Find("li[itemprop=recipeInstructions]"))
 
-	thumbs, _ := root.Find("img.attachment-post-thumbnail").Attr("srcset")
+	thumbs := root.Find("img.attachment-post-thumbnail").AttrOr("srcset", "")
 	before, _, ok := strings.Cut(thumbs, ",")
 	if ok {
 		rs.ThumbnailURL.Value, _, _ = strings.Cut(before, " ")
