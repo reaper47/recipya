@@ -13,6 +13,7 @@
         <function importPath="errors" name="New" />
         <function importPath="os" name="Remove" />
         <function importPath="os" name="RemoveAll" />
+        <function importPath="io" name="Copy" />
       </functions>
       <methods>
         <method importPath="math/rand" receiver="*Rand" name="Read" />
