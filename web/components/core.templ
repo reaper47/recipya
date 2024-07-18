@@ -326,6 +326,12 @@ templ settingsServer(data templates.Data) {
 				</div>
 				<div class="form-control">
 					<label class="label cursor-pointer">
+						<span class="label-text">Bypass Guide</span>
+						<input name="server.bypassGuide" type="checkbox" checked?={ data.Settings.Config.Server.IsBypassGuide } class="checkbox"/>
+					</label>
+				</div>
+				<div class="form-control">
+					<label class="label cursor-pointer">
 						<span class="label-text">No signups</span>
 						<input name="server.noSignups" type="checkbox" checked?={ data.Settings.Config.Server.IsNoSignups } class="checkbox"/>
 					</label>

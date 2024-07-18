@@ -157,6 +157,7 @@ func (s *Server) settingsConfigPutHandler() http.HandlerFunc {
 		c := app.Config
 		if r.Form.Has("server.autologin") {
 			c.Server.IsAutologin = r.FormValue("server.autologin") == "on"
+			c.Server.IsBypassGuide = r.FormValue("server.bypassGuide") == "on"
 			c.Server.IsNoSignups = r.FormValue("server.noSignups") == "on"
 			c.Server.IsProduction = r.FormValue("server.production") == "on"
 		}

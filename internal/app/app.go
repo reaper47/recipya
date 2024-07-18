@@ -33,7 +33,7 @@ var (
 	Info = GeneralInfo{
 		Version: semver.Version{
 			Major: 1,
-			Minor: 2,
+			Minor: 3,
 			Patch: 0,
 		},
 	} // Info stores general application information.
@@ -123,6 +123,7 @@ func (c *ConfigFile) Update(updated ConfigFile) error {
 	c.Integrations.AzureDI.Endpoint = updated.Integrations.AzureDI.Endpoint
 	c.Integrations.AzureDI.Key = updated.Integrations.AzureDI.Key
 	c.Server.IsAutologin = updated.Server.IsAutologin
+	c.Server.IsBypassGuide = updated.Server.IsBypassGuide
 	c.Server.IsNoSignups = updated.Server.IsNoSignups
 	c.Server.IsProduction = updated.Server.IsProduction
 
@@ -242,12 +243,13 @@ func (a AzureDI) PrepareRequest(file io.Reader) (*http.Request, error) {
 
 // ConfigServer holds configuration data for the server.
 type ConfigServer struct {
-	IsAutologin  bool   `json:"autologin"`
-	IsDemo       bool   `json:"isDemo"`
-	IsNoSignups  bool   `json:"noSignups"`
-	IsProduction bool   `json:"isProduction"`
-	Port         int    `json:"port"`
-	URL          string `json:"url"`
+	IsAutologin   bool   `json:"autologin"`
+	IsBypassGuide bool   `json:"bypassGuide"`
+	IsDemo        bool   `json:"isDemo"`
+	IsNoSignups   bool   `json:"noSignups"`
+	IsProduction  bool   `json:"isProduction"`
+	Port          int    `json:"port"`
+	URL           string `json:"url"`
 }
 
 // Init initializes the app. This function must be called when the app starts.
@@ -299,10 +301,6 @@ func NewConfig(r io.Reader) {
 	if r == nil {
 		port, _ := strconv.ParseInt(os.Getenv("RECIPYA_SERVER_PORT"), 10, 32)
 
-		// TODO: Remove in v1.3.0
-		if os.Getenv("RECIPYA_VISION_ENDPOINT") != "" {
-			fmt.Println("The 'RECIPYA_VISION_ENDPOINT' is deprecated. Please use 'RECIPYA_DI_ENDPOINT'.")
-		}
 		if os.Getenv("RECIPYA_VISION_KEY") != "" {
 			fmt.Println("The 'RECIPYA_VISION_KEY' is deprecated. Please use 'RECIPYA_DI_KEY'.")
 		}
@@ -319,12 +317,13 @@ func NewConfig(r io.Reader) {
 				},
 			},
 			Server: ConfigServer{
-				IsAutologin:  os.Getenv("RECIPYA_SERVER_AUTOLOGIN") == "true",
-				IsDemo:       os.Getenv("RECIPYA_SERVER_IS_DEMO") == "true",
-				IsNoSignups:  os.Getenv("RECIPYA_SERVER_NO_SIGNUPS") == "true",
-				IsProduction: os.Getenv("RECIPYA_SERVER_IS_PROD") == "true",
-				Port:         int(port),
-				URL:          os.Getenv("RECIPYA_SERVER_URL"),
+				IsBypassGuide: os.Getenv("RECIPYA_SERVER_BYPASS_GUIDE") == "true",
+				IsAutologin:   os.Getenv("RECIPYA_SERVER_AUTOLOGIN") == "true",
+				IsDemo:        os.Getenv("RECIPYA_SERVER_IS_DEMO") == "true",
+				IsNoSignups:   os.Getenv("RECIPYA_SERVER_NO_SIGNUPS") == "true",
+				IsProduction:  os.Getenv("RECIPYA_SERVER_IS_PROD") == "true",
+				Port:          int(port),
+				URL:           os.Getenv("RECIPYA_SERVER_URL"),
 			},
 		}
 	} else {

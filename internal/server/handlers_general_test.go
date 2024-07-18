@@ -96,6 +96,18 @@ func TestHandlers_General_Index(t *testing.T) {
 		assertStringsNotInHTML(t, got, notWant)
 	})
 
+	t.Run("bypass guide", func(t *testing.T) {
+		app.Config.Server.IsBypassGuide = true
+		defer func() {
+			app.Config.Server.IsBypassGuide = false
+		}()
+
+		rr := sendRequestNoBody(srv, http.MethodGet, uri)
+
+		assertStatus(t, rr.Code, http.StatusSeeOther)
+		assertHeader(t, rr, "Location", "/auth/login")
+	})
+
 	t.Run("hide elements on main page when autologin enabled", func(t *testing.T) {
 		app.Config.Server.IsAutologin = true
 		defer func() {
