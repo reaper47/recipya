@@ -1964,7 +1964,13 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									title="Share recipe"
 									hx-post={ fmt.Sprintf("/recipes/%d/share", data.ID) }
 									hx-target="#share-dialog-result"
-									_="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()"
+									_="on htmx:afterRequest from me
+									    if event.detail.successful
+									        if no navigator.canShare
+									            call share_dialog.showModal()
+									        else
+									            alert('fuck')
+									    end"
 								>
 									@iconShare()
 								</button>
