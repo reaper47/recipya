@@ -1945,7 +1945,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								</button>
 							}
 						</span>
-						<span class="text-center pb-2 print:w-full">{ data.Recipe.Name }</span>
+						<span class="text-center pb-2 print:w-full" itemprop="name">{ data.Recipe.Name }</span>
 						<span class="grid grid-flow-col place-items-center pb-2 print:hidden">
 							if data.Share.IsShared {
 								if !data.Share.IsFromHost {
@@ -1966,10 +1966,12 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									hx-target="#share-dialog-result"
 									_="on htmx:afterRequest from me
 									    if event.detail.successful
-									        if no navigator.canShare
-									            call share_dialog.showModal()
+									        if navigator.canShare
+									            set name to document.querySelector('[itemprop=name]').textContent then
+									            set data to {title: name, text: name, url: document.querySelector('#share-dialog-result input').value} then
+                                                call navigator.share(data)
 									        else
-									            alert('fuck')
+									            call share_dialog.showModal()
 									    end"
 								>
 									@iconShare()

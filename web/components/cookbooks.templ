@@ -270,7 +270,15 @@ templ cookbooksIndex(data templates.Data) {
 					id="cookbook_menu_share"
 					hx-post="/cookbooks/1/share"
 					hx-target="#share-dialog-result"
-					_="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()"
+					_="on htmx:afterRequest from me
+                        if event.detail.successful
+                            if navigator.canShare
+                                set name to 'Cookbook: ' + document.querySelector('.card-body h2').textContent then
+                                set data to {title: name, text: name, url: document.querySelector('#share-dialog-result input').value} then
+                                call navigator.share(data)
+                            else
+                                call share_dialog.showModal()
+                        end"
 				>
 					@iconShare()
 					Share

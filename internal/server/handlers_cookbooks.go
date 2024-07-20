@@ -10,6 +10,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func (s *Server) cookbooksHandler() http.HandlerFunc {
@@ -651,10 +652,17 @@ func (s *Server) cookbookSharePostHandler() http.HandlerFunc {
 			return
 		}
 
+		link = r.Host + link
+		if !strings.HasPrefix(link, "http") {
+			if r.TLS != nil {
+				link = "https://" + link
+			} else {
+				link = "http://" + link
+			}
+		}
+
 		slog.Info("Cookbook shared", userIDAttr, "share", share, "link", link)
 
-		_ = components.ShareLink(templates.Data{
-			Content: r.Host + link,
-		}).Render(r.Context(), w)
+		_ = components.ShareLink(templates.Data{Content: link}).Render(r.Context(), w)
 	}
 }

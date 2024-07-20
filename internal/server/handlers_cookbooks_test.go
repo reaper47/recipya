@@ -109,7 +109,7 @@ func TestHandlers_Cookbooks(t *testing.T) {
 			`<form id="cookbook-image-form-2" enctype="multipart/form-data" hx-swap="none" hx-put="/cookbooks/2/image" hx-trigger="change from:#cookbook-image-2">`,
 			`<form id="cookbook-image-form-3" enctype="multipart/form-data" hx-swap="none" hx-put="/cookbooks/3/image" hx-trigger="change from:#cookbook-image-3">`,
 			`<span class="three-dots-container indicator-item indicator-end badge badge-neutral rounded-md p-1 select-none cursor-pointer hover:bg-secondary" _="on mousedown openCookbookOptionsMenu(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg></span>`,
-			`<a id="cookbook_menu_share" hx-post="/cookbooks/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful call share_dialog.showModal()">`,
+			`<a id="cookbook_menu_share" hx-post="/cookbooks/1/share" hx-target="#share-dialog-result" _="on htmx:afterRequest from me if event.detail.successful if navigator.canShare set name to 'Cookbook: ' + document.querySelector('.card-body h2').textContent then set data to {title: name, text: name, url: document.querySelector('#share-dialog-result input').value} then call navigator.share(data) else call share_dialog.showModal() end">`,
 			`<a id="cookbook_menu_download" hx-get="/cookbooks/1/download">`,
 			`<a id="cookbook_menu_delete" hx-delete="/cookbooks/1" hx-swap="outerHTML" hx-target="closest .cookbook" hx-confirm="Are you sure you want to delete this cookbook? Its recipes will not be deleted.">`,
 			`<button class="btn btn-outline btn-sm" hx-get="/cookbooks/1?page=1" hx-target="#content" hx-trigger="mousedown" hx-push-url="/cookbooks/1" hx-swap="innerHTML show:window:top transition:true">Open</button>`,
@@ -811,7 +811,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
-			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="` + strings.TrimPrefix(ts.URL, "http://") + `/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script type="text/javascript">function __templ_copyToClipboard`,
+			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="` + ts.URL + `/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script type="text/javascript">function __templ_copyToClipboard`,
 			`{if (window.navigator.clipboard) { navigator.clipboard.writeText(text); copy_button.textContent = "Copied!"; copy_button.setAttribute("disabled", true); copy_button.classList.toggle(".btn-disabled"); } else { alert('Your browser does not support the clipboard feature. Please copy the link manually.'); }}</script><button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick="__templ_copyToClipboard`,
 		})
 	})
