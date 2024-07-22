@@ -417,8 +417,8 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 													</button>
 												</div>
 												<div _="on load if not navigator.clipboard hide me">
-                                                    <div class="divider">OR</div>
-                                                    <button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+													<div class="divider">OR</div>
+													<button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
 												</div>
 											</div>
 											<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
@@ -947,17 +947,24 @@ templ loadRecipesManualScripts() {
         }
 
         function deleteMedia(event) {
-            const parent = event.target.parentElement;
-            parent.children[0].children[0].src = "";
-            parent.children[0].children[0].value = "";
-
-            if (parent.previousElementSibling.tagName === "VIDEO") {
-                parent.previousElementSibling.parentElement.removeChild(parent.previousElementSibling);
-                parent.previousElementSibling.classList.remove("hidden");
+            let parent = event.target.parentElement;
+            if (parent.tagName === "SPAN") {
+                parent = parent.parentElement;
             }
 
-            parent.previousElementSibling.src = "";
-            parent.children[0].classList.remove("hidden");
+            const img = parent.querySelector("img");
+            img.src = "";
+            img.value = "";
+
+            if (img.nextElementSibling.tagName === "VIDEO") {
+                img.parentElement.removeChild(img.nextElementSibling);
+                img.classList.remove("hidden");
+            }
+
+            const span = parent.querySelector("span");
+            span.querySelector("input[type=file]").value = null;
+            span.querySelector("input[type=file]").files = (new DataTransfer()).files;
+            span.children[0].classList.remove("hidden");
             event.target.classList.add("hidden");
         }
 
@@ -1229,9 +1236,9 @@ templ editRecipe(data *templates.ViewRecipeData) {
 														</button>
 													</div>
 													<div _="on load if not navigator.clipboard hide me">
-                                                        <div class="divider">OR</div>
-                                                        <button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
-                                                    </div>
+														<div class="divider">OR</div>
+														<button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+													</div>
 												</div>
 												<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 													Delete
@@ -1251,7 +1258,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													}
 												/>
 												<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
-													<div class={ "mr-1", templ.KV("hidden", i > 0) }>
+													<div class="mr-1 hidden">
 														<input
 															type="file"
 															accept="image/*,video/*"
@@ -1296,9 +1303,9 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															</button>
 														</div>
 														<div _="on load if not navigator.clipboard hide me">
-                                                            <div class="divider">OR</div>
-                                                            <button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
-                                                        </div>
+															<div class="divider">OR</div>
+															<button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+														</div>
 													</div>
 													<button
 														type="button"
@@ -1362,6 +1369,10 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															>
 																Fetch
 															</button>
+														</div>
+														<div _="on load if not navigator.clipboard hide me">
+															<div class="divider">OR</div>
+															<button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
 														</div>
 													</div>
 													<button type="button" class="btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">

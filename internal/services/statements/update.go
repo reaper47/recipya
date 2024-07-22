@@ -90,19 +90,11 @@ const UpdateRecipeID = `
 	SET id = ?
 	WHERE id = ?`
 
-// UpdateRecipeIngredient is the query to update a recipe's ingredient.
-const UpdateRecipeIngredient = `
-	UPDATE ingredient_recipe
-	SET ingredient_id = ?
-	WHERE ingredient_id = (SELECT id FROM ingredients WHERE name = trim(?))
-	  AND recipe_id = ?`
-
-// UpdateRecipeInstruction is the query to update a recipe's instruction.
-const UpdateRecipeInstruction = `
-	UPDATE instruction_recipe
-	SET instruction_id = ?
-	WHERE instruction_id = (SELECT id FROM instructions WHERE name = trim(?))
-	  AND recipe_id = ?`
+// UpdateRecipeImage is the query to update a recipe's main image.
+const UpdateRecipeImage = `
+	UPDATE recipes 
+	SET image = '00000000-0000-0000-0000-000000000000'
+	WHERE id = ?`
 
 // UpdateRecipeTimes is the query to update a recipe's times.
 const UpdateRecipeTimes = `

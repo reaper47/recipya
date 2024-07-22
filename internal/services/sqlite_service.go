@@ -2046,6 +2046,11 @@ func (s *SQLiteService) UpdateRecipe(updatedRecipe *models.Recipe, userID int64,
 				}
 			}
 		}
+	} else {
+		_, err = tx.ExecContext(ctx, statements.UpdateRecipeImage, recipeID)
+		if err != nil {
+			slog.Warn("Error deleting images", userIDAttr, recipeIDAttr, "err", err)
+		}
 	}
 
 	_, err = tx.ExecContext(ctx, statements.DeleteRecipeVideos, recipeID, userID)
