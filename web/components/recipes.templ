@@ -416,6 +416,10 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 														Fetch
 													</button>
 												</div>
+												<div _="on load if not navigator.clipboard hide me">
+                                                    <div class="divider">OR</div>
+                                                    <button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+												</div>
 											</div>
 											<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 												Delete
@@ -1070,6 +1074,32 @@ templ loadRecipesManualScripts() {
 
             clone.querySelector(el).focus();
         }
+
+        async function pasteImage(event) {
+            try {
+                const clipboardItems = await navigator.clipboard.read();
+                clipboardItems.forEach(async (item) => {
+                    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        const r = Math.random() * 16 | 0;
+                        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                        return v.toString(16);
+                    });
+
+                    const blob = await item.getType(item.types.find(t => t.startsWith("image/")));
+                    const file = new File([blob], uuid, { type: blob.type });
+
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+
+                    const input = event.target.parentElement.parentElement.querySelector("input[type=file]");
+                    input.files = dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                })
+            } catch (err) {
+                console.error(err.name, err.message);
+                alert("No image in clipboard or ould not paste image.");
+            }
+        }
     </script>
 }
 
@@ -1198,6 +1228,10 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															Fetch
 														</button>
 													</div>
+													<div _="on load if not navigator.clipboard hide me">
+                                                        <div class="divider">OR</div>
+                                                        <button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+                                                    </div>
 												</div>
 												<button type="button" class="hidden btn btn-sm btn-error btn-outline" onclick="deleteMedia(event)">
 													Delete
@@ -1261,6 +1295,10 @@ templ editRecipe(data *templates.ViewRecipeData) {
 																Fetch
 															</button>
 														</div>
+														<div _="on load if not navigator.clipboard hide me">
+                                                            <div class="divider">OR</div>
+                                                            <button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+                                                        </div>
 													</div>
 													<button
 														type="button"
