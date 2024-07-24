@@ -3,40 +3,38 @@ title: Recipya
 layout: hextra-home
 ---
 
-<div class="mt-6 mb-6">
+<div class="hx-mt-4 hx-mb-4">
 {{< hextra/hero-headline >}}
   Recipya
 {{< /hextra/hero-headline >}}
 </div>
 
-<div class="mb-12">
+<div class="hx-mb-6">
 {{< hextra/hero-subtitle >}}
   A clean, simple and powerful recipe manager your whole family can enjoy.
 {{< /hextra/hero-subtitle >}}
 </div>
 
-<div class="flex mb-6">
-{{< hextra/hero-button text="Get Started" link="/guide/docs" style="margin-right: 0.5rem" >}}
-{{< hextra/hero-button text="Open App" link="/guide/login" style="background-color:  rgb(139 92 246)">}}
+<div class="flex hx-mb-6">
+{{< hextra/hero-button text="Get Started" link="/guide/docs/" style="margin-right: 0.5rem" >}}
+{{< hextra/hero-button text="Open App" link="/guide/auth/login" style="background-color:  rgb(139 92 246)">}}
 </div>
-
-<div class="mt-6"></div>
 
 {{< hextra/feature-grid >}}
 {{< hextra/feature-card
     title="Curate Recipes"
     subtitle="Effortlessly import your favorite recipes from around the web, digitize paper recipes, and add recipes manually."
-    class="aspect-auto md:aspect-[1.1/1] max-md:min-h-[340px]"
+    class="hxaspect-auto md:hx-aspect-[1.1/1] max-md:hx-min-h-[340px]"
     image="/images/curate.webp"
-    imageClass="small w-[180%] left-[36px] sm:w-[110%] dark:opacity-80"
+    imageClass="small hx-w-[180%] hx-left-[36px] sm:hx-w-[110%] dark:hx-opacity-80"
     style="background: radial-gradient(ellipse at 50% 80%,rgba(194,97,254,0.15),hsla(0,0%,100%,0));"
     >}}
 {{< hextra/feature-card
     title="One Measurement System"
     subtitle="All your recipes can be converted to your preferred measurement system. Say goodbye to imperial or metric."
-    class="aspect-auto md:aspect-[1.1/1] max-lg:min-h-[340px]"
+    class="hx-aspect-auto md:hx-aspect-[1.1/1] max-lg:hx-min-h-[340px]"
     image="/images/view-recipe.webp"
-    imageClass="small w-[110%] sm:w-[110%] dark:opacity-80"
+    imageClass="small hx-w-[110%] sm:hx-w-[110%] dark:hx-opacity-80"
     icon="globe"
     style="background: radial-gradient(ellipse at 50% 80%,rgba(142,53,74,0.15),hsla(0,0%,100%,0));"
     >}}
@@ -44,9 +42,9 @@ layout: hextra-home
     title="Self-Hostable"
     subtitle="Easily self-host the software on your server with Docker."
     icon="desktop-computer"
-    class="aspect-auto md:aspect-[1.1/1] max-md:min-h-[340px]"
+    class="hx-aspect-auto md:hx-aspect-[1.1/1] max-md:hx-min-h-[340px]"
     image="/images/devices.svg"
-    imageClass="small w-[110%] sm:w-[110%] dark:opacity-80"
+    imageClass="small hx-w-[110%] sm:hx-w-[110%] dark:hx-opacity-80"
     style="background: radial-gradient(ellipse at 50% 80%,rgba(221,210,59,0.15),hsla(0,0%,100%,0));"
     >}}
 {{< hextra/feature-card

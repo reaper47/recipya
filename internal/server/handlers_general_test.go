@@ -85,7 +85,7 @@ func TestHandlers_General_Index(t *testing.T) {
 		assertStatus(t, rr.Code, http.StatusSeeOther)
 		got := getBodyHTML(rr)
 		want := []string{
-			`<a href="/guide">See Other</a>`,
+			`<a href="/guide/en">See Other</a>`,
 		}
 		assertStringsInHTML(t, got, want)
 		notWant := []string{
