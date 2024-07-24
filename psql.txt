@@ -1,5 +1,0 @@
-yay -S postgresql
-sudo su - postgres
-initdb -D '/var/lib/postgres/data'
-sudo systemctl start postgresql.service
-sudo systemctl enable postgresql.service
