@@ -4,61 +4,61 @@ weight: 1
 prev: /docs/installation/build
 ---
 
-This section targets an installation without Docker.
+Cette section cible une installation sans Docker.
 
-The portable and standalone release builds are available on the [releases page](https://github.com/reaper47/recipya/releases) on GitHub.
-The [nightly build](https://github.com/reaper47/recipya/releases/tag/nightly) is updated nightly if the main branch 
-has new commits.
+Les versions portables et autonomes sont disponibles sur la [page des versions](https://github.com/reaper47/recipya/releases) sur GitHub.
+La [version nocturne](https://github.com/reaper47/recipya/releases/tag/nightly) est mise à jour tous les soirs si la branche principale a de nouveaux commits.
 
-First, download the version of the software you wish to install compatible with your system, and extract the zip file. 
-Please consult the [supported platforms](/guide/docs/installation/system-requirements) table if you are unsure which file to download.
+Tout d’abord, téléchargez la version du logiciel que vous souhaitez installer compatible avec votre système et extrayez le fichier zip.
+Veuillez consulter le tableau des [plateformes prises en charge](/guide/fr/docs/installation/system-requirements) si vous ne savez pas quel fichier télécharger.
 
-Then, start the server by opening a command prompt in the folder, and run the following command.
-The application will perform a one-time setup if not already done.
+Ensuite, démarrez le serveur en ouvrant une invite de commande dans le dossier et exécutez la commande suivante.
+L'application effectuera une configuration de démarrage unique si ce n'est déjà fait.
 
 ```bash
-./recipya-{os}-{architecture} serve
+./recipya serve
 ```
 
-You can now access the website at the address specified.
+Vous pouvez désormais accéder au site Internet à l'adresse indiquée.
 
 ## Example
 
-Let's say you have a Windows 11 computer, and you want to install Recipya v1.0.0 on it.
+Supposons que vous ayez un ordinateur Windows 11 et que vous souhaitiez y installer Recipya v1.2.0.
 
 {{% steps %}}
 
-### Access
+### Accès
 
-You would first access the [releases page](https://github.com/reaper47/recipya/releases).
+Vous accéderez d'abord à la [page des versions](https://github.com/reaper47/recipya/releases).
 
-### Download
+### Télécharger
 
-Identify version `v1.0.0` and download `recipya-windows-amd64.zip` under the **Assets** section.
+Identifiez la version « v1.2.0 » et téléchargez « recipya-windows-amd64.zip » dans la section **Assets**.
 
-### Extract
+### Extraire
 
-Extract the zip file on your computer.
+Extrayez le fichier zip sur votre ordinateur.
 
-### Run
+### Exécuter
 
-Open a [command prompt](https://en.wikiversity.org/wiki/Command_Prompt/Open) and navigate to the folder you previously extracted.
+130 / 5,000
+Ouvrez une [invite de commande](https://en.wikiversity.org/wiki/Command_Prompt/Open) et accédez au dossier que vous avez précédemment extrait.
 
 ```text
 cd C:\path\to\recipya
 ```
 
-Then, run Recipya once your command prompt is in its folder.
+Ensuite, exécutez Recipya une fois que votre invite de commande est dans son dossier.
 
 ```text
 .\recipya serve
 ```
 
-### Enjoy
+### Profite bien
 
-Open your browser to the address specified in the text of the command prompt.
+Ouvrez votre navigateur à l'adresse spécifiée dans le texte de l'invite de commande.
 
-If you see the following output:
+Si vous voyez le résultat suivant:
 ```text
 OK FDC database
 OK Configuration file
@@ -71,6 +71,6 @@ File locations:
 2024/05/23 07:46:46 goose: no migrations to run. current version: 20240522133726
 ```
 
-Then you would access `http://127.0.0.1:8078`.
+Tout est beau et vous accéderez ensuite à « http://127.0.0.1:8078 ».
 
 {{% /steps %}}

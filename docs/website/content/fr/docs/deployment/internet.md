@@ -1,16 +1,16 @@
 ---
-title: Web Hosting
+title: Hébergement web
 weight: 2
 next: /docs/development
 ---
 
 ## Apache
 
-The [Apache HTTP Server](https://httpd.apache.org) is an open-source web server software that serves web content 
-over the internet. It's widely used due to its reliability, flexibility, and extensibility in supporting various 
-web technologies.
+Le [serveur HTTP Apache](https://httpd.apache.org) est un logiciel de serveur web open source qui set du contenu web sur l'internet.
+Il est largement utilisé en raison de sa fiabilité, de sa flexibilité et de son extensibilité dans la prise en charge de divers
+technologies du Web.
 
-The following block in the Apache configuration file is the minimum required for hosting Recipya over the network.
+Le bloc suivant montre le minimum requis dans le fichier de configuration d'Apache pour héberger Recipya sur le réseau.
 
 ```text
 <IfModule mod_ssl.c>
@@ -38,11 +38,10 @@ The following block in the Apache configuration file is the minimum required for
 
 ## Caddy
 
-[Caddy](https://caddyserver.com/) is a lightweight, extensible open-source web server that
-automatically obtains and renews TLS certificates for all your sites.
+[Caddy](https://caddyserver.com/) est un serveur web open source léger et extensible qui obtient et renouvelle automatiquement les certificats TLS pour tous vos sites.
 
-The following block in the Caddyfile is the minimum required for hosting Recipya over the network.
-If you are on Linux, please ensure that Recipya is running as a [service](/guide/docs/deployment/local-network/#linux).
+Le bloc suivant montre le minimum requis dans le fichier de configuration de Caddy, nommé Caddyfile, pour héberger Recipya sur le réseau.
+Si vous utilisez Linux, assurez-vous que Recipya s'exécute en tant que [service](/guide/docs/deployment/local-network/#linux).
 
 ```text
 $ sudo cat /etc/caddy/Caddyfile
@@ -61,10 +60,10 @@ domain.com {
 
 ## Nginx
 
-[Nginx](https://en.wikipedia.org/wiki/Nginx) is a powerful web server that can also be used as a reverse proxy, load balancer, mail proxy and HTTP cache.
-It is widely used for its high performance, efficiency in handling concurrent connections, and low resource consumption.
+[Nginx](https://en.wikipedia.org/wiki/Nginx) est un serveur web puissant qui peut également être utilisé comme proxy inverse, équilibreur de charge, proxy de messagerie et cache HTTP.
+Il est largement utilisé pour ses hautes performances, son efficacité dans la gestion des connexions simultanées et sa faible consommation de ressources.
 
-The following segment in the Nginx configuration file is the minimum required for hosting Recipya over the network.
+Le bloc suivant montre le minimum requis dans le fichier de configuration de Nginx pour héberger Recipya sur le réseau.
 
 ```text
 server {   

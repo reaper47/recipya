@@ -1,31 +1,32 @@
 ---
-title: Windows Users
+title: Utilisateurs Windows
 weight: 4
-next: /docs/deployment
+next: /docs/integrations
 ---
 
-Please follow these [instructions](/guide/docs/installation/build/) to install Recipya without Docker.
+Veuillez suivre ces [instructions](/guide/fr/docs/installation/build/) pour installer Recipya sans Docker.
 
-## Network-Wide Access
+## Accès à l'ensemble du réseau
 
-If you intend to access the website on other devices within your home network, please ensure that the program is permitted through the firewall. To verify:
+Si vous avez l'intention d'accéder au site Web sur d'autres appareils au sein de votre réseau domestique, veuillez vous assurer que le programme est autorisé via le pare-feu.
+Pour vérifier:
 
-1. Open the "Firewall & network protection setting"
-2. Click on "Allow an app through firewall"
-3. Scroll down to recipya*.exe
-4. Ensure private and public boxes are checked
-5. Apply the settings
-6. Find the IP address of your machine (Wi-Fi settings -> Click on the network you are connected to -> IPv4 address)
-7. On your other device, access http://[IPv4 address]:[port]
+1. Ouvrez le « Paramètre de protection pare-feu et réseau »
+2. Cliquez sur « Autoriser une application via le pare-feu »
+3. Défiler jusqu'à recipya*.exe
+4. Assurez-vous que les cases privées et publiques sont cochées
+5. Appliquez les paramètres
+6. Recherchez l'adresse IP de votre machine (Paramètres Wi-Fi -> Cliquez sur le réseau auquel vous êtes connecté -> Adresse IPv4)
+7. Sur votre autre appareil, accédez http://[adresse IPv4]:[port]
 
 ## Windows Defender
 
-If you executed the `recipya-windows-{arch}.exe` binary from the GitHub releases page and Windows Defender quarantined the 
-executable, then you should add the folder or file to the exclusion list. This happens because the builds are not signed yet.
+Si vous avez exécuté le binaire « recipya.exe » à partir de la page des versions de GitHub et que Windows Defender a mis l'exécutable 
+en quarantaine, vous devez alors ajouter le dossier ou le fichier à la liste d'exclusion. Cela se produit car les versions ne sont pas encore signées.
 
-1. Unzip a fresh instance of the build.
-2. Open Windows Security.
-3. Select `Virus & threat protection`.
-4. Click `Manage settings` under `Virus & threat protection settings`.
-5. Click `Add or remove exclusions` under `Exclusions`.
-6. Click the `Add an exclusion` button, select file, and select the executable.
+1. Décompressez une nouvelle instance de la build.
+2. Ouvrez la sécurité Windows.
+3. Sélectionnez « Protection contre les virus et les menaces ».
+4. Cliquez sur « Gérer les paramètres » sous « Paramètres de protection contre les virus et les menaces ».
+5. Cliquez sur « Ajouter ou supprimer des exclusions » sous « Exclusions ».
+6. Cliquez sur le bouton « Ajouter une exclusion », sélectionnez le fichier et sélectionnez l'exécutable.

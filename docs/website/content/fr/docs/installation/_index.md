@@ -5,28 +5,28 @@ next: /docs/installation/system-requirements
 prev: /docs/features/integrations
 ---
 
-Learn how install Recipya.
+Découvrez comment installer Recipya.
 
 {{< cards >}}
-    {{< card link="/guide/docs/installation/system-requirements/"
-            title="Prerequisites"
+    {{< card link="system-requirements/"
+            title="Prérequis"
             icon="newspaper"
-            subtitle="Discover what the system requirements are." >}}
-    {{< card link="/docs/installation/build/config-file/"
-            title="Configuration File"
-            subtitle="Explore the configuration file."
+            subtitle="Découvrez quelle est la configuration système requise." >}}
+    {{< card link="build/config-file/"
+            title="Fichier de configuration"
+            subtitle="Explorer le fichier de configuration."
             icon="newspaper" >}}
-    {{< card link="/guide/docs/installation/docker/"
+    {{< card link="docker/"
             title="Docker"
-            subtitle="Install the application with Docker."
+            subtitle="Installez l'application avec Docker."
             icon="newspaper" >}}
-    {{< card link="/guide/docs/installation/build/"
-            title="Release Build"
-            subtitle="Install a release build of the application."
+    {{< card link="build/"
+            title="Version release"
+            subtitle="Installez une version release de l'application."
             icon="newspaper" >}}
-    {{< card link="/guide/docs/installation/windows-users/"
-            title="Windows users"
-            subtitle="Important information for Windows users."
+    {{< card link="windows-users/"
+            title="Utilisateurs Windows"
+            subtitle="Informations importantes pour les utilisateurs Windows."
             icon="newspaper" >}}
 {{< /cards >}}
 

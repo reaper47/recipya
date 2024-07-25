@@ -3,22 +3,20 @@ title: Docker
 weight: 3
 ---
 
-A [stable](https://hub.docker.com/layers/reaper99/recipya/v1.1.0/images/sha256-fb1457919f132ebf6969f9c155d81bb60b0d6b0b1610bc692259b6b9c287479e?context=repo) Docker
-is produced on every release. An [unstable](https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo) one 
-is produced nightly whenever the `main` branch has new commits.
+Une image Docker [stable](https://hub.docker.com/layers/reaper99/recipya/v1.2.0/images/sha256-a32780f33d0c50388ebb955fb837f6ee9b1339987e3898a53ddd5b1f737c7f6e?context=repo) est produite à chaque version.
+Une image [instable](https://hub.docker.com/layers/reaper99/recipya/nightly/images/sha256-b2238a11a53982953df5bbcfd7796a19fa382abf75d316b62fa05ac1c867332c?context=repo) est produite le soir à chaque fois la branche `main` a de nouveaux commits.
 
-You can either install the application using [Docker](https://www.docker.com/) or
-[Docker Compose](https://docs.docker.com/compose/).
+Vous pouvez installer l'application à l'aide de [Docker](https://www.docker.com/) ou de [Docker Compose](https://docs.docker.com/compose/).
 
-## Using Docker
+## Utiliser Docker
 
-You first have to fetch it.
+Il faut d'abord tirer l'image.
 
 ```bash
 docker pull reaper99/recipya:nightly
 ```
 
-Then, run the image. The `-e` environment variables are described below.
+Ensuite, exécutez l'image. Les variables d'environnement `-e` sont décrites ci-dessous.
 
 ```bash
 docker run -d \
@@ -30,13 +28,13 @@ docker run -d \
   reaper99/recipya:nightly
 ```
 
-Recipya can be accessed from your host machine at [http://localhost:8085](http://localhost:8085).
+Recipya est accessible depuis votre machine hôte à l'adresse [http://localhost:8085](http://localhost:8085).
 
-### Updating your container
+### Mettre à jour votre conteneur
 
-Run the command below for a quick update with Watchtower. 
+Exécutez la commande ci-dessous pour une mise à jour rapide avec Watchtower.
 
-Remember to replace `recipya` with your actual container name if it differs and to [back up your volume data](#back-up-a-volume).
+N'oubliez pas de remplacer `recipya` par le nom réel de votre conteneur s'il diffère et de [sauvegarder les données de votre volume](#sauvegarder-un-volume).
 
 ```bash
 docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once recipya
@@ -44,7 +42,7 @@ docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/wa
 
 ### Synology NAS
 
-The following Docker command should be used if you use Synology.
+La commande Docker suivante devrait être utilisée si vous utilisez Synology.
 
 ```bash
 docker run -d \
@@ -56,85 +54,83 @@ docker run -d \
   reaper99/recipya:nightly
 ```
 
-## Using Docker Compose
+## Utiliser Docker Composer
 
-You can use Docker Compose to run the container. First, download the [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml) file. 
-Modify the `environment` and `ports` sections. The environment variables are described below. Then, start the application.
+Vous pouvez utiliser Docker Compose pour exécuter le conteneur. Tout d'abord, téléchargez le fichier [compose.yaml](https://github.com/reaper47/recipya/blob/main/deploy/compose.yaml).
+Modifier les sections `environment` et `ports`. Les variables d'environnement sont décrites ci-dessous. Ensuite, démarrez l'application.
 
 ```bash
 docker-compose up -d
 ```
 
-Access the app through your browser at `http://localhost:[host port]`.
+Accédez à l'application via votre navigateur à l'adresse `http://localhost:[host port]`.
 
-If you are using Windows and you intend to access the app on other devices within your home network, please ensure to 
-`Allow the connection` of the `Docker Desktop Backend` inbound Windows Defender Firewall rule.
+Si vous utilisez Windows et que vous avez l'intention d'accéder à l'application sur d'autres appareils de votre réseau domestique, 
+assurez-vous d'« Autoriser la connexion » de la règle de pare-feu Windows Defender entrant « Docker Desktop Backend ».
 
-### Updating your container
+### Mettre à jour votre conteneur
 
-Follow these steps to update Recipya. Remember to [back up your volume data](#back-up-a-volume) in case something goes south.
+Suivez ces étapes pour mettre à jour Recipya. N'oubliez pas de [sauvegarder vos données de volume](#sauvegarder-un-volume) au cas où quelque chose tournerait mal.
 
-1. Pull the latest image 
+1. Tirez la dernière image
 ```bash
 docker compose pull
 ```
-2. Recreate the container with the latest image
+2. Recréez le conteneur avec la dernière image
 ```bash
 docker compose up -d
 ```
 
-## Environment Variables
+## Variables d'environnement
 
-| Variable                    | Description                                                                                                                                                                                                                                  |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| RECIPYA_DI_ENDPOINT         | The **Endpoint** variable displayed in the *Keys and endpoint* tab of your [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence) resource in the Azure Portal.<br>Default: `""`. |
-| RECIPYA_DI_KEY              | The **KEY 1** variable displayed in the *Keys and endpoint* tab of your *Document Intelligence* resource in the [Azure Portal](https://portal.azure.com/#home).<br>Default: `""`.                                                            |
-| RECIPYA_EMAIL               | The email address of your [SendGrid](https://sendgrid.com/) account.<br>Default: `""`.                                                                                                                                                       |
-| RECIPYA_EMAIL_SENDGRID      | Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs.<br>Default: `""`.                                                                                                    |
-| RECIPYA_SERVER_AUTOLOGIN    | Whether to login automatically into the application. Can be `true` or `false`.<br>Default: `false`.                                                                                                                                          |
-| RECIPYA_SERVER_BYPASS_GUIDE | Whether to go straight to the login page when anonymous. Can be `true` or `false`.<br>Default: `false`.                                                                                                                                      |
-| RECIPYA_SERVER_IS_DEMO      | Whether the app is a demo version. Can be `true` or `false`.<br>Default: `false`.                                                                                                                                                            |
-| RECIPYA_SERVER_IS_PROD      | Whether the app is in production. Can be `true` or `false`.<br>Default: `false`.                                                                                                                                                             |
-| RECIPYA_SERVER_NO_SIGNUPS   | Whether to disable user account registrations. Set to `true` when you don't want people to create accounts.<br>Default: `false`.                                                                                                             |
-| RECIPYA_SERVER_PORT         | The port the app will be served through if localhost.<br>**Is required**.                                                                                                                                                                    |
-| RECIPYA_SERVER_URL          | The website the app is served on. This URL will serve as the base link in the emails.<br>Default: `http://0.0.0.0`.                                                                                                                          |
+| Variable                    | Description                                                                                                                                                                                                                                                         |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| RECIPYA_DI_ENDPOINT         | La variable **Endpoint** affichée dans l'onglet *Clés et point de terminaison* de votre [Azure AI Intelligence documentaire](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence) ressource dans le portail Azure.<br>Par défaut: `""`. |
+| RECIPYA_DI_KEY              | La variable **KEY 1** affichée dans l'onglet *Clés et point de terminaison* de votre ressource *Document Intelligence* dans le [portail Azure](https://portal.azure.com/#home).<br>Par défaut: `""`.                                                                |
+| RECIPYA_EMAIL               | L'adresse e-mail de votre compte [SendGrid](https://sendgrid.com/).<br>Par défaut: `""`.                                                                                                                                                                            |
+| RECIPYA_EMAIL_SENDGRID      | Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs.<br>Default: `""`.                                                                                                                           |
+| RECIPYA_SERVER_AUTOLOGIN    | Si vous souhaitez vous connecter automatiquement à l'application. Peut être `true` ou `false`.<br>Par défaut: `false`.                                                                                                                                              |
+| RECIPYA_SERVER_BYPASS_GUIDE | S'il faut accéder directement à la page de connexion en cas d'anonymat. Peut être `true` ou `false`.<br>Par défaut: `false`.                                                                                                                                        |
+| RECIPYA_SERVER_IS_DEMO      | Si l'application est une version de démonstration. Peut être `true` ou `false`.<br>Par défaut: `false`.                                                                                                                                                             |
+| RECIPYA_SERVER_IS_PROD      | Si l'application est en production. Peut être `true` ou `false`.<br>Par défaut : `false`.                                                                                                                                                                           |
+| RECIPYA_SERVER_NO_SIGNUPS   | S'il faut désactiver les enregistrements de comptes utilisateur. Défini sur « true » lorsque vous ne souhaitez pas que les gens créent des comptes.<br>Par défaut: « false ».                                                                                       |
+| RECIPYA_SERVER_PORT         | Le port via lequel l'application sera servie si localhost.<br>**Est requis**.                                                                                                                                                                                       |
+| RECIPYA_SERVER_URL          | Le site Web sur lequel l'application est diffusée. Cette URL servira de lien de base dans les e-mails.<br>Par défaut: `http://0.0.0.0`.                                                                                                                             |
 
-## Back up a Volume
+## Sauvegarder un volume
 
-It is of vital importance to back up your volume data before updating the software in case something goes south, and 
-you lose your database.
+Il est d'une importance vitale de sauvegarder vos données de volume avant de mettre à jour le logiciel au cas où quelque chose tournerait mal et que vous perdriez votre base de données.
 
 ### Docker Desktop
 
-If you use Docker Desktop, then 
-1. Select the `Volumes` tab to the left
-2. Identify the `recipya-data` volume
-3. Click the `Export` action button
-4. Select `Local file`, select the target directory and click `Export`
+Si vous utilisez Docker Desktop, alors
+1. Sélectionnez l'onglet « Volumes » à gauche
+2. Identifiez le volume «recipya-data»
+3. Cliquez sur le bouton d'action « Exporter »
+4. Sélectionnez « Fichier local », sélectionnez le répertoire cible et cliquez sur « Exporter ».
 
-### Terminal
+### Terminale
 
-Otherwise, run to following command:
+Sinon, exécutez la commande suivante:
 ```bash
 docker run --rm --volumes-from recipya -v $(pwd):/backup ubuntu tar cvf /backup/recipya-volume-backup.tar /root/.config/Recipya
 ```
 
-## Restore Volume from Backup
+## Restaurer le volume à partir d'une sauvegarde
 
-Let's say you updated the Docker image and as a result lost your data. Thanks to you having an external backup, the day
-will be saved. 
+Supposons que vous ayez mis à jour l'image Docker et que vous ayez par conséquent perdu vos données. Grâce à une sauvegarde externe, la journée sera sauvée.
 
 ### Docker Desktop
 
-Follow these steps to restore your data using Docker desktop:
-1. Select the `Volumes` tab to the left
-2. Identify the `recipya-data` volume
-3. Click the `Import` action button
-4. Select the backed up volume and click `Import`
+Suivez ces étapes pour restaurer vos données à l'aide de Docker desktop:
+1. Sélectionnez l'onglet « Volumes » à gauche
+2. Identifiez le volume «recipya-data»
+3. Cliquez sur le bouton d'action « Importer »
+4. Sélectionnez le volume sauvegardé et cliquez sur « Importer »
 
-### Terminal
+### Terminale
 
-Otherwise, run the following command:
+Sinon, exécutez la commande suivante :
 
 ```bash
 docker run --rm --volumes-from recipya -v $(pwd):/backup ubuntu bash -c "cd /root && tar xvf /backup/recipya-volume-backup.tar --strip 1"

@@ -16,7 +16,7 @@ layout: hextra-home
 </div>
 
 <div class="flex hx-mb-6">
-{{< hextra/hero-button text="Commencer" link="/guide/docs/" style="margin-right: 0.5rem" >}}
+{{< hextra/hero-button text="Commencer" link="docs" style="margin-right: 0.5rem" >}}
 {{< hextra/hero-button text="Ouvrir l'application" link="/guide/auth/login" style="background-color:  rgb(139 92 246)">}}
 </div>
 
@@ -70,7 +70,7 @@ layout: hextra-home
 {{< hextra/feature-card
     title="Adaptif"
     icon="device-mobile"
-    subtitle="L'apllication a une bonne allure sur différentes tailles d'écran."
+    subtitle="L'application a une bonne allure sur différentes tailles d'écran."
     >}}
 {{< hextra/feature-card
     title="Compilation croisée"

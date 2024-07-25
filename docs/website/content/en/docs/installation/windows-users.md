@@ -1,7 +1,7 @@
 ---
 title: Windows Users
 weight: 4
-next: /docs/deployment
+next: /docs/integrations
 ---
 
 Please follow these [instructions](/guide/docs/installation/build/) to install Recipya without Docker.
@@ -20,7 +20,7 @@ If you intend to access the website on other devices within your home network, p
 
 ## Windows Defender
 
-If you executed the `recipya-windows-{arch}.exe` binary from the GitHub releases page and Windows Defender quarantined the 
+If you executed the `recipya.exe` binary from the GitHub releases page and Windows Defender quarantined the 
 executable, then you should add the folder or file to the exclusion list. This happens because the builds are not signed yet.
 
 1. Unzip a fresh instance of the build.

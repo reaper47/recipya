@@ -1,19 +1,19 @@
 ---
-title: "Deployment"
+title: Déploiement
 weight: 3
 next: /docs/deployment/local-network
 prev: /docs/installation/windows-users
 ---
 
-Learn how to deploy Recipya to the whole world. The application can be self-hosted.
+Apprenez comment déployer Recipya pour le monde entier. L'application est auto-hébergeable.
 
 {{< cards >}}
-{{< card link="/guide/docs/deployment/local-network/"
-         title="Local Network"
+{{< card link="local-network/"
+         title="Réseau local"
          icon="newspaper"
-         subtitle="The project can be self-hosted network-wide over your local network for access from devices other than the computer you installed the application on." >}}
-{{< card link="/guide/docs/deployment/internet/"
-         title="Web Hosting"
-         subtitle="This subsection will be written once I host Recipya somewhere."
+         subtitle="Le projet peut être auto-hébergé sur l'ensemble de votre réseau local pour y accéder à partir d'appareils autres que l'ordinateur sur lequel vous l'avez installé." >}}
+{{< card link="internet"
+         title="Hébergement Web"
+         subtitle="Apprenez comment configurer votre serveur pour déployer le logiciel."
          icon="newspaper" >}}
 {{< /cards >}}

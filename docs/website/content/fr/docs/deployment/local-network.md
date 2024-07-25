@@ -1,27 +1,27 @@
 ---
-title: Local Network
+title: Réseau local
 weight: 1
 prev: /docs/installation/windows-users
 ---
 
-The project can be self-hosted network-wide over your local network for access from devices other than the computer
-you installed the application on.
+Le projet est auto-hébergeable sur l'ensemble de votre réseau local pour y accéder à partir d'appareils autres que
+l'ordinateur sur lequel vous l'avez installé.
 
 ## Docker
 
-After [installing the Docker](/guide/docs/installation/docker) image, you can access the site network wide at http://<host computer IP>:[<port>](/guide/docs/installation/build/config-file/].
+Après avoir [installé l'image Docker](/guide/docs/installation/docker), vous pouvez accéder à l'ensemble du réseau du site à l'adresse http://<host computer IP>:[<port>](/guide/docs/installation/build/config-file/].
 
 ## Release Build
 
 ### Linux
 
-Create a service to run the app automatically on boot.
+Créez un service pour exécuter l'application automatiquement au démarrage.
 
 ```bash
 sudo nano /etc/systemd/system/recipya.service 
 ```
 
-Copy the following content to the newly-created file.
+Copiez le contenu suivant dans le fichier nouvellement créé.
 
 ```bash
 [Unit]
@@ -36,15 +36,15 @@ Environment=HOME=/root
 WantedBy=multi-user.target
 ```
 
-Start the service on boot.
+Démarrez le service au démarrage.
 
 ```bash
 sudo systemctl start recipya.service
 sudo systemctl enable recipya.service
 ```
 
-You can now access the application on your local network at http://<host computer IP>:[<port>](/docs/installation/build/config-file)].
+Vous pouvez désormais accéder l'application sur votre réseau local à l'adresse http://<host computer IP>:[<port>](/docs/installation/build/config-file)].
 
 ### Windows
 
-The feasibility on Windows remains to be explored.
+La faisabilité sur Windows reste à explorer.

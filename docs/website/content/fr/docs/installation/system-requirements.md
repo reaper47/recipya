@@ -1,49 +1,48 @@
 ---
-title: Prerequisites
+title: Prérequis
 weight: 1
 next: /docs/installation/build/
 prev: /docs/installation/
 ---
 
-## System Requirements
+## Configuration requise
 
-The following table lists the supported platforms and devices.
+Le tableau suivant répertorie les plateformes et appareils pris en charge.
 
-| Platform      | Explanation                                  | Device Examples                                         |
-|---------------|----------------------------------------------|---------------------------------------------------------|
-| darwin/amd64  | macOS on 64-bit Intel (x86-64) architecture  | Apple MacBook, iMac, Mac Mini, Mac Pro                  |
-| darwin/arm64  | macOS on ARM64 architecture                  | MacBook Air (M1), MacBook Pro (M1), Mac Mini (M1)       |
-| linux/amd64   | Linux on 64-bit x86 architecture (x86-64)    | Desktops, laptops, servers, cloud instances             |
-| linux/arm64   | Linux on ARMv8 64-bit architecture           | Raspberry Pi 3rd/4th gen, modern smartphones            |
-| windows/amd64 | Windows on 64-bit x86 architecture           | Modern Windows PCs, servers, virtual machines           |
-| windows/arm64 | Windows on ARM64 architecture                | Microsoft Surface Pro X, ARM-based Windows devices      |
+| Plateforme    | Explication                                   | Exemples d'appareils                                                    |
+|---------------|-----------------------------------------------|-------------------------------------------------------------------------|
+| darwin/amd64  | macOS sur architecture Intel 64 bits (x86-64) | Apple MacBook, iMac, Mac Mini, Mac Pro                                  |
+| darwin/arm64  | macOS sur architecture ARM64                  | MacBook Air (M1), MacBook Pro (M1), Mac Mini (M1)                       |
+| linux/amd64   | Linux sur architecture x86 64 bits (x86-64)   | Ordinateurs de bureau, ordinateurs portables, serveurs, instances cloud |
+| linux/arm64   | Linux sur architecture ARMv8 64 bits          | Raspberry Pi 3e/4e génération, smartphones modernes                     |
+| windows/amd64 | Windows sur architecture x86 64 bits          | PC, serveurs et machines virtuelles Windows modernes                    |
+| windows/arm64 | Windows sur architecture ARM64                | Microsoft Surface Pro X, appareils Windows basés sur ARM                |
 
-In addition, you must have at least 300 MB of free space.
+De plus, vous devez disposer d'au moins 300 Mo d'espace libre.
 
-## Browser Compatibility
+## Compatibilité du navigateur
 
-| Browser  | Version |     Compatibility      |
-|----------|:-------:|:----------------------:|
-| Brave    |   37+   |  {{< icon "check" >}}  |
-| Chrome   |  114+   |  {{< icon "check" >}}  |
-| Edge     |  114+   |  {{< icon "check" >}}  |
-| Firefox  |  125+   |  {{< icon "check" >}}  |
-| IE       |   N/A   |    {{< icon "x" >}}    |
-| Opera    |  100+   |  {{< icon "check" >}}  |
-| Safari   |   17+   |  {{< icon "check" >}}  |
-| Vanadium |  114+   |  {{< icon "check" >}}  |
+| Navigateur | Version |     Compatibilité      |
+|------------|:-------:|:----------------------:|
+| Brave      |   37+   |  {{< icon "check" >}}  |
+| Chrome     |  114+   |  {{< icon "check" >}}  |
+| Edge       |  114+   |  {{< icon "check" >}}  |
+| Firefox    |  125+   |  {{< icon "check" >}}  |
+| IE         |   N/A   |    {{< icon "x" >}}    |
+| Opera      |  100+   |  {{< icon "check" >}}  |
+| Safari     |   17+   |  {{< icon "check" >}}  |
+| Vanadium   |  114+   |  {{< icon "check" >}}  |
 
-## Dependencies
+## Dépendances logicielles
 
-| Software | Version |       Optional       |
+| Logiciel | Version |      Facultatif      |
 |----------|:-------:|:--------------------:|
 | FFmpeg   |   7+    | {{< icon "check" >}} |
 
 ### FFmpeg
 
-[FFmpeg](https://en.wikipedia.org/wiki/FFmpeg) is used to convert video files to the [WebM](https://en.wikipedia.org/wiki/WebM) 
-audiovisual media file format. It is included in the Docker image. Otherwise, it will be automatically installed if you use Windows.
-If you use macOS or Linux, then you should install it manually.
+[FFmpeg](https://en.wikipedia.org/wiki/FFmpeg) est utilisé pour convertir des fichiers vidéo au format de fichier multimédia audiovisuel [WebM](https://en.wikipedia.org/wiki/WebM).
+Il est inclus dans l'image Docker. Sinon, il sera automatiquement installé si vous utilisez Windows.
+Si vous utilisez macOS ou Linux, vous devez l'installer manuellement.
 
-The video feature will be disabled if FFmpeg is not installed. You do not need this software if you do not intend to attach
-videos to recipes. 
+La fonction vidéo sera désactivée si FFmpeg n'est pas installé. Vous n'avez pas besoin de ce logiciel si vous n'avez pas l'intention d'ajouter des vidéos aux recettes.

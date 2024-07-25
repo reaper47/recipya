@@ -17,14 +17,14 @@ Then, start the server by opening a command prompt in the folder, and run the fo
 The application will perform a one-time setup if not already done.
 
 ```bash
-./recipya-{os}-{architecture} serve
+./recipya serve
 ```
 
 You can now access the website at the address specified.
 
 ## Example
 
-Let's say you have a Windows 11 computer, and you want to install Recipya v1.0.0 on it.
+Let's say you have a Windows 11 computer, and you want to install Recipya v1.2.0 on it.
 
 {{% steps %}}
 
@@ -34,7 +34,7 @@ You would first access the [releases page](https://github.com/reaper47/recipya/r
 
 ### Download
 
-Identify version `v1.0.0` and download `recipya-windows-amd64.zip` under the **Assets** section.
+Identify version `v1.2.0` and download `recipya-windows-amd64.zip` under the **Assets** section.
 
 ### Extract
 

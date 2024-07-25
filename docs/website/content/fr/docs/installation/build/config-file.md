@@ -4,33 +4,24 @@ weight: 2
 next: /docs/installation/docker
 ---
 
-The [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json)
-sets important variables for the application. Let's go over each of them. 
+Le [fichier de configuration](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) définit des variables importantes pour l'application. 
+Examinons chacun d'eux.
 
 {{< callout type="info" >}}
-The admin may change most of these options from the settings.
+L'administrateur peut modifier la plupart de ces options à partir des paramètres.
 {{< /callout >}}
 
 - **email**
-  - **from**: The email address of your [SendGrid](https://sendgrid.com/) account. Default: `""`.
-  - **sendGridAPIKey**: Your [SendGrid](https://app.sendgrid.com/settings/api_keys) API key. The free tier should be sufficient for your needs. Default: `""`.
+  - **from**: L'adresse e-mail de votre compte [SendGrid](https://sendgrid.com/). Défaut: `""`.
+  - **sendGridAPIKey**: Votre clé API [SendGrid](https://app.sendgrid.com/settings/api_keys). Le niveau gratuit devrait être suffisant pour vos besoins. Défaut: `""`.
 - **integrations**
   - **azureDocumentIntelligence**
-    - **key**: The *KEY 1* variable displayed in the *Keys and endpoint* tab of your [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence) resource in the [Azure Portal](https://portal.azure.com/#home). Default: `""`.
-    - **endpoint**: The *Endpoint* variable displayed in the *Keys and endpoint* tab of your *Document Intelligence* resource in the Azure Portal. Default: `""`.
+    - **key**: La variable *CLÉ 1* affiché dans l'onglet *Clés et point de terminaison* de votre ressource [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence) dans le [portail Azure](https://portal.azure.com/#home). Défaut:      `""`.
+    - **endpoint**: La variable *Endpoint* affichée dans l'onglet *Clés et point de terminaison* de votre ressource *Document Intelligence* dans le portail Azure. Défaut: `""`.
 - **server** 
-  - **autologin**: Whether to login automatically into the application. Useful when you don't need user accounts. Can be `true` or `false`. Default: `false`.
-  - **isDemo**: Whether the app is a demo version. Can be `true` or `false`. Default: `false`.
-  - **isProduction**: Whether the app is in production. Can be `true` or `false`. Default: `false`.
-  - **noSignups**: Whether to disable user account registrations. Set to `true` when you don't want people to create accounts. Default: `false`.
-  - **port**: The port the app will be served through if localhost. __Is required__.
-  - **url**: The website the app is served on. This URL will serve as the base link in the emails. Default: `http://0.0.0.0`.
-
-### Deprecations
-
-The following table lists deprecated environment variables in v1.2.0. They will be removed in v1.3.0.
-
-| Variable                                            | Reason                                                                                                                                                                                                                                                     |
-|-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **integrations.azureComputerVision.resourceKey**    | Replaced the use of [Azure AI Vision](https://azure.microsoft.com/en-us/products/ai-services/ai-vision) to digitize recipes in favor of [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence). |
-| **integrations.azureComputerVision.visionEndpoint** | Same as above.                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                      |
+  - **autologin**: S'il faut se connecter automatiquement à l'application. Utile lorsque vous n'avez pas besoin de comptes d'utilisateurs. Peut être `true` ou `false`. Défault: `false`.
+  - **isDemo**: Si l’application est une version démo. Peut être `true` ou `false`. Défault: `false`.
+  - **isProduction**: Si l'application est en production. Peut être `true` ou `false`. Défault: `false`.
+  - **noSignups**: S'il faut désactiver les enregistrements de comptes utilisateur. Définissez sur `true` lorsque vous ne souhaitez pas que les gens créent des comptes. Défault: `false`.
+  - **port**: Le port via lequel l'application sera servie s'il est localhost. __Est requis__.
+  - **url**: Le site web sur lequel l'application est diffusée. Cette URL servira de lien de base dans les e-mails. Défault: `http://0.0.0.0`.

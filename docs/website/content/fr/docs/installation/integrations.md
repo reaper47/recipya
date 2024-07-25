@@ -1,49 +1,48 @@
 ---
-title: Integrations
+title: Intégrations
 weight: 5
 ---
 
-Recipya uses the following third-party services to enhance the product.
+Recipya utilise les services tiers suivants pour améliorer l'expérience du produit.
 
 ## SendGrid
 
-[SendGrid](https://sendgrid.com) provides a cloud-based service that assists businesses with email delivery.
-They offer a [free plan](https://sendgrid.com/en-us/pricing) that allows you to send up to 100 emails per day.
+[SendGrid](https://sendgrid.com) fournit un service cloud qui aide les entreprises à envoyer des e-mails.
+Ils offrent un [forfait gratuit](https://sendgrid.com/en-us/pricing) qui vous permet d'envoyer jusqu'à 100 e-mails par jour.
 
-Within Recipya, the email module is used for the following events:
-- Send a confirmation email to a user who registered.
-- Send a forgot password email
+Au sein de Recipya, le module email est utilisé pour les événements suivants :
+- Envoyer un email de confirmation à un utilisateur inscrit.
+- Envoyer un e-mail de mot de passe oublié
 
-If none of these reasons persuade you to use this service, then leave the `email.from` and `email.sendGridAPIKey` fields
-in the [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) empty. No emails
-will then be sent.
+Si aucune de ces raisons ne vous persuade d'utiliser ce service, laissez les champs `email.from` et `email.sendGridAPIKey` dans le 
+[fichier de configuration](https://github.com/reaper47/recipya/blob/main/) déployer/config.example.json) vide. Aucun email ne sera alors envoyé.
 
-## Azure AI Document Intelligence
+## Azure AI Intelligence documentaire
 
-[Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-vision) is an AI service that
-applies advanced machine learning to extract text, key-value pairs, tables, and structures from documents automatically 
-and accurately. Microsoft offers a [free plan](https://azure.microsoft.com/en-us/pricing/details/ai-document-intelligence/)
-(F0) that allows you to perform up to 500 free transactions per month.
+[Azure AI Intelligence documentaire](https://azure.microsoft.com/en-us/products/ai-services/ai-vision) est un service d'intelligence 
+artificielle qui applique l'apprentissage automatique avancé pour extraire automatiquement et avec précision du texte, des paires clé-valeur, 
+des tableaux et des structures à partir de documents. Microsoft offre un [plan gratuit](https://azure.microsoft.com/en-us/pricing/details/ai-document-intelligence/)
+(F0) qui vous permet d'effectuer jusqu'à 500 transactions gratuites par mois.
 
-Within Recipya, this service is used to [digitize recipes](/guide/docs/features/recipes/add#scan).
+Au sein de Recipya, ce service est utilisé pour [numériser des recettes](/guide/fr/docs/features/recipes/add#scan).
 
-If you do not plan on digitizing recipes, then leave the `integrations.azureDocumentIntelligence.key` and
-`integrations.azureDocumentIntelligence.endpoint` fields in the [configuration file](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json)
-empty. Leave the `RECIPYA_DI_ENDPOINT` and `RECIPYA_DI_KEY` environment variables empty if you use Docker. 
-This feature will then be disabled.
+Si vous ne prévoyez pas de numériser des recettes, laissez les champs `integrations.azureDocumentIntelligence.key` et `integrations.azureDocumentIntelligence.endpoint`
+dans le [fichier de configuration](https://github.com/reaper47/recipya/blob/main/deploy/config.example.json) vide.
+Laissez les variables d'environnement `RECIPYA_DI_ENDPOINT` et `RECIPYA_DI_KEY` vides si vous utilisez Docker.
+Cette fonctionnalité sera alors désactivée.
 
-Follow these steps to use this integration.
-1. Get an Azure subscription. You can [create one for free](https://azure.microsoft.com/free/cognitive-services/).
-2. Add a [Document Intelligence instance](https://portal.azure.com/#create/Microsoft.CognitiveServicesFormRecognizer) in the Azure portal. You can use the free pricing tier (F0) to try the service.
-3. Under __Instance details__, select __Region__ _East US_, _West US2_ or _West Europe_. Other regions are incompatible with this resource.
-4. After your resource deploys, select *Keys and Endpoint* under *Resource Management* in the sidebar.
+Suivez ces étapes pour utiliser cette intégration:
+1. Obtenez un abonnement Azure. Vous pouvez [en créer un gratuitement](https://azure.microsoft.com/free/cognitive-services/).
+2. Ajoutez une [instance Intelligence documentaire](https://portal.azure.com/#create/Microsoft.CognitiveServicesFormRecognizer) dans le portail Azure. Vous pouvez utiliser le niveau tarifaire gratuit (F0) pour essayer le service.
+3. Sous **Détails de l'instance**, sélectionnez **Région** _East US_, _West US2_ ou _West Europe_. Les autres régions sont incompatibles avec cette ressource.
+4. Une fois votre ressource déployée, sélectionnez *Clés et point de terminaison* sous *Gestion des ressources* dans la barre de navigation.
    ![alt text](https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/media/containers/keys-and-endpoint.png?view=doc-intel-3.1.0)
-5. Copy *KEY 1* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.key** field or `RECIPYA_DI_KEY` environment variable if you use Docker.
-6. Copy *Endpoint* to the respective field in Recipya's setting. Alternatively, you may copy it to your configuration file's **integrations.azureDocumentIntelligence.endpoint** field or `RECIPYA_DI_ENDPOINT` environment variable if you use Docker.
-7. Restart Recipya and test the *Azure AI Document Intelligence* connection from the settings.
+5. Copiez *KEY 1* dans le champ correspondant dans les paramètres de Recipya. Vous pouvez également le copier dans le champ **integrations.azureDocumentIntelligence.key** de votre fichier de configuration ou dans la variable d'environnement `RECIPYA_DI_KEY` si vous utilisez Docker.
+6. Copiez *Endpoint* dans le champ correspondant dans les paramètres de Recipya. Vous pouvez également le copier dans le champ **integrations.azureDocumentIntelligence.endpoint** de votre fichier de configuration ou dans la variable d'environnement `RECIPYA_DI_ENDPOINT` si vous utilisez Docker.
+7. Redémarrez Recipya et testez la connexion *Azure AI Document Intelligence* à partir des paramètres.
 
 ### Limitations
 
-- For PDF and TIFF, up to 2000 pages can be processed (with a free tier subscription, only the first two pages are processed).
-- The file size for analyzing documents is 500 MB for paid (S0) tier and 4 MB for free (F0) tier.
-- If your PDFs are password-locked, you must remove the lock before submission.
+- Pour les PDF et TIFF, jusqu'à 2000 pages peuvent être traitées (avec un abonnement gratuit, seules les deux premières pages sont traitées).
+- La taille du fichier pour l'analyse des documents est de 500 Mo pour le niveau payant (S0) et de 4 Mo pour le niveau gratuit (F0).
+- Si vos fichiers PDF sont verrouillés par mot de passe, vous devez supprimer le verrou avant de les soumettre.

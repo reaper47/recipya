@@ -5,19 +5,19 @@ weight: 1
 next: /docs/getting-started
 ---
 
-Recipya is a clean recipe manager web application for unforgettable family recipes, empowering you to curate and
-share your favorite recipes. It is focussed on simplicity for the whole family to enjoy.
+Recipya est une application web propre pour la gestion de vos recettes familiales inoubliables, vous permettant de gérer et
+partagez vos recettes préférées. Il est axé sur la simplicité pour que toute la famille puisse en profiter.
 
 ## Features
 
-- [Manage your favorite recipes](/guide/docs/features/recipes)
-- [Import recipes from around the web](/guide/docs/features/recipes/add#website)
-- [Digitize paper recipes](/guide/docs/features/recipes/add#scan)
-- [Organize your recipes into cookbooks](/guide/docs/features/cookbooks)
-- [Easily migrate your recipes from Mealie, Tandoor and Nextcloud Cookbook](/guide/docs/features/integrations)
-- [Automatic conversion to your preferred measurement system](/guide/docs/features/measurement-systems) (imperial/metric)
-- [Calculate nutritional information automatically](/guide/docs/features/nutrition-facts)
-- [Print any recipe in your collection](/guide/docs/features/recipes/print)
-- [Prevent your device from going to sleep while viewing a recipe](/guide/docs/features/recipes/wakelock)
-- Follows your system's theme (light/dark)
-- Cross-compiled for Windows, Linux, and macOS
+- [Gérez vos recettes préférées](features/recipes)
+- [Importez des recettes de partout sur le web](features/recipes/add#website)
+- [Numérisez les recettes papier](features/recipes/add#scan)
+- [Organisez vos recettes dans des livres de cuisine](features/cookbooks)
+- [Migrez facilement vos recettes depuis Mealie, Tandoor et Nextcloud Cookbook](features/integrations)
+- [Conversion automatique vers votre système de mesure préféré](features/measurement-systems) (imperial/metric)
+- [Calculer automatiquement les informations nutritionnelles](features/nutrition-facts)
+- [Imprimez n'importe quelle recette de votre collection](features/recipes/print)
+- [Empêchez votre appareil de se mettre en veille pendant l'affichage d'une recette](features/recipes/wakelock)
+- Suit le thème de votre système (light/dark)
+- Compilation croisée pour Windows, Linux, and macOS
