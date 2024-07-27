@@ -1,11 +1,11 @@
 ---
-title: Credits
+title: Crédits
 weight: 5
 ---
 
 ## Core
 
-- [Marc-André Charland](https://github.com/reaper47) - Project owner and lead developer
+- [Marc-André Charland](https://github.com/reaper47) - Propriétaire du projet et développeur principal
 
 ## Contributors
 

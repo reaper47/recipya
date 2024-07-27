@@ -1,92 +1,88 @@
 ---
-title: Community Guide
+title: Guide communautaire
 weight: 2
 ---
 
-Welcome to the project's community guide! 
+Bienvenue dans le guide communautaire du projet !
 
-## Support Channels
+## Canaux de support
 
-- [Matrix space](https://app.element.io/#/room/#recipya:matrix.org)
+- [Espace Matrix](https://app.element.io/#/room/#recipya:matrix.org)
 - [GitHub Issues](https://github.com/reaper47/recipya/issues)
 - [GitHub Discussions](https://github.com/reaper47/recipya/discussions)
 
-## Ways of Contributing
+## Façons de contribuer
 
-Recipya stands as a collaborative open-source endeavor. We welcome anyone who wants to help
-us make this recipes manager the best it can be! Your input and contributions are vital as we work towards creating
-an amazing recipe management solution. Not knowing how to code is not a requirement to contribute!
+Recipya est un projet open source collaboratif. Nous accueillons tous ceux qui souhaitent nous aider à faire de ce gestionnaire de
+recettes le meilleur possible ! Votre contribution et vos contributions sont essentielles alors que nous travaillons à la création
+une solution étonnante de gestion de recettes. Ne pas savoir coder n'est pas une condition pour contribuer !
 
-The following subsections elaborate on the different ways you can contribute.
+Les sous-sections suivantes détaillent les différentes manières dont vous pouvez contribuer.
 
-### Feature Development
+### Développement de fonctionnalités
 
-Please feel free to work on features that are [unassigned](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement+no%3Aassignee).
-I also encourage you to open a [feature request](https://github.com/reaper47/recipya/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.md&title=)
-issue when you have ideas that may improve the software.
+N'hésitez pas à travailler sur des fonctionnalités qui ne sont pas [assignées](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement+no%3Aassignee).
+Je vous encourage également à ouvrir une [demande de fonctionnalité](https://github.com/reaper47/recipya/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.md&title=)
+lorsque vous avez des idées qui peuvent améliorer le logiciel.
 
-You are not required to implement features yourself if you feel uncomfortable. However, the process is as follows if you 
-do wish to.
+Vous n'êtes pas obligé d'implémenter les fonctionnalités vous-même si vous ne vous sentez pas à l'aise. Cependant, si vous le souhaitez, la procédure est la suivante.
 
-1. Check the list of features currently [requested](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement+no%3Aassignee).
-2. Select the one you want to work on.
-3. Comment that you want to fix it or send me a message in the [Matrix](https://app.element.io/#/room/#recipya:matrix.org)
-   space so that I can move the task to the `in progress` column in the [board](https://github.com/users/reaper47/projects/2)
-   and assign you to it.
-4. Fork the repository if you have not done so.
-5. Implement the feature and write tests.
-6. Push the changes to your fork.
-7. Open a pull request so that I can merge your work into `main`.
+1. Vérifiez la liste des fonctionnalités actuellement [demandées](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement+no%3Aassignee).
+2. Sélectionnez celle sur laquelle vous souhaitez travailler.
+3. Indiquez en commentaire que vous souhaitez la corriger ou envoyez-moi un message dans l'espace [Matrix](https://app.element.io/#/room/#recipya:matrix.org)
+   afin que je puisse déplacer la tâche vers la colonne « en cours » du [board](https://github.com/users/reaper47/projects/2) et vous l'attribuer.
+4. Forkez le dépôt si vous ne l'avez pas encore fait.
+5. Implémentez la fonctionnalité et écrivez des tests.
+6. Envoyez les modifications à votre fork.
+7. Ouvrez un pull request afin que je puisse fusionner votre travail dans « main ».
 
 {{< callout type="info" >}}
-Please be aware that working on a feature without opening an issue on GitHub first might lead to rejection if I believe
-it is not a good fit for Recipya.
+Sachez que travailler sur une fonctionnalité sans ouvrir d'abord un problème sur GitHub peut entraîner un rejet si j'estime que
+cela ne convient pas à Recipya.
 {{< /callout >}}
 
 ### Bugs
 
-Feel free to file bugs when you discover some! Please ensure that the bug you found has not been reported 
-in the [GitHub issues](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Abug) before filing 
-an [issue](https://github.com/reaper47/recipya/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) 
-to reduce the number of duplicates.
+N'hésitez pas à signaler des bugs lorsque vous en découvrez ! Veuillez vous assurer que le bug que vous avez trouvé n'a pas été signalé dans le 
+[GitHub issues](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Abug) before d'en [ouvrir un](https://github.com/reaper47/recipya/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=)
+pour réduire le nombre de doublons.
 
-You are not required to fix the bug yourself if you feel uncomfortable. However, the process is as follows if you 
-do wish to.
+Vous n'êtes pas obligé de corriger le bug vous-même si vous ne vous sentez pas à l'aise. Cependant, si vous le souhaitez, la procédure est la suivante.
 
-1. Check the list of bugs currently [filed](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
-2. Select an issue you want to work on.
-3. Comment that you want to fix it or send me a message in the [Matrix](https://app.element.io/#/room/#recipya:matrix.org) 
-   space so that I can move the task to the `in progress` column in the [board](https://github.com/users/reaper47/projects/2)
-   and assign you to it.
-4. Fork the repository if you have not done so.
-5. Fix the bug, test it properly, and push the changes to your fork.
-6. Open a pull request so that I can merge your work into `main`.
+1. Vérifiez la liste des bugs actuellement [enregistrés](https://github.com/reaper47/recipya/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
+2. Sélectionnez un problème sur lequel vous souhaitez travailler.
+3. Indiquez en commentaire que vous souhaitez le résoudre ou envoyez-moi un message dans l'espace [Matrix](https://app.element.io/#/room/#recipya:matrix.org)
+   afin que je puisse déplacer la tâche vers la colonne « en cours » du [board](https://github.com/users/reaper47/projects/2)
+   et vous l'assigner.
+4. Forkez le dépôt si vous ne l'avez pas encore fait.
+5. Corrigez le bug, testez-le correctement et transmettez les modifications à votre fork.
+6. Ouvrez un pull request afin que je puisse fusionner votre travail dans « main ».
 
 ### Documentation
 
-This website is the official documentation for Recipya. It is built using [Hextra](https://imfing.github.io/hextra/), which
-is a static site generator that is very easy to use and understand. You do not need to open an issue regarding updates 
-to the documentation. Please feel free to update as you deem fit and open a pull request. You can help us with 
-translations, adding a language, fixing typos, improving grammar, adding sections, updating images, versioning, etc.
+Ce site Web est la documentation officielle de Recipya. Il est construit à l'aide de [Hextra](https://imfing.github.io/hextra/), qui
+est un générateur de site statique très simple à utiliser et à comprendre. Vous n'avez pas besoin d'ouvrir un problème concernant les mises à jour
+de la documentation. N'hésitez pas à mettre à jour comme vous le jugez approprié et à ouvrir une demande d'extraction. Vous pouvez nous aider avec
+les traductions, l'ajout d'une langue, la correction des fautes de frappe, l'amélioration de la grammaire, l'ajout de sections, la mise à jour des images, le contrôle de version, etc.
 
-To develop the documentation locally, you must first [fork](https://github.com/reaper47/recipya/fork) the project.
+Pour développer la documentation localement, vous devez d'abord [fork](https://github.com/reaper47/recipya/fork) le projet.
 
-Then, open a command prompt or terminal and navigate to `recipya/docs/website`.
+Ensuite, ouvrez une invite de commande ou un terminal et accédez à `recipya/docs/website`.
 
 ```bash
 cd path/to/recipya/docs/website
 ```
 
-Next, serve the website locally. 
+Ensuite, diffusez le site Web localement.
 
 ```bash
 hugo serve
 ```
 
-The website should have opened in your browser automatically at http://localhost:3000. 
-You are now free to edit text and changes will be reflected in the browser on file save.
+Le site Web devrait s'ouvrir automatiquement dans votre navigateur à l'adresse http://localhost:3000.
+Vous êtes maintenant libre de modifier le texte et les modifications seront reflétées dans le navigateur lors de l'enregistrement du fichier.
 
-### Helping Others
+### Aider les autres
 
-It is always great to help anyone who needs a hand. Please see the [support channels](/community-guide#support-channels)
-for places where you could lend a hand.
+C'est toujours un plaisir d'aider quelqu'un qui a besoin d'aide. Veuillez consulter les [canaux d'assistance](#canaux-de-support)
+pour savoir où vous pouvez apporter votre aide.

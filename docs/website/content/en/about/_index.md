@@ -13,7 +13,7 @@ It is focused on simplicity for the whole family to enjoy.
 - Import recipes from around the web
 - Digitize paper recipes
 - Organize your recipes into cookbooks
-- Works seamlessly with [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
+- Easily migrate your recipes from [Mealie](https://mealie.io), [Tandoor](https://tandoor.dev) and [Nextcloud Cookbook](https://apps.nextcloud.com/apps/cookbook)
 - Automatic conversion to your preferred measurement system (imperial/metric)
 - Calculate nutritional information automatically
 - Print any recipe in your collection

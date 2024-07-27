@@ -1,183 +1,183 @@
 ---
-title: Roadmap
+title: Feuille de route
 weight: 4
 ---
 
 {{< tabs items="v1.3.0,v1.4.0" >}}
 
 {{< tab >}}
-**Ingredient base types**:
-Data mapping of standard ingredients to actual types of those ingredients.
+**Types de base d'ingrédients**:
+Mappage des données des ingrédients standards avec les types réels de ces ingrédients.
 [Issue](https://github.com/reaper47/recipya/issues/116).
 
-**Opportunity to add images to the instructions**
-It should be possible for users to add images to instructions.
+**Possibilité d'ajouter des images aux instructions**
+Il devrait être possible pour les utilisateurs d'ajouter des images aux instructions.
 [Issue](https://github.com/reaper47/recipya/issues/262)
 
 **i18n**:
-The user will be able to change the language of the application.
+L'utilisateur pourra changer la langue de l'application.
 [Issue](https://github.com/reaper47/recipya/issues/125).
 
-**Improve Measurement System**
-Offer finer control over the measurement system.
+**Améliorer le système de mesure**
+Offrir un contrôle plus précis du système de mesure.
 [Issue](https://github.com/reaper47/recipya/issues/175).
 
-**Support Differences Between US, UK and Australia**
-Support the differences between the US, UK and Australia.
+**Différences de soutien entre les États-Unis, le Royaume-Uni et l'Australie**
+Soutenir les différences entre les États-Unis, le Royaume-Uni et l’Australie.
 [Issue](https://github.com/reaper47/recipya/issues/181).
 
-**Share recipes across accounts**
-Allow sharing a recipe across multiple local accounts.
+**Partager des recettes entre comptes**
+Autoriser le partage d'une recette sur plusieurs comptes locaux.
 [Issue](https://github.com/reaper47/recipya/issues/203)
 
-**Add tags & icons for special diets**
-Recipes could be marked for special diets, such as vegan, vegetarian, keto, gluten-free, etc.
+**Ajoutez des balises et des icônes pour les régimes spéciaux**
+Les recettes peuvent être marquées pour des régimes spéciaux, tels que végétalien, végétarien, cétogène, sans gluten, etc.
 [Issue](https://github.com/reaper47/recipya/issues/208)
 
-**Support RTL**
-Some languages work as RTL.
+**Soutenez RTL**
+Certaines langues fonctionnent comme RTL.
 [Issue](https://github.com/reaper47/recipya/issues/237)
 
-**Support sections in ingredients and instructions**
-Offer the possibility to label sections in ingredients and instructions.
+**Sections de support dans les ingrédients et les instructions**
+Offrir la possibilité d'étiqueter les sections dans les ingrédients et les instructions.
 [Issue](https://github.com/reaper47/recipya/issues/254)
 
-**Images to instructions**
-Allow users to add images to the instructions.
+**Images des instructions**
+Permettre aux utilisateurs d'ajouter des images aux instructions.
 [Issue](https://github.com/reaper47/recipya/issues/262)
 
-**Translate documentation**
-The documentation website is only in English. More languages shall come.
+**Traduire la documentation**
+Le site de documentation est uniquement en anglais. D'autres langues seront bientôt disponibles.
 [Issue](https://github.com/reaper47/recipya/issues/269)
 
-**Dynamic measurement conversion**
-Live convert between imperial and metric or offer option of both systems.
+**Conversion de mesures dynamiques**
+Conversion en direct entre les systèmes impérial et métrique ou offre l'option des deux systèmes.
 [Issue](https://github.com/reaper47/recipya/issues/335)
 
-**Setting to change image compression strength**
-Allow different compression strengths.
+**Paramètre permettant de modifier la force de compression de l'image**
+Autoriser différentes forces de compression.
 [Issue](https://github.com/reaper47/recipya/issues/339)
 
-**Add conversion to weight**
-Add ability to convert between volume and weight measurements.
+**Ajouter une conversion au poids**
+Ajoutez la possibilité de convertir entre les mesures de volume et de poids.
 [Issue](https://github.com/reaper47/recipya/issues/346)
 
-**Add headers to the ingredients and instructions**
-Make it possible to add headers to the ingredients and instructions.
+**Ajoutez des en-têtes aux ingrédients et aux instructions**
+Permettre d'ajouter des en-têtes aux ingrédients et aux instructions.
 [Issue](https://github.com/reaper47/recipya/issues/347)
 
-**Add a Notes section**
-Add a notes section to the recipe schema and recipe view.
+**Ajouter une section Notes**
+Ajoutez une section de notes au schéma de recette et à la vue de recette.
 [Issue](https://github.com/reaper47/recipya/issues/348)
 
-**Display user values when searching**
-When a user types a search keyword, e.g. `tag:`, offer a list of tags.
+**Afficher les valeurs utilisateur lors de la recherche**
+Lorsqu'un utilisateur tape un mot-clé de recherche, par exemple « tag: », une liste de tags lui est proposée.
 [Issue](https://github.com/reaper47/recipya/issues/349)
 
-**Paginate the list of reports**
-The list of reports at /reports is getting pretty hefty.
+**Paginer la liste des rapports**
+La liste des rapports sur /reports devient assez longue.
 [Issue](https://github.com/reaper47/recipya/issues/350)
 
-**Sharing using web share API**
-Allow sharing to different apps the user has installed.
+**Partage à l'aide de l'API de partage Web**
+Autoriser le partage avec différentes applications installées par l'utilisateur.
 [Issue](https://github.com/reaper47/recipya/issues/358)
 
-**Allow other OCR engines**
-Offer other OCR engines other than Azure Document Intelligence.
+**Autoriser d'autres moteurs OCR**
+Proposer d'autres moteurs OCR qu'Azure Document Intelligence.
 [Issue](https://github.com/reaper47/recipya/issues/359)
 
-**Ability to Bypass Guide**
-Add an option (Settings -> Server) to bypass the Guide and go straight to login page.
+**Possibilité de contourner le guide**
+Ajoutez une option (Paramètres -> Serveur) pour contourner le guide et accéder directement à la page de connexion.
 [Issue](https://github.com/reaper47/recipya/issues/372)
 
-**Extract multiple images when adding recipe via URL**
-Extract all images from the URL.
+**Extraire plusieurs images lors de l'ajout d'une recette via une URL**
+Extraire toutes les images de l'URL.
 [Issue](https://github.com/reaper47/recipya/issues/374)
 
-**Add possibility to manually re-scrape websites**
-Be able to re-scrape the recipe without having to manually delete the old one and then scrape the recipe as a completely new recipe.
+**Ajoutez la possibilité de scrapper manuellement les sites web**
+Être capable de re-gratter la recette sans avoir à supprimer manuellement l'ancienne, puis de gratter la recette comme une toute nouvelle recette.
 [Issue](https://github.com/reaper47/recipya/issues/376)
 
-**Improve UI for recipe times**
-To make it easier to read, add a space character between each unit.
+**Améliorer l'interface utilisateur pour les temps de recette**
+Pour faciliter la lecture, ajoutez un espace entre chaque unité.
 [Issue](https://github.com/reaper47/recipya/issues/380)
 
-**Use serving size from nutritional information**
-Use serving size from nutritional information, if recipe yield is not available in schema.
+**Utiliser la taille de la portion à partir des informations nutritionnelles**
+Utilisez la taille de la portion à partir des informations nutritionnelles, si le rendement de la recette n'est pas disponible dans le schéma.
 [Issue](https://github.com/reaper47/recipya/issues/384)
 
-**Set nutritional values for both per serving and per 100g**
-Add possibility to set nutritional values for both per serving and per 100g for the same recipe.
+**Définissez les valeurs nutritionnelles par portion et par 100 g**
+Ajout de la possibilité de définir des valeurs nutritionnelles par portion et par 100 g pour la même recette.
 [Issue](https://github.com/reaper47/recipya/issues/385)
 
-**Add frontend themes**
-Add more frontend themes to the app. We currently have light and dark.
+**Ajouter des thèmes frontend**
+Ajoutez plus de thèmes frontaux à l'application. Nous avons actuellement des thèmes clairs et sombres.
 [Issue](https://github.com/reaper47/recipya/issues/388)
 
-**Rate a recipe**
-Add possibility to rate a recipe.
+**Évaluer une recette**
+Ajouter la possibilité de noter une recette.
 [Issue](https://github.com/reaper47/recipya/issues/390)
 
-**Add timer function**
-While viewing a recipe it would be useful to have the possibility to activate one or more kitchen timers.
+**Ajouter une fonction de minuterie**
+Lors de la visualisation d'une recette, il serait utile d'avoir la possibilité d'activer un ou plusieurs minuteurs de cuisine.
 [Issue](https://github.com/reaper47/recipya/issues/392)
 
-**Mark a recipe as a favorite**
-Add a button to mark a recipe as favorite.
+**Marquer une recette comme favorite**
+Ajouter un bouton pour marquer une recette comme favorite.
 [Issue](https://github.com/reaper47/recipya/issues/393)
 
-**Move buttons mobile**
-Mobile: Move buttons in title to three-dots menu.
+**Déplacer les boutons mobiles**
+Mobile : déplacer les boutons du titre vers le menu à trois points.
 [Issue](https://github.com/reaper47/recipya/issues/394)
 
-**Add accessibility features**
-The web app could benefit from accessibility features.
+**Ajouter des fonctionnalités d'accessibilité**
+L'application web pourrait bénéficier de fonctionnalités d'accessibilité.
 [Issue](https://github.com/reaper47/recipya/issues/395)
 
-**Retry failed imports**
-Implement the ability to retry failed imports.
+**Réessayer les importations ayant échoué**
+Implémenter la possibilité de réessayer les importations ayant échoué.
 [Issue](https://github.com/reaper47/recipya/issues/398)
 
-**Scrape Samsung Food**
-Scrape from https://app.samsungfood.com.
+**Gratter les aliments Samsung**
+Grattez depuis https://app.samsungfood.com.
 [Issue](https://github.com/reaper47/recipya/issues/399)
 {{< /tab >}}
 
 {{< tab >}}
-**Windows Installer**:
-On Windows, the user will be able to install the software like any other software. Maybe more platforms will be supported.
+**Installateur de Windows**:
+Sous Windows, l'utilisateur pourra installer le logiciel comme n'importe quel autre logiciel. Peut-être que d'autres plateformes seront prises en charge.
 [Issue](https://github.com/reaper47/recipya/issues/29).
 
-**Ingredient substitutes**:
-The user will be able to view substitutes for ingredients he or she wishes to substitute.
+**Substituts d'ingrédients**:
+L'utilisateur pourra visualiser les substituts des ingrédients qu'il souhaite remplacer.
 [Issue](https://github.com/reaper47/recipya/issues/37).
 
-**Grocery Lists**:
-The user will be able to create grocery shopping lists from the application.
+**Listes de courses**:
+L'utilisateur pourra créer des listes de courses à partir de l'application.
 [Issue](https://github.com/reaper47/recipya/issues/103).
 
-**Meal Planning Capability**
-Implement the meal planner.
+**Capacité de planification des repas**
+Mettre en œuvre le planificateur de repas.
 [Issue](https://github.com/reaper47/recipya/issues/178)
 
-**Recipya REST API**
-Implement the Recipya REST API.
+**L'API REST de Recipya**
+Implémenter l'API REST de Recipya.
 [Issue](https://github.com/reaper47/recipya/issues/234)
 
-**Support more nutritional databases**
-The American nutritional database is not the only one that exists.
+**Soutenir davantage de bases de données nutritionnelles**
+La base de données nutritionnelle américaine n’est pas la seule qui existe.
 [Issue](https://github.com/reaper47/recipya/issues/259)
 
-**Add timeline function for cooked recipes**
-In these cases it would be very nice to have a timeline function, similar as to how Mealie have.
+**Ajouter une fonction de chronologie pour les recettes cuisinées**
+Dans ces cas-là, il serait très agréable d'avoir une fonction de chronologie, similaire à celle de Mealie..
 [Issue](https://github.com/reaper47/recipya/issues/391)
 
-**Integrate ComfyUI to generate default images**
-A default image of sushi on a plate is used when a recipe has no image. There is no variety when you have a whole page of recipes without images.
+**Intégrer ComfyUI pour générer des images par défaut**
+Une image par défaut de sushi sur une assiette est utilisée lorsqu'une recette n'a pas d'image. Il n'y a pas de variété lorsque vous avez une page entière de recettes sans images.
 [Issue](https://github.com/reaper47/recipya/issues/396)
 
-**Integrate Ollama API**
-Generative AI could be integrated into Recipya.
+**Intégrer l'API d'Ollama**
+L'IA générative pourrait être intégrée à Recipya.
 [Issue](https://github.com/reaper47/recipya/issues/397)
 {{< /tab >}}
 

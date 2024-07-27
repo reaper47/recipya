@@ -3,7 +3,7 @@ title: Edit
 weight: 3
 ---
 
-To edit a recipe in your collection, you first must [view](/guide/docs/features/recipes/view) a recipe.
+To edit a recipe in your collection, you first must [view](/guide/fr/docs/features/recipes/view) a recipe.
 Then, click the pencil icon to the left of the recipe's title. 
 
 ![](images/edit-recipe-enter.webp)
