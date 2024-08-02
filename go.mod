@@ -22,14 +22,14 @@ require (
 	github.com/pdfcpu/pdfcpu v0.8.0
 	github.com/pressly/goose/v3 v3.21.1
 	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
-	github.com/urfave/cli/v2 v2.27.2
+	github.com/urfave/cli/v2 v2.27.3
 	golang.org/x/crypto v0.25.0
 	golang.org/x/image v0.18.0
 	golang.org/x/net v0.27.0
 	golang.org/x/text v0.16.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
-	modernc.org/sqlite v1.30.2
+	modernc.org/sqlite v1.31.1
 	nhooyr.io/websocket v1.8.11
 )
 
@@ -52,11 +52,11 @@ require (
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect
 	github.com/lestrrat-go/httprc v1.0.6 // indirect
 	github.com/lestrrat-go/iter v1.0.2 // indirect
-	github.com/lestrrat-go/jwx/v2 v2.1.0 // indirect
+	github.com/lestrrat-go/jwx/v2 v2.1.1 // indirect
 	github.com/lestrrat-go/option v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mattn/go-runewidth v0.0.15 // indirect
+	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/mingrammer/commonregex v1.0.1 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
@@ -68,7 +68,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/sendgrid/rest v2.6.9+incompatible // indirect
-	github.com/sethvargo/go-retry v0.2.4 // indirect
+	github.com/sethvargo/go-retry v0.3.0 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	github.com/tetratelabs/wazero v1.7.3 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -82,8 +82,8 @@ require (
 	gonum.org/v1/gonum v0.15.0 // indirect
 	gopkg.in/neurosnap/sentences.v1 v1.0.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
-	modernc.org/libc v1.55.2 // indirect
+	modernc.org/gc/v3 v3.0.0-20240801135723-a856999a2e4a // indirect
+	modernc.org/libc v1.55.7 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect

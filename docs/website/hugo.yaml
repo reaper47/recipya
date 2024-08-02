@@ -1,4 +1,4 @@
-baseURL: https://recipes.musicavis.ca/guide/
+baseURL: /guide/en
 title: Recipya
 theme: hextra
 
@@ -6,8 +6,6 @@ enableInlineShortcodes: true
 enableRobotsTXT: true
 enableGitInfo: true
 
-defaultContentLanguage: en
-defaultContentLanguageInSubdir: true
 languages:
   en:
     contentDir: content/en
