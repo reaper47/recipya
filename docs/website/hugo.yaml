@@ -6,16 +6,91 @@ enableInlineShortcodes: true
 enableRobotsTXT: true
 enableGitInfo: true
 
-languageCode: en-us
 defaultContentLanguage: en
+defaultContentLanguageInSubdir: true
 languages:
   en:
+    contentDir: content/en
     languageName: English
-    weight: 1
+    languageCode: en-US
     title: Recipya
+    weight: 1
+    menu:
+      main:
+        - name: Open App
+          params:
+            rel: external
+          url: /login
+          weight: 1
+        - identifier: documentation
+          name: Documentation
+          pageRef: /docs
+          weight: 2
+        - identifier: blog
+          name: Blog
+          pageRef: /blog
+          weight: 3
+        - identifier: about
+          name: About
+          pageRef: /about
+          weight: 4
+        - identifier: searchPlaceholder
+          name: Search
+          weight: 5
+          params:
+            type: search
+        - identifier: sponsor
+          name: Sponsor
+          url: "https://github.com/sponsors/reaper47"
+          weight: 6
+          params:
+            icon: heart
+        - name: GitHub
+          weight: 7
+          url: "https://github.com/reaper47/recipya"
+          params:
+            icon: github
   fr:
+    contentDir: content/fr
     languageName: Français
+    languageCode: fr-CA
+    title: Recipya
     weight: 2
+    menu:
+      main:
+        - name: Ouvrir l'application
+          params:
+            rel: external
+          url: /login
+          weight: 1
+        - identifier: documentation
+          name: Documentation
+          pageRef: /docs
+          weight: 2
+        - identifier: blog
+          name: Blog
+          pageRef: /blog
+          weight: 3
+        - identifier: about
+          name: À propos
+          pageRef: /about
+          weight: 4
+        - identifier: searchPlaceholder
+          name: Search
+          weight: 5
+          params:
+            type: search
+        - identifier: sponsor
+          name: Sponsor
+          url: "https://github.com/sponsors/reaper47"
+          weight: 6
+          params:
+            icon: heart
+        - name: GitHub
+          weight: 7
+          url: "https://github.com/reaper47/recipya"
+          params:
+            icon: github
 
 markup:
   goldmark:

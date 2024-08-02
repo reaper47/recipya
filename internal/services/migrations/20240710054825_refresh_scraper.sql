@@ -10,4 +10,4 @@ WHERE host IN (
 -- +goose Down
 INSERT INTO websites (host, url)
 VALUES ('bingingwithbabish.com', 'https://www.bingingwithbabish.com'),
-       ('chuckycruz.substack.com', 'https://chuckycruz.substack.com'),;
+       ('chuckycruz.substack.com', 'shadow_last_inserted_recipehttps://chuckycruz.substack.com'),;
