@@ -17,6 +17,6 @@ Finally, click the `Update` button.
 
 ![](images/update-button.webp)
 
-On success, the application will reload automatically after five secconds.
+On success, the application will reload automatically after five seconds.
 
 ![](images/update-success-restart.webp)

@@ -1,51 +1,51 @@
 ---
-title: "Features Tour"
+title: Visite des fonctionnalités
 weight: 2
 prev: /docs
 next: /docs/features/recipes
 ---
 
-Overview of Recipya's features.
+Aperçu des fonctionnalités de Recipya.
 
 {{< cards >}}
-    {{< card link="/guide/docs/features/admin/"
-        title="Admin"
-        subtitle="Learn about the administration page."
+    {{< card link="admin/"
+        title="Administration"
+        subtitle="En savoir plus sur la page d'administration."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/backups/"
-        title="Backups"
-        subtitle="Learn how backups work and how to restore your data."
+    {{< card link="backups/"
+        title="Sauvegardes"
+        subtitle="Découvrez comment fonctionnent les sauvegardes et comment restaurer vos données."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/cookbooks/"
-        title="Cookbooks"
+    {{< card link="cookbooks/"
+        title="Livres de cuisine"
         subtitle="5 items"
         icon="book-open" >}}
-    {{< card link="/guide/docs/features/export-data/"
-        title="Export Data"
-        subtitle="Learn how to download your data."
+    {{< card link="export-data/"
+        title="Exporter des données"
+        subtitle="Apprenez à télécharger vos données."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/integrations/"
-        title="Integrations"
-        subtitle="The application offers integrations with other recipe manager applications."
+    {{< card link="integrations/"
+        title="Intégrations"
+        subtitle="L'application propose des intégrations avec d'autres applications de gestion de recettes."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/measurement-systems/"
-        title="Measurement Systems"
-        subtitle="Users usually adhere to one preferred measurement system, rarely feeling comfortable with multiple systems."
+    {{< card link="measurement-systems/"
+        title="Systèmes de mesure"
+        subtitle="Les utilisateurs adhèrent généralement à un système de mesure préféré et se sentent rarement à l’aise avec plusieurs systèmes."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/nutrition-facts/"
-        title="Nutrition Facts"
-        subtitle="Many recipes lack nutritional information users may be unwilling to calculate themselves. Recipya addresses this."
+    {{< card link="nutrition-facts/"
+        title="Information nutritionnelle"
+        subtitle="De nombreuses recettes manquent d'informations nutritionnelles que les utilisateurs peuvent être réticents à calculer eux-mêmes. Recipya résout ce problème."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/recipes/"
-            title="Recipes"
+    {{< card link="recipes/"
+            title="Recettes"
             icon="book-open"
             subtitle="8 items" >}}
-    {{< card link="/guide/docs/features/reports/"
-        title="Reports"
-        subtitle="Learn what the reports module is about."
+    {{< card link="reports/"
+        title="Rapports"
+        subtitle="Découvrez en quoi consiste le module de rapports."
         icon="newspaper" >}}
-    {{< card link="/guide/docs/features/updater/"
-        title="Updater"
-        subtitle="Learn what the self-update module is about."
+    {{< card link="updater/"
+        title="Mise à jour"
+        subtitle="Découvrez en quoi consiste le module de mise à jour automatique."
         icon="newspaper" >}}
 {{< /cards >}}

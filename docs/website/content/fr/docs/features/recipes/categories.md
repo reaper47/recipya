@@ -1,13 +1,12 @@
 ---
-title: Wakelock
+title: Catégories
 weight: 8
-next: /docs/features/cookbooks
 ---
 
-You can manage your categories from the **Categories** option in the **Recipes** tab of the settings.
+Vous pouvez gérer vos catégories depuis l'option **Catégories** dans l'onglet **Recettes** des paramètres.
 
 ![](images/recipes-categories.webp)
 
-To add a category, type it in the last, empty badge and click the checkmark.
+Pour ajouter une catégorie, saisissez-la dans le dernier badge vide et cliquez sur la coche.
 
-To delete a category, click the `x` button to the right of any category badge.
+Pour supprimer une catégorie, cliquez sur le bouton « x » à droite de n'importe quel badge de catégorie.

@@ -1,6 +1,7 @@
 ---
 title: Delete
 weight: 4
+next: /docs/features/measurement-systems
 ---
 
 To delete a cookbook from your collection, first click the three vertical dots at the top right of 

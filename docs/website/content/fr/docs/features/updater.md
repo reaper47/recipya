@@ -1,22 +1,21 @@
 ---
-title: Updater
+title: Mise à jour
 weight: 9
 prev: /docs/features/reports
 ---
 
-You can update the application from within the web application once an update becomes available. Your data will be backed 
-up under `/path/to/recipya/Backup/global` before the update in case something goes south. The update checker is 
-run once every three days.
+Vous pouvez mettre à jour l'application depuis l'application Web dès qu'une mise à jour est disponible. Vos données seront préalablement sauvegardées
+sous `/path/to/recipya/Backup/global` au cas où quelque chose tourne mal. Le vérificateur de mise à jour est exécuté une fois tous les trois jours.
 
-You will first notice a pink `New update` badge over your avatar.
+Vous remarquerez d'abord un badge rose `New update` sur votre avatar.
 
 ![](images/update-available.webp)
 
-Click on your avatar, access the settings dialog, and select the `About` tab.
-Finally, click the `Update` button.
+Cliquez sur votre avatar, accédez à la boîte de dialogue des paramètres et sélectionnez l'onglet
+`About`. Enfin, cliquez sur le bouton `Update`.
 
 ![](images/update-button.webp)
 
-On success, the application will reload automatically after five secconds.
+En cas de succès, l'application se rechargera automatiquement après cinq secondes.
 
 ![](images/update-success-restart.webp)

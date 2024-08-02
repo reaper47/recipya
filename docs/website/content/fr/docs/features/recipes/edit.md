@@ -1,14 +1,14 @@
 ---
-title: Edit
+title: Modifier
 weight: 3
 ---
 
-To edit a recipe in your collection, you first must [view](/guide/fr/docs/features/recipes/view) a recipe.
-Then, click the pencil icon to the left of the recipe's title. 
+Pour éditer une recette de votre collection, vous devez d'abord [visualiser](/guide/fr/docs/features/recipes/view) une recette.
+Cliquez ensuite sur l'icône en forme de crayon à gauche du titre de la recette.
 
 ![](images/edit-recipe-enter.webp)
 
-You will enter the edit mode, which allows you to edit any of the recipe's information. 
-Press the blue **Update** button at the bottom of the form to save your changes. 
+Vous entrerez dans le mode édition, qui vous permettra de modifier n'importe quelle information de la recette.
+Appuyez sur le bouton bleu **Mettre à jour** en bas du formulaire pour enregistrer vos modifications.
 
 ![](images/edit-recipe.webp)

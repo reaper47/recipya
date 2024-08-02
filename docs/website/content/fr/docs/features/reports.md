@@ -1,51 +1,52 @@
 ---
-title: Reports
+title: Rapports
 weight: 8
 prev: /docs/features/recipes
 ---
 
-The reports page allows you to view operation logs after importing recipes. 
+La page des rapports vous permet de visualiser les journaux d'opérations après l'importation de recettes.
 
-## Access
+## Accéder
 
-There are two ways to access the page.
+Il existe deux façons d'accéder à la page.
 
-### Avatar Menu
+### Menu avatar
 
 ![](images/reports-access.webp)
 
-The reports page will list all the reports on the left pane. No report will be selected initially.
+La page des rapports répertorie tous les rapports dans le volet de gauche. Aucun rapport ne sera sélectionné initialement.
 
 ![](images/reports-fresh.webp)
 
-### After Imports
+### Après les importations
 
 ![](images/reports-access-after.webp)
 
-The reports page will also list all the reports in the left pane. The latest report will be selected.
+La page des rapports répertorie également tous les rapports dans le volet de gauche. Le rapport le plus récent sera sélectionné.
 
 ![](images/reports-latest.webp)
 
 ## Structure
 
-The reports page is structured into two viewing panes. The left one lists all available reports for the report type, whereas the right 
-pane displays the content of the selected report. The report type is selected from the sidebar next to the list of reports. 
+La page des rapports est structurée en deux volets d'affichage. Celui de gauche répertorie tous les rapports disponibles pour le
+type de rapport, tandis que le volet de droite affiche le contenu du rapport sélectionné. Le type de rapport est sélectionné dans la 
+barre latérale à côté de la liste des rapports.
 
-You can choose from the following types:
-- **Import**: An import report is one generated after importing recipes.
+Vous pouvez choisir parmi les types suivants :
+- **Importation** : un rapport d'importation est un rapport généré après l'importation de recettes.
+- 
+### Volet gauche
 
-### Left Pane
+Le volet de gauche répertorie tous les rapports du type sélectionné. Chaque élément affiche les informations suivantes :
+- **Time stamp** : le titre de l'élément. Indique le moment où le rapport a été généré.
+- **Execution time** : le temps nécessaire à l'importation des recettes.
+- **Log count** : situé à droite de l'heure d'exécution. Indique le nombre d'entrées associées au rapport.
 
-The left pane lists all reports of the selected type. Each item displays the following:
-- **Time stamp**: The title of the item. Represents when report was generated.
-- **Execution time**: The time it took to import the recipes.
-- **Log count**: Found to the right of the execution time. Represents the number of entries associated with the report.
+### Volet droit
 
-### Right Pane
+Le volet de droite affiche toutes les entrées de journal associées au rapport sélectionné dans un tableau. Vous pouvez trier n'importe quelle colonne, par ordre décroissant ou
+croissant, en cliquant sur son en-tête.
 
-The right pane displays all log entries associated with the selected report in a table. You can sort any column, either descending or 
-ascending, by clicking on its header.
-
-Failed operations will be highlighted in red.
+Les opérations ayant échoué seront surlignées en rouge.
 
 ![](images/reports-errors.webp)

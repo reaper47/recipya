@@ -1,27 +1,28 @@
 ---
-title: Wakelock
+title: Verrouillage de réveil
 weight: 8
+next: /docs/features/cookbooks
 ---
 
-Imagine you are cooking a recipe from a mobile device. You gather all the ingredients, and you are ready to start, 
-but your device goes to sleep. You unlock your device and start getting your hands dirty in the flour. Your device 
-goes to sleep again. You clean your hands, unlock your phone, and continue the recipe. Your device goes to sleep 
-once again. You are frustrated. This process continues over and over. Your device is dirty and so is your food.
+Imaginez que vous préparez une recette à partir d'un appareil mobile. Vous rassemblez tous les ingrédients et vous êtes prêt à commencer,
+mais votre appareil se met en veille. Vous déverrouillez votre appareil et commencez à vous salir les mains dans la farine. Votre appareil
+s'endort à nouveau. Vous vous lavez les mains, déverrouillez votre téléphone et continuez la recette. Votre appareil se met
+en veille à nouveau. Vous êtes frustré. Ce processus se répète encore et encore. Votre appareil est sale et votre nourriture aussi.
 
-You want the device not to sleep while you are cooking.
+Vous ne voulez pas que l'appareil se mette en veille pendant que vous cuisinez.
 
-Recipya solves this problem by providing a browser wakelock when viewing a recipe, preventing the device from 
-going to sleep.
+Recipya résout ce problème en fournissant un wakelock du navigateur lors de la visualisation d'une recette, empêchant ainsi l'appareil
+de se mettre en veille.
 
 {{< callout type="info" >}}
-The wakelock is turned on automatically when viewing a recipe.
+Le wakelock est activé automatiquement lors de la visualisation d'une recette.
 {{< /callout >}}
 
-On supported browsers, you will notice a light bulb icon to the far left of a recipe's title. When the light bulb 
-is on, the wakelock is enabled and the screen will not sleep.
+Sur les navigateurs pris en charge, vous remarquerez une icône d'ampoule à l'extrême gauche du titre d'une recette. Lorsque l'ampoule
+est allumée, le wakelock est activé et l'écran ne se met pas en veille.
 
 ![](images/wakelock-on.webp)
 
-When turned off, the wakelock is disabled and the screen will eventually sleep.
+Lorsqu'il est désactivé, le wakelock est désactivé et l'écran finira par se mettre en veille.
 
 ![](images/wakelock-off.webp)

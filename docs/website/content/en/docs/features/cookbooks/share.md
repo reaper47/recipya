@@ -1,7 +1,6 @@
 ---
 title: Share
 weight: 5
-next: /docs/features/measurement-systems
 ---
 
 You can share a cookbook to your family and friends. To do so, you must first generate the cookbook's share

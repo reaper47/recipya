@@ -1,7 +1,7 @@
 ---
 title: Integrations
 weight: 4
-next: /docs/installation
+next: /docs/measurement-system
 ---
 
 Recipya offers data import integrations with other recipe manager applications. 

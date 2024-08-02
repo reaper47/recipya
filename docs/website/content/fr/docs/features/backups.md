@@ -1,18 +1,18 @@
 ---
-title: Backups
+title: Sauvegardes
 weight: 2
 ---
 
-There are two types of data backups, each done once every three days.
-A maximum of ten backups are stored for each type, resulting in the oldest backup 
-being one month old.
+Il existe deux types de sauvegardes de données, chacune effectuée une fois tous les trois jours.
+Un maximum de dix sauvegardes sont stockées pour chaque type, la sauvegarde la plus ancienne
+ayant donc un mois.
 
 ### Global
 
-A global backup is one which saves the current state of the application data.
-It is stored under `path/to/recipya/data/backup/global/`.
+Une sauvegarde globale est une sauvegarde qui enregistre l'état actuel des données de l'application.
+Elle est stockée sous `path/to/recipya/data/backup/global/`.
 
-Its structure is as follows:
+Sa structure est la suivante :
 
 {{< filetree/container >}}
     {{< filetree/folder name="recipya.{year-month-day}.zip" >}}
@@ -46,15 +46,15 @@ Its structure is as follows:
     {{< /filetree/folder >}}
 {{< /filetree/container >}}
 
-### User
+### Utilisateur
 
-A user backup is one which saves the current state of a user's data. The following is saved:
-- Recipes 
-- Cookbooks
-- Shared recipes
-- Shared cookbooks
+Une sauvegarde utilisateur est une sauvegarde qui enregistre l'état actuel des données d'un utilisateur. Les éléments suivants sont enregistrés :
+- Recettes
+- Livres de cuisine
+- Recettes partagées
+- Livres de cuisine partagés
 
-User backups are stored under `path/to/recipya/data/Backup/users/{userID}`.
+Les sauvegardes utilisateur sont stockées sous `path/to/recipya/data/Backup/users/{userID}`.
 
 Its structure is as follows:
 {{< filetree/container >}}
@@ -65,29 +65,29 @@ Its structure is as follows:
     {{< /filetree/folder >}}
 {{< /filetree/container >}}
 
-## Restore
+## Restaurer
 
-It is possible to restore a previous backup. The instructions on how to do so depends on its type.
+Il est possible de restaurer une sauvegarde précédente. Les instructions pour procéder dépendent de son type.
 
-### Global
+### Sauvegarde globale
 
-Restoring a global backup is done only by the one who has access to the server.
+La restauration d'une sauvegarde globale est effectuée uniquement par la personne ayant accès au serveur.
 
-1. Close the application
-2. Navigate to `path/to/recipya/data/Backup/global/`
-3. Unzip the backup you wish to restore
-4. Replace the content under `path/to/recipya/data/*` with the one from the unzipped backup
-5. If applicable, delete `path/to/recipya/data/Database/recipya.db-shm` and `path/to/recipya/data/Database/recipya.db-wal
-6. Start the application
+1. Fermez l'application
+2. Accédez à `path/to/recipya/data/Backup/global/`
+3. Décompressez la sauvegarde que vous souhaitez restaurer
+4. Remplacez le contenu sous `path/to/recipya/data/*` par celui de la sauvegarde décompressée
+5. Le cas échéant, supprimez `path/to/recipya/data/Database/recipya.db-shm` et `path/to/recipya/data/Database/recipya.db-wal`
+6. Démarrez l'application
 
-### User
+### Utilisateur
 
-Restoring a user backup is done through the web application's user interface.
+La restauration d'une sauvegarde utilisateur s'effectue via l'interface utilisateur de l'application Web.
 
-1. Access the settings dialog
-2. Click the `Data` tab
-3. Identify the **Restore from backup** setting
-4. Select the backup date
-5. Click the rocket launch icon
+1. Accédez à la boîte de dialogue des paramètres
+2. Cliquez sur l'onglet « Données »
+3. Identifiez le paramètre **Restaurer à partir de la sauvegarde**
+4. Sélectionnez la date de sauvegarde
+5. Cliquez sur l'icône de lancement de fusée
 
 ![](images/settings-restore-backup.webp)

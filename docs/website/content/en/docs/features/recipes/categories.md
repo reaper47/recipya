@@ -1,7 +1,6 @@
 ---
-title: Wakelock
+title: Categories
 weight: 8
-next: /docs/features/cookbooks
 ---
 
 You can manage your categories from the **Categories** option in the **Recipes** tab of the settings.

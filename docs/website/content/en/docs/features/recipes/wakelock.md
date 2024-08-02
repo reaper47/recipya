@@ -1,6 +1,7 @@
 ---
 title: Wakelock
 weight: 8
+next: /docs/features/cookbooks
 ---
 
 Imagine you are cooking a recipe from a mobile device. You gather all the ingredients, and you are ready to start, 

@@ -1,14 +1,14 @@
 ---
-title: Delete
+title: Supprimer
 weight: 4
 ---
 
-To delete a recipe from your collection, you first must [view](/guide/fr/docs/features/recipes/view) a recipe. 
-Then, click the trashcan icon to the right of the recipe's title. You will be prompted whether
-you want to proceed before deletion.
+Pour supprimer une recette de votre collection, vous devez d'abord [afficher](/guide/fr/docs/features/recipes/view) 
+une recette. Cliquez ensuite sur l'icône de la corbeille à droite du titre de la recette. Il vous sera demandé si
+vous souhaitez continuer avant la suppression.
 
 ![](images/delete-recipe.webp)
 
 {{< callout type="error" >}}
-Deleting a recipe is irreversible. It will be gone forever.
+La suppression d'une recette est irréversible. Elle disparaîtra définitivement.
 {{< /callout >}}

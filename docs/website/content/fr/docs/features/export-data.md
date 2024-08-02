@@ -1,23 +1,25 @@
 ---
-title: "Export Data"
+title: Exporter des données
 weight: 3
 prev: /docs/features/cookbooks
 ---
 
-You can download your data from the `Data` tab in the settings. 
+Vous pouvez télécharger vos données depuis l'onglet « Données » dans les paramètres.
 
 ![](images/settings-export.webp)
 
-The dropdown is organized into groups. Let's go over them.
+La liste déroulante est organisée en groupes. Passons-les en revue.
 
-## Recipes
+## Recettes
 
-You can export your recipes in the following formats.
+Vous pouvez exporter vos recettes dans les formats suivants.
 - JSON
 - PDF
 
-The JSON format exports all your recipes in a zipped archive organized hierarchically, with each folder 
-containing a JSON file of the recipe. The recipe file follows the [Recipe schema](https://schema.org/Recipe) standard.
+Le format JSON exporte toutes vos recettes dans une archive zippée organisée hiérarchiquement, chaque dossier
+contenant un fichier JSON de la recette. Le fichier de recette suit la
+norme [Schéma de recette](https://schema.org/Recipe).
 
-The PDF format exports all your recipes in a zipped archive. Each file in the archive follows the naming 
-convention `{recipe name}.pdf`.
+Le format PDF exporte toutes vos recettes dans une archive zippée. Chaque fichier de l'archive suit la convention de
+dénomination
+`{nom de la recette}.pdf`.

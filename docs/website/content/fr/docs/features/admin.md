@@ -1,15 +1,15 @@
 ---
-title: Admin
+title: Administration
 weight: 1
 ---
 
-An administrator is defined as the initial user, typically the one who set up Recipya.
-Only the administrator can access the admin page.
+Un administrateur est défini comme l'utilisateur initial, généralement celui qui a configuré Recipya.
+Seul l'administrateur peut accéder à la page d'administration.
 
-To access it, select the `Admin` option from the avatar menu.
+Pour y accéder, sélectionnez l'option « Admin » dans le menu de l'avatar.
 
 ![](images/admin-access.webp)
 
-You can add and delete users.
+Vous pouvez ajouter et supprimer des utilisateurs.
 
 ![](images/admin-overview.webp)

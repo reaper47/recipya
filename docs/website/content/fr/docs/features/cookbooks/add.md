@@ -1,28 +1,27 @@
 ---
-title: Create
+title: Créer
 weight: 1
 prev: /docs/features/cookbooks
 ---
 
-Click the *Add Cookbook* button from the cookbook feature tab to create a cookbook. 
-You will be prompted for its title. 
+Cliquez sur le bouton *Ajouter un livre de recettes* dans l'onglet de la fonction Livre de recettes pour créer un livre de recettes. Vous serez invité à saisir son titre.
 
 ![](images/cookbook-add.webp)
 
-The cookbook will then be displayed to you immediately. The following image shows two created cookbooks.
+Le livre de recettes s'affiche alors immédiatement. L'image suivante montre deux livres de recettes créés.
 
 ![](images/cookbooks-view.webp)
 
-## Adding Recipes
+## Ajout de recettes
 
-Your cookbook is empty after creation. You can add recipes by searching for them in the search box.
+Votre livre de recettes est vide après sa création. Vous pouvez ajouter des recettes en les recherchant dans la zone de recherche.
 
 ![](images/cookbook-no-recipes.webp)
 
-After typing, press **Enter** or click the magnifying glass to submit your search request. The results will
-appear below the search box. Queries are case-insensitive.
+Après avoir tapé, appuyez sur **Entrée** ou cliquez sur la loupe pour soumettre votre demande de recherche. Les résultats
+s'afficheront sous la zone de recherche. Les requêtes ne sont pas sensibles à la casse.
 
-Finally, click the *Add* button on the recipes you want to the add to the cookbook.
+Enfin, cliquez sur le bouton *Ajouter* sur les recettes que vous souhaitez ajouter au livre de cuisine.
 
 ![](images/cookbook-search-results-add.webp)
 

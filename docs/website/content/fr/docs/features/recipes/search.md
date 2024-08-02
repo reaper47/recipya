@@ -1,68 +1,67 @@
 ---
-title: Search
+title: Recherche
 weight: 5
 ---
 
-You can search for recipes from the search text box below the add recipes button of the recipes view page.
-Type your keywords delimited by either a space, comma or both. Then press the enter key to fire the search.
-
+Vous pouvez rechercher des recettes à partir de la zone de texte de recherche située sous le bouton Ajouter des recettes de la page d'affichage des recettes.
+Tapez vos mots-clés délimités par un espace, une virgule ou les deux. Appuyez ensuite sur la touche Entrée pour lancer la recherche.
 ![](images/recipes-search-view.webp)
 
-## Basic Search
+## Recherche de base
 
-The basic search is one where the user types something in the search box without using any
-of the advanced search concepts.
+La recherche de base est celle dans laquelle l'utilisateur saisit quelque chose dans la zone de recherche sans utiliser aucun
+des concepts de recherche avancée.
 
-The default search mode is __Full search__. In other words, your query will search the following fields of all 
-recipes belonging to you:
-- Title
+Le mode de recherche par défaut est __Recherche complète__. En d'autres termes, votre requête recherchera les champs suivants de toutes les
+recettes vous appartenant :
+- Titre
 - Description
-- Category
-- Ingredients
+- Catégorie
+- Ingrédients
 - Instructions
-- Keywords
+- Mots-clés
 - Source
-- Tools
+- Outils
 
-The results will be ranked based on their relevance to the search terms.
+Les résultats seront classés en fonction de leur pertinence par rapport aux termes de recherche.
 
 ![](images/recipes-search-query.webp)
 
-## Advanced Search
+## Recherche Avancée
 
-The advanced search feature lets you tailor the search query to specific requirements. It is similar to using advanced
-search features in google. For example, searching for `magnetic declination site:.edu` in Google will yield results 
-containing the terms `magnetic declination` for websites of the `.edu` top-level domain.
+La fonction de recherche avancée vous permet d'adapter la requête de recherche à des besoins spécifiques. Elle est similaire à l'utilisation des fonctions de recherche
+avancées de Google. Par exemple, la recherche de `magnetic declination site:.edu` dans Google donnera des résultats
+contenant les termes « déclinaison magnétique » pour les sites Web du domaine de premier niveau `.edu`.
 
-The following table provide examples of how to perform various searches. You may combine any of the searches in any order.
+Le tableau suivant fournit des exemples de la manière d'effectuer différentes recherches. Vous pouvez combiner n'importe laquelle des recherches dans n'importe quel ordre.
 
-| Search                       | Example                                                |
-|------------------------------|--------------------------------------------------------|
-| Any field                    | big green squash                                       |
-| By category                  | cat:dinner                                             |
-| Multiple categories          | cat:breakfast,dinner                                   |
-| Subcategory                  | cat:beverages:cocktails                                |
-| Any field of category        | chicken cat:dinner                                     |
-| By name                      | name:chicken kyiv                                      |
-| By name and category         | name:chicken kyiv cat:lunch                            |
-| Any field, name and category | best name:chicken kyiv cat:lunch                       |
-| By description               | desc:tender savory stacked                             |
-| Multiple descriptions        | desc:tender savory stacked,juicy crispy pieces chicken |
-| By cuisine                   | cuisine:ukrainian                                      |
-| Multiple cuisines            | cuisine:ukrainian,japanese                             |
-| By ingredient                | ing:onions                                             |
-| Multiple ingredients         | ing:olive oil,thyme,butter                             |
-| By instruction               | ins:preheat oven 350                                   |
-| Multiple instructions        | ins:preheat oven 350,melt butter                       |
-| By keyword                   | tag:biscuits                                           |
-| Multiple keywords            | tag:biscuits,mardi gras                                |
-| By Tool                      | tool:frying pan                                        |
-| Multiple tools               | tool:frying pan,wok                                    |
-| By source                    | src:allrecipes.com                                     |
-| Multiple sources             | src:allrecipes.com,tasteofhome.com                     |
+| Recherche                              | Exemple                                                |
+|----------------------------------------|--------------------------------------------------------|
+| N'importe quel champ                   | big green squash                                       |
+| Par catégorie                          | cat:dinner                                             |
+| Plusieurs catégories                   | cat:breakfast,dinner                                   |
+| Sous-catégorie                         | cat:beverages:cocktails                                |
+| N'importe quel champ de catégorie      | chicken cat:dinner                                     |
+| Par nom                                | name:chicken kyiv                                      |
+| Par nom et par catégorie               | name:chicken kyiv cat:lunch                            |
+| N'importe quel champ, nom et catégorie | best name:chicken kyiv cat:lunch                       |
+| Par description                        | desc:tender savory stacked                             |
+| Plusieurs descriptions                 | desc:tender savory stacked,juicy crispy pieces chicken |
+| Par cuisine                            | cuisine:ukrainian                                      |
+| Plusieurs cuisines                     | cuisine:ukrainian,japanese                             |
+| Par ingrédient                         | ing:onions                                             |
+| Plusieurs ingrédients                  | ing:olive oil,thyme,butter                             |
+| Par instruction                        | ins:preheat oven 350                                   |
+| Plusieurs instructions                 | ins:preheat oven 350,melt butter                       |
+| Par mot-clé                            | tag:biscuits                                           |
+| Plusieurs mots-clés                    | tag:biscuits,mardi gras                                |
+| Par outil                              | tool:frying pan                                        |
+| Plusieurs outils                       | tool:frying pan,wok                                    |
+| Par source                             | src:allrecipes.com                                     |
+| Plusieurs sources                      | src:allrecipes.com,tasteofhome.com                     |
 
-### Help
+### Aide
 
-You may access the advanced search help dialog by clicking the info button to the far left of the search bar.
+Vous pouvez accéder à la boîte de dialogue d'aide à la recherche avancée en cliquant sur le bouton d'information à l'extrême gauche de la barre de recherche.
 
 ![](images/recipes-search-help.webp)

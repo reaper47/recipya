@@ -1,104 +1,104 @@
 ---
-title: Add
+title: Ajouter
 weight: 1
 prev: /docs/features/recipes
 ---
 
-You can add a recipe by clicking the blue **Add Recipe** in the middle of the application bar.
+Vous pouvez ajouter une recette en cliquant sur le bouton bleu **Ajouter une recette** au milieu de la barre d'application.
 
 ![](images/add-recipe.webp)
 
-## Adding Recipes
+## Ajout de recettes
 
-You will be presented with four different ways of adding a recipe to your collection.
+Quatre façons différentes d’ajouter une recette à votre collection vous seront présentées.
 
-- [Manual](#manual)
+- [Manuellement](#manuellement)
 - [Scan](#scan)
-- [Website](#website)
-- [Import](#import)
+- [Site Web](#site-web)
+- [Importer](#importer)
 
 ![](images/add-recipe-options.webp)
 
-### Manual
+### Manuellement
 
-The simplest method of inputting a recipe involves completing a form that outlines your dish.
+La méthode la plus simple pour saisir une recette consiste à remplir un formulaire décrivant votre plat.
 
-The following fields, indicated with an asterisk (*), are mandatory:
-- Title
-- Ingredients
+Les champs suivants, indiqués par un astérisque (*), sont obligatoires :
+- Titre
+- Ingrédients
 - Instructions
 
-The following presents the default values of empty fields after submitting:
-- Media → Default sushi image
-- Category → "uncategorized"
-- Servings → 1
-- Source → "Unknown"
-- Keywords → none
-- Time → 15m (prep), 30m (cooking)
-- Description → empty
-- Tools → none
+Les valeurs par défaut des champs vides après la soumission sont les suivantes :
+- Média → Image de sushi par défaut
+- Catégorie → « non catégorisé »
+- Portions → 1
+- Source → « Inconnu »
+- Mots-clés → aucun
+- Temps → 15 min (préparation), 30 min (cuisson)
+- Description → vide
+- Outils → aucun
 
 ![](images/add-recipe-manual.webp)
 
-You might find these shortcuts useful if you are filling the form from your computer.
+Ces raccourcis pourraient vous être utiles si vous remplissez le formulaire depuis votre ordinateur.
 
-| Shortcut     | How to enable                     | Result              |
-|--------------|-----------------------------------|---------------------|
-| Enter        | Focus on an ingredient text input | Add ingredient row  |
-| Ctrl + Enter | Focus on an instruction text area | Add instruction row |
+| Raccourci     | Comment activer                              | Résultat                         |
+|---------------|----------------------------------------------|----------------------------------|
+| Entrée        | Focus sur la saisie de texte d'un ingrédient | Ajouter une ligne d'ingrédients  |
+| Ctrl + Entrée | Focus sur une zone de texte d'instruction    | Ajouter une ligne d'instructions |
 
-You can also reorder the ingredients and the instructions by dragging the arrow vertically.
+Vous pouvez également réorganiser les ingrédients et les instructions en faisant glisser la flèche verticalement.
 
 ### Scan
 
-You can upload an image or a scan of a handwritten or printed recipe to add it to your collection. 
-This option is useful for digitizing your and your family's paper recipes.
+Vous pouvez télécharger une image ou un scan d'une recette manuscrite ou imprimée pour l'ajouter à votre collection.
+Cette option est utile pour numériser vos recettes papier et celles de votre famille.
 
-To do so, click the *Upload* button and select a document on your computer.
+Pour ce faire, cliquez sur le bouton *Télécharger* et sélectionnez un document sur votre ordinateur.
 
 ![](images/add-recipe-scan.webp)
 
-You can upload files in the following formats:
+Vous pouvez télécharger des fichiers dans les formats suivants :
 - Images (JPEG/JPG, PNG, BMP, HEIF)
 - PDF
 - TIFF
 
 {{< callout type="warning" >}}
-You must have an [Azure AI Document Intelligence](/guide/docs/installation/integrations#azure-AI Document Intelligence) instance to use this feature.
+Vous devez disposer d’une instance [Azure AI Document Intelligence](/guide/fr/docs/installation/integrations#azure-AI Document Intelligence) pour utiliser cette fonctionnalité.
 {{< /callout >}}
 
-### Website
+### Site Web
 
-You can import any recipe from the supported websites. To do so, click the **Fetch** button, 
-paste the recipe's URL or URLs, each on a new line, and click *Submit*. A notification will 
-appear when the operation finished. 
+Vous pouvez importer n'importe quelle recette à partir des sites Web pris en charge. Pour ce faire, cliquez sur le bouton **Récupérer**,
+collez l'URL ou les URL de la recette, chacune sur une nouvelle ligne, et cliquez sur *Envoyer*. Une notification
+apparaîtra lorsque l'opération sera terminée.
 
-Its action button performs an action based on the outcome. When you imported one URL and the 
-operation succeeds, the action will redirect you to the recipe. Otherwise, you will be redirected
-to the latest report.
+Son bouton d'action exécute une action en fonction du résultat. Lorsque vous avez importé une URL et que
+l'opération réussit, l'action vous redirige vers la recette. Sinon, vous serez redirigé
+vers le dernier rapport.
 
-To view all supported websites, please click on the <ins>supported</ins> word. You can scrape a 
-website not in the supported list, but recipe extraction may fail. Please open an issue on GitHub if
-it does.
+Pour afficher tous les sites Web pris en charge, veuillez cliquer sur le mot <ins>supported</ins>. Vous pouvez extraire un
+site Web qui ne figure pas dans la liste prise en charge, mais l'extraction de la recette peut échouer. Veuillez ouvrir un problème sur GitHub si
+c'est le cas.
 
 ![](images/add-recipe-website.gif)
 
-### Import
+### Importer
 
-You can import recipes in the following formats:
-- `.json`: If they adhere to the [Recipe schema](https://schema.org/Recipe) standard
-- `.mxp`: Exported recipes from [MasterCook](https://www.mastercook.com)
-- `.paprikarecipes`: Exported recipes from [Paprika](https://www.paprikaapp.com) in the `Paprika Recipe Format`
+Vous pouvez importer des recettes dans les formats suivants :
+- `.json` : si elles sont conformes à la norme [Recipe schema](https://schema.org/Recipe)
+- `.mxp` : recettes exportées depuis [MasterCook](https://www.mastercook.com)
+- `.paprikarecipes` : recettes exportées depuis [Paprika](https://www.paprikaapp.com) dans le format `Paprika Recipe Format`
 - `.txt`
 - `.zip`
 
 ![](images/add-recipe-import.webp)
 
-You can upload either a single file or a zip archive containing multiple recipes. The recipes in a zip file may be 
-organized by folder. Each folder can contain the recipe's `.json` file. All other files in a folder 
-will be ignored during processing.
+Vous pouvez télécharger un fichier unique ou une archive zip contenant plusieurs recettes. Les recettes d'un fichier zip peuvent être
+organisées par dossier. Chaque dossier peut contenir le fichier `.json` de la recette. Tous les autres fichiers d'un dossier
+seront ignorés pendant le traitement.
 
-You may also upload exported recipes from the following applications:
+Vous pouvez également télécharger des recettes exportées à partir des applications suivantes :
 - AccuChef
 - ChefTap
 - Crouton
@@ -110,25 +110,25 @@ You may also upload exported recipes from the following applications:
 - RecipeSage
 - Saffron
 
-Please refer to the [integrations page](/guide/docs/features/integrations/) for application-specific instructions.
+Veuillez vous référer à la [page des intégrations](/guide/fr/docs/features/integrations/) pour obtenir des instructions spécifiques à l'application.
 
-#### Recipya Bookmarklet
+#### Bookmarklet de Recipya
 
-The Recipya bookmarklet allows a user to run a JavaScript snippet from their browser that extracts a recipe from a webpage.
+Le bookmarklet Recipya permet à un utilisateur d'exécuter un extrait JavaScript à partir de son navigateur qui extrait une recette d'une page Web.
 
-It's for websites that both:
-- can't be scraped via a server request, i.e. have something like captcha or bot detection
-- that have json+ld recipe script snippets on their page
+Il est destiné aux sites Web qui à la fois :
+- ne peuvent pas être récupérés via une requête serveur, c'est-à-dire qui ont quelque chose comme un captcha ou une détection de bot
+- qui ont des extraits de script de recette json+ld sur leur page
 
-To get the bookmarklet:
-1. Access `/recipes/add`
-2. Bookmark the `Recipya Bookmarklet` link in the `Import` card.
+Pour obtenir le bookmarklet :
+1. Accédez à `/recipes/add`
+2. Ajoutez le lien `Recipya Bookmarklet` à vos favoris dans la carte `Import`.
 
-To use it:
-1. Open a recipe webpage, e.g. [double banana nut bread](https://www.allrecipes.com/recipe/231961/double-banana-nut-bread/)
-2. Click the bookmarklet
-3. A JSON file is downloaded when it succeeds.
+Pour l'utiliser :
+1. Ouvrez une page Web de recette, par exemple [double banana nut bread](https://www.allrecipes.com/recipe/231961/double-banana-nut-bread/)
+2. Cliquez sur le bookmarklet
+3. Un fichier JSON est téléchargé lorsqu'il réussit.
 
-You can then import the extracted recipe from `Add recipe -> Import`.
+Vous pouvez ensuite importer la recette extraite depuis `Ajouter une recette -> Importer`.
 
 ![](images/recipya-bookmarklet.gif)

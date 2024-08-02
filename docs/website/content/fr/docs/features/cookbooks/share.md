@@ -1,19 +1,18 @@
 ---
-title: Share
+title: Partager
 weight: 5
-next: /docs/features/measurement-systems
 ---
 
-You can share a cookbook to your family and friends. To do so, you must first generate the cookbook's share
-link by clicking the **Share** submenu option from the three dots icon's menu.
+Vous pouvez partager un livre de recettes avec votre famille et vos amis. Pour ce faire, vous devez d'abord générer le lien de partage du livre
+de recettes en cliquant sur l'option de sous-menu **Partager** dans le menu de l'icône à trois points.
 
 ![](images/cookbook-share.webp)
 
-The link will then be displayed to you, ready to be sent to your family and friends.
+Le lien vous sera alors affiché, prêt à être envoyé à votre famille et à vos amis.
 
 ![](images/cookbook-share-link.webp)
 
-Anyone who opens this link will be presented with the recipes you added to the cookbook you shared.
-Any of its recipes can then be viewed without the need to log in. 
+Toute personne qui ouvre ce lien verra les recettes que vous avez ajoutées au livre de cuisine que vous avez partagé.
+Toute recette peut alors être consultée sans avoir à se connecter.
 
 ![](images/cookbook-share-anonymous.webp)

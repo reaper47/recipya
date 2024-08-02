@@ -1,19 +1,19 @@
 ---
-title: Delete
+title: Supprimer
 weight: 4
+next: /docs/features/measurement-systems
 ---
 
-To delete a cookbook from your collection, first click the three vertical dots at the top right of 
-the cookbook you wish to delete. Then, click the **Delete** submenu item. You will be prompted whether
-you want to proceed before deletion.
+Pour supprimer un livre de recettes de votre collection, cliquez d'abord sur les trois points verticaux en haut à droite
+du livre de recettes que vous souhaitez supprimer. Cliquez ensuite sur l'élément de sous-menu **Supprimer**. Vous serez invité à
+continuer avant la suppression.
 
 ![](images/cookbook-delete.webp)
 
 {{< callout type="error" >}}
-Deleting a cookbook is irreversible. It will be gone forever.
-However, its recipes will be left untouched.
+La suppression d'un livre de cuisine est irréversible. Il disparaîtra définitivement. Cependant, ses recettes resteront intactes.
 {{< /callout >}}
 
-The cookbook will then be deleted from your collection and the changes will be reflected immediately.
+Le livre de recettes sera alors supprimé de votre collection et les modifications seront immédiatement répercutées.
 
 ![](images/cookbook-delete-aftermath.webp)

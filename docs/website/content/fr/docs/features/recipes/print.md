@@ -1,15 +1,15 @@
 ---
-title: Print
+title: Imprimer
 weight: 7
 ---
 
-A recipe can be printed for your convenience and preference.
+Une recette peut être imprimée selon vos préférences et votre convenance.
 
-To print, you first must [view a recipe](/guide/fr/docs/features/recipes/view). Then, click the printer icon to the right of the
-recipe's title.
+Pour imprimer, vous devez d'abord [afficher une recette](/guide/fr/docs/features/recipes/view). 
+Ensuite, cliquez sur l'icône d'imprimante à droite du titre de la recette.
 
 ![](images/print-icon.webp)
 
-You will then be presented with the print dialog.
+La boîte de dialogue d’impression s’affichera alors.
 
 ![](images/print-dialog.webp)

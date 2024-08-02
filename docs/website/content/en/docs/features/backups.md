@@ -77,7 +77,7 @@ Restoring a global backup is done only by the one who has access to the server.
 2. Navigate to `path/to/recipya/data/Backup/global/`
 3. Unzip the backup you wish to restore
 4. Replace the content under `path/to/recipya/data/*` with the one from the unzipped backup
-5. If applicable, delete `path/to/recipya/data/Database/recipya.db-shm` and `path/to/recipya/data/Database/recipya.db-wal
+5. If applicable, delete `path/to/recipya/data/Database/recipya.db-shm` and `path/to/recipya/data/Database/recipya.db-wal`
 6. Start the application
 
 ### User
