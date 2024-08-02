@@ -73,7 +73,7 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	redirectURL := "/"
-	if !strings.HasPrefix(r.URL.Path, "/guide") {
+	if !strings.HasPrefix(r.URL.Path, "/guide") && !app.Config.Server.IsBypassGuide {
 		redirectURL = "/guide/en"
 	} else if app.Config.Server.IsBypassGuide {
 		redirectURL = "/auth/login"

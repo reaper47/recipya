@@ -1,4 +1,4 @@
-baseURL: /guide/en
+baseURL: /guide
 title: Recipya
 theme: hextra
 
@@ -110,6 +110,7 @@ params:
   editURL:
     enable: true
     base: "https://github.com/reaper47/recipya/edit/main/docs/website/content"
+
 
   blog:
     list:
