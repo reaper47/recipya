@@ -17,7 +17,7 @@ layout: hextra-home
 
 <div class="flex hx-mb-6">
 {{< hextra/hero-button text="Get Started" link="/guide/docs/" style="margin-right: 0.5rem" >}}
-{{< hextra/hero-button text="Open App" link="/guide/auth/login" style="background-color:  rgb(139 92 246)">}}
+{{< hextra/hero-button text="Open App" link="/guide/login" style="background-color:  rgb(139 92 246)">}}
 </div>
 
 {{< hextra/feature-grid >}}
