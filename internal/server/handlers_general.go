@@ -17,7 +17,6 @@ import (
 	"runtime"
 	"slices"
 	"strconv"
-	"strings"
 	"syscall"
 	"time"
 )
@@ -72,10 +71,8 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	redirectURL := "/"
-	if !strings.HasPrefix(r.URL.Path, "/guide") && !app.Config.Server.IsBypassGuide {
-		redirectURL = "/guide/en"
-	} else if app.Config.Server.IsBypassGuide {
+	redirectURL := "/guide/en"
+	if app.Config.Server.IsBypassGuide {
 		redirectURL = "/auth/login"
 	}
 
