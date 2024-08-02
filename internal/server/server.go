@@ -82,6 +82,7 @@ func (s *Server) mountHandlers() {
 	// Static files routes
 	subFS, _ := fs.Sub(docs.FS, "website/public")
 	mux.HandleFunc("GET /guide/*", http.StripPrefix("/guide", http.FileServerFS(subFS)).ServeHTTP)
+	mux.HandleFunc("GET /guide/en/*", http.StripPrefix("/guide/en", http.FileServerFS(subFS)).ServeHTTP)
 	mux.HandleFunc("GET /guide/login", guideLoginHandler)
 	mux.HandleFunc("GET /static/*", http.StripPrefix("/static", http.FileServerFS(static.FS)).ServeHTTP)
 	mux.HandleFunc("GET /data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(app.ImagesDir))).ServeHTTP)
