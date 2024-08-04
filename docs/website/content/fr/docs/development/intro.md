@@ -25,6 +25,24 @@ The following software is required to build the project.
 | [Templ](https://templ.guide/)             | latest   | 
 | [Hugo](https://gohugo.io/installation/)   | latest   |
 
+### Task
+
+```text
+go install github.com/go-task/task/v3/cmd/task@latest
+```
+
+### Templ
+
+```text
+go install github.com/a-h/templ/cmd/templ@latest
+```
+
+### Hugo
+
+```text
+CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
+```
+
 ## Recommended CLI Programs
 
 The following lists CLI programs you should install to help you develop the project.
