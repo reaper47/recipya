@@ -33,8 +33,8 @@ var (
 	Info = GeneralInfo{
 		Version: semver.Version{
 			Major: 1,
-			Minor: 3,
-			Patch: 0,
+			Minor: 2,
+			Patch: 1,
 		},
 	} // Info stores general application information.
 
