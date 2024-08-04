@@ -140,7 +140,7 @@ func setupFDC() {
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "fdc.db", "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "fdc.db", "https://media.githubusercontent.com/media/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
