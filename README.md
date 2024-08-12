@@ -28,7 +28,7 @@ It is focused on simplicity for the whole family to enjoy.
 - Calculate nutritional information automatically
 - Print any recipe in your collection
 - Prevent your device from going to sleep while viewing a recipe
-- Follows your system's theme (light/dark)
+- Follows your system's theme (light/dark) or choose among 32 themes
 - Cross-compiled for Windows, Linux, and macOS
 
 ## Getting Started

@@ -18,7 +18,7 @@ Il est axé sur la simplicité pour que toute la famille puisse en profiter.
 - Calculez automatiquement les informations nutritionnelles
 - Imprimez n'importe quelle recette de votre collection
 - Empêchez votre appareil de se mettre en veille pendant que vous consultez une recette
-- Suivez le thème de votre système (clair/foncé)
+- Suivez le thème de votre système (clair/foncé) ou choisissez parmi 32 thèmes
 - Compilation croisée pour Windows, Linux et macOS
 
 ## Mise en route
