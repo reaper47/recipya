@@ -70,7 +70,7 @@ layout: hextra-home
 {{< hextra/feature-card
     title="Responsive"
     icon="device-mobile"
-    subtitle="Looks great on different screen sizes. Follows your system's theme."
+    subtitle="Looks great on different screen sizes. Select among 32 themes."
     >}}
 {{< hextra/feature-card
     title="Cross-compiled"

@@ -350,6 +350,16 @@ templ settingsServer(data templates.Data) {
 
 templ settingsAccount() {
 	<div id="settings_account" class="hidden p-3 md:p-0 md:pr-4 md:max-h-96">
+		<div>
+			<div class="flex justify-between items-center text-sm">
+				<div>
+					<p class="font-semibold">Theme</p>
+					<p class="font-normal text-sm">Select your preferred theme.</p>
+				</div>
+				@themesPalette()
+			</div>
+		</div>
+		<div class="divider m-0"></div>
 		<div class="flex justify-between items-center text-sm">
 			<details class="w-full">
 				<summary class="font-semibold cursor-default">Change password</summary>
@@ -434,7 +444,7 @@ templ SettingsAbout(data templates.Data) {
 						Last updated: { data.About.LastUpdatedAt.Format(time.DateOnly) }
 						<br/>
 						<br/>
-						Read the <a class="link" href="https://recipes.musicavis.ca/guide/en/about/changelog/v1.2.0" target="_blank">release notes</a>
+						Read the <a class="link" href="https://recipes.musicavis.ca/guide/en/about/changelog/v1.3.0" target="_blank">release notes</a>
 					</p>
 				</div>
 				<div class="flex flex-row self-start">

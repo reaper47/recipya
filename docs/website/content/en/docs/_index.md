@@ -19,5 +19,5 @@ share your favorite recipes. It is focussed on simplicity for the whole family t
 - [Calculate nutritional information automatically](/guide/docs/features/nutrition-facts)
 - [Print any recipe in your collection](/guide/docs/features/recipes/print)
 - [Prevent your device from going to sleep while viewing a recipe](/guide/docs/features/recipes/wakelock)
-- Follows your system's theme (light/dark)
+- Follows your system's theme (light/dark) or choose among 32 themes
 - Cross-compiled for Windows, Linux, and macOS
