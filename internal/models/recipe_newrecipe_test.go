@@ -196,7 +196,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				},
 				Tools:  make([]models.HowToItem, 0),
 				Videos: []models.VideoObject{},
-				URL:    "https://www.bbcgoodfood.com/recipes/classic-roast-chicken-gravy",
+				URL:    "bbcgoodfood.com/recipes",
 				Yield:  4,
 			},
 		},
