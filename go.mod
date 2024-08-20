@@ -7,6 +7,7 @@ require (
 	github.com/a-h/templ v0.2.747
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/briandowns/spinner v1.23.1
+	github.com/coder/websocket v1.8.12
 	github.com/disintegration/imaging v1.6.2
 	github.com/donna-legal/word2number v0.0.0-20180823152447-90bc2b233105
 	github.com/gen2brain/webp v0.4.5
@@ -20,7 +21,7 @@ require (
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/neurosnap/sentences v1.1.2
 	github.com/pdfcpu/pdfcpu v0.8.0
-	github.com/pressly/goose/v3 v3.21.1
+	github.com/pressly/goose/v3 v3.17.0
 	github.com/sendgrid/sendgrid-go v3.15.0+incompatible
 	github.com/urfave/cli/v2 v2.27.4
 	golang.org/x/crypto v0.26.0
@@ -30,7 +31,6 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	modernc.org/sqlite v1.32.0
-	nhooyr.io/websocket v1.8.17
 )
 
 require (
@@ -57,7 +57,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
-	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/mingrammer/commonregex v1.0.1 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect

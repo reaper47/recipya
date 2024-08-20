@@ -2,15 +2,10 @@ package server
 
 import (
 	"errors"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/web/components"
 	"io"
 	"log/slog"
 	"net/http"
 	"net/url"
-	"nhooyr.io/websocket"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,6 +14,12 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/coder/websocket"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/web/components"
 )
 
 func (s *Server) downloadHandler() http.HandlerFunc {

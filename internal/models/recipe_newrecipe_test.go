@@ -3,12 +3,13 @@ package models_test
 import (
 	"bytes"
 	"errors"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/models"
 	"io"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestNewRecipeFromTextFile(t *testing.T) {
@@ -196,7 +197,7 @@ func TestNewRecipeFromTextFile(t *testing.T) {
 				},
 				Tools:  make([]models.HowToItem, 0),
 				Videos: []models.VideoObject{},
-				URL:    "bbcgoodfood.com/recipes",
+				URL:    "https://www.bbcgoodfood.com/recipes/classic-roast-chicken-gravy",
 				Yield:  4,
 			},
 		},

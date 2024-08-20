@@ -28,8 +28,8 @@
         <method importPath="strings" receiver="*Builder" name="Write" />
         <method importPath="io" receiver="ReadCloser" name="Close" />
         <method importPath="database/sql" receiver="*Rows" name="Close" />
-        <method importPath="nhooyr.io/websocket" receiver="*Conn" name="Close" />
-        <method importPath="nhooyr.io/websocket" receiver="*Conn" name="CloseNow" />
+        <method importPath="github.com/coder/websocket" receiver="*Conn" name="Close" />
+        <method importPath="github.com/coder/websocket" receiver="*Conn" name="CloseNow" />
         <method importPath="os" receiver="*File" name="Close" />
         <method importPath="archive/zip" receiver="*Writer" name="Close" />
         <method importPath="compress/gzip" receiver="*Reader" name="Close" />

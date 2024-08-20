@@ -2,14 +2,15 @@ package server_test
 
 import (
 	"bytes"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+
+	"github.com/coder/websocket"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/server"
-	"net/http"
-	"net/http/httptest"
-	"nhooyr.io/websocket"
-	"strings"
-	"testing"
 )
 
 func assertCookbooksViewMode(tb testing.TB, mode models.ViewMode, got string) {

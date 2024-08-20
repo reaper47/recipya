@@ -3,19 +3,20 @@ package server_test
 import (
 	"bytes"
 	"context"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/auth"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/server"
 	"io"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
-	"nhooyr.io/websocket"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/coder/websocket"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/auth"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/server"
 )
 
 type header string
@@ -217,13 +218,13 @@ func getBodyHTML(rr *httptest.ResponseRecorder) string {
 	body, _ := io.ReadAll(rr.Body)
 
 	cases := []models.Replace{
-		{"\r\n", ""},
-		{"\n", ""},
-		{"\r", ""},
-		{"&#39;", "'"},
-		{"&#34;", `"`},
-		{"&lt;", "<"},
-		{"&gt;", ">"},
+		{Old: "\r\n", New: ""},
+		{Old: "\n", New: ""},
+		{Old: "\r", New: ""},
+		{Old: "&#39;", New: "'"},
+		{Old: "&#34;", New: `"`},
+		{Old: "&lt;", New: "<"},
+		{Old: "&gt;", New: ">"},
 	}
 	for _, c := range cases {
 		body = bytes.ReplaceAll(body, []byte(c.Old), []byte(c.New))
