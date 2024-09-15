@@ -17,14 +17,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/reaper47/recipya/docs"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/jobs"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/scraper"
 	"github.com/reaper47/recipya/internal/services"
 	_ "github.com/reaper47/recipya/internal/templates" // Need to initialize the templates package.
-	"github.com/reaper47/recipya/web/static"
+	"github.com/reaper47/recipya/web"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -80,15 +79,12 @@ func (s *Server) mountHandlers() {
 	mux := http.NewServeMux()
 
 	// Static files routes
-	subFS, _ := fs.Sub(docs.FS, "website/public")
-	mux.HandleFunc("GET /guide/*", http.StripPrefix("/guide", http.FileServerFS(subFS)).ServeHTTP)
-	mux.HandleFunc("GET /guide/en/*", http.StripPrefix("/guide/en", http.FileServerFS(subFS)).ServeHTTP)
-	mux.HandleFunc("GET /guide/login", guideLoginHandler)
-	mux.HandleFunc("GET /static/*", http.StripPrefix("/static", http.FileServerFS(static.FS)).ServeHTTP)
+	var staticFS, _ = fs.Sub(web.StaticFS, "static")
+	//mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServerFS(staticFS)))
 	mux.HandleFunc("GET /data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(app.ImagesDir))).ServeHTTP)
 	mux.HandleFunc("GET /data/images/thumbnails/*", http.StripPrefix("/data/images/thumbnails", http.FileServer(http.Dir(app.ThumbnailsDir))).ServeHTTP)
 	mux.HandleFunc("GET /data/videos/*", http.StripPrefix("/data/videos", http.FileServer(http.Dir(app.VideosDir))).ServeHTTP)
-	mux.HandleFunc("GET /*", notFoundHandler)
 
 	// General routes
 	mux.HandleFunc("GET /{$}", s.indexHandler)
@@ -179,6 +175,8 @@ func (s *Server) mountHandlers() {
 	// Share routes
 	mux.HandleFunc("GET /r/{id}", s.recipeShareHandler)
 	mux.HandleFunc("GET /c/{id}", s.cookbookShareHandler)
+
+	mux.HandleFunc("GET /*", notFoundHandler)
 
 	s.Router = mux
 }

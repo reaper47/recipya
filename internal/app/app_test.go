@@ -3,14 +3,15 @@ package app_test
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/google/go-cmp/cmp"
-	"github.com/reaper47/recipya/internal/app"
 	"io"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/reaper47/recipya/internal/app"
 )
 
 func TestConfigFile_Address(t *testing.T) {
@@ -124,23 +125,21 @@ func TestNewConfig(t *testing.T) {
 			},
 		},
 		Server: app.ConfigServer{
-			IsBypassGuide: true,
-			IsDemo:        false,
-			IsProduction:  false,
-			Port:          8078,
-			URL:           "http://0.0.0.0",
+			IsDemo:       false,
+			IsProduction: false,
+			Port:         8078,
+			URL:          "http://0.0.0.0",
 		},
 	}
 
 	env := map[string]string{
-		"RECIPYA_DI_ENDPOINT":         "https://{resource_di}.cognitiveservices.azure.com",
-		"RECIPYA_DI_KEY":              "KEY_1",
-		"RECIPYA_EMAIL":               "my@email.com",
-		"RECIPYA_EMAIL_SENDGRID":      "API_KEY",
-		"RECIPYA_SERVER_BYPASS_GUIDE": "true",
-		"RECIPYA_SERVER_IS_DEMO":      "false",
-		"RECIPYA_SERVER_IS_PROD":      "false",
-		"RECIPYA_SERVER_PORT":         "8078",
+		"RECIPYA_DI_ENDPOINT":    "https://{resource_di}.cognitiveservices.azure.com",
+		"RECIPYA_DI_KEY":         "KEY_1",
+		"RECIPYA_EMAIL":          "my@email.com",
+		"RECIPYA_EMAIL_SENDGRID": "API_KEY",
+		"RECIPYA_SERVER_IS_DEMO": "false",
+		"RECIPYA_SERVER_IS_PROD": "false",
+		"RECIPYA_SERVER_PORT":    "8078",
 	}
 
 	t.Run("load from config file", func(t *testing.T) {

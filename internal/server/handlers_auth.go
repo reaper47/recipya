@@ -2,6 +2,13 @@ package server
 
 import (
 	"errors"
+	"log/slog"
+	"maps"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/auth"
@@ -9,12 +16,6 @@ import (
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/utils/regex"
 	"github.com/reaper47/recipya/web/components"
-	"log/slog"
-	"maps"
-	"net/http"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func (s *Server) changePasswordHandler() http.HandlerFunc {
@@ -294,10 +295,6 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 
 		w.Header().Set("HX-Redirect", redirectURI)
 	}
-}
-
-func guideLoginHandler(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
 }
 
 func registerHandler() http.HandlerFunc {

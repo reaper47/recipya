@@ -7,11 +7,12 @@ import (
 	"fmt"
 	"log/slog"
 	"maps"
-	"nhooyr.io/websocket"
-	"nhooyr.io/websocket/wsjson"
 	"slices"
 	"sync"
 	"time"
+
+	"github.com/coder/websocket"
+	"github.com/coder/websocket/wsjson"
 )
 
 // Broker represents a message broker that manages WebSocket connections for subscribers.

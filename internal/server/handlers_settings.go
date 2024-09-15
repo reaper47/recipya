@@ -2,17 +2,18 @@ package server
 
 import (
 	"bytes"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/internal/units"
-	"github.com/reaper47/recipya/web/components"
 	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
 	"slices"
 	"time"
+
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/internal/units"
+	"github.com/reaper47/recipya/web/components"
 )
 
 func (s *Server) settingsHandler() http.HandlerFunc {
@@ -157,7 +158,6 @@ func (s *Server) settingsConfigPutHandler() http.HandlerFunc {
 		c := app.Config
 		if r.Form.Has("server.autologin") {
 			c.Server.IsAutologin = r.FormValue("server.autologin") == "on"
-			c.Server.IsBypassGuide = r.FormValue("server.bypassGuide") == "on"
 			c.Server.IsNoSignups = r.FormValue("server.noSignups") == "on"
 			c.Server.IsProduction = r.FormValue("server.production") == "on"
 		}

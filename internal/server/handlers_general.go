@@ -2,15 +2,10 @@ package server
 
 import (
 	"errors"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/web/components"
 	"io"
 	"log/slog"
 	"net/http"
 	"net/url"
-	"nhooyr.io/websocket"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,6 +14,12 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/coder/websocket"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/web/components"
 )
 
 func (s *Server) downloadHandler() http.HandlerFunc {
@@ -71,12 +72,7 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	redirectURL := "/guide/en"
-	if app.Config.Server.IsBypassGuide {
-		redirectURL = "/auth/login"
-	}
-
-	http.Redirect(w, r, redirectURL, http.StatusSeeOther)
+	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
