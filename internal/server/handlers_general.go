@@ -72,12 +72,7 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	redirectURL := "/guide/en"
-	if app.Config.Server.IsBypassGuide {
-		redirectURL = "/auth/login"
-	}
-
-	http.Redirect(w, r, redirectURL, http.StatusSeeOther)
+	http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {

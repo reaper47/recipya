@@ -7,8 +7,8 @@
 [![GitHub tag](https://img.shields.io/github/v/tag/reaper47/recipya?include_prereleases&label=version)](https://github.com/reaper47/recipya/tags)
 [![License](https://img.shields.io/github/license/reaper47/recipya)](./LICENSE)
 
-[Explore the docs](https://recipes.musicavis.ca/guide/docs/) · 
-[Demo](https://recipes.musicavis.ca)
+[Explore the docs](https://recipya.musicavis.ca/docs/) · 
+[Demo](https://recipya-app.musicavis.ca)
 
 ## Introduction
 
@@ -42,9 +42,9 @@ The installation instructions are written in the [installation section](https://
 Follow these steps to build the project yourself:
 1. Clone the project.
    ```bash
-   git clone --recurse-submodules https://github.com/reaper47/recipya.git
+   git clone https://github.com/reaper47/recipya.git
    ```
-2. Install the required [dependencies](https://recipes.musicavis.ca/guide/docs/development/intro/#dependencies).
+2. Install the required [dependencies](https://recipya.musicavis.ca/docs/development/intro/#dependencies).
 3. [Build](https://recipes.musicavis.ca/guide/docs/development/build/) the project.
 
 Alternatively, you may use the [development container](https://recipes.musicavis.ca/guide/docs/development/devcontainer/).
