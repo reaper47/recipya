@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"maps"
 	"net/http"
+	"net/mail"
 	"strconv"
 	"strings"
 	"time"
@@ -14,7 +15,6 @@ import (
 	"github.com/reaper47/recipya/internal/auth"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"github.com/reaper47/recipya/web/components"
 )
 
@@ -261,7 +261,8 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
-		if !regex.Email.MatchString(email) || password == "" {
+		_, err := mail.ParseAddress(email)
+		if err != nil || password == "" {
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("Credentials are invalid.").Render())
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -349,7 +350,8 @@ func (s *Server) registerPostHandler() http.HandlerFunc {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 
-		if !regex.Email.MatchString(email) || password != r.FormValue("password-confirm") {
+		_, err := mail.ParseAddress(email)
+		if err != nil || password != r.FormValue("password-confirm") {
 			w.Header().Set("HX-Trigger", models.NewErrorFormToast("User might be registered or password invalid.").Render())
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			return
