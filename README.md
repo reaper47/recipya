@@ -88,7 +88,7 @@ You can sponsor me on
 Your support is greatly appreciated! A third of donations will be sent to the Armed Forces of Ukraine 🇺🇦
 
 This project is supported by these kind people:
-<img src="docs/website/static/images/sponsors.svg" style="width:100%;max-width:800px;"/>
+<img src="scripts/sponsors/sponsors.svg" style="width:100%;max-width:800px;"/>
 
 ## Other Recipe Manager Apps
 
