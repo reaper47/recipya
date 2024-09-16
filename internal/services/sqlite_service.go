@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"net/mail"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -26,7 +27,6 @@ import (
 	"github.com/reaper47/recipya/internal/units"
 	"github.com/reaper47/recipya/internal/utils/duration"
 	"github.com/reaper47/recipya/internal/utils/extensions"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	_ "modernc.org/sqlite" // Blank import to initialize the SQL driver.
 )
 
@@ -1356,7 +1356,8 @@ func (s *SQLiteService) RecipeUser(recipeID int64) int64 {
 
 // Register adds a new user to the store.
 func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPassword) (int64, error) {
-	if !regex.Email.MatchString(email) || hashedPassword == "" {
+	_, err := mail.ParseAddress(email)
+	if err != nil || hashedPassword == "" {
 		return -1, errors.New("credentials are invalid")
 	}
 
@@ -1367,7 +1368,7 @@ func (s *SQLiteService) Register(email string, hashedPassword auth.HashedPasswor
 	defer cancel()
 
 	var userID int64
-	err := s.DB.QueryRowContext(ctx, statements.InsertUser, email, hashedPassword).Scan(&userID)
+	err = s.DB.QueryRowContext(ctx, statements.InsertUser, email, hashedPassword).Scan(&userID)
 	return userID, err
 }
 
@@ -2237,7 +2238,8 @@ func (s *SQLiteService) UpdateVideo(video uuid.UUID, durationSecs int) error {
 
 // UserID gets the user's id from the email. It returns -1 if user not found.
 func (s *SQLiteService) UserID(email string) int64 {
-	if !regex.Email.MatchString(email) {
+	_, err := mail.ParseAddress(email)
+	if err != nil {
 		return -1
 	}
 
@@ -2245,7 +2247,7 @@ func (s *SQLiteService) UserID(email string) int64 {
 	defer cancel()
 
 	var id int64
-	err := s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id)
+	err = s.DB.QueryRowContext(ctx, statements.SelectUserID, email).Scan(&id)
 	if errors.Is(err, sql.ErrNoRows) {
 		return -1
 	}

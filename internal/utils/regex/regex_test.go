@@ -1,9 +1,10 @@
 package regex_test
 
 import (
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"regexp"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/utils/regex"
 )
 
 func TestRegex_BeginsWithWord(t *testing.T) {
@@ -110,37 +111,6 @@ func TestRegex_DimensionPattern(t *testing.T) {
 		for _, s := range xs {
 			t.Run("regex is invalid "+s, func(t *testing.T) {
 				if regex.DimensionPattern.MatchString(s) {
-					t.Error("got true when want false")
-				}
-			})
-		}
-	})
-}
-
-func TestRegex_Email(t *testing.T) {
-	t.Run("valid", func(t *testing.T) {
-		xs := []string{
-			"james@bond.com",
-			"hello@hello.ca",
-			"slave@ukrainia.ua",
-			"norway@rocks.no",
-		}
-		assertRegex(t, xs, regex.Email)
-	})
-
-	t.Run("invalid", func(t *testing.T) {
-		emails := []string{
-			"xyzGmail.com",
-			"@gmail.com",
-			"email",
-			"a@.com",
-			".com@",
-			"a@",
-			"norway@rocks",
-		}
-		for _, email := range emails {
-			t.Run("regex is invalid "+email, func(t *testing.T) {
-				if regex.Email.MatchString(email) {
 					t.Error("got true when want false")
 				}
 			})
