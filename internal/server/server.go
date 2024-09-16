@@ -80,11 +80,10 @@ func (s *Server) mountHandlers() {
 
 	// Static files routes
 	var staticFS, _ = fs.Sub(web.StaticFS, "static")
-	//mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServerFS(staticFS)))
-	mux.HandleFunc("GET /data/images/*", http.StripPrefix("/data/images", http.FileServer(http.Dir(app.ImagesDir))).ServeHTTP)
-	mux.HandleFunc("GET /data/images/thumbnails/*", http.StripPrefix("/data/images/thumbnails", http.FileServer(http.Dir(app.ThumbnailsDir))).ServeHTTP)
-	mux.HandleFunc("GET /data/videos/*", http.StripPrefix("/data/videos", http.FileServer(http.Dir(app.VideosDir))).ServeHTTP)
+	mux.HandleFunc("GET /data/images/", http.StripPrefix("/data/images/", http.FileServer(http.Dir(app.ImagesDir))).ServeHTTP)
+	mux.HandleFunc("GET /data/images/thumbnails/", http.StripPrefix("/data/images/thumbnails/", http.FileServer(http.Dir(app.ThumbnailsDir))).ServeHTTP)
+	mux.HandleFunc("GET /data/videos/", http.StripPrefix("/data/videos/", http.FileServer(http.Dir(app.VideosDir))).ServeHTTP)
 
 	// General routes
 	mux.HandleFunc("GET /{$}", s.indexHandler)
