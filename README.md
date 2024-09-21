@@ -35,7 +35,7 @@ It is focused on simplicity for the whole family to enjoy.
 
 ### Installation
 
-The installation instructions are written in the [installation section](https://recipes.musicavis.ca/guide/docs/installation/) of the documentation.
+The installation instructions are written in the [installation section](https://recipya.musicavis.ca/docs/installation/) of the documentation.
 
 ### Building the Project
 
