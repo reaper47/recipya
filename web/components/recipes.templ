@@ -2207,37 +2207,21 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									</div>
 								</div>
 							}
-							<div class={ "grid grid-flow-col border-gray-700 border-y col-span-6 md:border-t-0 md:grid-cols-2 md:row-span-2 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
-								<div class="border-r border-gray-700 print:hidden">
-									<table class="table table-zebra table-xs md:h-fit">
-										<thead>
-											<tr>
-												<th>Time</th>
-												<th>h:m:s</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Prep:</td>
-												<td>
-													<time datetime={ data.FormattedTimes.PrepDateTime }>{ data.FormattedTimes.Prep }</time>
-												</td>
-											</tr>
-											<tr>
-												<td>Cooking:</td>
-												<td>
-													<time datetime={ data.FormattedTimes.CookDateTime }>{ data.FormattedTimes.Cook }</time>
-												</td>
-											</tr>
-											<tr>
-												<td>Total:</td>
-												<td>
-													<time datetime={ data.FormattedTimes.TotalDateTime }>{ data.FormattedTimes.Total }</time>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+							<div class={ "grid grid-flow-col border-gray-700 border-y col-span-6 py-1 md:border-t-0 md:grid-cols-3 md:row-span-1 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
+								<div class="flex justify-self-center items-center gap-1 cursor-default" title="Prep time">
+									@iconCuttingBoard()
+									<time datetime={ data.FormattedTimes.PrepDateTime }>{ data.FormattedTimes.Prep }</time>
 								</div>
+								<div class="flex justify-self-center items-center gap-1 cursor-default" title="Cooking time">
+									@iconCookingPot()
+									<time datetime={ data.FormattedTimes.CookDateTime }>{ data.FormattedTimes.Cook }</time>
+								</div>
+								<div class="flex justify-self-center items-center gap-1 cursor-default" title="Total time">
+									@iconClock()
+									<time datetime={ data.FormattedTimes.TotalDateTime }>{ data.FormattedTimes.Total }</time>
+								</div>
+							</div>
+							<div class={ "grid grid-flow-col border-gray-700 border-y col-span-6 md:border-t-0 md:row-span-2 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
 								<table class="table table-zebra table-xs print:hidden">
 									<thead>
 										<tr>
