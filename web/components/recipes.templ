@@ -1921,7 +1921,7 @@ templ ViewRecipe(data templates.Data) {
 templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 	if !data.Share.IsShared {
 		<dialog id="share_dialog" class="modal">
-			<div class="modal-box w-96">
+			<div class="modal-box w-4/5 sm:w-96">
 				<div id="share-dialog-result"></div>
 				<div class="modal-action block mt-4">
 					<form method="dialog">
@@ -1955,7 +1955,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							</button>
 							if isAuthenticated && data.Share.IsFromHost {
 								<button
-									class="ml-2"
+									class="ml-2 hidden sm:block"
 									title="Edit recipe"
 									hx-get={ fmt.Sprintf("/recipes/%d/edit", data.ID) }
 									hx-push-url="true"
@@ -1967,6 +1967,78 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 							}
 						</span>
 						<span class="text-center pb-2 print:w-full" itemprop="name">{ data.Recipe.Name }</span>
+						<span class="md:hidden">
+							<button
+								title="Open recipe options menu"
+								popovertarget="recipe_menu"
+								popovertargetaction="toggle"
+							>
+								@iconDotsVertical()
+							</button>
+							<div
+								id="recipe_menu"
+								popover
+								style="inset: unset; top: 3.5rem; right: 0.5rem;"
+								class="rounded-box z-10 shadow bg-base-100"
+								_="on click if me.matches(':popover-open') then me.hidePopover()"
+							>
+								<ul tabindex="0" class="menu">
+									<li>
+										<a
+											title="Edit recipe"
+											hx-get={ fmt.Sprintf("/recipes/%d/edit", data.ID) }
+											hx-push-url="true"
+											hx-target="#content"
+											hx-swap="innerHTML transition:true"
+										>
+											@iconEdit()
+											Edit
+										</a>
+									</li>
+									if !data.Share.IsShared {
+										<li>
+											<a
+												title="Share recipe"
+												hx-post={ fmt.Sprintf("/recipes/%d/share", data.ID) }
+												hx-target="#share-dialog-result"
+												_="on htmx:afterRequest from me
+														if event.detail.successful
+															if navigator.canShare
+																set name to document.querySelector('[itemprop=name]').textContent then
+																set data to {title: name, text: name, url: document.querySelector('#share-dialog-result input').value} then
+																call navigator.share(data)
+															else
+																call share_dialog.showModal()
+														end"
+											>
+												@iconShare()
+												Share
+											</a>
+										</li>
+									}
+									<li title="Print recipe" _="on click print()">
+										<a>
+											@iconPrint()
+											Print
+										</a>
+									</li>
+									if data.Share.IsFromHost {
+										<li>
+											<a
+												hx-delete={ fmt.Sprintf("/recipes/%d", data.Recipe.ID) }
+												hx-swap="none"
+												title="Delete recipe"
+												hx-confirm="Are you sure you wish to delete this recipe?"
+												hx-indicator="#fullscreen-loader"
+											>
+												@iconDelete()
+												Delete
+											</a>
+										</li>
+									}
+								</ul>
+							</div>
+						</span>
 						<span class="grid grid-flow-col place-items-center pb-2 print:hidden">
 							if data.Share.IsShared {
 								if !data.Share.IsFromHost {
@@ -1981,7 +2053,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 								}
 							} else {
 								<button
-									class="mr-2"
+									class="mr-2 hidden sm:block"
 									title="Share recipe"
 									hx-post={ fmt.Sprintf("/recipes/%d/share", data.ID) }
 									hx-target="#share-dialog-result"
@@ -1998,12 +2070,12 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									@iconShare()
 								</button>
 							}
-							<button class="mr-2" title="Print recipe" _="on click print()">
+							<button class="mr-2 hidden sm:block" title="Print recipe" _="on click print()">
 								@iconPrint()
 							</button>
 							if data.Share.IsFromHost {
 								<button
-									class="mr-2"
+									class="mr-2 hidden sm:block"
 									hx-delete={ fmt.Sprintf("/recipes/%d", data.Recipe.ID) }
 									hx-swap="none"
 									title="Delete recipe"
@@ -2179,7 +2251,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									</div>
 								</div>
 							}
-							<div class={ "grid grid-flow-col border-gray-700 border-y col-span-6 py-1 md:border-t-0 md:grid-cols-3 md:row-span-1 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
+							<div class={ "grid grid-flow-col border-gray-700 col-span-6 py-1 md:border-y md:grid-cols-3 md:row-span-1 print:border-none", templ.KV("print:hidden", data.Recipe.Nutrition.Equal(models.Nutrition{})) }>
 								<div class="flex justify-self-center items-center gap-1 cursor-default" title="Prep time">
 									@iconCuttingBoard()
 									<time datetime={ data.FormattedTimes.PrepDateTime }>{ data.FormattedTimes.Prep }</time>
