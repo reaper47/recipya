@@ -201,6 +201,7 @@ func (s *Server) recipeAddManualHandler() http.HandlerFunc {
 			View: &templates.ViewRecipeData{
 				Categories: categories,
 				Keywords:   keywords,
+				Recipe:     &models.Recipe{},
 			},
 		}).Render(r.Context(), w)
 	}

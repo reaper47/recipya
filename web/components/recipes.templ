@@ -467,7 +467,11 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 													type="number"
 													min="1"
 													name="yield"
-													value={ strconv.FormatInt(int64(data.Recipe.Yield), 10) }
+													if data.Recipe.Yield == 0 {
+														value="1"
+													} else {
+														value={ strconv.FormatInt(int64(data.Recipe.Yield), 10) }
+													}
 													class="input input-bordered input-sm w-24 md:w-20 lg:w-24"
 												/>
 											</label>
@@ -498,14 +502,12 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								</div>
 								<div class="border-gray-700 border-y col-span-6 md:grid-cols-3">
 									<div class="p-4 flex gap-2 flex-wrap">
-										if len(data.Recipe.Keywords) > 0 {
-											for _, kw := range data.Recipe.Keywords {
-												<div class="badge badge-sm badge-neutral p-3 pr-0">
-													<input type="hidden" name="keywords" value={ kw }/>
-													<span class="select-none">{ kw }</span>
-													<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
-												</div>
-											}
+										for _, kw := range data.Recipe.Keywords {
+											<div class="badge badge-sm badge-neutral p-3 pr-0">
+												<input type="hidden" name="keywords" value={ kw }/>
+												<span class="select-none">{ kw }</span>
+												<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
+											</div>
 										}
 										@recipeKeywordEmpty(data.Keywords)
 									</div>
