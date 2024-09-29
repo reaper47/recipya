@@ -1093,6 +1093,7 @@ func (s *Server) recipeDuplicateHandler() http.HandlerFunc {
 			notFoundHandler(w, r)
 			return
 		}
+		recipe.Name = recipe.Name + " (copy)"
 
 		categories, err := s.Repository.Categories(userID)
 		if err != nil {
@@ -1110,11 +1111,7 @@ func (s *Server) recipeDuplicateHandler() http.HandlerFunc {
 			IsAdmin:         userID == 1,
 			IsAuthenticated: true,
 			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
-			View: &templates.ViewRecipeData{
-				Categories: categories,
-				Keywords:   keywords,
-				Recipe:     recipe,
-			},
+			View:            templates.NewViewRecipeData(recipeID, recipe, categories, keywords, true, false),
 		}).Render(r.Context(), w)
 	}
 }

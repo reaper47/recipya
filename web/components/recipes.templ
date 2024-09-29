@@ -498,6 +498,15 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								</div>
 								<div class="border-gray-700 border-y col-span-6 md:grid-cols-3">
 									<div class="p-4 flex gap-2 flex-wrap">
+										if len(data.Recipe.Keywords) > 0 {
+											for _, kw := range data.Recipe.Keywords {
+												<div class="badge badge-sm badge-neutral p-3 pr-0">
+													<input type="hidden" name="keywords" value={ kw }/>
+													<span class="select-none">{ kw }</span>
+													<button type="button" class="btn btn-xs btn-ghost" _="on click remove closest <div/>">X</button>
+												</div>
+											}
+										}
 										@recipeKeywordEmpty(data.Keywords)
 									</div>
 								</div>
@@ -508,7 +517,11 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 											<input
 												type="text"
 												name="time-preparation"
-												value="00:15:00"
+												if data.FormattedTimes.PrepEdit != "" {
+													value={ data.FormattedTimes.PrepEdit }
+												} else {
+													value="00:15:00"
+												}
 												class="input input-bordered input-xs max-w-24 html-duration-picker"
 											/>
 										</label>
@@ -519,7 +532,11 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 											<input
 												type="text"
 												name="time-cooking"
-												value="00:30:00"
+												if data.FormattedTimes.CookEdit != "" {
+													value={ data.FormattedTimes.CookEdit }
+												} else {
+													value="00:30:00"
+												}
 												class="input input-bordered input-xs max-w-24 html-duration-picker"
 											/>
 										</label>
@@ -697,7 +714,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 											name="description"
 											placeholder="This Thai curry chicken will make you drool."
 											class="textarea w-full h-full resize-none"
-										></textarea>
+										>{ data.Recipe.Description }</textarea>
 									</label>
 								</div>
 							</div>
@@ -712,7 +729,13 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								<span class="underline">Tools</span>
 							</h2>
 							<ol id="tools-list" class="pl-4 list-decimal">
-								@AddTool(models.HowToItem{})
+								if len(data.Recipe.Instructions) > 0 {
+									for _, tool := range data.Recipe.Tools {
+										@AddTool(tool)
+									}
+								} else {
+									@AddTool(models.HowToItem{})
+								}
 							</ol>
 							<div class="divider"></div>
 							<h2 class="font-semibold text-center pb-2">
@@ -720,7 +743,13 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								<sup class="text-red-600">*</sup>
 							</h2>
 							<ol id="ingredients-list" class="pl-4 list-decimal">
-								@AddIngredient("")
+								if len(data.Recipe.Ingredients) > 0 {
+									for _, ing := range data.Recipe.Ingredients {
+										@AddIngredient(ing)
+									}
+								} else {
+									@AddIngredient("")
+								}
 							</ol>
 						</div>
 						<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4">
@@ -729,7 +758,13 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								<sup class="text-red-600">*</sup>
 							</h2>
 							<ol id="instructions-list" class="grid list-decimal">
-								@AddInstruction("")
+								if len(data.Recipe.Instructions) > 0 {
+									for _, ins := range data.Recipe.Instructions {
+										@AddInstruction(ins)
+									}
+								} else {
+									@AddInstruction("")
+								}
 							</ol>
 						</div>
 					</div>
@@ -2095,6 +2130,17 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 											</a>
 										</li>
 									}
+									<li>
+										<a
+											title="Duplicate recipe"
+											hx-push-url="/recipes/add/manual"
+											hx-get={ fmt.Sprintf("/recipes/%d/duplicate", data.ID) }
+											hx-target="#content"
+										>
+											@iconDocumentDuplicate()
+											Duplicate
+										</a>
+									</li>
 									<li title="Print recipe" _="on click print()">
 										<a>
 											@iconPrint()
@@ -2149,6 +2195,9 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 									@iconShare()
 								</button>
 							}
+							<button class="mr-2 hidden sm:block" title="Duplicate recipe" hx-push-url="/recipes/add/manual" hx-get={ fmt.Sprintf("/recipes/%d/duplicate", data.ID) } hx-target="#content">
+								@iconDocumentDuplicate()
+							</button>
 							<button class="mr-2 hidden sm:block" title="Print recipe" _="on click print()">
 								@iconPrint()
 							</button>
