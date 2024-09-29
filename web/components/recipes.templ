@@ -344,6 +344,9 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 								placeholder="Title of the recipe*"
 								autocomplete="off"
 								class="input w-full btn-ghost text-center"
+								if data.Recipe.Name != "" {
+									value={ data.Recipe.Name }
+								}
 							/>
 						</label>
 					</h2>
@@ -446,6 +449,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 													class="input input-bordered input-sm w-48 md:w-36 lg:w-48"
 													placeholder="Breakfast"
 													autocomplete="off"
+													value={ data.Recipe.Category }
 												/>
 												<datalist id="categories">
 													for _, c := range data.Categories {
@@ -463,7 +467,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 													type="number"
 													min="1"
 													name="yield"
-													value="1"
+													value={ strconv.FormatInt(int64(data.Recipe.Yield), 10) }
 													class="input input-bordered input-sm w-24 md:w-20 lg:w-24"
 												/>
 											</label>
@@ -479,6 +483,7 @@ templ addRecipeManual(data *templates.ViewRecipeData) {
 												placeholder="Source"
 												name="source"
 												class="input input-bordered input-sm md:w-28 lg:w-40 xl:w-44"
+												value={ data.Recipe.URL }
 											/>
 										</label>
 										<button
@@ -1748,6 +1753,80 @@ templ editRecipe(data *templates.ViewRecipeData) {
 
         initEditImages();
 	</script>
+}
+
+templ fuck(data *templates.ViewRecipeData) {
+	for i, image := range data.Recipe.Images {
+		<label id={ "media-" + strconv.Itoa(i+1) } class={ templ.KV("hidden", i > 0) }>
+			<img
+				alt=""
+				class="object-cover mb-2 w-full max-h-[39rem]"
+				if data.IsImagesExist[i] {
+					src={ "/data/images/" + image.String() + ".webp" }
+				} else {
+					src=""
+				}
+			/>
+			<span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;">
+				<div class="mr-1 hidden">
+					<input
+						type="file"
+						accept="image/*,video/*"
+						name="images"
+						class="file-input file-input-sm file-input-bordered w-full max-w-sm"
+						value={ "/data/images/" + image.String() + ".webp" }
+						_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
+                                                                  on dragleave or drop set the target's style.background to ''
+                                                                  on drop or change
+                                                                    make an FileReader called reader then
+                                                                    if event.dataTransfer
+                                                                        get event.dataTransfer.files[0]
+                                                                    else
+                                                                        get event.target.files[0]
+                                                                    end then
+                                                                    if it.type.startsWith('video')
+                                                                        put `<video controls class='object-cover mb-2 w-full max-h-[39rem]' src='${window.URL.createObjectURL(it)}'></video>` after previous <img/> then
+                                                                        add .hidden to previous <img/>
+                                                                    else
+                                                                        set {src: window.URL.createObjectURL(it)} on previous <img/>
+                                                                    end then
+                                                                    remove .hidden from me.parentElement.parentElement.querySelectorAll('button') then
+                                                                    add .hidden to the parentElement of me"
+					/>
+					<div class="divider">OR</div>
+					<span class="hidden input-error"></span>
+					<div class="flex">
+						<input type="url" placeholder="Enter the URL of an image" class="input input-bordered input-sm w-full max-w-sm mr-1"/>
+						<button
+							type="button"
+							class="btn btn-sm"
+							hx-get="/fetch"
+							hx-vals="js:{url: event.target.previousElementSibling.value}"
+							hx-swap="none"
+							_="on htmx:afterRequest
+                                                                    if event.detail.successful then
+                                                                        set a to first in event.target.parentElement.parentElement.children then
+                                                                        call updateMediaFromFetch(a, event.detail.xhr.responseURL)
+                                                                    end"
+						>
+							Fetch
+						</button>
+					</div>
+					<div _="on load if not navigator.clipboard hide me">
+						<div class="divider">OR</div>
+						<button type="button" class="btn btn-sm" onclick="pasteImage(event)">Paste copied image</button>
+					</div>
+				</div>
+				<button
+					type="button"
+					class={ "btn btn-sm btn-error btn-outline", templ.KV("hidden", !data.IsImagesExist[i]) }
+					onclick="deleteMedia(event)"
+				>
+					Delete
+				</button>
+			</span>
+		</label>
+	}
 }
 
 templ RecipesIndex(data templates.Data) {

@@ -1399,6 +1399,80 @@ func TestHandlers_Recipes_Share(t *testing.T) {
 	}
 }
 
+func TestHandlers_Recipes_Duplicate(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer c.CloseNow()
+
+	uri := func(id int64) string {
+		return fmt.Sprintf("%s/recipes/%d/duplicate", ts.URL, id)
+	}
+
+	originalRepo := srv.Repository
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodGet, uri(1))
+	})
+
+	t.Run("recipe does not exist", func(t *testing.T) {
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(10))
+
+		assertStatus(t, rr.Code, http.StatusNotFound)
+	})
+
+	t.Run("recipe exists", func(t *testing.T) {
+		recipe := models.Recipe{
+			Category:     "American",
+			Description:  "This is the most delicious recipe!",
+			ID:           1,
+			Images:       []uuid.UUID{uuid.New()},
+			Ingredients:  []string{"Ing1", "Ing2", "Ing3"},
+			Instructions: []string{"Ins1", "Ins2", "Ins3"},
+			Name:         "Chicken Jersey",
+			Times: models.Times{
+				Prep:  5 * time.Minute,
+				Cook:  1*time.Hour + 5*time.Minute,
+				Total: 1*time.Hour + 10*time.Minute,
+			},
+			URL:   "https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/",
+			Yield: 2,
+		}
+		_, _, _ = srv.Repository.AddRecipes(models.Recipes{recipe}, 1, nil)
+		defer func() {
+			srv.Repository = originalRepo
+		}()
+
+		rr := sendHxRequestAsLoggedInNoBody(srv, http.MethodGet, uri(1))
+
+		assertStatus(t, rr.Code, http.StatusOK)
+		ingredients := ""
+		for _, ing := range recipe.Ingredients {
+			ingredients += fmt.Sprintf(`<li class="pb-2"><div class="grid grid-flow-col items-center"><label><input required type="text" name="ingredients" value="%s" placeholder="1 cup of chopped onions" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></label><div class="ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('input') then set input.value to '' then input.focus()">-</button><div class="inline-block h-4 cursor-move handle ml-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li>`, ing)
+		}
+		instructions := ""
+		for _, ins := range recipe.Instructions {
+			instructions += fmt.Sprintf(`<li class="pt-2 md:pl-0"><div class="flex"><label class="w-11/12"><textarea required name="instructions" rows="3" class="textarea textarea-bordered w-full" placeholder="Mix all ingredients together" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)">%s</textarea></label><div class="grid ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('textarea') then set input.value to '' then input.focus()">-</button><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li>`, ins)
+		}
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
+			`<title hx-swap-oob="true">Add Manual | Recipya</title>`,
+			`<form class="card-body" style="padding: 0" enctype="multipart/form-data" hx-post="/recipes/add/manual" hx-indicator="#fullscreen-loader">`,
+			`<input required type="text" name="title" placeholder="Title of the recipe*" autocomplete="off" class="input w-full btn-ghost text-center" value="` + recipe.Name + `">`,
+			`<img src="/data/images/` + recipe.Images[0].String() + `.webp" alt="Image of the recipe" class="object-cover mb-2 w-full max-h-[39rem]"> <span class="grid gap-1 max-w-sm" style="margin: auto auto 0.25rem;"><div class="mr-1"><input type="file" accept="image/*,video/*" name="images" class="file-input file-input-sm file-input-bordered w-full max-w-sm" _="on dragover or dragenter halt the event then set the target's style.background to 'lightgray' on dragleave or drop set the target's style.background to '' on drop or change make an FileReader called reader then if event.dataTransfer get event.dataTransfer.files[0] else get event.target.files[0] end then if it.type.startsWith('video') put`,
+			`<input type="number" min="1" name="yield" value="` + strconv.FormatInt(int64(recipe.Yield), 10) + `" class="input input-bordered input-sm w-24 md:w-20 lg:w-24">`,
+			`<input type="text" list="categories" name="category" class="input input-bordered input-sm w-48 md:w-36 lg:w-48" placeholder="Breakfast" autocomplete="off" value="` + recipe.Category + `"> <datalist id="categories"><option>breakfast</option><option>lunch</option><option>dinner</option></datalist>`,
+			`<textarea name="description" placeholder="This Thai curry chicken will make you drool." class="textarea w-full h-full resize-none">` + recipe.Description + `</textarea>`,
+			`<label><input type="text" name="time-preparation" value="00:05:00" class="input input-bordered input-xs max-w-24 html-duration-picker"></label>`,
+			`<label><input type="text" name="time-cooking" value="01:05:00" class="input input-bordered input-xs max-w-24 html-duration-picker"></label>`,
+			`<table class="table table-zebra table-xs"><thead><tr><th>Nutrition<br>(per 100g)</th><th>Amount</th></tr></thead> <tbody><tr><td>Calories</td><td><label><input type="text" name="calories" autocomplete="off" placeholder="368kcal" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Total carbs</td><td><label><input type="text" name="total-carbohydrates" autocomplete="off" placeholder="35g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Sugars</td><td><label><input type="text" name="sugars" autocomplete="off" placeholder="3g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Protein</td><td><label><input type="text" name="protein" autocomplete="off" placeholder="21g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Total fat</td><td><label><input type="text" name="total-fat" autocomplete="off" placeholder="15g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Saturated fat</td><td><label><input type="text" name="saturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Unsaturated fat</td><td><label><input type="text" name="unsaturated-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Trans fat</td><td><label><input type="text" name="trans-fat" autocomplete="off" placeholder="1.8g" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Cholesterol</td><td><label><input type="text" name="cholesterol" autocomplete="off" placeholder="1.1mg" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Sodium</td><td><label><input type="text" name="sodium" autocomplete="off" placeholder="100mg" class="input input-bordered input-xs max-w-24"></label></td></tr><tr><td>Fiber</td><td><label><input type="text" name="fiber" autocomplete="off" placeholder="8g" class="input input-bordered input-xs max-w-24"></label></td></tr></tbody></table>`,
+			`<ol id="tools-list" class="pl-4 list-decimal"><li class="pb-2"><div class="grid grid-flow-col items-center"><label><input type="text" name="tools" placeholder="1 frying pan" class="input input-bordered input-sm w-full" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></label><div class="ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('input') then set input.value to '' then input.focus()">-</button><div class="inline-block h-4 cursor-move handle ml-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
+			`<ol id="ingredients-list" class="pl-4 list-decimal">` + ingredients + `</ol></div>`,
+			`<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4"><h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span> <sup class="text-red-600">*</sup></h2><ol id="instructions-list" class="grid list-decimal">` + instructions + `</ol>`,
+			`<div class="col-span-6 px-6 py-2 border-gray-700 md:rounded-bl-none md:col-span-4"><h2 class="font-semibold text-center pb-2"><span class="underline">Instructions</span> <sup class="text-red-600">*</sup></h2>`,
+			`<ol id="instructions-list" class="grid list-decimal"><li class="pt-2 md:pl-0"><div class="flex"><label class="w-11/12"><textarea required name="instructions" rows="3" class="textarea textarea-bordered w-full" placeholder="Mix all ingredients together" _="on keydown if event.key is 'Enter' halt the event then call addItem(event)"></textarea></label><div class="grid ml-2"><button type="button" class="btn btn-square btn-sm btn-outline btn-success" title="Shortcut: CTRL + Enter" onclick="addItem(event)">+</button> <button type="button" class="delete-button btn btn-square btn-sm btn-outline btn-error" _="on click if (closest <ol/>).childElementCount > 1 remove closest <li/> else set input to (closest <li/>).querySelector('textarea') then set input.value to '' then input.focus()">-</button><div class="h-4 cursor-move handle grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div></div></li></ol>`,
+			`<button class="btn btn-primary btn-block btn-sm">Submit</button>`,
+		})
+	})
+}
+
 func TestHandlers_Recipes_ShareAdd(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.CloseNow()
@@ -1589,12 +1663,11 @@ func TestHandlers_Recipes_View(t *testing.T) {
 		rr := sendRequestAsLoggedInNoBody(srv, http.MethodGet, uri+"/999")
 
 		assertStatus(t, rr.Code, http.StatusNotFound)
-		want := []string{
+		assertStringsInHTML(t, getBodyHTML(rr), []string{
 			`<title hx-swap-oob="true">Page Not Found | Recipya</title>`,
 			"Page Not Found",
 			"The page you requested to view is not found. Please go back to the main page.",
-		}
-		assertStringsInHTML(t, getBodyHTML(rr), want)
+		})
 	})
 
 	testcases := []struct {
