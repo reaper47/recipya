@@ -201,6 +201,7 @@ func (s *Server) recipeAddManualHandler() http.HandlerFunc {
 			View: &templates.ViewRecipeData{
 				Categories: categories,
 				Keywords:   keywords,
+				Recipe:     &models.Recipe{},
 			},
 		}).Render(r.Context(), w)
 	}
@@ -1070,6 +1071,49 @@ func (s *Server) recipeShareAddHandler() http.HandlerFunc {
 		} else {
 			http.Redirect(w, r, redirect, http.StatusSeeOther)
 		}
+	}
+}
+
+func (s *Server) recipeDuplicateHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var (
+			userID     = getUserID(r)
+			userIDAttr = slog.Int64("userID", userID)
+		)
+
+		recipeID, err := parsePathPositiveID(r.PathValue("id"))
+		if err != nil {
+			slog.Error("Failed to parse recipe ID", userIDAttr, "error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		recipe, err := s.Repository.Recipe(recipeID, getUserID(r))
+		if err != nil {
+			slog.Error("Failed to fetch recipe", userIDAttr, "error", err)
+			notFoundHandler(w, r)
+			return
+		}
+		recipe.Name = recipe.Name + " (copy)"
+
+		categories, err := s.Repository.Categories(userID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		keywords, err := s.Repository.Keywords()
+		if err != nil {
+			slog.Error("Failed to fetch keywords", "error", err)
+		}
+
+		_ = components.AddRecipeManual(templates.Data{
+			About:           templates.NewAboutData(),
+			IsAdmin:         userID == 1,
+			IsAuthenticated: true,
+			IsHxRequest:     r.Header.Get("Hx-Request") == "true",
+			View:            templates.NewViewRecipeData(recipeID, recipe, categories, keywords, true, false),
+		}).Render(r.Context(), w)
 	}
 }
 
