@@ -11,11 +11,11 @@
   },
   "license": "GPL-3.0",
   "devDependencies": {
-    "@tailwindcss/typography": "0.5.15",
+    "@tailwindcss/typography": "^0.5.15",
     "copyfiles": "^2.4.1",
-    "daisyui": "^4.12.10",
-    "esbuild": "0.24.0",
+    "daisyui": "^4.12.20",
+    "esbuild": "^0.24.0",
     "mjml": "^4.15.3",
-    "tailwindcss": "3.4.13"
+    "tailwindcss": "^3.4.16"
   }
 }
