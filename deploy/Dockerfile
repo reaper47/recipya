@@ -30,6 +30,8 @@ COPY --from=build-stage /app/recipya /app/recipya
 
 EXPOSE 8080
 
-USER root:root
+RUN chmod -R g+w /app && \
+    chown -R nobody /app
+USER nobody
 
 ENTRYPOINT ["/app/recipya", "s"]
