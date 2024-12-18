@@ -115,8 +115,6 @@ func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService
 			return models.RecipeSchema{}, true, err
 		}
 		rs, err = s.scrapeMonsieurCuisine(doc, rawURL, files)
-	case "quitoque":
-		rs, err = s.scrapeQuitoque(rawURL)
 	default:
 		isSpecial = false
 	}

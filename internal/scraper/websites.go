@@ -317,6 +317,13 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		default:
 			return parseWebsite(doc)
 		}
+	case 'q':
+		switch host {
+		case "quitoque":
+			return scrapeQuitoque(doc)
+		default:
+			return parseWebsite(doc)
+		}
 	case 'r':
 		switch host {
 		case "radiofrance":
