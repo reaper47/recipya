@@ -179,7 +179,7 @@ font-family: Open Sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "
     <link rel="preload" as="font" type="font/woff2" crossorigin href="https://www.franzoesischkochen.de/wp-content/themes/stuffpost/assets/fontawesome/web-fonts-with-css/webfonts/fa-solid-900.woff2"/>
     <link rel="preload" as="font" type="font/woff2" crossorigin href="https://www.franzoesischkochen.de/wp-content/themes/stuffpost/assets/fontawesome/web-fonts-with-css/webfonts/fa-brands-400.woff2"/>
     <link rel="preload" href="https://www.franzoesischkochen.de/wp-content/themes/stuffpost/fonts/ibarra.woff2" as="font" type="font/woff2" crossorigin>
-  <title>Navettes aus Marseille Rezept</title><link rel="stylesheet" href="https://www.franzoesischkochen.de/wp-content/cache/min/1/7a2e7196edadb6af7e273c76c9df01aa.css" media="all" data-minify="1" />
+  <title>Navettes aus Marseille Rezept</title><link rel="stylesheet" href="https://www.franzoesischkochen.de/wp-content/cache/min/1/1445c6d2679f46ec72fa0ef7194b5b9e.css" media="all" data-minify="1" />
 <script>window.koko_analytics = {"url":"https:\/\/www.franzoesischkochen.de\/koko-analytics-collect.php","post_id":77729,"use_cookie":0,"cookie_path":"\/"};</script>		<style type="text/css">
 					.heateor_sss_button_instagram span.heateor_sss_svg,a.heateor_sss_instagram span.heateor_sss_svg{background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
 											.heateor_sss_horizontal_sharing .heateor_sss_svg,.heateor_sss_standard_follow_icons_container .heateor_sss_svg{
@@ -567,13 +567,17 @@ background-color: #ffffff;
 		<style type="text/css" id="wp-custom-css">
 			.by-badge.small {
 	
-	background-image: url(https://www.franzoesischkochen.de/Caching/portraits/bulle2.png);
+/*	background-image: url(https://www.franzoesischkochen.de/Caching/portraits/bulle2.png);
 background-position: left center;
 background-size: 55px;
 	padding-left: 70px;
-	width: auto;
 min-height: 60px;
-text-align: left;
+	
+	*/
+	width: auto;
+
+	text-align: left;
+
 }
 .actual-meta {
 	text-align: center;
@@ -951,8 +955,9 @@ margin-bottom: .5rem !important;
 }
 
 header .meta.row {
-	margin-top: 1rem;
-margin-bottom: -2rem;
+	margin-top: 0rem;
+margin-bottom: -3rem;
+
 }
 
 .itemInner .title::before {
@@ -3044,6 +3049,11 @@ border-radius: 5px;
 	font-weight: normal;
 	margin-left: 1rem;
 }
+
+#zeit {
+	display: none !important;
+}
+
 #aurelie 
 .fa-arrow-down::after {
 	content: 'Als PDF speichern';
@@ -3329,12 +3339,12 @@ min-height: unset !important;
 
 .post-container .post-content .rp4wp-related-post-content  {
   color: #000 !important;
-	font-weight: bold !important;
+	font-weight: normal !important;
   padding-top: 10px !important;
   display: block;
   border: none !important;
   text-align: left;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   line-height: 1.3;
   text-decoration: none !important;
 }
@@ -3475,7 +3485,7 @@ max-height: 300px !important;
 	}
 	
 	
- #publivres,.pub1.container {
+ #publivres,.pub1.container, .upsell {
     left: -180px;
     width: calc(100% + 360px) !important;
 position: relative;   
@@ -3486,10 +3496,22 @@ position: relative;
 
 
 
+@media all and (max-width: 600px) {
+
+.upsell {
+    left: -1rem;
+    width: calc(100% + 2rem) !important;
+position: relative;   
+  margin: auto !important;
+  
+  }  
+
+
+}
 
 
 @media all and (min-width: 992px)  and (max-width: 1199px) {
- #publivres,.pub1.container {
+ #publivres,.pub1.container, .upsell {
     left: -100px;
     width: calc(100% + 200px) !important;
 position: relative;   
@@ -4436,7 +4458,7 @@ $primary: #FFAB9D
   transition: all .2s ease;
 }
 
-@media all and (max-width: 429px)  {
+@media all and (max-width: 459px)  {
 
 
 	.custom-logo-link {
@@ -4468,7 +4490,7 @@ width: 80px !important;
 	display: none !important;
 }
 
-@media all and (max-width: 379px)  {
+@media all and (max-width: 419px)  {
 
 
 #mega-menu-item-125773 {
@@ -4535,11 +4557,11 @@ width: 80px !important;
  }
  
 .rp4wp-related-posts .rp4wp-related-post-content  { 
-	font-size: 1.1rem !important;
+	font-size: 1rem !important;
 	line-height: 1.3 !important; 
 	font-weight: normal !important;
-}
 
+}
 .rp4wp-related-posts ul  li .rp4wp-related-post-image div  {
 transform: scale(1);
 transition-duration: 500ms;
@@ -4887,9 +4909,9 @@ counter-reset: produits;
 .upsell li a.lienupsell {
 display: block;
 color: #000 !important;
-	font-weight: bold;
 background-size: 0;
-font-size: 1.2rem;
+font-size: 1.0rem;
+padding: 0 1rem !important;
 	line-height: 1.3;
 text-decoration: none;
 }
@@ -4954,18 +4976,22 @@ line-height: 1.3;
 ul.upsell {
 padding: 0 !important;
 margin: 0 !important;
+
 }
 
 
 .imageproduit {
-width: 300px !important;
-float: left;
-	margin-right: 2rem !important;
-	margin-bottom: 2rem !important; 
-	margin-top: 0 !important;
-	height: 240px !important;
-	object-fit: contain !important;
-	max-width: 40% !important;
+width: 100% !important;
+	margin-top: calc(-1rem + 1px) !important;
+min-height: 250px;
+left: -1rem;
+position: relative;
+height: 250px !important; 
+
+	object-fit: cover !important;
+	width: calc(100% + 2rem) !important;
+	max-width: calc(100% + 2rem) !important;
+
 }
 
 
@@ -5325,20 +5351,6 @@ clear: both !important;
 }
 
 
-@media all and (max-width: 600px) {
-
- .imageproduit {
-margin: auto !important;
-max-width: 300px !important;
-float: none !important;
-width: 100% !important;
-margin-bottom: 2rem !important;
-} 
-
-}
-
-
-
 .simili::before {
 content: 'Nicht das richtige Rezept? Wie wäre es damit?';
 padding-left: 1rem;
@@ -5370,19 +5382,65 @@ background-size: 16px 16px;
 position: relative;
 margin-top: .5rem;
 }
-
-.short {
-	cursor: pointer;
-}
-
-.short::after {
-content: 'Produkt anzeigen';
+.upsell li a::after {
+content: 'Jetzt kaufen';
 display: block;
-margin-top: .5rem;
-	color: #3a7bb8;
-text-decoration: underline;
+font-size: 1rem;
+	color: #fff;
+text-decoration: none;
+width: 100%;
+padding: .5rem 1rem;
+text-align: left;
+	border-radius: 3px;
+position: absolute !important;
+top: unset !important;
+bottom: 10rem;
+	background: #04508c;
+background-image: url(https://www.franzoesischkochen.de/Caching/chevron1.png);
+background-repeat: no-repeat;
+background-size: 15px;
+	background-position:  calc(100% - 1rem) center;
+font-weight: normal;
+bottom: 0;
+}
+.upsell li {
+	position: relative;
+	width: calc(50% - 10px);
+margin: 5px;
+padding-bottom: 3rem;
+border: solid 1px #ddd;
 }
 
+@media all and (min-width: 992px) {
+	.upsell li {
+width: calc(33% - 10px);
+}
+}
+
+.upsell {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+@media all and (min-width: 600.2px) {
+	.upsell li a::before { 
+left: 0px;
+top: unset;
+width: 300px;
+max-width: 40%;
+}
+}
+
+
+
+.lienupsell::after {
+	content: '';
+position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+bottom: 0;
+}
 .ratinginner {
   height: 17px;
   background-image: url(https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif);
@@ -5403,9 +5461,170 @@ font-weight: normal;
 }
 
 
-.upsell li {
-	width: 100% !important;
+.premierepub li .short::after {
+display: none;
 }
+.premierepub li .short {
+padding-bottom: 1rem;
+}
+.premierepub li::after {
+content: 'Jetzt shoppen';
+background: rgb(28, 42, 57);
+color: #fff;
+	margin-top: 1.5rem !important;
+padding: .8rem 3rem;
+text-align: center;
+text-decoration: none;
+	border-radius: 50px;
+}
+
+.premierepub li:hover::after {
+background: #000;
+}
+
+.upsell.premierepub, .short {
+	display: none !important;
+}
+
+.ratingproduct, .price {
+	display: none !important;
+}
+
+#pub-container {
+	margin-top: 2rem !important;
+}
+
+@media all and (max-width: 600px) {
+
+ .imageproduit {
+margin-bottom: 1rem !important;
+height: 180px !important; 
+min-height: 180px !important; 
+} 
+
+	.rp4wp-related-posts ul > li {
+		max-width: 100% !important;
+	}
+	.rp4wp-related-posts ul > li .rp4wp-related-post-image div {
+	max-height: 300px !important;
+	}
+	.post-container .post-content .rp4wp-related-post-content {
+		font-weight: bold !important;
+font-size: 1.2rem !important;
+	}
+}
+
+p[style="padding-bottom: 1rem;display: block;border-bottom: solid 1px #ddd;"] {
+	border: none !important;
+}
+
+.page-template-default p a[title="Mehr über mich erfahren"] {display: none;}
+
+@media all and (min-width: 800px) {
+.page-id-6 		video
+	{
+float: left;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+  margin-top: 3rem;	}	
+	
+}
+
+.mehruebermich::after {
+  content: 'Wer schreibt hier?';
+  position: absolute;
+  bottom: -28px;
+  left: 0;
+display: inline-block;
+line-height: 1.2;
+  font-size: 15px;
+  text-decoration: underline;
+text-align: center;
+width: 100%;
+}
+
+.mehruebermich {
+  position: relative;
+  padding-bottom: 2rem;
+  width: 120px;
+  height: 130px;
+  display: inline-block;
+  float: left;
+margin-right: 2rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  margin-left: 1rem;
+}
+
+.mehruebermich img {
+  margin-top: 0.8rem;
+}
+
+
+.rela {
+  margin-top: 1rem;
+  border-top: dashed 1px #ddd;
+display: block;
+  padding-top: 1rem;
+  border-bottom: dashed 1px #ddd;
+margin-bottom: -2rem;
+}
+.rela::before {
+  content: 'Verwandte Rezepte';
+font-weight: bold;
+  display: block;
+}
+
+.rela li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+.ue .grandtexte {
+  background-image: url(https://www.franzoesischkochen.de/Caching/portraits/bulle9.png);
+  background-repeat: no-repeat;
+  background-size: 80px;
+  padding-left: 100px;
+  background-position: center left;
+  margin-bottom: 1rem;
+  vertical-align: middle;
+  display: inline-block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1rem;
+}
+.grandtexte {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  font-weight: bold;
+}
+.grandtexte::before {
+  content: "“";
+
+  font-family: Georgia,Times New Roman;
+
+  font-size: 4rem;
+
+  color: #ddd;
+
+  float: left;
+
+  line-height: 6rem;
+
+  display: inline-block;
+
+  padding: 0 !important;
+
+  margin-right: .7rem;
+
+  height: 2rem;
+
+  margin-top: -1.5rem;
+
+}
+
 		</style>
 		<style type="text/css">/** Mega Menu CSS: fs **/</style>
 <noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>
@@ -5424,7 +5643,10 @@ font-weight: normal;
       <div id="bars" class="bg-1 c-white ch-black"><i class="fas fa-bars"></i></div>
 
               <div class="logo menu-logo border-right f-main l-black lh-1" itemscope>
- <a href="https://www.franzoesischkochen.de/" class="custom-logo-link" rel="home"><img src="https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/testlogo1.png" alt="Französisch kochen" title="Französisch kochen" srcset="https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/testlogo1.png, https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/testlogoipad1.png 2x" class="custom-logo" width="326" height="95"></a>
+ <a href="https://www.franzoesischkochen.de/" class="custom-logo-link" rel="home" title="Zur Startseite">
+
+<img src="https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/testlogo1.png" alt="Französisch kochen" title="Französisch kochen" srcset="https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/testlogo1.png, https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/testlogoipad1.png 2x" class="custom-logo" width="326" height="95">
+</a>
               </div><!-- .logo -->
       
       <div class="d-flex align-items-center
@@ -5503,7 +5725,7 @@ font-weight: normal;
 
 <!-- MAIN --><div class="c-black f-text main">
 
-<div class="container breadcrumb-container" style="display: none;"><div class="breadcrumbs"><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Startseite" href="https://www.franzoesischkochen.de/" class="home"><span property="name">Startseite</span></a><meta property="position" content="1"></span><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Kategorie In der Boulangerie" href="https://www.franzoesischkochen.de/category/in-der-boulangerie/" class="taxonomy product_cat"><span property="name">In der Boulangerie</span></a><meta property="position" content="2"></span><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Kategorie Kekse &amp; Plätzchen" href="https://www.franzoesischkochen.de/category/kekse-platzchen/" class="taxonomy product_cat"><span property="name">Kekse &amp; Plätzchen</span></a><meta property="position" content="3"></span><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Kategorie Provence" href="https://www.franzoesischkochen.de/category/provence/" class="taxonomy product_cat"><span property="name">Provence</span></a><meta property="position" content="4"></span></div></div>
+<div class="container breadcrumb-container" style="display: none;"><div class="breadcrumbs"><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Startseite" href="https://www.franzoesischkochen.de/" class="home"><svg width="17" viewBox="0 0 17 16" xmlns="http://www.w3.org/2000/svg" style="position: relative;top: 2px;margin-right: 4px;"><g fill="#000" fill-rule="nonzero"><path d="M16.82 6.76L8.76.67a.43.43 0 0 0-.52 0L.18 6.76a.465.465 0 0 0-.095.637c.144.203.42.247.618.098L8.5 1.604l7.797 5.891a.43.43 0 0 0 .618-.098.465.465 0 0 0-.096-.637z"></path><path d="M14.567 7.583c-.24 0-.434.213-.434.476v6.573h-3.466v-3.134c0-1.312-.972-2.379-2.167-2.379-1.195 0-2.167 1.067-2.167 2.38v3.133H2.867V8.059c0-.263-.194-.476-.434-.476-.239 0-.433.213-.433.476v7.049c0 .262.194.475.433.475h4.334c.227 0 .414-.193.431-.438a.394.394 0 0 0 .002-.037v-3.61c0-.787.583-1.427 1.3-1.427.717 0 1.3.64 1.3 1.427v3.61c0 .013 0 .025.002.036.017.246.203.44.431.44h4.334c.239 0 .433-.214.433-.476V8.059c0-.263-.194-.476-.433-.476z"></path></g></svg></a><meta property="position" content="1"></span><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Kategorie In der Boulangerie" href="https://www.franzoesischkochen.de/category/in-der-boulangerie/" class="taxonomy product_cat"><span property="name">In der Boulangerie</span></a><meta property="position" content="2"></span><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Kategorie Kekse &amp; Plätzchen" href="https://www.franzoesischkochen.de/category/kekse-platzchen/" class="taxonomy product_cat"><span property="name">Kekse &amp; Plätzchen</span></a><meta property="position" content="3"></span><span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" title="Zur Kategorie Provence" href="https://www.franzoesischkochen.de/category/provence/" class="taxonomy product_cat"><span property="name">Provence</span></a><meta property="position" content="4"></span></div></div>
 
   <article id="post-77729" class="container mt-5 post-77729 post type-post status-publish format-standard has-post-thumbnail hentry category-alte-franzoesische-rezepte category-einfachste-rezepte category-in-der-boulangerie category-kekse-platzchen category-provence category-traditionelle-rezepte category-typisch-franzoesische-kuchen tag-lavendelhonig-miel-de-lavande-aus-der-provence tag-navette tag-olivenoel-picholine tag-orangenbluetenwasser-100ml tag-t55">
 
@@ -5573,30 +5795,47 @@ font-weight: normal;
 <p style="text-align: center;"><strong>Et voilà, ein kleines und schnell zubereitetes Goûter (Vesper) für Klein und Groß! </strong></p>
 <p style="text-align: center;"><strong>BISOUS</strong></p>
 <style type="text/css"><!-- h2, h3 {clear: both;}.alignleft {max-width: calc(50% - 1rem) !important;} @media all and (min-width: 576px) {.alignleft {max-width: calc(33% - 1rem) !important;} } p {clear: both; } --> </style>
-<p><img class="lazyload"   title="Navettes aus Marseille"  alt="Navettes aus Marseille signature1"  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.franzoesischkochen.de/Caching/signature1.png" style="width: 250px;margin: 1rem auto;"><a href="https://www.instagram.com/franzoesischkochen" target="_blank" style="color: #333 !important;display: block;text-decoration: underline;margin-bottom: 1rem;text-align: center;" class=""><img class="lazyload"   title="Navettes aus Marseille"  alt="Navettes aus Marseille instagram"  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.franzoesischkochen.de/Caching/instagram.svg" style="width: 1.5rem;margin-right: .5rem;margin-left: 1rem;margin-top: 5px;display: inline-block;"><span style="display: inline-block;top: -5px;position: relative;text-decoration: underline;">@franzoesischkochen</span></a><span><b>🤭 Du hast Fehler im Text entdeckt? </b>Das ist ganz normal, denn Deutsch ist nicht meine Muttersprache. <a href="https://www.franzoesischkochen.de/ueber-mich/" title="Alles über mich">Hier erfährst du mehr über mich.</a></span></p><h2 style="font-weight: bold; font-size: 1.5rem; line-height: initial; display: block;margin-bottom: 1rem !important; margin-top: 1rem !important;">5 Produkte, die zu diesem Rezept passen</h2><p style="padding-bottom: 1rem;display: block;border-bottom: solid 1px #ddd;"><span style="display: inline-block;">❤️ Von mir ausgesucht</span> <span style="display: inline-block;">📦 Liebevoll verpackt</span> <span style="display: inline-block;">🚚 Schnell geliefert</span></p><ul class="upsell" style="margin: 1rem 0 0 0 !important;"><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/lavendelhonig-miel-de-lavande/' title='Lavendelhonig "Miel de Lavande" aus der Provence online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille lavendel-honig-aus-der-provence" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/lavendel-honig-aus-der-provence.jpg' title='Lavendelhonig "Miel de Lavande" aus der Provence online kaufen' alt='Lavendelhonig "Miel de Lavande" aus der Provence online kaufen'>Lavendelhonig "Miel de Lavande" aus der Provence<br><span class='ratingproduct' compte='44'><span class='ratinginner' style='width: 77.76px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/lavendelhonig-miel-de-lavande/"'>Ein sehr seltener und schmackhafterer Honig. Lavendelhonig ist der König der Honige. Seit 4 Generationen von der Familie Augier in Vaison La Romaine (Provence) produziert.
-</span><span class='price'><span class='woocommerce-Price-amount amount'>12,99&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/navetttes-aus-der-provence/' title='Navettes aus der Provence 220g online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille navettes-aus-der-porvence-von-pierre-herme" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2020/11/navettes-aus-der-porvence-von-pierre-herme.jpg' title='Navettes aus der Provence 220g online kaufen' alt='Navettes aus der Provence 220g online kaufen'>Navettes aus der Provence 220g<br><span class='ratingproduct' compte='3'><span class='ratinginner' style='width: 80px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/navetttes-aus-der-provence/"'>Traditionelle Kekse aus der Provence. Das Originalrezept wurde von Pierre Hermé persönlich neu aufgelegt. Sie werden zart mit Orangenblütenwasser und Olivenöl verfeinert.
+<div class="ueberaurelie" style="margin-bottom: 3rem !important;border-top: solid 1px #ddd;padding-top: 2rem;"><div class="ue" style="display: flex;flex-wrap: wrap;"><quote class="grandtexte" style="font-size: 1.5rem;font-weight: bold;line-height: 1.2;margin-bottom: 1rem;">Hol dir ein kleines Stück Frankreich nach Hause!</quote></div><div style="">Auf kleinen Märkten finde ich für Sie <strong>die besten Produkte aus meiner Heimat</strong>. Ich biete nur Delikatessen an, <strong>die mir schmecken</strong> und Utensilien, <strong>die ich selbst benutze</strong> und weiterempfehle. </div> <a href="https://www.franzoesischkochen.de/shop/ueber-mich/" title="Mehr über uns erfahren" style="display: block;margin-top: .7rem;">Hier erfährst du mehr über mich.</a></div><ul class="upsell" style="margin: 1rem 0 0 0 !important;"><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/lavendelhonig-miel-de-lavande-label-rouge-aus-der-provence-400g/' title='Lavendelhonig "Miel de Lavande" Label Rouge aus der Provence 250g online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille lavendel-honig-label-rouge-aus-der-provecence" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2021/06/lavendel-honig-label-rouge-aus-der-provecence.jpg' title='Lavendelhonig "Miel de Lavande" Label Rouge aus der Provence 250g online kaufen' alt='Lavendelhonig "Miel de Lavande" Label Rouge aus der Provence 250g online kaufen'>Lavendelhonig "Miel de Lavande" Label Rouge aus der Provence 250g<br><span class='ratingproduct' compte='10'><span class='ratinginner' style='width: 80px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/lavendelhonig-miel-de-lavande-label-rouge-aus-der-provence-400g/"'>Lavendelhonig ist der König der Honige! Er ist ein sehr seltener und schmackhafterer Honig. Er wird seit 4 Generationen von der Familie Augier in Vaison La Romaine (Provence) produziert. Geschützte geografische Herkunft und Label Rouge.
+
+</span><span class='price'><span class='woocommerce-Price-amount amount'>14,00&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/navetttes-aus-der-provence/' title='Navettes aus der Provence 220g online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille navettes-aus-der-porvence-von-pierre-herme" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2020/11/navettes-aus-der-porvence-von-pierre-herme.jpg' title='Navettes aus der Provence 220g online kaufen' alt='Navettes aus der Provence 220g online kaufen'>Navettes aus der Provence 220g<br><span class='ratingproduct' compte='4'><span class='ratinginner' style='width: 80px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/navetttes-aus-der-provence/"'>Traditionelle Kekse aus der Provence. Das Originalrezept wurde von Pierre Hermé persönlich neu aufgelegt. Sie werden zart mit Orangenblütenwasser und Olivenöl verfeinert.
 &nbsp;
-</span><span class='price'><span class='woocommerce-Price-amount amount'>12,50&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/picholine-olivenoel-aus-der-provence-250-ml-dose/' title='"Picholine" Olivenöl aus der Provence 250 ml online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille products-picholine" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/images/products/products-picholine.jpg' title='"Picholine" Olivenöl aus der Provence 250 ml online kaufen' alt='"Picholine" Olivenöl aus der Provence 250 ml online kaufen'>"Picholine" Olivenöl aus der Provence 250 ml<br><span class='ratingproduct' compte='0'><span class='ratinginner' style='width: 0px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/picholine-olivenoel-aus-der-provence-250-ml-dose/"'>Dieses reinsortiges Olivenöl ist scharf und kräftig im Mund und hinterlässt Aromen von Gras und Pfeffer auf der Zunge.
-</span><span class='price'><span class='woocommerce-Price-amount amount'>17,50&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/eau-de-fleur-doranger-orangenblueten-wasser-100-ml/' title='Eau de fleur d Oranger (Orangenblütenwasser) 100 ml online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille eau-de-fleur-d-oranger-100-ml" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/eau-de-fleur-d-oranger-100-ml.jpg' title='Eau de fleur d Oranger (Orangenblütenwasser) 100 ml online kaufen' alt='Eau de fleur d Oranger (Orangenblütenwasser) 100 ml online kaufen'>Eau de fleur d Oranger (Orangenblütenwasser) 100 ml<br><span class='ratingproduct' compte='14'><span class='ratinginner' style='width: 73.12px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/eau-de-fleur-doranger-orangenblueten-wasser-100-ml/"'>Aus Frankreich importiertes Blumenwasser. Es verfeinert kleine bis große Gebäcke. Passt besonders gut zu Mandeln.
-</span><span class='price'><span class='woocommerce-Price-amount amount'>6,99&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/croissant-und-brioche-mehl-t45-farine-de-gruau-1kg-mhd-22-11-2020/' title='Crêpes Mehl T55 "Farine de Froment" 1kg online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille DSC_6071" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2021/09/DSC_6071.jpg' title='Crêpes Mehl T55 "Farine de Froment" 1kg online kaufen' alt='Crêpes Mehl T55 "Farine de Froment" 1kg online kaufen'>Crêpes Mehl T55 "Farine de Froment" 1kg<br><span class='ratingproduct' compte='11'><span class='ratinginner' style='width: 80px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/croissant-und-brioche-mehl-t45-farine-de-gruau-1kg-mhd-22-11-2020/"'>Feinstes Weizenmehl T55 aus Frankreich. Besonders fein und locker für eine luftige und weiche Textur.  Perfekt für feine Crêpes, Windbeutel und Tartes. 100% französisches Weizen aus Limagne / Auvergne.
+</span><span class='price'><span class='woocommerce-Price-amount amount'>13,99&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/picholine-olivenoel-aus-der-provence-250-ml-dose/' title='"Picholine" Olivenöl aus der Provence 250 ml online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille products-picholine" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/images/products/products-picholine.jpg' title='"Picholine" Olivenöl aus der Provence 250 ml online kaufen' alt='"Picholine" Olivenöl aus der Provence 250 ml online kaufen'>"Picholine" Olivenöl aus der Provence 250 ml<br><span class='ratingproduct' compte='0'><span class='ratinginner' style='width: 0px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/picholine-olivenoel-aus-der-provence-250-ml-dose/"'>Dieses reinsortiges Olivenöl ist scharf und kräftig im Mund und hinterlässt Aromen von Gras und Pfeffer auf der Zunge.
+</span><span class='price'><span class='woocommerce-Price-amount amount'>15,20&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/eau-de-fleur-doranger-orangenblueten-wasser-100-ml/' title='Eau de fleur d Oranger (Orangenblütenwasser) 100 ml online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille eau-de-fleur-d-oranger-100-ml" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/eau-de-fleur-d-oranger-100-ml.jpg' title='Eau de fleur d Oranger (Orangenblütenwasser) 100 ml online kaufen' alt='Eau de fleur d Oranger (Orangenblütenwasser) 100 ml online kaufen'>Eau de fleur d Oranger (Orangenblütenwasser) 100 ml<br><span class='ratingproduct' compte='15'><span class='ratinginner' style='width: 73.6px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/eau-de-fleur-doranger-orangenblueten-wasser-100-ml/"'>Aus Frankreich importiertes Blumenwasser. Es verfeinert kleine bis große Gebäcke. Passt besonders gut zu Mandeln.
+</span><span class='price'><span class='woocommerce-Price-amount amount'>7,50&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li><li><a  class='lienupsell'  href='https://www.franzoesischkochen.de/shop/croissant-und-brioche-mehl-t45-farine-de-gruau-1kg-mhd-22-11-2020/' title='Crêpes Mehl T55 "Farine de Froment" 1kg online bestellen'><img   title="Navettes aus Marseille"  alt="Navettes aus Marseille DSC_6071" class='imageproduit lazyload'  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src='https://www.franzoesischkochen.de/shop/wp-content/uploads/2021/09/DSC_6071.jpg' title='Crêpes Mehl T55 "Farine de Froment" 1kg online kaufen' alt='Crêpes Mehl T55 "Farine de Froment" 1kg online kaufen'>Crêpes Mehl T55 "Farine de Froment" 1kg<br><span class='ratingproduct' compte='12'><span class='ratinginner' style='width: 80px;'></span></span></a><span class='short' onclick='window.location="https://www.franzoesischkochen.de/shop/croissant-und-brioche-mehl-t45-farine-de-gruau-1kg-mhd-22-11-2020/"'>Feinstes Weizenmehl T55 aus Frankreich. Besonders fein und locker für eine luftige und weiche Textur.  Perfekt für feine Crêpes, Windbeutel und Tartes. 100% französisches Weizen aus Limagne / Auvergne.
 
 </span><span class='price'><span class='woocommerce-Price-amount amount'>5,20&nbsp;<span class='woocommerce-Price-currencySymbol'>€</span></span>*</span></li></ul><div id='pub-container' class='pub1 container' style='top: 0 !important;background: transparent;padding-bottom: 10px; margin-bottom: -50px !important;'><div style='margin: 0 !important;text-align: center;'><span style='text-align: center;display: block;margin: 1rem;font-size: initial;line-height: 1.2;text-transform: uppercase;'><span style='display: block;font-size: 2rem;margin-bottom: 10px;font-weight: bold;text-transform: none;'>Mehr Rezepte? Ja, bitte!</span></span></div><div class='rp4wp-related-posts'>
-<ul id="relatedposts"><li><a href='https://www.franzoesischkochen.de/macarons-de-nancy/' aria-label='Macarons de Nancy' title='Macarons de Nancy' alt='Macarons de Nancy'><div class='rp4wp-related-post-image'>
+<ul id="relatedposts"><li><a href='https://www.franzoesischkochen.de/galette-des-rois-mit-aepfeln/' aria-label='Galette des Rois mit Äpfeln' title='Galette des Rois mit Äpfeln' alt='Galette des Rois mit Äpfeln'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/01/galette-des-rois-mit-aepfeln.jpg'>&nbsp;</div></div>
+<div class='rp4wp-related-post-content'>
+Galette des Rois mit Äpfeln</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/flan-patissier-mit-pistazien/' aria-label='Flan pâtissier mit Pistazien' title='Flan pâtissier mit Pistazien' alt='Flan pâtissier mit Pistazien'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/03/flan-ptissier-mit-pistazien.jpg'>&nbsp;</div></div>
+<div class='rp4wp-related-post-content'>
+Flan pâtissier mit Pistazien</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/macarons-de-nancy/' aria-label='Macarons de Nancy' title='Macarons de Nancy' alt='Macarons de Nancy'><div class='rp4wp-related-post-image'>
 <div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/09/macarons-de-nancy-1.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
 Macarons de Nancy</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/le-colombier-pfingstkuchen-aus-marseille/' aria-label='Le Colombier - Pfingstkuchen aus Marseille' title='Le Colombier - Pfingstkuchen aus Marseille' alt='Le Colombier - Pfingstkuchen aus Marseille'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/05/le-colombierpfingstkuchen-aus-marseille.jpg'>&nbsp;</div></div>
+</a></li><li><a href='https://www.franzoesischkochen.de/canneles-a-la-lavande/' aria-label='Cannelés à la lavande' title='Cannelés à la lavande' alt='Cannelés à la lavande'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2010/07/canneles-a-la-lavande.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
-Le Colombier - Pfingstkuchen aus Marseille</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/tarte-aux-pommes-a-ma-facon-franzosische-apfeltarte/' aria-label='Französische Apfeltarte' title='Französische Apfeltarte' alt='Französische Apfeltarte'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2012/12/franzoesische-apfeltarte.jpg'>&nbsp;</div></div>
+Cannelés à la lavande</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/beret-basque-torte/' aria-label='Béret Basque Torte' title='Béret Basque Torte' alt='Béret Basque Torte'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/10/beret-basque-torte.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
-Französische Apfeltarte</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/tarte-aux-fraises-franzosische-erdbeer-tarte/' aria-label='Französische Erdbeertarte (Tarte aux fraises)' title='Französische Erdbeertarte (Tarte aux fraises)' alt='Französische Erdbeertarte (Tarte aux fraises)'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2010/04/franzoesische-erdbeertartetarte-aux-fraises.jpg'>&nbsp;</div></div>
+Béret Basque Torte</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/marquise-schokotorte/' aria-label='Marquise Schokotorte' title='Marquise Schokotorte' alt='Marquise Schokotorte'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/12/marquise-schokotorte.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
-Französische Erdbeertarte (Tarte aux fraises)</div>
+Marquise Schokotorte</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/tartiflette/' aria-label='Tartiflette' title='Tartiflette' alt='Tartiflette'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2015/01/tartiflette.jpg'>&nbsp;</div></div>
+<div class='rp4wp-related-post-content'>
+Tartiflette</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/franzoesische-beignets-fast-wie-bei-maman/' aria-label='Französische Beignets fast wie bei Maman' title='Französische Beignets fast wie bei Maman' alt='Französische Beignets fast wie bei Maman'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2019/03/franzoesische-beignets-fast-wie-bei-maman.jpg'>&nbsp;</div></div>
+<div class='rp4wp-related-post-content'>
+Französische Beignets fast wie bei Maman</div>
 </a></li><li><a href='https://www.franzoesischkochen.de/franzoesische-zwiebelsuppe-soupe-a-loignon/' aria-label='Französische Zwiebelsuppe (Soupe à l'oignon)' title='Französische Zwiebelsuppe (Soupe à l'oignon)' alt='Französische Zwiebelsuppe (Soupe à l'oignon)'><div class='rp4wp-related-post-image'>
 <div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/10/franzoesische-zwiebelsuppesoupe-a-loignon.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
@@ -5605,78 +5844,14 @@ Französische Zwiebelsuppe (Soupe à l'oignon)</div>
 <div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2021/07/tourteau-fromager.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
 Tourteau fromager</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/franzoesische-beignets-fast-wie-bei-maman/' aria-label='Französische Beignets fast wie bei Maman' title='Französische Beignets fast wie bei Maman' alt='Französische Beignets fast wie bei Maman'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2019/03/franzoesische-beignets-fast-wie-bei-maman.jpg'>&nbsp;</div></div>
+</a></li><li><a href='https://www.franzoesischkochen.de/tarte-aux-pommes-a-ma-facon-franzosische-apfeltarte/' aria-label='Französische Apfeltarte' title='Französische Apfeltarte' alt='Französische Apfeltarte'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2012/12/franzoesische-apfeltarte.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
-Französische Beignets fast wie bei Maman</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/tartiflette/' aria-label='Tartiflette' title='Tartiflette' alt='Tartiflette'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2015/01/tartiflette.jpg'>&nbsp;</div></div>
+Französische Apfeltarte</div>
+</a></li><li><a href='https://www.franzoesischkochen.de/le-colombier-pfingstkuchen-aus-marseille/' aria-label='Le Colombier - Pfingstkuchen aus Marseille' title='Le Colombier - Pfingstkuchen aus Marseille' alt='Le Colombier - Pfingstkuchen aus Marseille'><div class='rp4wp-related-post-image'>
+<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/05/le-colombierpfingstkuchen-aus-marseille.jpg'>&nbsp;</div></div>
 <div class='rp4wp-related-post-content'>
-Tartiflette</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/marquise-schokotorte/' aria-label='Marquise Schokotorte' title='Marquise Schokotorte' alt='Marquise Schokotorte'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/12/marquise-schokotorte.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Marquise Schokotorte</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/calissons-daix/' aria-label='Calissons d'Aix' title='Calissons d'Aix' alt='Calissons d'Aix'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2010/11/calissons-daix.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Calissons d'Aix</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/beret-basque-torte/' aria-label='Béret Basque Torte' title='Béret Basque Torte' alt='Béret Basque Torte'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/10/beret-basque-torte.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Béret Basque Torte</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/canneles-a-la-lavande/' aria-label='Cannelés à la lavande' title='Cannelés à la lavande' alt='Cannelés à la lavande'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2010/07/canneles-a-la-lavande.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Cannelés à la lavande</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/mendiants-de-provence/' aria-label='Mendiants de Provence' title='Mendiants de Provence' alt='Mendiants de Provence'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2012/12/mendiants-de-provence.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Mendiants de Provence</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/flan-patissier-mit-pistazien/' aria-label='Flan pâtissier mit Pistazien' title='Flan pâtissier mit Pistazien' alt='Flan pâtissier mit Pistazien'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/03/flan-ptissier-mit-pistazien.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Flan pâtissier mit Pistazien</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/galette-des-rois-mit-aepfeln/' aria-label='Galette des Rois mit Äpfeln' title='Galette des Rois mit Äpfeln' alt='Galette des Rois mit Äpfeln'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2022/01/galette-des-rois-mit-aepfeln.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Galette des Rois mit Äpfeln</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/poule-au-pot/' aria-label='Poule au pot' title='Poule au pot' alt='Poule au pot'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/01/poule-au-pot.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Poule au pot</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/crepes-suzette/' aria-label='Crêpes Suzette' title='Crêpes Suzette' alt='Crêpes Suzette'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2011/02/crepes-suzette.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Crêpes Suzette</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/kouign-amann/' aria-label='Kouign Amann' title='Kouign Amann' alt='Kouign Amann'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2010/01/kouign-amann.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Kouign Amann</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/feta-und-gemuese-en-papillote/' aria-label='Feta und Gemüse "en papillote"' title='Feta und Gemüse "en papillote"' alt='Feta und Gemüse "en papillote"'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2023/06/feta-und-gemuese-en-papillote.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Feta und Gemüse "en papillote"</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/rouille/' aria-label='Rouille' title='Rouille' alt='Rouille'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2014/11/rouille.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Rouille</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/crozets-savoyards-savoyische-crozets/' aria-label='Crozets Savoyards (Savoyische Crozets)' title='Crozets Savoyards (Savoyische Crozets)' alt='Crozets Savoyards (Savoyische Crozets)'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2009/12/crozets-savoyardssavoyische-crozets.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Crozets Savoyards (Savoyische Crozets)</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/wie-man-eine-bouillabaisse-von-marseille-in-deutschland-zaubern-kann/' aria-label='Wie man eine Bouillabaisse von Marseille in Deutschland zaubern kann....' title='Wie man eine Bouillabaisse von Marseille in Deutschland zaubern kann....' alt='Wie man eine Bouillabaisse von Marseille in Deutschland zaubern kann....'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2013/08/wie-man-eine-bouillabaisse-von-marseille-in-deutschland-zaubern-kann.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Wie man eine Bouillabaisse von Marseille in Deutschland zaubern kann....</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/flan-patissier-parisien/' aria-label='Flan pâtissier / parisien' title='Flan pâtissier / parisien' alt='Flan pâtissier / parisien'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2024/01/flan-patissier-parisien-rezept.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Flan pâtissier / parisien</div>
-</a></li><li><a href='https://www.franzoesischkochen.de/ratatouille/' aria-label='Ratatouille' title='Ratatouille' alt='Ratatouille'><div class='rp4wp-related-post-image'>
-<div class='lazy' style='width: 300px;height: 300px; background-size: cover;display: block;background-repeat: no-repeat;background-position: center;' data-src='https://www.franzoesischkochen.de/wp-content/uploads/2009/10/ratatouille-grundrezept.jpg'>&nbsp;</div></div>
-<div class='rp4wp-related-post-content'>
-Ratatouille</div>
+Le Colombier - Pfingstkuchen aus Marseille</div>
 </a></li></ul></div></div>
  </div>
 
@@ -5711,7 +5886,7 @@ Ratatouille</div>
 <!-- /* COMMENTS */ -->
   <div class="post-comments clearfix mt-5 small">  <section id="respond" class="c-meta l-meta text-center">
 <br>
-<h3 style="color: #000;">Wie gefällt dir dieses Rezept?</h3><span style="font-weight: bold;font-size: initial;color: #000;">Klicke auf die Sterne, um zu bewerten</span><div id="post-ratings-77729" class="post-ratings" data-nonce="595b7e07a5"><img class="post-rating-image"  id="rating_77729_1" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 1, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_2" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 2, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_3" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 3, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_4" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 4, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_5" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 5, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><br /><span style="font-size: initial;color: #000">Dieses Rezept wurde bisher <strong>8-mal bewertet</strong>.
+<h3 style="color: #000;">Wie gefällt dir dieses Rezept?</h3><span style="font-weight: bold;font-size: initial;color: #000;">Klicke auf die Sterne, um zu bewerten</span><div id="post-ratings-77729" class="post-ratings" data-nonce="16924421ec"><img class="post-rating-image"  id="rating_77729_1" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 1, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_2" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 2, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_3" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 3, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_4" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 4, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img class="post-rating-image"  id="rating_77729_5" src="https://www.franzoesischkochen.de/wp-content/plugins/wp-postratings/images/bruno/rating_on.gif" alt="Bewertung" title="" onmouseover="current_rating(77729, 5, '');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><br /><span style="font-size: initial;color: #000">Dieses Rezept wurde bisher <strong>8-mal bewertet</strong>.
 Die durchschnittliche Bewertung liegt bei <strong>5,00 Sternen</strong>.</span><br /><span class="post-ratings-text" id="ratings_77729_text"></span></div>
     
 
@@ -5720,7 +5895,42 @@ Die durchschnittliche Bewertung liegt bei <strong>5,00 Sternen</strong>.</span><
   <div class="text-center mb-4" id="comments" anchor="comments">
     <span class="f-main h2 c-black">2 Kommentare</span>
   </div>	
-<div class="fotogalerie pasaffiche" style="display: none;"><span class="titrecomments">Nachgekocht / Nachgebacken: Eure tollen Fotos!</span><a class="commentimage" href="https://www.franzoesischkochen.de/navettes-aus-marseille/comment-page-1/#comment-168688"><img class="lazyload"   src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.franzoesischkochen.de/wp-content/uploads/2022/03/168688.png"  onerror="this.parentNode.style.display='none'" alt="Leserfoto von Henriette" /><span class="auteur">Henriette</span></a></div>
+<div class="fotogalerie pasaffiche" style="display: none;"><span class="titrecomments">Nachgekocht / Nachgebacken: Eure tollen Fotos!</span><a class="commentimage" href="https://www.franzoesischkochen.de/navettes-aus-marseille/comment-page-1/#comment-168688"><img class="lazyload"   src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://www.franzoesischkochen.de/wp-content/uploads/2022/03/168688.png"  onerror="this.parentNode.style.display='none'" alt="Leserfoto von Henriette" /><span class="auteur">Henriette</span></a></div><style>
+#nachgebacken::after {
+  content: 'Alle Bilder anzeigen (1)';
+  position: relative;
+  top: -5px;
+  font-weight: bold;
+}
+
+#nachgebacken {
+display: inline-block !important;
+  background: #000;
+    width: 220px;
+  text-align: center;
+font-size: 14px;
+  color: #fff !important;
+  text-decoration: none;
+ border-radius: 100px;
+  padding: 10px;
+  position: absolute;
+  right: 1rem;
+  bottom: .5rem;
+line-height: 1;
+}
+
+#nachgebacken svg {
+  position: relative;
+  top: 0px;
+  fill: #fff;
+  margin-right: 7px;
+  }
+</style>
+
+
+
+
+
 
   <ul class="pt-2 l-black comment-list">
     		<li id="comment-168688" class="comment even thread-even depth-1 parent">
@@ -5771,7 +5981,7 @@ Viel Spaß beim Backen !</p>
 
 
   	<div id="respond" class="comment-respond">
-		<div class="text-center mt-4"><span class="f-main h3 c-black">Schreibe einen Kommentar<span class="f-text small text-uppercase pl-2"><a rel="nofollow" id="cancel-comment-reply-link" href="/navettes-aus-marseille/#respond" style="display:none;">Antworten abbrechen</a></span></span></div><form action="https://www.franzoesischkochen.de/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes"><span id="email-notes">Deine E-Mail-Adresse wird nicht veröffentlicht.</span> <span class="required-field-message">Erforderliche Felder sind mit <span class="required">*</span> markiert</span></p><div class="form-group"><textarea aria-label="new password" autocomplete="new-password"  id="ee34346870"  name="ee34346870"  class="form-control"  rows="5" aria-required="true" placeholder="Dein Kommentar"></textarea><textarea id="comment" aria-label="hp-comment" aria-hidden="true" name="comment" autocomplete="new-password" style="padding:0 !important;clip:rect(1px, 1px, 1px, 1px) !important;position:absolute !important;white-space:nowrap !important;height:1px !important;width:1px !important;overflow:hidden !important;" tabindex="-1"></textarea><script data-noptimize>document.getElementById("comment").setAttribute( "id", "aad2d35ed86ec654b07e524696438a52" );document.getElementById("ee34346870").setAttribute( "id", "comment" );</script></div><div class="row"><div class="author col form-group"><input id="author" class="form-control" placeholder="Name" name="author" type="text" value="" size="30" /></div>
+		<div class="text-center mt-4"><span class="f-main h3 c-black">Schreibe einen Kommentar<span class="f-text small text-uppercase pl-2"><a rel="nofollow" id="cancel-comment-reply-link" href="/navettes-aus-marseille/#respond" style="display:none;">Antworten abbrechen</a></span></span></div><form action="https://www.franzoesischkochen.de/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes"><span id="email-notes">Deine E-Mail-Adresse wird nicht veröffentlicht.</span> <span class="required-field-message">Erforderliche Felder sind mit <span class="required">*</span> markiert</span></p><div class="form-group"><textarea aria-label="new password" autocomplete="new-password"  id="ee34346870"  name="ee34346870"  class="form-control"  rows="5" aria-required="true" placeholder="Dein Kommentar"></textarea><textarea id="comment" aria-label="hp-comment" aria-hidden="true" name="comment" autocomplete="new-password" style="padding:0 !important;clip:rect(1px, 1px, 1px, 1px) !important;position:absolute !important;white-space:nowrap !important;height:1px !important;width:1px !important;overflow:hidden !important;" tabindex="-1"></textarea><script data-noptimize>document.getElementById("comment").setAttribute( "id", "a22840fd23c34c151935c95a2b1f1cdf" );document.getElementById("ee34346870").setAttribute( "id", "comment" );</script></div><div class="row"><div class="author col form-group"><input id="author" class="form-control" placeholder="Name" name="author" type="text" value="" size="30" /></div>
 <div class="email col form-group"><input id="email" class="form-control" placeholder="Email" name="email" type="text" value="" size="30" /></div></div>
 <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit btn" value="Kommentar abschicken" /> <input type='hidden' name='comment_post_ID' value='77729' id='comment_post_ID' />
 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
@@ -5968,7 +6178,31 @@ Viel Spaß beim Backen !</p>
 
 	
 	
-﻿
+﻿<div class="container" style="text-align: center;box-shadow: 0 1px 4px 0 #ccc;margin-bottom: 2rem !important;">
+	<div class="row justify-content-center">
+		<div class="col-lg-10 c-black mb-2">     
+			 <div class="sectionTitle"> <span class="bg-white h4 " style="margin-bottom: 20px;">Meine Koch- und Backbücher</span> </div>    
+		</div>  
+	</div> 
+   <div id="instalink">
+ 	<div class="lienlivres">
+		<a title="Macarons Buch kaufen" href="https://www.franzoesischkochen.de/shop/macarons-fuer-anfaenger-gebundene-ausgabe/"><img title="Macarons Buch" src="https://www.franzoesischkochen.de/Caching/livre1.jpg" data-src="https://www.franzoesischkochen.de/Caching/livre1.jpg"></a>
+
+		<a title="Tartes & Tartelettes Buch kaufen" href="https://www.franzoesischkochen.de/shop/tartes-tartelettes-gebundene-ausgabe-mit-widmung/"><img  title="Tartes Tartelettes Buch" src="https://www.franzoesischkochen.de/Caching/livre2.jpg" data-src="https://www.franzoesischkochen.de/Caching/livre2.jpg"></a>
+
+		<a title="Das Buch Französisch kochen kaufen" href="https://www.franzoesischkochen.de/shop/franzoesisch-kochen-mit-aurelie/"><img title="Französisch Kochen Kochbuch" src="https://www.franzoesischkochen.de/Caching/livre3.jpg" data-src="https://www.franzoesischkochen.de/Caching/livre3.jpg"></a>
+
+		<a title="Das Buch Französisch backen kaufen" href="https://www.franzoesischkochen.de/shop/franzoesisch-backen/"><img  title="Französisch Backen Backbuch" src="https://www.franzoesischkochen.de/Caching/livre4.jpg" data-src="https://www.franzoesischkochen.de/Caching/livre4.jpg"></a>
+
+		<a title="Das Buch Bienvenue kaufen" href="https://www.franzoesischkochen.de/shop/bienvenue-willkommen-bei-mir/"><img title="Bienvenue Kochbuch" src="https://www.franzoesischkochen.de/Caching/livre5.jpg" data-src="https://www.franzoesischkochen.de/Caching/livre5.jpg"></a>
+
+		<a title="Das Buch Aurélie backt kaufen" href="https://www.franzoesischkochen.de/shop/aurelie-bastian-backt-gebundene-ausgabe-mit-widmung/"><img  title="Aurélie Bastian backt Backbuch" src="https://www.franzoesischkochen.de/Caching/livre6.jpg" data-src="https://www.franzoesischkochen.de/Caching/livre6.jpg"></a>
+	</div>
+		<a class="lienl" style="display: block;font-weight: bold;margin-top: 9px;margin-bottom: 10px;background: #df0505;text-align: center;padding: 8px;border-radius: 3px;width: 250px;max-width: calc(100% - 20px); font-size: 1rem;background-image: url(https://www.franzoesischkochen.de/Caching/chevron1.png);background-size: 14px;background-repeat: no-repeat;background-position: calc(100% - 5px) center;padding-right: 20px;text-decoration: none; margin: auto;" title="Meine Bücher kaufen" href="https://www.franzoesischkochen.de/shop/buecher/">Jetzt im Shop kaufen</a>
+
+    </div>
+
+</div>
 <div class="container liensbas">
  
  <a title="Newsletter abonnieren" target="_blank" href="https://franzoesischkochen.us19.list-manage.com/subscribe?u=2a1de36e67941dee310e1a627&id=da1be4bcc8">Newsletter</a>
@@ -6001,6 +6235,76 @@ Viel Spaß beim Backen !</p>
     </div>
   </div>
 <script type="text/javascript">			 
+
+/******************/
+/*  PUB SHOP DEBUT */
+/********************/
+var pubshop = '<div  style="background: #faeaeb;margin: 1rem 0;padding: 1.5rem;border-radius: 1rem;line-height: 1.5 !important;"><p style="    font-size: 1.3rem !important;    color: #0c3558;    font-weight: bold;margin: 0 !important;">Hol dir ein kleines Stück Frankreich nach Hause!</p><p style="    color: #0c3558;margin-top: 0.5rem !important;">Seit 2013 findest du in meinem Shop authentische französische Produkte und hochwertige Küchenutensilien.</p><a class="lienl" style="display: block;margin-bottom: 10px;text-align: center;width: 250px;max-width: calc(100% - 20px); text-decoration: none;color: #000 !important;border-color: #ffb300 !important;" title="Den Shop entdecken" href="https://www.franzoesischkochen.de/shop/">Jetzt shoppen</a></div>';
+
+var pubshop = '<ul style="margin: 1rem 0 0 0 !important;background: #f1f2f2;padding: 1rem 2rem !important;" class="upsell premierepub"><li style="border: none;text-align: center;"><a class="lienupsell" title="Mandelmehl extra fein - ideal für Macarons online bestellen" href="https://www.franzoesischkochen.de/shop/" style="font-size: 1.5rem;color: rgb(28, 42, 57) !important;"><img class="imageproduit" style="object-fit: cover !important;" src="https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/VID-20240708-WA0002_1.gif" alt="Baguette einschneiden" data-src="https://www.franzoesischkochen.de/shop/wp-content/uploads/2019/02/VID-20240708-WA0002_1.gif" title="Baguette einschneiden">Auf der Suche nach authentischen französischen Produkten?</a><span class="short" onclick="window.location=&quot;https://www.franzoesischkochen.de/shop/mandelmehl-extra-fein-ideal-fuer-macarons-500g/&quot;" style="color: rgb(28, 42, 57) !important;text-align: center;">Hol dir ein kleines Stück Frankreich nach Hause!</span></li></ul>';
+
+var pubshop = '<ul style="margin: 1rem 0 0 0 !important;background: #f1f2f2;padding: 1rem 2rem !important;" class="upsell premierepub"><li style="border: none;text-align: center;"><a class="lienupsell" title="Mandelmehl extra fein - ideal für Macarons online bestellen" href="https://www.franzoesischkochen.de/shop/franzoesische-feinkost/?orderby=date" style="font-size: 1.5rem;color: rgb(28, 42, 57) !important;"><img class="imageproduit" style="object-fit: cover !important;" src="https://www.franzoesischkochen.de/shop/wp-content/uploads/2024/09/kastaniencreme-aus-frankreich-800x710.jpg" alt="Baguette einschneiden" data-src="https://www.franzoesischkochen.de/shop/wp-content/uploads/2024/09/kastaniencreme-aus-frankreich-800x710.jpg" title="Baguette einschneiden">Auf der Suche nach authentischen französischen Produkten?</a><span class="short" onclick="window.location=&quot;https://www.franzoesischkochen.de/shop/franzoesische-feinkost/?orderby=date&quot;" style="color: rgb(28, 42, 57) !important;text-align: center;">Hol dir ein kleines Stück Frankreich nach Hause!</span></li></ul>';
+
+var pubshop = '<div class="wrap1" style="display: flex;flex-wrap: wrap;margin: 20px 0;"><a title="Weihnachten und Adventsbacken im Shop" style="background-position: center !important; width: 100% !important;background-image: url(https://www.franzoesischkochen.de/Caching/fondmawe.jpg);background-position: center !important;width: 100% !important;background-repeat: no-repeat;background-size: cover !important;text-align: center;height: auto !important;text-shadow: 0px 1px 1px #000;text-decoration: none !important;" class="cat1 cath1" href="https://www.franzoesischkochen.de/shop/weihnachten-2014/"><span class="lien" style="text-align: center !important;padding-top: 2rem;color: #fff !important;font-weight: bold;text-decoration: none;max-width: 90%;width: 90%;margin: auto !important;position: relative;display: inline-block;float: none;padding-bottom: 2rem;text-decoration: none !important;"><span style="display: block;font-size: 1.8rem;padding-bottom: .5rem;">Weihnachten / Adventsbacken</span><span style="font-size: 1.1rem;line-height: 1.2 !important;display: block;">Meine schönsten Artikel für die Weihnachtsbäckerei und weihnachtliche Geschenkideen.</span><span class="button" style="background: #ffc768 linear-gradient(to bottom, #ffc768, #ffa50c);padding: 1rem 2rem;display: block;margin-top: 1rem;color: #000;border-radius: 10px;text-shadow: none;text-decoration: none !important;">Jetzt im Shop entdecken</span></span></a></div>';
+
+if (jQuery('.post-content').text().match(/chokolade/g) && jQuery('.post-content').text().match(/chokolade/g).length > 2) {
+var pubshop = '<div class="wrap1" style="display: flex;flex-wrap: wrap;margin: 20px 0;"><a title="Valrhona Schokolade im Shop kaufen" style="background-position: center !important; width: 100% !important;background-image: url(https://www.franzoesischkochen.de/Caching/fondvalrhona.jpg);background-position: center 80% !important;width: 100% !important;background-repeat: no-repeat;background-size: cover !important;text-align: center;height: auto !important;text-shadow: 0px 1px 1px #000;text-decoration: none !important;" class="cat1 cath1" href="https://www.franzoesischkochen.de/shop/zum-backen/valrhona-schokolade/"><span class="lien" style="text-align: center !important;padding-top: 2rem;color: #fff !important;font-weight: bold;text-decoration: none;max-width: 90%;width: 90%;margin: auto !important;position: relative;display: inline-block;float: none;padding-bottom: 2rem;text-decoration: none !important;"><span style="display: block;font-size: 1.8rem;padding-bottom: .5rem;">Valrhona Schokolade</span><span style="font-size: 1.1rem;line-height: 1.2 !important;display: block;">Die berühmteste Schokoladenmarke Frankreichs </span><span class="button" style="background: #ffc768 linear-gradient(to bottom, #ffc768, #ffa50c);padding: 1rem 2rem;display: block;margin-top: 1rem;color: #000;border-radius: 10px;text-shadow: none;text-decoration: none !important;">Jetzt im Shop entdecken</span></span></a></div>';
+}
+
+
+if (jQuery('.breadcrumbs').text().indexOf('Hauptspeisen') > -1 || jQuery('.breadcrumbs').text().indexOf('Vorspeisen') > -1) {
+var pubshop = '<div class="wrap1" style="display: flex;flex-wrap: wrap;margin: 20px 0;"><a style="background-position: center !important; width: 100% !important;background-image: url(&quot;https://www.franzoesischkochen.de/shop/wp-content/uploads/images/products/products-fleur-de-sel-ile-de-re.jpg&quot;);background-position: center !important;width: 100% !important;background-repeat: no-repeat;background-size: cover !important;text-align: center;height: auto !important;text-shadow: 0px 1px 1px #000;text-decoration: none !important;" class="cat1 cath1" href="https://www.franzoesischkochen.de/shop/franzoesische-feinkost/" title="Feinkost im Shop entdecken"><span class="lien" style="text-align: center !important;padding-top: 2rem;color: #fff !important;font-weight: bold;text-decoration: none;max-width: 90%;width: 90%;margin: auto !important;position: relative;display: inline-block;float: none;padding-bottom: 2rem;text-decoration: none !important;"><span style="display: block;font-size: 1.8rem;padding-bottom: .5rem;">Französische Spezialitäten</span><span style="font-size: 1.1rem;line-height: 1.2 !important;display: block;">Von Rillettes bis Macarons, ebenso wie feinste Konfitüren, Fleur de Sel und Olivenöl aus der Provence. </span><span class="button" style="background: #ffc768 linear-gradient(to bottom, #ffc768, #ffa50c);padding: 1rem 2rem;display: block;margin-top: 1rem;color: #000;border-radius: 10px;text-shadow: none;text-decoration: none !important;">Jetzt im Shop entdecken</span></span></a></div>';
+}
+
+if (jQuery('.post-content').text().match(/T65/g) && jQuery('.post-content').text().match(/T65/g).length > 2) {
+var pubshop = '<div class="wrap1" style="display: flex;flex-wrap: wrap;margin: 20px 0;"><a style="background-position: center !important; width: 100% !important;background-image: url(https://www.franzoesischkochen.de/shop/wp-content/uploads/2020/04/Baguette-Backblech-aurelie.jpg);background-position: center !important;width: 100% !important;background-repeat: no-repeat;background-size: cover !important;text-align: center;height: auto !important;text-shadow: 0px 1px 1px #000;text-decoration: none !important;" class="cat1 cath1" href="https://www.franzoesischkochen.de/shop/brot-croissants/" title="Kategorie Brot &amp; Croissants im Shop entdecken"><span class="lien" style="text-align: center !important;padding-top: 2rem;color: #fff !important;font-weight: bold;text-decoration: none;max-width: 90%;width: 90%;margin: auto !important;position: relative;display: inline-block;float: none;padding-bottom: 2rem;text-decoration: none !important;"><span style="display: block;font-size: 1.8rem;padding-bottom: .5rem;">Mehl, Backformen &amp; Utensilien</span><span style="font-size: 1.1rem;line-height: 1.2 !important;display: block;">Alles was du zum Brotbacken brauchst</span><span class="button" style="background: #ffc768 linear-gradient(to bottom, #ffc768, #ffa50c);padding: 1rem 2rem;display: block;margin-top: 1rem;color: #000;border-radius: 10px;text-shadow: none;text-decoration: none !important;">Jetzt im Shop entdecken</span></span></a></div>';
+
+}
+if (jQuery('.breadcrumbs').text().indexOf('Macarons') > -1) {
+var pubshop = '<div class="wrap1" style="display: flex;flex-wrap: wrap;margin: 20px 0;"><a style="background-position: center !important; width: 100% !important;background-image: url(&quot;https://www.franzoesischkochen.de/wp-content/uploads/2024/02/macarons-rezepte.jpg&quot;);background-position: center !important;width: 100% !important;background-repeat: no-repeat;background-size: cover !important;text-align: center;height: auto !important;text-shadow: 0px 1px 1px #000;text-decoration: none !important;" class="cat1 cath1" href="https://www.franzoesischkochen.de/shop/macarons/" title="Zu den Produkte der Kategorie Macarons"><span class="lien" style="text-align: center !important;padding-top: 2rem;color: #fff !important;font-weight: bold;text-decoration: none;max-width: 90%;width: 90%;margin: auto !important;position: relative;display: inline-block;float: none;padding-bottom: 2rem;text-decoration: none !important;"><span style="display: block;font-size: 1.8rem;padding-bottom: .5rem;">Du möchtest Macarons selber backen?</span><span style="font-size: 1.1rem;line-height: 1.2 !important;display: block;">Alles, was du dazu brauchst, findest du hier im Shop.</span><span class="button" style="background: #ffc768 linear-gradient(to bottom, #ffc768, #ffa50c);padding: 1rem 2rem;display: block;margin-top: 1rem;color: #000;border-radius: 10px;text-shadow: none;text-decoration: none !important;">Jetzt im Shop entdecken</span></span></a></div>';
+}
+
+if (jQuery('.post-content').text().match(/istazien/g) && jQuery('.post-content').text().match(/istazien/g).length > 1) {
+var pubshop = '<div class="wrap1" style="display: flex;flex-wrap: wrap;margin: 20px 0;"><a style="background-position: center !important; width: 100% !important;background-image: url(https://www.franzoesischkochen.de/Caching/pist.jpg);background-position: center !important;width: 100% !important;background-repeat: no-repeat;background-size: cover !important;text-align: center;height: auto !important;text-shadow: 0px 1px 1px #000;text-decoration: none !important;" class="cat1 cath1" href="https://www.franzoesischkochen.de/shop/zutaten/pistazien-produkte" title="Kategorie Pistazienprodukte im Shop entdecken"><span class="lien" style="text-align: center !important;padding-top: 2rem;color: #fff !important;font-weight: bold;text-decoration: none;max-width: 90%;width: 90%;margin: auto !important;position: relative;display: inline-block;float: none;padding-bottom: 2rem;text-decoration: none !important;"><span style="display: block;font-size: 1.8rem;padding-bottom: .5rem;">Pistazien-Produkte</span><span style="font-size: 1.1rem;line-height: 1.2 !important;display: block;">Pistazienpaste, grüne Pistatien uvm...</span><span class="button" style="background: #ffc768 linear-gradient(to bottom, #ffc768, #ffa50c);padding: 1rem 2rem;display: block;margin-top: 1rem;color: #000;border-radius: 10px;text-shadow: none;text-decoration: none !important;">Jetzt im Shop entdecken</span></span></a></div>';
+
+}
+
+var weiter = true;
+jQuery('.post-content p').each(function() {
+
+if (weiter) {
+if (jQuery(this).text().length > 50) {
+weiter = false;
+var bulle = '<a class="mehruebermich" title="Mehr über mich erfahren" href="https://www.franzoesischkochen.de/ueber-mich/"><img alt="Aurélie Bastian" src="https://www.franzoesischkochen.de/Caching/portraits/bulle2.png" data-src="https://www.franzoesischkochen.de/Caching/portraits/bulle2.png" title="Mehr über mich erfahren"></a>';
+bulle = '';
+jQuery(this).prepend(bulle).after(pubshop);
+
+
+var images = [], x = 0;
+var images = ["https://www.franzoesischkochen.de/shop/wp-content/uploads/2024/09/kastaniencreme-aus-frankreich-800x710.jpg",
+"https://www.franzoesischkochen.de/shop/wp-content/uploads/2024/09/choucroute-mit-riesling-fertig-800x722.jpg",
+"https://www.franzoesischkochen.de/shop/wp-content/uploads/2024/09/vinaigrette-800x711.jpg",
+"https://www.franzoesischkochen.de/shop/wp-content/uploads/2021/11/bouillabaisse-mit-rouille-geschenkset-800x600.jpg"];
+
+
+jQuery('.upsell img').each(function() {
+let l = jQuery(this).attr('data-src');
+if (l.indexOf('gif') < 0)  {
+images.push(l);
+}
+});  
+  var $img = jQuery('.upsell.premierepub img'), i = 0, speed = 200;
+window.setInterval(function() {
+  $img.fadeOut(speed, function() {
+    $img.attr("src", images[(++i % images.length)]);
+    $img.fadeIn(speed);
+  });
+}, 3000); 
+
+}
+}
+});
+/***********************/
 
 
 jQuery('#search').mousedown(function() {
@@ -6097,6 +6401,7 @@ jQuery(this).parent('p').prev('p').text(jQuery(this).parent('p').prev('p').text(
 
 var a = 0;  
 var oou = '';
+
 jQuery('strong').each(function() {
 if (jQuery(this).text().indexOf('Zutaten') === 0 && a === 0) {
 a = 1;
@@ -6110,7 +6415,10 @@ bu = '<div style="font-size: 1.1rem !important;font-family: Open Sans !important
 oou = '<span style="z-index: 1; color:  #333 !important; display: inline-block; margin: 0.5rem; padding: 7px 20px; border-radius: 30px; border: solid 1px #888 !important; font-size: 1rem;font-weight: normal;cursor: pointer;" class="z" id="zeit"><span class="fa fa-angle-double-down" style="margin-right: 7px;"></span>Direkt zum Rezept</span>';
 $posti = jQuery('article').attr('id').replace('post-','');
 var c1 = '<div id="aurelie"><span style="cursor: pointer; z-index: 1;  display: inline-block; margin: 1rem 0;  padding: 10px 20px; border-radius: 30px;  font-size: 1rem;font-weight: normal;border: solid 1px #555;" class="ssba_print ssba_share_link"><span class="fa fa-arrow-down" style="margin-right: 7px;"></span><span style=" "></span></span></div>';
+
+
 if (jQuery(this).parent('h2').length) {
+
 jQuery(this).attr('id', 'zutaten').parent('h2').after(c1);
 } else {
 jQuery(this).attr('id', 'zutaten').after(c1);
@@ -7503,8 +7811,8 @@ images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.adde
 if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.franzoesischkochen.de/wp-content/plugins/wp-rocket/assets/js/lazyload/17.5/lazyload.min.js"></script> 
  
 
-<script src="https://www.franzoesischkochen.de/wp-content/cache/min/1/5a8ad3f1604d47bdec5d8d4c5bff18cf.js" data-minify="1" defer></script></body>
+<script src="https://www.franzoesischkochen.de/wp-content/cache/min/1/8709e47962980d288fe65fcdd1f37c41.js" data-minify="1" defer></script></body>
 </html>
 
 
-<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1720437360 -->
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1733947557 -->

@@ -67,7 +67,6 @@
     </sly -->
     
     
-    
 
     
 <link rel="preconnect" href="https://fonts.gstatic.com"/>
@@ -76,7 +75,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&display=swap" rel="stylesheet preload" as="style" crossorigin/>
 <script src="/etc/designs/cucchiaio20/js/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://storage.edidomus.it/asset/varie/ismobile.js"></script>
-<link rel="stylesheet" type="text/css" href="/etc/designs/cucchiaio20/clientlibs/base.20240703.min.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="/etc/designs/cucchiaio20/clientlibs/base.20241212.min.css" media="all"/>
 
     
 <script type="text/javascript" src="/etc.clientlibs/clientlibs/granite/jquery/granite/csrf.min.js"></script>
@@ -91,7 +90,7 @@
 
 
 	
-<link rel="stylesheet" type="text/css" href="/etc/designs/cucchiaio20/clientlibs/recipenews.20240703.min.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="/etc/designs/cucchiaio20/clientlibs/recipenews.20241212.min.css" media="all"/>
 
 <script type='text/javascript'>
 	var isMobileFlag = isMobile.any();
@@ -150,15 +149,15 @@
        "ratingValue": "5",
 		
 		
-       "ratingCount": "7"
+       "ratingCount": "8"
 		
      },
 	
-	
-	
+	"prepTime": "PT20M",
+	"cookTime": "PT25M",
 	
 	"keywords": "Baccalà in crosta senza glutine,al forno",
-	
+	"recipeYield": "4 porzioni",
     
 
         
@@ -261,7 +260,7 @@ Sfornate il baccalà in crosta senza glutine, lasciate intiepidire per almeno 15
               </li>
   
               <li class="c-header__featureitem--link-books d-none d-md-block">
-              	<a href="https://www.shoped.it/shop/i-nostri-brand/?testata=cucchiaiodargento" class="c-squarelabel" target="_blank" rel="nofollow noopener" title="Libri">
+              	<a href="https://www.shoped.it/shop/i-nostri-brand/?testata=cucchiaiodargento#logo-testata" class="c-squarelabel" target="_blank" rel="nofollow noopener" title="Libri">
                   <span class="c-squarelabel__block c-header__iconContainer">
                     <svg class="c-squarelabel__ico icocuc1-spoon"><use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-libri-icon"></use></svg>
                   </span>
@@ -480,12 +479,6 @@ Sfornate il baccalà in crosta senza glutine, lasciate intiepidire per almeno 15
                 </li>
             
                 <li class="c-nav3__item">
-                    <a href="https://www.cucchiaio.it/ricette/cotture_friggitrice-ad-aria~2/">
-                        Friggitrice ad aria
-                    </a>
-                </li>
-            
-                <li class="c-nav3__item">
                     <a href="https://www.cucchiaio.it/video-ricette/">
                         Video
                     </a>
@@ -498,8 +491,14 @@ Sfornate il baccalà in crosta senza glutine, lasciate intiepidire per almeno 15
                 </li>
             
                 <li class="c-nav3__item">
-                    <a href="https://www.cucchiaio.it/speciali/" style="color:#ec5a2b">
-                        Speciali
+                    <a href="https://www.cucchiaio.it/focaccia-pizza-ricette-curiosita/">
+                        Pizza
+                    </a>
+                </li>
+            
+                <li class="c-nav3__item">
+                    <a href="https://www.cucchiaio.it/speciale-natale/" style="color:#ec5a2b">
+                        Natale
                     </a>
                 </li>
             
@@ -555,12 +554,21 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
         
 		
 
+
+
+
+	
+
+
    <form id="logoutForm" action="/content/cucchiaio/it/home.html.login/j_logout" method="post">
     <input type="hidden" name=":operation" value="nop"/>
     <input type="hidden" name=":redirect" value="/ricetta/baccala-in-crosta-senza-glutine/"/>
    </form>
 <script type="text/javascript">  
-    var pathLogin="/bin/edidomus/servlet/oauthredirect.cucchiaio.login.it.false.0.servlet?redirectTo=/ricetta/baccala-in-crosta-senza-glutine/";
+
+     var pathLogin="/bin/edidomus/servlet/oauthredirect.cucchiaio.login.it.false.0.servlet?redirectTo=/ricetta/baccala-in-crosta-senza-glutine/";
+
+    
 </script>	
 	
 		
@@ -895,10 +903,10 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
                 <!-- .c-browserecipe__head -->
 
                 <div class="modal-body">
-
-                    <div class="c-browserecipe__slider c-slider js-component--skip" data-config='{&quot;autoHeight&quot;:false,&quot;speed&quot;:400,&quot;loop&quot;:true,&quot;freeMode&quot;:false,&quot;centeredSlides&quot;:false,&quot;slidesPerView&quot;:1,&quot;spaceBetween&quot;:0,&quot;navigation&quot;:{&quot;nextEl&quot;:&quot;[class*=\&quot;__btn--next\&quot;]&quot;,&quot;prevEl&quot;:&quot;[class*=\&quot;__btn--prev\&quot;]&quot;},&quot;pagination&quot;:{&quot;clickable&quot;:true,&quot;type&quot;:&quot;fraction&quot;,&quot;el&quot;:&quot;[class*=\&quot;__pagination\&quot;]&quot;}}' data-js-component="Slider">
+                    
+                    <div class="c-browserecipe__slider c-slider js-component--skip" data-config='{"autoHeight":false,"speed":400,"loop":true,"freeMode":false,"centeredSlides":false,"slidesPerView":1,"spaceBetween":0,"navigation":{"nextEl":"[class*=\"__btn--next\"]","prevEl":"[class*=\"__btn--prev\"]"},"pagination":{"clickable":true,"type":"fraction","el":"[class*=\"__pagination\"]"}}' data-js-component="Slider">
                         <div class="c-slider__wrapper">
-                            <div class="c-slider__instance swiper-container">
+                            <div class="c-slider__instance swiper">
 
                                 <div class="swiper-wrapper">
                                 </div>
@@ -1798,7 +1806,6 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
     
         <div class="col-12 col-md-6 col-lg-4 mb-5">
     
-
     <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
         <div class="c-intro__inner ">
             <div class="">
@@ -1806,17 +1813,22 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
               
              
                 <div class="c-intro__img-wrapper w-100">
-                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/salsa-muhammara/">
+                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/arrosto-di-vitello-al-forno/">
                         <picture class="c-img c-img--has-lazyload ">
-                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2023/10/salsa-muhammara/salsa%20muhammara.jpeg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2023/10/salsa-muhammara/salsa%20muhammara.jpeg?im=Resize=(748) 2x "  />
-                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2023/10/salsa-muhammara/salsa%20muhammara.jpeg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2023/10/salsa-muhammara/salsa%20muhammara.jpeg?im=Resize=(600) 2x "  />
-                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2023/10/salsa-muhammara/salsa%20muhammara.jpeg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2023/10/salsa-muhammara/salsa%20muhammara.jpeg?im=Resize=(600) 2x "  />
-                            
-                            
-                                <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2023/10/salsa-muhammara/jcr:content/page_images/imagePreview.img.jpg/1716895106721.jpg?im=Resize(374)" title="Salsa muhammara" alt="Salsa muhammara"/>
-                                
-                            
-                            </picture>
+                        <source media="(max-width:480px)" data-srcset="/content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img10.jpg/1542815487009.jpg?im=Resize=(374),  /content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img10.jpg/1542815487009.jpg?im=Resize=(748) 2x "  />
+                        <source media="(min-width:1440px)" data-srcset="/content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img10.jpg/1542815487009.jpg?im=Resize=(300),  /content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img10.jpg/1542815487009.jpg?im=Resize=(600) 2x "  />
+                        <source media="(max-width:1439px)" data-srcset="/content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img10.jpg/1542815487009.jpg?im=Resize=(300),  /content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img10.jpg/1542815487009.jpg?im=Resize=(600) 2x "  />
+						
+						
+							
+							    
+							    
+							        <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2017/09/arrosto-di-vitello-al-forno/jcr:content/imagePreview.img.jpg/1542815487009.jpg?im=Resize(374)" title="Arrosto di vitello al forno" alt="Arrosto di vitello al forno"/>
+							        
+							    
+							    	
+													
+                        </picture>
                         <!-- .c-img -->
                     </a>
                 </div>
@@ -1844,7 +1856,7 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
                                         <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
                                             
                                             <li>
-                                                <a href="#" data-share-url="/ricetta/salsa-muhammara/" data-share-title="Salsa muhammara" class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                                                <a href="#" data-share-url="/ricetta/arrosto-di-vitello-al-forno/" data-share-title="Arrosto di vitello al forno" class="c-sharebox__btn-open-share" role="button" title="Condividi">
                                                     <span class="sr-only">
                                                         Share
                                                     </span>
@@ -1875,7 +1887,7 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
                             
                             
                             <div class="c-typo1--style3 --theme-light3 mb-f15">
-                                <h3 class="h4"><a href="/ricetta/salsa-muhammara/">Salsa muhammara</a></h3>
+                                <h3 class="h4"><a href="/ricetta/arrosto-di-vitello-al-forno/">Arrosto di vitello al forno</a></h3>
                             </div>
                             
                             
@@ -1890,9 +1902,9 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
                                 
                                   
                                     <p>
-                                    	<span data-nosnippet>La ricetta della crema siriana a base di peperoni, intensa e profumata, è perfetta come aperitivo facile e sfizioso. Ecco come preparare la muhammara, da gustare col pane arabo oppure con gustosi falafel.  </span>
-                                        <div class="description-content-foot"><a href="/ricetta/salsa-muhammara/" class="font-link-grey"> Leggi tutto</a></div>
-                                    <!--a href="/ricetta/salsa-muhammara/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
+                                    	<span data-nosnippet>Una ricetta semplice e per un pranzo in famiglia. Per preparare l’arrosto di vitello al forno scegliete un buon magatello e preparate voi il brodo di carne.</span>
+                                        <div class="description-content-foot"><a href="/ricetta/arrosto-di-vitello-al-forno/" class="font-link-grey"> Leggi tutto</a></div>
+                                    <!--a href="/ricetta/arrosto-di-vitello-al-forno/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
                               
                                </p>
                                                             
@@ -1908,551 +1920,19 @@ var defaultAvatar = "\/etc\/designs\/cucchiaio20\/img\/profile\/no_image.jpg";
                                         <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
                                             <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
                                                 <div class="c-intro__meta-readtime--image-container">
-                                                    <a href="/ricetta/salsa-muhammara/" class="c-intro__meta-readtime__link">
+                                                    <a href="/ricetta/arrosto-di-vitello-al-forno/" class="c-intro__meta-readtime__link">
                                                         <svg class="icocuc1-clock" aria-hidden="true">
                                                             <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
                                                             </use>
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                <a href="/ricetta/salsa-muhammara/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
-                                                        15 min</b></a>
-                                            </div>
-                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
-                                                <span>|
-                                                    <a href="/ricetta/salsa-muhammara/">Scopri la ricetta</a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-
-                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
-                            
-							
-							
-                            
-							
-							
-                            <!-- /* EVERYTHING ELSE */ -->
-                            
-                            
-                            
-							
-                        </div>
-                        <!-- .c-intro__content-foot -->
-
-                    </div>
-                </div>
-                <!-- .c-intro__content .col-* -->
-
-            </div>
-            <!-- .row -->
-        </div>
-        <!-- .c-intro__inner -->
-    </article>
-    <!-- .c-intro -->
-
-    
-        </div>
-    
-
-
-
-
-	
-	
-
-        
-	
-		
-
-
-
-    
-        <div class="col-12 col-md-6 col-lg-4 mb-5">
-    
-
-    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
-        <div class="c-intro__inner ">
-            <div class="">
-            
-              
-             
-                <div class="c-intro__img-wrapper w-100">
-                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/insalata-asparagi/">
-                        <picture class="c-img c-img--has-lazyload ">
-                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/insalata-asparagi/insalata-asparagi-finale.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/05/insalata-asparagi/insalata-asparagi-finale.jpg?im=Resize=(748) 2x "  />
-                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/insalata-asparagi/insalata-asparagi-finale.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/insalata-asparagi/insalata-asparagi-finale.jpg?im=Resize=(600) 2x "  />
-                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/insalata-asparagi/insalata-asparagi-finale.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/insalata-asparagi/insalata-asparagi-finale.jpg?im=Resize=(600) 2x "  />
-                            
-                            
-                                <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/05/insalata-asparagi/jcr:content/page_images/imagePreview.img.jpg/1716916473331.jpg?im=Resize(374)" title="Insalata di asparagi" alt="Insalata di asparagi"/>
-                                
-                            
-                            </picture>
-                        <!-- .c-img -->
-                    </a>
-                </div>
-              
-                           
-                <!-- .c-intro__img-wrapper -->
-
-                <div class="c-intro__content w-100">
-                    <div class="c-intro__content-inner ">
-                        <div class="c-intro__content-head " data-mh="contentsGrid1">
-                            <div class="c-articlebar pt-f10 mb-f15">
-                                <div class="c-articlebar__wrapper row ">
-                                    <div class=" col-8">
-                                        <div class="c-articlebar__meta ">
-                                            <span class="c-articlebar__cat text-uppercase">
-                                                RICETTA FACILE
-                                            </span>
-                                        </div>
-                                        <!-- .c-articlebar__meta -->
-                                    </div>
-                                    <!-- .col-* -->
-
-                                    <div class=" col-4">
-
-                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
-                                            
-                                            <li>
-                                                <a href="#" data-share-url="/ricetta/insalata-asparagi/" data-share-title="Insalata di asparagi" class="c-sharebox__btn-open-share" role="button" title="Condividi">
-                                                    <span class="sr-only">
-                                                        Share
-                                                    </span>
-                                                    <svg class="icocuc1-share">
-                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
-                                                        </use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <!-- */li>
-							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
-							                    	<svg class="icocuc1-mark">
-							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
-							                          </use>
-							                        </svg>
-							                    </a>
-							                </li /*-->
-                                        </ul>
-
-                                    </div>
-                                    <!-- .col-* -->
-
-                                </div>
-                                <!-- .c-articlebar__wrapper .row -->
-                            </div>
-                            <!-- .c-articlebar -->
-							
-                            
-                            
-                            <div class="c-typo1--style3 --theme-light3 mb-f15">
-                                <h3 class="h4"><a href="/ricetta/insalata-asparagi/">Insalata di asparagi</a></h3>
-                            </div>
-                            
-                            
-                        </div>
-                        <!-- .c-intro__content-head -->
-
-
-                        <div class="c-intro__content-foot  pt-md-f20">
-
-                            
-                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
-                                
-                                  
-                                    <p>
-                                    	<span data-nosnippet>L'insalata di asparagi, con ricotta salata e briciole di pane, è una preparazione facile e gustosa che vi stupirà. Per un antipasto o un contorno leggero e raffinato</span>
-                                        <div class="description-content-foot"><a href="/ricetta/insalata-asparagi/" class="font-link-grey"> Leggi tutto</a></div>
-                                    <!--a href="/ricetta/insalata-asparagi/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
-                              
-                               </p>
-                                                            
-                               
-                               
-                                </div>
-                            
-
-                            <!-- /* RECIPE */ -->
-                            
-                                <div class="c-intro__foot-tool-wrapper">
-                                    <div class="c-intro__meta  pt-sm-f10 ">
-                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
-                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
-                                                <div class="c-intro__meta-readtime--image-container">
-                                                    <a href="/ricetta/insalata-asparagi/" class="c-intro__meta-readtime__link">
-                                                        <svg class="icocuc1-clock" aria-hidden="true">
-                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                                <a href="/ricetta/insalata-asparagi/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
-                                                        20 min</b></a>
-                                            </div>
-                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
-                                                <span>|
-                                                    <a href="/ricetta/insalata-asparagi/">Scopri la ricetta</a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-
-                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
-                            
-							
-							
-                            
-							
-							
-                            <!-- /* EVERYTHING ELSE */ -->
-                            
-                            
-                            
-							
-                        </div>
-                        <!-- .c-intro__content-foot -->
-
-                    </div>
-                </div>
-                <!-- .c-intro__content .col-* -->
-
-            </div>
-            <!-- .row -->
-        </div>
-        <!-- .c-intro__inner -->
-    </article>
-    <!-- .c-intro -->
-
-    
-        </div>
-    
-
-
-
-
-	
-	
-
-        
-	
-		
-
-
-
-    
-        <div class="col-12 col-md-6 col-lg-4 mb-5">
-    
-
-    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
-        <div class="c-intro__inner ">
-            <div class="">
-            
-              
-             
-                <div class="c-intro__img-wrapper w-100">
-                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/feta-con-semi-di-sesamo/">
-                        <picture class="c-img c-img--has-lazyload ">
-                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/Feta%20con%20semi%20di%20sesamo-3.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/Feta%20con%20semi%20di%20sesamo-3.jpg?im=Resize=(748) 2x "  />
-                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/Feta%20con%20semi%20di%20sesamo-3.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/Feta%20con%20semi%20di%20sesamo-3.jpg?im=Resize=(600) 2x "  />
-                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/Feta%20con%20semi%20di%20sesamo-3.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/Feta%20con%20semi%20di%20sesamo-3.jpg?im=Resize=(600) 2x "  />
-                            
-                            
-                                <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/05/feta-con-semi-di-sesamo/jcr:content/page_images/imagePreview.img.jpg/1714722567341.jpg?im=Resize(374)" title="Feta con semi di sesamo" alt="Feta con semi di sesamo"/>
-                                
-                            
-                            </picture>
-                        <!-- .c-img -->
-                    </a>
-                </div>
-              
-                           
-                <!-- .c-intro__img-wrapper -->
-
-                <div class="c-intro__content w-100">
-                    <div class="c-intro__content-inner ">
-                        <div class="c-intro__content-head " data-mh="contentsGrid1">
-                            <div class="c-articlebar pt-f10 mb-f15">
-                                <div class="c-articlebar__wrapper row ">
-                                    <div class=" col-8">
-                                        <div class="c-articlebar__meta ">
-                                            <span class="c-articlebar__cat text-uppercase">
-                                                RICETTA FACILE
-                                            </span>
-                                        </div>
-                                        <!-- .c-articlebar__meta -->
-                                    </div>
-                                    <!-- .col-* -->
-
-                                    <div class=" col-4">
-
-                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
-                                            
-                                            <li>
-                                                <a href="#" data-share-url="/ricetta/feta-con-semi-di-sesamo/" data-share-title="Feta con semi di sesamo" class="c-sharebox__btn-open-share" role="button" title="Condividi">
-                                                    <span class="sr-only">
-                                                        Share
-                                                    </span>
-                                                    <svg class="icocuc1-share">
-                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
-                                                        </use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <!-- */li>
-							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
-							                    	<svg class="icocuc1-mark">
-							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
-							                          </use>
-							                        </svg>
-							                    </a>
-							                </li /*-->
-                                        </ul>
-
-                                    </div>
-                                    <!-- .col-* -->
-
-                                </div>
-                                <!-- .c-articlebar__wrapper .row -->
-                            </div>
-                            <!-- .c-articlebar -->
-							
-                            
-                            
-                            <div class="c-typo1--style3 --theme-light3 mb-f15">
-                                <h3 class="h4"><a href="/ricetta/feta-con-semi-di-sesamo/">Feta con semi di sesamo</a></h3>
-                            </div>
-                            
-                            
-                        </div>
-                        <!-- .c-intro__content-head -->
-
-
-                        <div class="c-intro__content-foot  pt-md-f20">
-
-                            
-                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
-                                
-                                  
-                                    <p>
-                                    	<span data-nosnippet>La ricetta della feta con semi di sesamo si fa subito amare: feta, miele, sesamo bianco e nero per dei bocconcini sfiziosissimi perfetti come antipasto o secondo piatto facile 
-e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
-                                        <div class="description-content-foot"><a href="/ricetta/feta-con-semi-di-sesamo/" class="font-link-grey"> Leggi tutto</a></div>
-                                    <!--a href="/ricetta/feta-con-semi-di-sesamo/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
-                              
-                               </p>
-                                                            
-                               
-                               
-                                </div>
-                            
-
-                            <!-- /* RECIPE */ -->
-                            
-                                <div class="c-intro__foot-tool-wrapper">
-                                    <div class="c-intro__meta  pt-sm-f10 ">
-                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
-                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
-                                                <div class="c-intro__meta-readtime--image-container">
-                                                    <a href="/ricetta/feta-con-semi-di-sesamo/" class="c-intro__meta-readtime__link">
-                                                        <svg class="icocuc1-clock" aria-hidden="true">
-                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                                <a href="/ricetta/feta-con-semi-di-sesamo/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
+                                                <a href="/ricetta/arrosto-di-vitello-al-forno/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
                                                         10 min</b></a>
                                             </div>
                                             <div class="c-intro__meta-rank d-flex  justify-content-end  ">
                                                 <span>|
-                                                    <a href="/ricetta/feta-con-semi-di-sesamo/">Scopri la ricetta</a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-
-                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
-                            
-							
-							
-                            
-							
-							
-                            <!-- /* EVERYTHING ELSE */ -->
-                            
-                            
-                            
-							
-                        </div>
-                        <!-- .c-intro__content-foot -->
-
-                    </div>
-                </div>
-                <!-- .c-intro__content .col-* -->
-
-            </div>
-            <!-- .row -->
-        </div>
-        <!-- .c-intro__inner -->
-    </article>
-    <!-- .c-intro -->
-
-    
-        </div>
-    
-
-
-
-
-	
-	
-
-      
-    
-
-    
-      
-      
-        
-	
-		
-
-
-
-    
-        <div class="col-12 col-md-6 col-lg-4 mb-5">
-    
-
-    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
-        <div class="c-intro__inner ">
-            <div class="">
-            
-              
-             
-                <div class="c-intro__img-wrapper w-100">
-                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/torta-salata-di-zucchine-in-padella/">
-                        <picture class="c-img c-img--has-lazyload ">
-                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/Schiacciatina%20di%20zucchine-3.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/Schiacciatina%20di%20zucchine-3.jpg?im=Resize=(748) 2x "  />
-                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/Schiacciatina%20di%20zucchine-3.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/Schiacciatina%20di%20zucchine-3.jpg?im=Resize=(600) 2x "  />
-                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/Schiacciatina%20di%20zucchine-3.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/Schiacciatina%20di%20zucchine-3.jpg?im=Resize=(600) 2x "  />
-                            
-                            
-                                <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/05/torta-salata-di-zucchine-in-padella/jcr:content/page_images/imagePreview.img.jpg/1714721197919.jpg?im=Resize(374)" title="Torta salata di zucchine in padella" alt="Torta salata di zucchine in padella"/>
-                                
-                            
-                            </picture>
-                        <!-- .c-img -->
-                    </a>
-                </div>
-              
-                           
-                <!-- .c-intro__img-wrapper -->
-
-                <div class="c-intro__content w-100">
-                    <div class="c-intro__content-inner ">
-                        <div class="c-intro__content-head " data-mh="contentsGrid1">
-                            <div class="c-articlebar pt-f10 mb-f15">
-                                <div class="c-articlebar__wrapper row ">
-                                    <div class=" col-8">
-                                        <div class="c-articlebar__meta ">
-                                            <span class="c-articlebar__cat text-uppercase">
-                                                RICETTA FACILE
-                                            </span>
-                                        </div>
-                                        <!-- .c-articlebar__meta -->
-                                    </div>
-                                    <!-- .col-* -->
-
-                                    <div class=" col-4">
-
-                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
-                                            
-                                            <li>
-                                                <a href="#" data-share-url="/ricetta/torta-salata-di-zucchine-in-padella/" data-share-title="Torta salata di zucchine in padella" class="c-sharebox__btn-open-share" role="button" title="Condividi">
-                                                    <span class="sr-only">
-                                                        Share
-                                                    </span>
-                                                    <svg class="icocuc1-share">
-                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
-                                                        </use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <!-- */li>
-							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
-							                    	<svg class="icocuc1-mark">
-							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
-							                          </use>
-							                        </svg>
-							                    </a>
-							                </li /*-->
-                                        </ul>
-
-                                    </div>
-                                    <!-- .col-* -->
-
-                                </div>
-                                <!-- .c-articlebar__wrapper .row -->
-                            </div>
-                            <!-- .c-articlebar -->
-							
-                            
-                            
-                            <div class="c-typo1--style3 --theme-light3 mb-f15">
-                                <h3 class="h4"><a href="/ricetta/torta-salata-di-zucchine-in-padella/">Torta salata di zucchine in padella</a></h3>
-                            </div>
-                            
-                            
-                        </div>
-                        <!-- .c-intro__content-head -->
-
-
-                        <div class="c-intro__content-foot  pt-md-f20">
-
-                            
-                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
-                                
-                                  
-                                    <p>
-                                    	<span data-nosnippet>La torta salata di zucchine in padella è una deliziosa focaccetta non lievitata che si prepara con molta facilità. Gustosa ed economica è perfetta per risolvere un pranzo o una cena veloce! Può anche essere l'asso nella manica per un antipasto o un...</span>
-                                        <div class="description-content-foot"><a href="/ricetta/torta-salata-di-zucchine-in-padella/" class="font-link-grey"> Leggi tutto</a></div>
-                                    <!--a href="/ricetta/torta-salata-di-zucchine-in-padella/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
-                              
-                               </p>
-                                                            
-                               
-                               
-                                </div>
-                            
-
-                            <!-- /* RECIPE */ -->
-                            
-                                <div class="c-intro__foot-tool-wrapper">
-                                    <div class="c-intro__meta  pt-sm-f10 ">
-                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
-                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
-                                                <div class="c-intro__meta-readtime--image-container">
-                                                    <a href="/ricetta/torta-salata-di-zucchine-in-padella/" class="c-intro__meta-readtime__link">
-                                                        <svg class="icocuc1-clock" aria-hidden="true">
-                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                                <a href="/ricetta/torta-salata-di-zucchine-in-padella/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
-                                                        25 min</b></a>
-                                            </div>
-                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
-                                                <span>|
-                                                    <a href="/ricetta/torta-salata-di-zucchine-in-padella/">Scopri la ricetta</a>
+                                                    <a href="/ricetta/arrosto-di-vitello-al-forno/">Scopri la ricetta</a>
                                                 </span>
                                             </div>
                                         </div>
@@ -2505,7 +1985,6 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
     
         <div class="col-12 col-md-6 col-lg-4 mb-5">
     
-
     <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
         <div class="c-intro__inner ">
             <div class="">
@@ -2513,192 +1992,22 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
               
              
                 <div class="c-intro__img-wrapper w-100">
-                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/halloumi/">
+                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/arrosto-di-natale/">
                         <picture class="c-img c-img--has-lazyload ">
-                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/halloumi/Halloumi_orizz.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/05/halloumi/Halloumi_orizz.jpg?im=Resize=(748) 2x "  />
-                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/halloumi/Halloumi_orizz.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/halloumi/Halloumi_orizz.jpg?im=Resize=(600) 2x "  />
-                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/05/halloumi/Halloumi_orizz.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/05/halloumi/Halloumi_orizz.jpg?im=Resize=(600) 2x "  />
-                            
-                            
-                                <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/05/halloumi/jcr:content/page_images/imagePreview.img.jpg/1715762734193.jpg?im=Resize(374)" title="Halloumi" alt="Halloumi"/>
-                                
-                            
-                            </picture>
-                        <!-- .c-img -->
-                    </a>
-                </div>
-              
-                           
-                <!-- .c-intro__img-wrapper -->
-
-                <div class="c-intro__content w-100">
-                    <div class="c-intro__content-inner ">
-                        <div class="c-intro__content-head " data-mh="contentsGrid1">
-                            <div class="c-articlebar pt-f10 mb-f15">
-                                <div class="c-articlebar__wrapper row ">
-                                    <div class=" col-8">
-                                        <div class="c-articlebar__meta ">
-                                            <span class="c-articlebar__cat text-uppercase">
-                                                RICETTA FACILE
-                                            </span>
-                                        </div>
-                                        <!-- .c-articlebar__meta -->
-                                    </div>
-                                    <!-- .col-* -->
-
-                                    <div class=" col-4">
-
-                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
-                                            
-                                            <li>
-                                                <a href="#" data-share-url="/ricetta/halloumi/" data-share-title="Halloumi" class="c-sharebox__btn-open-share" role="button" title="Condividi">
-                                                    <span class="sr-only">
-                                                        Share
-                                                    </span>
-                                                    <svg class="icocuc1-share">
-                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
-                                                        </use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <!-- */li>
-							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
-							                    	<svg class="icocuc1-mark">
-							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
-							                          </use>
-							                        </svg>
-							                    </a>
-							                </li /*-->
-                                        </ul>
-
-                                    </div>
-                                    <!-- .col-* -->
-
-                                </div>
-                                <!-- .c-articlebar__wrapper .row -->
-                            </div>
-                            <!-- .c-articlebar -->
+                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/arrosto-di-natale/_R5_6835.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/11/arrosto-di-natale/_R5_6835.jpg?im=Resize=(748) 2x "  />
+                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/arrosto-di-natale/_R5_6835.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/arrosto-di-natale/_R5_6835.jpg?im=Resize=(600) 2x "  />
+                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/arrosto-di-natale/_R5_6835.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/arrosto-di-natale/_R5_6835.jpg?im=Resize=(600) 2x "  />
+						
+						
 							
-                            
-                            
-                            <div class="c-typo1--style3 --theme-light3 mb-f15">
-                                <h3 class="h4"><a href="/ricetta/halloumi/">Halloumi</a></h3>
-                            </div>
-                            
-                            
-                        </div>
-                        <!-- .c-intro__content-head -->
-
-
-                        <div class="c-intro__content-foot  pt-md-f20">
-
-                            
-                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
-                                
-                                  
-                                    <p>
-                                    	<span data-nosnippet>L'halloumi è il formaggio cipriota che si può gustare al suo meglio con questa ricetta facilissima e davvero irresistibile. Basta poco per portare un pezzetto di Mediterraneo a tavola e sentirsi in vacanza per un attimo!</span>
-                                        <div class="description-content-foot"><a href="/ricetta/halloumi/" class="font-link-grey"> Leggi tutto</a></div>
-                                    <!--a href="/ricetta/halloumi/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
-                              
-                               </p>
-                                                            
-                               
-                               
-                                </div>
-                            
-
-                            <!-- /* RECIPE */ -->
-                            
-                                <div class="c-intro__foot-tool-wrapper">
-                                    <div class="c-intro__meta  pt-sm-f10 ">
-                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
-                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
-                                                <div class="c-intro__meta-readtime--image-container">
-                                                    <a href="/ricetta/halloumi/" class="c-intro__meta-readtime__link">
-                                                        <svg class="icocuc1-clock" aria-hidden="true">
-                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
-                                                            </use>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                                <a href="/ricetta/halloumi/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
-                                                        10 min</b></a>
-                                            </div>
-                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
-                                                <span>|
-                                                    <a href="/ricetta/halloumi/">Scopri la ricetta</a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-
-                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
-                            
-							
-							
-                            
-							
-							
-                            <!-- /* EVERYTHING ELSE */ -->
-                            
-                            
-                            
-							
-                        </div>
-                        <!-- .c-intro__content-foot -->
-
-                    </div>
-                </div>
-                <!-- .c-intro__content .col-* -->
-
-            </div>
-            <!-- .row -->
-        </div>
-        <!-- .c-intro__inner -->
-    </article>
-    <!-- .c-intro -->
-
-    
-        </div>
-    
-
-
-
-
-	
-	
-
-        
-	
-		
-
-
-
-    
-        <div class="col-12 col-md-6 col-lg-4 mb-5">
-    
-
-    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
-        <div class="c-intro__inner ">
-            <div class="">
-            
-              
-             
-                <div class="c-intro__img-wrapper w-100">
-                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/">
-                        <picture class="c-img c-img--has-lazyload ">
-                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/Pancake%20di%20ceci%20ai%20piselli_orizz.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/Pancake%20di%20ceci%20ai%20piselli_orizz.jpg?im=Resize=(748) 2x "  />
-                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/Pancake%20di%20ceci%20ai%20piselli_orizz.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/Pancake%20di%20ceci%20ai%20piselli_orizz.jpg?im=Resize=(600) 2x "  />
-                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/Pancake%20di%20ceci%20ai%20piselli_orizz.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/Pancake%20di%20ceci%20ai%20piselli_orizz.jpg?im=Resize=(600) 2x "  />
-                            
-                            
-                                <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2014/04/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/jcr:content/page_images/imagePreview.img.jpg/1713446895637.jpg?im=Resize(374)" title="Pancake vegani ceci e piselli" alt="Pancake vegani ceci e piselli"/>
-                                
-                            
-                            </picture>
+							    
+							    
+							        <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/11/arrosto-di-natale/jcr:content/page_images/imagePreview.img.jpg/1732189716790.jpg?im=Resize(374)" title="Arrosto di Natale" alt="Arrosto di Natale"/>
+							        
+							    
+							    	
+													
+                        </picture>
                         <!-- .c-img -->
                     </a>
                 </div>
@@ -2726,7 +2035,7 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                         <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
                                             
                                             <li>
-                                                <a href="#" data-share-url="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/" data-share-title="Pancake vegani ceci e piselli" class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                                                <a href="#" data-share-url="/ricetta/arrosto-di-natale/" data-share-title="Arrosto di Natale" class="c-sharebox__btn-open-share" role="button" title="Condividi">
                                                     <span class="sr-only">
                                                         Share
                                                     </span>
@@ -2757,7 +2066,7 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                             
                             
                             <div class="c-typo1--style3 --theme-light3 mb-f15">
-                                <h3 class="h4"><a href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/">Pancake vegani ceci e piselli</a></h3>
+                                <h3 class="h4"><a href="/ricetta/arrosto-di-natale/">Arrosto di Natale</a></h3>
                             </div>
                             
                             
@@ -2772,9 +2081,9 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                 
                                   
                                     <p>
-                                    	<span data-nosnippet>Questi gustosi pancake vegani a base di farina di ceci e piselli da accompagnare con una crema profumata al Philadelphia vegetale sono perfetti per un brunch o come secondo sfizioso diverso da solito.</span>
-                                        <div class="description-content-foot"><a href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/" class="font-link-grey"> Leggi tutto</a></div>
-                                    <!--a href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
+                                    	<span data-nosnippet>L'arrosto di Natale è una ricetta della tradizione perfetta da condividere in famiglia. Un secondo piatto di carne al forno da servire con l'immancabile contorno di patate. </span>
+                                        <div class="description-content-foot"><a href="/ricetta/arrosto-di-natale/" class="font-link-grey"> Leggi tutto</a></div>
+                                    <!--a href="/ricetta/arrosto-di-natale/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
                               
                                </p>
                                                             
@@ -2790,19 +2099,741 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                         <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
                                             <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
                                                 <div class="c-intro__meta-readtime--image-container">
-                                                    <a href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/" class="c-intro__meta-readtime__link">
+                                                    <a href="/ricetta/arrosto-di-natale/" class="c-intro__meta-readtime__link">
                                                         <svg class="icocuc1-clock" aria-hidden="true">
                                                             <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
                                                             </use>
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                <a href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
+                                                <a href="/ricetta/arrosto-di-natale/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
+                                                        45 min</b></a>
+                                            </div>
+                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
+                                                <span>|
+                                                    <a href="/ricetta/arrosto-di-natale/">Scopri la ricetta</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+
+                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
+                            
+							
+							
+                            
+							
+							
+                            <!-- /* EVERYTHING ELSE */ -->
+                            
+                            
+                            
+							
+                        </div>
+                        <!-- .c-intro__content-foot -->
+
+                    </div>
+                </div>
+                <!-- .c-intro__content .col-* -->
+
+            </div>
+            <!-- .row -->
+        </div>
+        <!-- .c-intro__inner -->
+    </article>
+    <!-- .c-intro -->
+
+    
+        </div>
+    
+
+
+
+
+	
+	
+
+        
+	
+		
+
+
+
+    
+        <div class="col-12 col-md-6 col-lg-4 mb-5">
+    
+    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
+        <div class="c-intro__inner ">
+            <div class="">
+            
+              
+             
+                <div class="c-intro__img-wrapper w-100">
+                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/">
+                        <picture class="c-img c-img--has-lazyload ">
+                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/Spezzatino%20di%20manzo%20con%20patate%20e%20piselli_orizz_b.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/Spezzatino%20di%20manzo%20con%20patate%20e%20piselli_orizz_b.jpg?im=Resize=(748) 2x "  />
+                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/Spezzatino%20di%20manzo%20con%20patate%20e%20piselli_orizz_b.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/Spezzatino%20di%20manzo%20con%20patate%20e%20piselli_orizz_b.jpg?im=Resize=(600) 2x "  />
+                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/Spezzatino%20di%20manzo%20con%20patate%20e%20piselli_orizz_b.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/Spezzatino%20di%20manzo%20con%20patate%20e%20piselli_orizz_b.jpg?im=Resize=(600) 2x "  />
+						
+						
+							
+							    
+							    
+							        <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/11/spezzatino-di-manzo-con-patate-e-piselli/jcr:content/page_images/imagePreview.img.jpg/1732725613033.jpg?im=Resize(374)" title="Spezzatino di manzo con patate e piselli " alt="Spezzatino di manzo con patate e piselli "/>
+							        
+							    
+							    	
+													
+                        </picture>
+                        <!-- .c-img -->
+                    </a>
+                </div>
+              
+                           
+                <!-- .c-intro__img-wrapper -->
+
+                <div class="c-intro__content w-100">
+                    <div class="c-intro__content-inner ">
+                        <div class="c-intro__content-head " data-mh="contentsGrid1">
+                            <div class="c-articlebar pt-f10 mb-f15">
+                                <div class="c-articlebar__wrapper row ">
+                                    <div class=" col-8">
+                                        <div class="c-articlebar__meta ">
+                                            <span class="c-articlebar__cat text-uppercase">
+                                                RICETTA MEDIA
+                                            </span>
+                                        </div>
+                                        <!-- .c-articlebar__meta -->
+                                    </div>
+                                    <!-- .col-* -->
+
+                                    <div class=" col-4">
+
+                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
+                                            
+                                            <li>
+                                                <a href="#" data-share-url="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/" data-share-title="Spezzatino di manzo con patate e piselli " class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                                                    <span class="sr-only">
+                                                        Share
+                                                    </span>
+                                                    <svg class="icocuc1-share">
+                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
+                                                        </use>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                            <!-- */li>
+							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
+							                    	<svg class="icocuc1-mark">
+							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
+							                          </use>
+							                        </svg>
+							                    </a>
+							                </li /*-->
+                                        </ul>
+
+                                    </div>
+                                    <!-- .col-* -->
+
+                                </div>
+                                <!-- .c-articlebar__wrapper .row -->
+                            </div>
+                            <!-- .c-articlebar -->
+							
+                            
+                            
+                            <div class="c-typo1--style3 --theme-light3 mb-f15">
+                                <h3 class="h4"><a href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/">Spezzatino di manzo con patate e piselli </a></h3>
+                            </div>
+                            
+                            
+                        </div>
+                        <!-- .c-intro__content-head -->
+
+
+                        <div class="c-intro__content-foot  pt-md-f20">
+
+                            
+                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
+                                
+                                  
+                                    <p>
+                                    	<span data-nosnippet>Tra i secondi di carne più tradizionali e apprezzati c'è di certo lo spezzatino di manzo con patate e piselli, una ricetta che scalda il cuore e che in famiglia mette tutti d'accordo.</span>
+                                        <div class="description-content-foot"><a href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/" class="font-link-grey"> Leggi tutto</a></div>
+                                    <!--a href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
+                              
+                               </p>
+                                                            
+                               
+                               
+                                </div>
+                            
+
+                            <!-- /* RECIPE */ -->
+                            
+                                <div class="c-intro__foot-tool-wrapper">
+                                    <div class="c-intro__meta  pt-sm-f10 ">
+                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
+                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
+                                                <div class="c-intro__meta-readtime--image-container">
+                                                    <a href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/" class="c-intro__meta-readtime__link">
+                                                        <svg class="icocuc1-clock" aria-hidden="true">
+                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
+                                                            </use>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                <a href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
                                                         30 min</b></a>
                                             </div>
                                             <div class="c-intro__meta-rank d-flex  justify-content-end  ">
                                                 <span>|
-                                                    <a href="/ricetta/ricetta-pancakes-ceci-piselli-curcuma-semi-lino/">Scopri la ricetta</a>
+                                                    <a href="/ricetta/spezzatino-di-manzo-con-patate-e-piselli/">Scopri la ricetta</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+
+                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
+                            
+							
+							
+                            
+							
+							
+                            <!-- /* EVERYTHING ELSE */ -->
+                            
+                            
+                            
+							
+                        </div>
+                        <!-- .c-intro__content-foot -->
+
+                    </div>
+                </div>
+                <!-- .c-intro__content .col-* -->
+
+            </div>
+            <!-- .row -->
+        </div>
+        <!-- .c-intro__inner -->
+    </article>
+    <!-- .c-intro -->
+
+    
+        </div>
+    
+
+
+
+
+	
+	
+
+      
+    
+
+    
+      
+      
+        
+	
+		
+
+
+
+    
+        <div class="col-12 col-md-6 col-lg-4 mb-5">
+    
+    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
+        <div class="c-intro__inner ">
+            <div class="">
+            
+              
+             
+                <div class="c-intro__img-wrapper w-100">
+                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/bocconcini-di-pollo-al-gorgonzola/">
+                        <picture class="c-img c-img--has-lazyload ">
+                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/_R5_6661.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/_R5_6661.jpg?im=Resize=(748) 2x "  />
+                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/_R5_6661.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/_R5_6661.jpg?im=Resize=(600) 2x "  />
+                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/_R5_6661.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/_R5_6661.jpg?im=Resize=(600) 2x "  />
+						
+						
+							
+							    
+							    
+							        <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/11/bocconcini-di-pollo-al-gorgonzola/jcr:content/page_images/imagePreview.img.jpg/1732208546798.jpg?im=Resize(374)" title="Bocconcini di pollo al gorgonzola" alt="Bocconcini di pollo al gorgonzola"/>
+							        
+							    
+							    	
+													
+                        </picture>
+                        <!-- .c-img -->
+                    </a>
+                </div>
+              
+                           
+                <!-- .c-intro__img-wrapper -->
+
+                <div class="c-intro__content w-100">
+                    <div class="c-intro__content-inner ">
+                        <div class="c-intro__content-head " data-mh="contentsGrid1">
+                            <div class="c-articlebar pt-f10 mb-f15">
+                                <div class="c-articlebar__wrapper row ">
+                                    <div class=" col-8">
+                                        <div class="c-articlebar__meta ">
+                                            <span class="c-articlebar__cat text-uppercase">
+                                                RICETTA FACILE
+                                            </span>
+                                        </div>
+                                        <!-- .c-articlebar__meta -->
+                                    </div>
+                                    <!-- .col-* -->
+
+                                    <div class=" col-4">
+
+                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
+                                            
+                                            <li>
+                                                <a href="#" data-share-url="/ricetta/bocconcini-di-pollo-al-gorgonzola/" data-share-title="Bocconcini di pollo al gorgonzola" class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                                                    <span class="sr-only">
+                                                        Share
+                                                    </span>
+                                                    <svg class="icocuc1-share">
+                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
+                                                        </use>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                            <!-- */li>
+							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
+							                    	<svg class="icocuc1-mark">
+							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
+							                          </use>
+							                        </svg>
+							                    </a>
+							                </li /*-->
+                                        </ul>
+
+                                    </div>
+                                    <!-- .col-* -->
+
+                                </div>
+                                <!-- .c-articlebar__wrapper .row -->
+                            </div>
+                            <!-- .c-articlebar -->
+							
+                            
+                            
+                            <div class="c-typo1--style3 --theme-light3 mb-f15">
+                                <h3 class="h4"><a href="/ricetta/bocconcini-di-pollo-al-gorgonzola/">Bocconcini di pollo al gorgonzola</a></h3>
+                            </div>
+                            
+                            
+                        </div>
+                        <!-- .c-intro__content-head -->
+
+
+                        <div class="c-intro__content-foot  pt-md-f20">
+
+                            
+                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
+                                
+                                  
+                                    <p>
+                                    	<span data-nosnippet>I bocconcini di pollo al gorgonzola sono una ricetta sfiziosa per un secondo di carne diverso dal solito. Con un cuore cremoso che dona una marcia in più, ancora più buoni perché si cuociono in poco tempo in padella. </span>
+                                        <div class="description-content-foot"><a href="/ricetta/bocconcini-di-pollo-al-gorgonzola/" class="font-link-grey"> Leggi tutto</a></div>
+                                    <!--a href="/ricetta/bocconcini-di-pollo-al-gorgonzola/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
+                              
+                               </p>
+                                                            
+                               
+                               
+                                </div>
+                            
+
+                            <!-- /* RECIPE */ -->
+                            
+                                <div class="c-intro__foot-tool-wrapper">
+                                    <div class="c-intro__meta  pt-sm-f10 ">
+                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
+                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
+                                                <div class="c-intro__meta-readtime--image-container">
+                                                    <a href="/ricetta/bocconcini-di-pollo-al-gorgonzola/" class="c-intro__meta-readtime__link">
+                                                        <svg class="icocuc1-clock" aria-hidden="true">
+                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
+                                                            </use>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                <a href="/ricetta/bocconcini-di-pollo-al-gorgonzola/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
+                                                        15 min</b></a>
+                                            </div>
+                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
+                                                <span>|
+                                                    <a href="/ricetta/bocconcini-di-pollo-al-gorgonzola/">Scopri la ricetta</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+
+                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
+                            
+							
+							
+                            
+							
+							
+                            <!-- /* EVERYTHING ELSE */ -->
+                            
+                            
+                            
+							
+                        </div>
+                        <!-- .c-intro__content-foot -->
+
+                    </div>
+                </div>
+                <!-- .c-intro__content .col-* -->
+
+            </div>
+            <!-- .row -->
+        </div>
+        <!-- .c-intro__inner -->
+    </article>
+    <!-- .c-intro -->
+
+    
+        </div>
+    
+
+
+
+
+	
+	
+
+        
+	
+		
+
+
+
+    
+        <div class="col-12 col-md-6 col-lg-4 mb-5">
+    
+    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
+        <div class="c-intro__inner ">
+            <div class="">
+            
+              
+             
+                <div class="c-intro__img-wrapper w-100">
+                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/salmone-affumicato-marinato/">
+                        <picture class="c-img c-img--has-lazyload ">
+                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/Salmone%20affumicato%20marinato_orizz_b.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/Salmone%20affumicato%20marinato_orizz_b.jpg?im=Resize=(748) 2x "  />
+                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/Salmone%20affumicato%20marinato_orizz_b.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/Salmone%20affumicato%20marinato_orizz_b.jpg?im=Resize=(600) 2x "  />
+                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/Salmone%20affumicato%20marinato_orizz_b.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/Salmone%20affumicato%20marinato_orizz_b.jpg?im=Resize=(600) 2x "  />
+						
+						
+							
+							    
+							    
+							        <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/11/salmone-affumicato-marinato/jcr:content/page_images/imagePreview.img.jpg/1732792501984.jpg?im=Resize(374)" title="Salmone affumicato marinato" alt="Salmone affumicato marinato"/>
+							        
+							    
+							    	
+													
+                        </picture>
+                        <!-- .c-img -->
+                    </a>
+                </div>
+              
+                           
+                <!-- .c-intro__img-wrapper -->
+
+                <div class="c-intro__content w-100">
+                    <div class="c-intro__content-inner ">
+                        <div class="c-intro__content-head " data-mh="contentsGrid1">
+                            <div class="c-articlebar pt-f10 mb-f15">
+                                <div class="c-articlebar__wrapper row ">
+                                    <div class=" col-8">
+                                        <div class="c-articlebar__meta ">
+                                            <span class="c-articlebar__cat text-uppercase">
+                                                RICETTA FACILE
+                                            </span>
+                                        </div>
+                                        <!-- .c-articlebar__meta -->
+                                    </div>
+                                    <!-- .col-* -->
+
+                                    <div class=" col-4">
+
+                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
+                                            
+                                            <li>
+                                                <a href="#" data-share-url="/ricetta/salmone-affumicato-marinato/" data-share-title="Salmone affumicato marinato" class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                                                    <span class="sr-only">
+                                                        Share
+                                                    </span>
+                                                    <svg class="icocuc1-share">
+                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
+                                                        </use>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                            <!-- */li>
+							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
+							                    	<svg class="icocuc1-mark">
+							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
+							                          </use>
+							                        </svg>
+							                    </a>
+							                </li /*-->
+                                        </ul>
+
+                                    </div>
+                                    <!-- .col-* -->
+
+                                </div>
+                                <!-- .c-articlebar__wrapper .row -->
+                            </div>
+                            <!-- .c-articlebar -->
+							
+                            
+                            
+                            <div class="c-typo1--style3 --theme-light3 mb-f15">
+                                <h3 class="h4"><a href="/ricetta/salmone-affumicato-marinato/">Salmone affumicato marinato</a></h3>
+                            </div>
+                            
+                            
+                        </div>
+                        <!-- .c-intro__content-head -->
+
+
+                        <div class="c-intro__content-foot  pt-md-f20">
+
+                            
+                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
+                                
+                                  
+                                    <p>
+                                    	<span data-nosnippet>Un antipasto facile, da preparare in soli 10 minuti, fresco e dal sapore agrumato e aromatico, per completare i menù delle feste a base di pesce!</span>
+                                        <div class="description-content-foot"><a href="/ricetta/salmone-affumicato-marinato/" class="font-link-grey"> Leggi tutto</a></div>
+                                    <!--a href="/ricetta/salmone-affumicato-marinato/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
+                              
+                               </p>
+                                                            
+                               
+                               
+                                </div>
+                            
+
+                            <!-- /* RECIPE */ -->
+                            
+                                <div class="c-intro__foot-tool-wrapper">
+                                    <div class="c-intro__meta  pt-sm-f10 ">
+                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
+                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
+                                                <div class="c-intro__meta-readtime--image-container">
+                                                    <a href="/ricetta/salmone-affumicato-marinato/" class="c-intro__meta-readtime__link">
+                                                        <svg class="icocuc1-clock" aria-hidden="true">
+                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
+                                                            </use>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                <a href="/ricetta/salmone-affumicato-marinato/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
+                                                        10 min</b></a>
+                                            </div>
+                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
+                                                <span>|
+                                                    <a href="/ricetta/salmone-affumicato-marinato/">Scopri la ricetta</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+
+                            <!-- /* ARTICLE WITH GALLERY OR COLLECTION */ -->
+                            
+							
+							
+                            
+							
+							
+                            <!-- /* EVERYTHING ELSE */ -->
+                            
+                            
+                            
+							
+                        </div>
+                        <!-- .c-intro__content-foot -->
+
+                    </div>
+                </div>
+                <!-- .c-intro__content .col-* -->
+
+            </div>
+            <!-- .row -->
+        </div>
+        <!-- .c-intro__inner -->
+    </article>
+    <!-- .c-intro -->
+
+    
+        </div>
+    
+
+
+
+
+	
+	
+
+        
+	
+		
+
+
+
+    
+        <div class="col-12 col-md-6 col-lg-4 mb-5">
+    
+    <article class=" box-square c-intro c-intro--type-normal c-intro--img-pos-cover-ct  " data-page-ref="1">
+        <div class="c-intro__inner ">
+            <div class="">
+            
+              
+             
+                <div class="c-intro__img-wrapper w-100">
+                    <a class="d-block c-intro__img-wrapper-inner h-100" href="/ricetta/scampi-al-forno/">
+                        <picture class="c-img c-img--has-lazyload ">
+                        <source media="(max-width:480px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/scampi-al-forno/Scampi%20al%20forno_orizz.jpg?im=Resize=(374),  /content/dam/cucchiaio/it/ricette/2024/11/scampi-al-forno/Scampi%20al%20forno_orizz.jpg?im=Resize=(748) 2x "  />
+                        <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/scampi-al-forno/Scampi%20al%20forno_orizz.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/scampi-al-forno/Scampi%20al%20forno_orizz.jpg?im=Resize=(600) 2x "  />
+                        <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/scampi-al-forno/Scampi%20al%20forno_orizz.jpg?im=Resize=(300),  /content/dam/cucchiaio/it/ricette/2024/11/scampi-al-forno/Scampi%20al%20forno_orizz.jpg?im=Resize=(600) 2x "  />
+						
+						
+							
+							    
+							    
+							        <img width="300" height="200" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/11/scampi-al-forno/jcr:content/page_images/imagePreview.img.jpg/1732634643849.jpg?im=Resize(374)" title="Scampi al forno" alt="Scampi al forno"/>
+							        
+							    
+							    	
+													
+                        </picture>
+                        <!-- .c-img -->
+                    </a>
+                </div>
+              
+                           
+                <!-- .c-intro__img-wrapper -->
+
+                <div class="c-intro__content w-100">
+                    <div class="c-intro__content-inner ">
+                        <div class="c-intro__content-head " data-mh="contentsGrid1">
+                            <div class="c-articlebar pt-f10 mb-f15">
+                                <div class="c-articlebar__wrapper row ">
+                                    <div class=" col-8">
+                                        <div class="c-articlebar__meta ">
+                                            <span class="c-articlebar__cat text-uppercase">
+                                                RICETTA FACILE
+                                            </span>
+                                        </div>
+                                        <!-- .c-articlebar__meta -->
+                                    </div>
+                                    <!-- .col-* -->
+
+                                    <div class=" col-4">
+
+                                        <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
+                                            
+                                            <li>
+                                                <a href="#" data-share-url="/ricetta/scampi-al-forno/" data-share-title="Scampi al forno" class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                                                    <span class="sr-only">
+                                                        Share
+                                                    </span>
+                                                    <svg class="icocuc1-share">
+                                                        <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-share">
+                                                        </use>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                            <!-- */li>
+							                	<a href="#" class="c-sharebox__btn-fav" role="button" title="Aggiungi a preferiti">
+							                    	<svg class="icocuc1-mark">
+							                          <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-mark">
+							                          </use>
+							                        </svg>
+							                    </a>
+							                </li /*-->
+                                        </ul>
+
+                                    </div>
+                                    <!-- .col-* -->
+
+                                </div>
+                                <!-- .c-articlebar__wrapper .row -->
+                            </div>
+                            <!-- .c-articlebar -->
+							
+                            
+                            
+                            <div class="c-typo1--style3 --theme-light3 mb-f15">
+                                <h3 class="h4"><a href="/ricetta/scampi-al-forno/">Scampi al forno</a></h3>
+                            </div>
+                            
+                            
+                        </div>
+                        <!-- .c-intro__content-head -->
+
+
+                        <div class="c-intro__content-foot  pt-md-f20">
+
+                            
+                                <div class="c-typo1--style3 --theme-light3 mb-f15 d-md-none">
+                                
+                                  
+                                    <p>
+                                    	<span data-nosnippet>Un secondo di pesce facile e veloce da preparare, elegante e dal profumo agrumato, perfetto per sorprendere i vostri ospiti durante una cena speciale.</span>
+                                        <div class="description-content-foot"><a href="/ricetta/scampi-al-forno/" class="font-link-grey"> Leggi tutto</a></div>
+                                    <!--a href="/ricetta/scampi-al-forno/" target="" class="font-link-grey" data-sly-test="true"> Leggi tutto</a></p-->
+                              
+                               </p>
+                                                            
+                               
+                               
+                                </div>
+                            
+
+                            <!-- /* RECIPE */ -->
+                            
+                                <div class="c-intro__foot-tool-wrapper">
+                                    <div class="c-intro__meta  pt-sm-f10 ">
+                                        <div class="c-intro__meta-wrapper c-intro__meta-wrapper--variant3">
+                                            <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex">
+                                                <div class="c-intro__meta-readtime--image-container">
+                                                    <a href="/ricetta/scampi-al-forno/" class="c-intro__meta-readtime__link">
+                                                        <svg class="icocuc1-clock" aria-hidden="true">
+                                                            <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
+                                                            </use>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                <a href="/ricetta/scampi-al-forno/" class="font-link-grey">Tempo:<b class="c-intro__meta-readtime--ricette2">
+                                                        15 min</b></a>
+                                            </div>
+                                            <div class="c-intro__meta-rank d-flex  justify-content-end  ">
+                                                <span>|
+                                                    <a href="/ricetta/scampi-al-forno/">Scopri la ricetta</a>
                                                 </span>
                                             </div>
                                         </div>
@@ -2877,20 +2908,20 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
     <div class="c-intro__inner c-area--bg-black1">
       <div class="">
         <div class="c-intro__img-wrapper ">
-          <a href="/ricetta/polpettone-con-le-uova/" class="d-block c-intro__img-wrapper-inner h-100">
+          <a href="/ricetta/calamari-ripieni-in-padella/" class="d-block c-intro__img-wrapper-inner h-100">
             <picture class="c-img c-img--has-lazyload">
-							<source media="(max-width:480px)" data-srcset="/content/cucchiaio/it/ricette/2024/04/polpettone-con-le-uova/jcr:content/page_images/imagePreviewVertical.img10.jpg/1712922366908.jpg?im=Resize=(414),  /content/cucchiaio/it/ricette/2024/04/polpettone-con-le-uova/jcr:content/page_images/imagePreviewVertical.img10.jpg/1712922366908.jpg?im=Resize=(828) 2x "  />
-                            <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/04/polpettone-pasquale/Polpettone_orizz.jpg?im=Resize=(1024),  /content/dam/cucchiaio/it/ricette/2024/04/polpettone-pasquale/Polpettone_orizz.jpg?im=Resize=(2048) 2x "  />
-                            <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/04/polpettone-pasquale/Polpettone_orizz.jpg?im=Resize=(1024),  /content/dam/cucchiaio/it/ricette/2024/04/polpettone-pasquale/Polpettone_orizz.jpg?im=Resize=(2048) 2x "  />
+							<source media="(max-width:480px)" data-srcset="/content/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/jcr:content/page_images/imagePreviewVertical.img10.jpg/1731939321193.jpg?im=Resize=(414),  /content/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/jcr:content/page_images/imagePreviewVertical.img10.jpg/1731939321193.jpg?im=Resize=(828) 2x "  />
+                            <source media="(min-width:1440px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/_R5_6675.jpg?im=Resize=(1024),  /content/dam/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/_R5_6675.jpg?im=Resize=(2048) 2x "  />
+                            <source media="(max-width:1439px)" data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/_R5_6675.jpg?im=Resize=(1024),  /content/dam/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/_R5_6675.jpg?im=Resize=(2048) 2x "  />
               <!-- EDITORIAL CONTENT IMAGE -->
               
 
 			  <!-- EDIT MODE - NOT EDITORIAL CONTENT - DESKTOP -->
              <!--  <source data-sly-test="false" width="1024" height="620" 
                    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                   srcset="/content/dam/cucchiaio/it/ricette/2024/04/polpettone-pasquale/Polpettone_orizz.jpg"
-                   title="Polpettone con le uova"
-                   alt="Polpettone con le uova" 
+                   srcset="/content/dam/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/_R5_6675.jpg"
+                   title="Calamari ripieni in padella"
+                   alt="Calamari ripieni in padella" 
                    media="(min-width: 768px)"
                    /> -->
                    
@@ -2900,14 +2931,14 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
               <!-- PREVIEW MODE - NOT EDITORIAL - DESKTOP -->
               <!-- <source data-sly-test="true" width="1024" height="620" 
                    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                   data-srcset="/content/dam/cucchiaio/it/ricette/2024/04/polpettone-pasquale/Polpettone_orizz.jpg"
-                   title="Polpettone con le uova"
-                   alt="Polpettone con le uova" 
+                   data-srcset="/content/dam/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/_R5_6675.jpg"
+                   title="Calamari ripieni in padella"
+                   alt="Calamari ripieni in padella" 
                    media="(min-width: 768px)"
                    />-->
 
               <!-- PREVIEW MODE - NOT EDITORIAL - MOBILE -->
-              <img width="1024" height="620" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/04/polpettone-con-le-uova/jcr:content/page_images/imagePreviewVertical.img10.jpg/1712922366908.jpg?im=Resize(414)" title="Polpettone con le uova" alt="Polpettone con le uova"/>
+              <img width="1024" height="620" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/ricette/2024/11/calamari-ripieni-in-padella/jcr:content/page_images/imagePreviewVertical.img10.jpg/1731939321193.jpg?im=Resize(414)" title="Calamari ripieni in padella" alt="Calamari ripieni in padella"/>
 
             </picture>
             <!-- .c-img -->
@@ -2936,7 +2967,7 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                     <ul class="c-articlebar__tools mb-0 d-flex justify-content-end">
                       
                       <li>
-                        <a href="#" data-share-url="/ricetta/polpettone-con-le-uova/" data-share-title="Polpettone con le uova" class="c-sharebox__btn-open-share" role="button" title="Condividi">
+                        <a href="#" data-share-url="/ricetta/calamari-ripieni-in-padella/" data-share-title="Calamari ripieni in padella" class="c-sharebox__btn-open-share" role="button" title="Condividi">
                           <span class="sr-only">
                             Share
                           </span>
@@ -2966,7 +2997,7 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
 
               <div class="c-typo1--style2 --theme-dark1 --headings-shadow1-black --headings-font4 text-md-center">
                 <h3 class="h1 zaux-md-mw-75 mx-auto ">
-                  <a href="/ricetta/polpettone-con-le-uova/">Polpettone con le uova</a>
+                  <a href="/ricetta/calamari-ripieni-in-padella/">Calamari ripieni in padella</a>
                 </h3>
               </div>
           
@@ -2981,21 +3012,21 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                     <div class="c-intro__meta-wrapper row">
                       <div title="Tempo di preparazione" class="c-intro__meta-readtime d-flex  justify-content-md-center col-6 col-md-12 ">
                         
-                          <a href="/ricetta/polpettone-con-le-uova/" class="c-intro__meta-readtime__link">
+                          <a href="/ricetta/calamari-ripieni-in-padella/" class="c-intro__meta-readtime__link">
                             <svg class="icocuc1-clock" aria-hidden="true">
                               <use xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-new-clock">
                               </use>
                             </svg>
-                            Tempo:&nbsp;30 min
+                            Tempo:&nbsp;40 min
                           </a>
                         
                       </div>
                       <!-- .c-intro__meta-readtime -->
 
-                      <!-- /*div title="Votazione: 3 stelle"
+                      <!-- /*div title="Votazione: 4 stelle"
                            class="c-intro__meta-rank d-flex  justify-content-end   col-6">
                         <span>
-                          voto <span class="sr-only">: 3 stelle
+                          voto <span class="sr-only">: 4 stelle
                           </span>
                         </span>
                         <svg class="icocuc1-starfill" aria-hidden="true">
@@ -3013,9 +3044,9 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                   xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-starfill">
                           </use>
                         </svg>
-                        <svg class="icocuc1-starempty" aria-hidden="true">
+                        <svg class="icocuc1-starfill" aria-hidden="true">
                           <use
-                                  xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-starempty">
+                                  xlink:href="/etc/designs/cucchiaio20/img/icon/symbol-defs.svg#icocuc1-starfill">
                           </use>
                         </svg>
                         <svg class="icocuc1-starempty" aria-hidden="true">
@@ -3292,23 +3323,9 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                             
                                                 <ul class="c-offcanvas__nav c-nav2--style2 sr-only">
                                                 <li class="c-offcanvas__nav-item c-nav2__item">
-                                                        <a href="/ricette/portate_condimenti~3/" target="_self">
-                                                            <span class="c-nav2__item-label">
-                                                                Condimenti
-                                                            </span>
-                                                        </a>
-                                                    </li>
-<li class="c-offcanvas__nav-item c-nav2__item">
                                                         <a href="/ricette/portate_antipasti~3/" target="_self">
                                                             <span class="c-nav2__item-label">
                                                                 Antipasti
-                                                            </span>
-                                                        </a>
-                                                    </li>
-<li class="c-offcanvas__nav-item c-nav2__item">
-                                                        <a href="/ricette/portate_piatti-unici~3/" target="_self">
-                                                            <span class="c-nav2__item-label">
-                                                                Piatti unici
                                                             </span>
                                                         </a>
                                                     </li>
@@ -3320,13 +3337,6 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                                         </a>
                                                     </li>
 <li class="c-offcanvas__nav-item c-nav2__item">
-                                                        <a href="/ricette/portate_pane-e-pizze~3/" target="_self">
-                                                            <span class="c-nav2__item-label">
-                                                                Pane e pizze
-                                                            </span>
-                                                        </a>
-                                                    </li>
-<li class="c-offcanvas__nav-item c-nav2__item">
                                                         <a href="/ricette/portate_secondi~3/" target="_self">
                                                             <span class="c-nav2__item-label">
                                                                 Secondi
@@ -3334,16 +3344,37 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                                         </a>
                                                     </li>
 <li class="c-offcanvas__nav-item c-nav2__item">
-                                                        <a href="/ricette/portate_dolci~3/" target="_self">
+                                                        <a href="/ricette/portate_contorni~3/" target="_self">
                                                             <span class="c-nav2__item-label">
-                                                                Dolci
+                                                                Contorni
                                                             </span>
                                                         </a>
                                                     </li>
 <li class="c-offcanvas__nav-item c-nav2__item">
-                                                        <a href="/ricette/portate_contorni~3/" target="_self">
+                                                        <a href="/ricette/portate_condimenti~3/" target="_self">
                                                             <span class="c-nav2__item-label">
-                                                                Contorni
+                                                                Condimenti
+                                                            </span>
+                                                        </a>
+                                                    </li>
+<li class="c-offcanvas__nav-item c-nav2__item">
+                                                        <a href="/ricette/portate_piatti-unici~3/" target="_self">
+                                                            <span class="c-nav2__item-label">
+                                                                Piatti unici
+                                                            </span>
+                                                        </a>
+                                                    </li>
+<li class="c-offcanvas__nav-item c-nav2__item">
+                                                        <a href="/ricette/portate_pane-e-pizze~3/" target="_self">
+                                                            <span class="c-nav2__item-label">
+                                                                Pane e pizze
+                                                            </span>
+                                                        </a>
+                                                    </li>
+<li class="c-offcanvas__nav-item c-nav2__item">
+                                                        <a href="/ricette/portate_dolci~3/" target="_self">
+                                                            <span class="c-nav2__item-label">
+                                                                Dolci
                                                             </span>
                                                         </a>
                                                     </li>
@@ -3990,6 +4021,16 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                             </li>
                         
                             <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
+                                <a href="https://www.cucchiaio.it/speciale-natale/">
+                                    <span class="c-nav2__item-label">
+                                        Natale
+                                    </span>
+                                    
+                                </a>
+                                
+                            </li>
+                        
+                            <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
                                 <a href="https://www.cucchiaio.it/la-ricetta-del-giorno/">
                                     <span class="c-nav2__item-label">
                                         La ricetta del giorno
@@ -4003,16 +4044,6 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                 <a href="https://www.cucchiaio.it/ricette-con-philadelphia/">
                                     <span class="c-nav2__item-label">
                                         Ricette con Philadelphia
-                                    </span>
-                                    
-                                </a>
-                                
-                            </li>
-                        
-                            <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
-                                <a href="https://www.cucchiaio.it/speciali/">
-                                    <span class="c-nav2__item-label">
-                                        Speciali
                                     </span>
                                     
                                 </a>
@@ -4063,16 +4094,6 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                 <a href="https://www.cucchiaio.it/focaccia-pizza-ricette-curiosita/">
                                     <span class="c-nav2__item-label">
                                         Pizza
-                                    </span>
-                                    
-                                </a>
-                                
-                            </li>
-                        
-                            <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
-                                <a href="https://www.cucchiaio.it/ricette/cotture_friggitrice-ad-aria~2/">
-                                    <span class="c-nav2__item-label">
-                                        Friggitrice ad aria
                                     </span>
                                     
                                 </a>
@@ -4167,6 +4188,16 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                 <a href="https://www.cucchiaio.it/chef/">
                                     <span class="c-nav2__item-label">
                                         Chef
+                                    </span>
+                                    
+                                </a>
+                                
+                            </li>
+                        
+                            <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
+                                <a href="https://www.cucchiaio.it/le-idee-in-cucina/">
+                                    <span class="c-nav2__item-label">
+                                        Idee in cucina
                                     </span>
                                     
                                 </a>
@@ -4369,17 +4400,7 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                             </li>
                         
                             <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
-                                <a href="https://www.cucchiaio.it/oroscopo/?comeFrom=menu-link">
-                                    <span class="c-nav2__item-label">
-                                        Oroscopo
-                                    </span>
-                                    
-                                </a>
-                                
-                            </li>
-                        
-                            <li class="c-offcanvas__nav-item c-offcanvas__nav-item--has-subnav c-nav2__item">
-                                <a href="https://www.shoped.it/shop/i-nostri-brand/?testata=cucchiaiodargento">
+                                <a href="https://www.shoped.it/shop/i-nostri-brand/?testata=cucchiaiodargento#logo-testata">
                                     <span class="c-nav2__item-label">
                                         Libri
                                     </span>
@@ -4387,6 +4408,8 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                                 </a>
                                 
                             </li>
+                        
+                            
                         
                     
                 </ul>
@@ -4396,7 +4419,7 @@ e veloce. Buonissima da gustare da sola oppure accompagnata da...</span>
                 <div class="c-icoside__ico">
                     <a href="https://www.cucchiaio.it/buccia-ricette-per-bambini/">
                         <span class="c-img c-img--fluid c-img--has-lazyload">
-                            <img width="84" height="84" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/home/jcr:content/header/menu_vertical/bucciaDesktop.img.png/1714735667012.png" alt="buccia badge"/>
+                            <img width="84" height="84" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/content/cucchiaio/it/home/jcr:content/header/menu_vertical/bucciaDesktop.img.png/1733324777361.png" alt="buccia badge"/>
                         </span>
                         <!-- .c-img -->
                     </a>
@@ -4975,11 +4998,11 @@ R.E.A. di Milano n. 1186124 - Capitale sociale versato &euro; 5.000.000,00 -
 	<script type='text/javascript' src="/etc/designs/cucchiaio20/js/webtrekk_v445.min.js"></script>
 	<script type='text/javascript' src="/etc/designs/cucchiaio20/js/webtrekk_mediaTracking.min.js"></script>
 
-<script src="/etc/designs/cucchiaio20/clientlibs/base.20240703.min.js" type="text/javascript"></script>
-<script src="/etc/designs/cucchiaio20/clientlibs/helpers.20240703.min.js" type="text/javascript"></script>
+<script src="/etc/designs/cucchiaio20/clientlibs/base.20241212.min.js" type="text/javascript"></script>
+<script src="/etc/designs/cucchiaio20/clientlibs/helpers.20241212.min.js" type="text/javascript"></script>
 
 
-<script src="/etc/designs/cucchiaio20/clientlibs/recipenews.20240703.min.js" type="text/javascript"></script>
+<script src="/etc/designs/cucchiaio20/clientlibs/recipenews.20241212.min.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">
@@ -5010,7 +5033,7 @@ if (startCookie("_iub")){
 }
 </script>
 
-<script src="/etc/designs/cucchiaio20/clientlibs/base2.20240703.min.js" type="text/javascript"></script>
+<script src="/etc/designs/cucchiaio20/clientlibs/base2.20241212.min.js" type="text/javascript"></script>
 
 
 
@@ -5046,7 +5069,21 @@ if (startCookie("_iub")){
 <script class="_iub_cs_activate-inline" data-iub-purposes="1" type="text/plain">
 
 	var formatsAdvArrayRefresh = new Map();
-	
+	var formatsAdvArrayNoRefresh = new Map();
+
+	function loadBanners(){
+		
+			
+				try{
+					var allAdv = new Map([...formatsAdvArrayRefresh, ...formatsAdvArrayNoRefresh]);			
+					googletag.cmd.push(function() {			
+						googletag.pubads().refresh(Array.from(allAdv.values()));
+					});
+				}catch(error){}
+    		
+		
+	}
+
 	function refreshBanner(){
 		
 		
@@ -5126,18 +5163,18 @@ if (startCookie("_iub")){
 					var urlocation = document.location.href.replace('http://', '').replace('https://', ''); 
 					var pos = urlocation.indexOf('^');
 					var TargetKey = pos != -1 ? urlocation.substr(pos + 1, urlocation.length) : "";		
-					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_Skin',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/Skin',[[1, 1],[320, 100]],'adv_Skin').addService(googletag.pubads()));
-					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_MastheadTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/MastheadTop',[[970, 250],[970, 90],[728, 90],[320, 50],[320, 100]],'adv_MastheadTop').addService(googletag.pubads()));
-					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_BoxMedium',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxMedium',[[300, 600],[300, 250],[300, 601],[300, 251]],'adv_BoxMedium').addService(googletag.pubads()));
-					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_BoxTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxTop',[[300, 600],[300, 250]],'adv_BoxTop').addService(googletag.pubads()));
-					if(!isMobile.any()) googletag.defineOutOfPageSlot('/22921214385/Cucchiaio/Ricette/Intro_Ovl','adv_Intro_Ovl').addService(googletag.pubads());
-					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_MastheadMedium',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/MastheadMedium',[[970, 250],[970, 90],[728, 90],[320, 50],[320, 100],[970, 251],[970, 91],[728, 91],[320, 51],[320, 101]],'adv_MastheadMedium').addService(googletag.pubads()));
+					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_Skin',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/Skin',[[1, 1]],'adv_Skin').addService(googletag.pubads()));
+					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_MastheadTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/MastheadTop',[[728, 90],[970, 90],[970, 250]],'adv_MastheadTop').addService(googletag.pubads()));
+					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_BoxMedium',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxMedium',[[300, 250],[300, 600],[336, 280],[160, 600],[320, 480]],'adv_BoxMedium').addService(googletag.pubads()));
+					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_BoxTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxTop',[[300, 600],[300, 250],[336, 280],[160, 600],[320, 480]],'adv_BoxTop').addService(googletag.pubads()));
+					if(!isMobile.any()) formatsAdvArrayNoRefresh.set('adv_Intro_Ovl',googletag.defineOutOfPageSlot('/22921214385/Cucchiaio/Ricette/Intro_Ovl','adv_Intro_Ovl').addService(googletag.pubads()));
+					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_MastheadMedium',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/MastheadMedium',[[728, 90],[970, 90],[970, 250]],'adv_MastheadMedium').addService(googletag.pubads()));
 					if(!isMobile.any()) formatsAdvArrayRefresh.set('adv_BigBox',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BigBox',[[2, 4]],'adv_BigBox').addService(googletag.pubads()));
-					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_Skin',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/Skin',[[1, 1],[320, 100]],'advM_Skin').addService(googletag.pubads()));
-					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_MastheadTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/MastheadTop',[[970, 250],[970, 90],[728, 90],[320, 50],[320, 100]],'advM_MastheadTop').addService(googletag.pubads()));
-					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_BoxTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxTop',[[300, 600],[300, 250]],'advM_BoxTop').addService(googletag.pubads()));
-					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_BoxMedium',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxMedium',[[300, 600],[300, 250],[300, 601],[300, 251]],'advM_BoxMedium').addService(googletag.pubads()));
-					if(isMobile.any()) googletag.defineOutOfPageSlot('/22921214385/Cucchiaio/Ricette/Intro_Ovl','advM_Intro_Ovl').addService(googletag.pubads());
+					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_Skin',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/Skin',[[320, 50],[320, 100],[300, 50],[300, 100]],'advM_Skin').addService(googletag.pubads()));
+					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_MastheadTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/MastheadTop',[[320, 50],[320, 100],[300, 50],[300, 100]],'advM_MastheadTop').addService(googletag.pubads()));
+					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_BoxTop',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxTop',[[300, 250],[300, 600],[336, 280],[160, 600],[320, 480],[320, 50],[320, 100],[300, 50],[300, 100]],'advM_BoxTop').addService(googletag.pubads()));
+					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_BoxMedium',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BoxMedium',[[300, 250],[300, 600],[336, 280],[160, 600],[320, 480],[320, 50],[320, 100],[300, 50],[300, 100]],'advM_BoxMedium').addService(googletag.pubads()));
+					if(isMobile.any()) formatsAdvArrayNoRefresh.set('advM_Intro_Ovl',googletag.defineOutOfPageSlot('/22921214385/Cucchiaio/Ricette/Intro_Ovl','advM_Intro_Ovl').addService(googletag.pubads()));
 					if(isMobile.any()) formatsAdvArrayRefresh.set('advM_BigBox',googletag.defineSlot('/22921214385/Cucchiaio/Ricette/BigBox',[[2, 4]],'advM_BigBox').addService(googletag.pubads()));
 					
 					if (TargetKey!= "") googletag.pubads().setTargeting("TargetKey", TargetKey);				    				   
@@ -5268,7 +5305,7 @@ if (startCookie("_iub")){
 			}
 			
 	
-	refreshBanner();
+	loadBanners();
 
 </script>
 
@@ -5307,6 +5344,7 @@ if (startCookie("_iub")){
 	var wSponsor = checkWtSponsor("","2021\u002D11\u002D23T17:20:00.000+01:00","2099\u002D12\u002D31T22:59:00.000+01:00");
 	var w_locationAdagio = locationAdv;
 	var isCollection = false;
+	var isGallery = false;
 	var keySearch = "";
 	var isRicorrente = false;
 
@@ -5315,7 +5353,7 @@ if (startCookie("_iub")){
 	var cp2 = "RICETTA";
 	
 
-	if(isCollection){
+	if(isCollection || isGallery){
 		cp29 = "1";
 	}
 	var pUrl = "";
@@ -5358,6 +5396,10 @@ if (startCookie("_iub")){
 	var cp51 = '';
 	if(cp51 != ''){
 		magazinecp51 = cp51;
+	}
+	
+	if(wArea == '404' && document.location.pathname.split("/").length>1){
+		cp51 = document.location.pathname.split("/")[1];
 	}
 	
 	var isNatale = true;

@@ -258,7 +258,70 @@ src="https://www.facebook.com/tr?id=466580624677428&ev=PageView&noscript=1"/>
 </noscript> <script async src="https://www.googletagmanager.com/gtag/js?id=G-9TDQMRX27G"></script> <script>window.dataLayer = window.dataLayer || []; 
 	function gtag(){dataLayer.push(arguments);} 
 	gtag('js', new Date()); 
-	gtag('config', 'G-9TDQMRX27G');</script>  <script>// Load the three scripts below on document load
+	gtag('config', 'G-9TDQMRX27G');</script> <head><link rel="preconnect" href="https://tags.crwdcntrl.net"><link rel="preconnect" href="https://bcp.crwdcntrl.net"><link rel="preconnect" href="https://c.ltmsphrcl.net"><link rel="dns-prefetch" href="https://tags.crwdcntrl.net"><link rel="dns-prefetch" href="https://bcp.crwdcntrl.net"><link rel="dns-prefetch" href="https://c.ltmsphrcl.net"> <script>! function() {
+      window.googletag = window.googletag || {};
+      window.googletag.cmd = window.googletag.cmd || [];
+      var audTargetingKey = 'lotame';
+      var panoramaIdTargetingKey = 'lpanoramaid';
+      var lotameClientId = '17930';
+      var audLocalStorageKey = 'lotame_' + lotameClientId + '_auds';
+
+      // Immediately load audiences and Panorama ID from local storage
+      try {
+        var storedAuds = window.localStorage.getItem(audLocalStorageKey) || '';
+        if (storedAuds) {
+          googletag.cmd.push(function() {
+            window.googletag.pubads().setTargeting(audTargetingKey, storedAuds.split(','));
+          });
+        }
+
+        var localStoragePanoramaID = window.localStorage.getItem('panoramaId') || '';
+        if (localStoragePanoramaID) {
+          googletag.cmd.push(function() {
+              window.googletag.pubads().setTargeting(panoramaIdTargetingKey, localStoragePanoramaID);
+          });
+        }
+      } catch(e) {
+      }
+
+      // Callback when targeting audience is ready to push latest audience data
+      var audienceReadyCallback = function (profile) {
+
+        // Get audiences as an array
+        var lotameAudiences = profile.getAudiences() || [];
+
+        // Set the new target audiences for call to Google
+        googletag.cmd.push(function() {
+          window.googletag.pubads().setTargeting(audTargetingKey, lotameAudiences);
+        });
+
+        // Get the PanoramaID to set at Google
+        var lotamePanoramaID = profile.getPanorama().getId() || '';
+        if (lotamePanoramaID) {
+          googletag.cmd.push(function() {
+            window.googletag.pubads().setTargeting(panoramaIdTargetingKey, lotamePanoramaID);
+          });
+        }
+      };
+
+      // Lotame Config
+      var lotameTagInput = {
+        data: {},
+        config: {
+          audienceLocalStorage: audLocalStorageKey,
+          onProfileReady: audienceReadyCallback
+        }
+      };
+
+      // Lotame initialization
+      var lotameConfig = lotameTagInput.config || {};
+      var namespace = window['lotame_' + lotameClientId] = {};
+      namespace.config = lotameConfig;
+      namespace.data = lotameTagInput.data || {};
+      namespace.cmd = namespace.cmd || [];
+    } ();</script> <script async src="https://tags.crwdcntrl.net/lt/c/17930/lt.min.js"></script> </head> <script async src="//pahtch.tech/c/argiro.gr.js"></script> 
+ <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1729493232531339"
+     crossorigin="anonymous"></script>  <script>// Load the three scripts below on document load
     window.addEventListener('load', () => {
         const ocm = document.createElement('script');
         ocm.src = 'https://cdn.orangeclickmedia.com/tech/argiro.gr_v2/ocm.js';
@@ -270,26 +333,25 @@ src="https://www.facebook.com/tr?id=466580624677428&ev=PageView&noscript=1"/>
         document.head.appendChild(gpt);
     })
 
-
-    window.googletag = window.googletag || {cmd: []};
+window.googletag = window.googletag || {};  
+window.googletag.cmd = window.googletag.cmd || []; 
 
     googletag.cmd.push(() => {
-        googletag.pubads().collapseEmptyDivs();
         googletag.pubads().setCentering(true);
         googletag.pubads().enableSingleRequest();
         googletag.pubads().disableInitialLoad();
         googletag.enableServices();
-    })</script> 
- <script async src="//pahtch.tech/c/argiro.gr.js"></script> 
- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1729493232531339"
-     crossorigin="anonymous"></script>  <script>window.gam_kv = {
+    })</script>  <script>window.gam_kv = {
       "type": ["recipe"],
       "category": ["manitaria-syntages, fileto-kotopoulo-syntages, kotopoulo-sto-tigani, kotopoulo-katsarolas, ag-valentinou, kotopoulo-syntages, eukoles-grigores-oikonomikes, ala-krem, ti-na-mageirepso-simera, syntages-me-ryzi, fagita, youtube"],
-      "tags": ["kremmydia, elaiolado, ryzi-karolina, fileto-kotopoulo, manitari, giaourti, aleuri, skorda, krema-galaktos, rizi, maintanos, piperia, piperi, zomos-kotas, alati, anithos"],
+      "tags": ["manitari, giaourti, aleuri, skorda, krema-galaktos, rizi, maintanos, piperia, piperi, zomos-kotas, alati, anithos, kremmydia, elaiolado, ryzi-karolina, fileto-kotopoulo"],
     }</script><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Argiro.gr - Αργυρώ Μπαρμπαρίγου - Οι καλύτερες ελληνικές συνταγές"><style id="custom-background-css">body.custom-background { background-color: #f4f4f4; }</style><style id="wp-custom-css">.argiro-ad-title {
 	 display: none;
 }
-
+.ad-pano-apo-proteinomenos-eksoplismos-wrap {
+    padding-bottom: 2rem;
+    padding-top: 1rem;
+}
 
 /* ADS STICKY */
 
@@ -536,14 +598,14 @@ xml:space="preserve">
 <span class="icon-pot pot-3"></span>
 <span class="icon-pot pot-4"></span></li></ul>
 <span class="fsize-12 difficulty_text">Εύκολη</span></div></div><div class="meta-wrap mb2"></div><meta itemprop="datePublished" content="2021-12-10"><meta itemprop="author" content="Αργυρώ Μπαρμπαρίγου"></div></div><div class="section-recipe-recipe-meta-info hide-on-mobile"><div class="container"><div class="recipe-meta-wrap"><div class="meta-col-left"><div class="meta-rating"><div class="shortcode-rating">
-<a class="popup-init" href="#popup-registration"><div id="yasr-vv-stars-stats-container-5ebd1402dd668"><div class='yasr-rater-stars'
-id='yasr-visitor-votes-readonly-rater-5ebd1402dd668'
+<a class="popup-init" href="#popup-registration"><div id="yasr-vv-stars-stats-container-cad051795661b"><div class='yasr-rater-stars'
+id='yasr-visitor-votes-readonly-rater-cad051795661b'
 data-rating='5'
 data-rater-starsize='16'
 data-rater-postid='2075'
 data-rater-readonly='true'
 data-readonly-attribute='true'
-data-rater-nonce='c95b1b9c3b'
+data-rater-nonce='f06f6231cc'
 ></div></div></a></div>
 <span class="fsize-12 text-total-votes ajax-rating-text" data-id="2075"></span></div><div class="recipe-meta-time-wrap clock-icon-before"><ul class="recipe-meta-time list-unstyled"><li class="item preparation_time">
 <span class="label">προετοιμασία</span>
@@ -566,14 +628,14 @@ data-rater-nonce='c95b1b9c3b'
 <i class="fsize-20">10 λεπτά</i></li><li class="item cooking_time">
 <span class="label">μαγείρεμα</span>
 <i class="fsize-20">30 λεπτά</i></li></ul></div><div class="ratings-mobile tc">
-<a class="popup-init" href="#popup-registration"><div id="yasr-vv-stars-stats-container-2653116d418bd"><div class='yasr-rater-stars'
-id='yasr-visitor-votes-readonly-rater-2653116d418bd'
+<a class="popup-init" href="#popup-registration"><div id="yasr-vv-stars-stats-container-15e7057abc61d"><div class='yasr-rater-stars'
+id='yasr-visitor-votes-readonly-rater-15e7057abc61d'
 data-rating='5'
 data-rater-starsize='16'
 data-rater-postid='2075'
 data-rater-readonly='true'
 data-readonly-attribute='true'
-data-rater-nonce='c95b1b9c3b'
+data-rater-nonce='f06f6231cc'
 ></div></div></a><span class="fsize-12 text-total-votes ajax-rating-text" data-id="2075">645</span></div></div></div><div id="toggle-ingredients" class="recipe-single-ingredients-wrapper"><div id="fixed-ingredients-nav" class="recipe-entry-header-container"><div class="recipe-entry-header-outer"><div class="container"><div class="recipe-entry-header-inner"><div class="header-entry-title"><h2 id="toggle-ingredients-event" class="title">Υλικά <i class="fa fa-angle-down" aria-hidden="true"></i></h2></div><div class="hide-on-desktop"><ul class="recipe-meta-serves list-unstyled"><li class="item serves_number tc">
 <span class="text-lower label">Μερίδες</span>
 <span itemprop="recipeYield" class="asty-med fsize-22">4</span></li></ul></div><div class="header-entry-share-info-wrap"><nav class="entry-dosometritis item-wrap">
@@ -788,7 +850,7 @@ data-rater-nonce='c95b1b9c3b'
 <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
 <input type="submit" value="Εγγραφή" name="subscribe" id="mc-embedded-subscribe" class="button"></div><div id="mergeRow-gdpr" class="mergeRow gdpr-mergeRow content__gdprBlock mc-field-group"><div class="content__gdpr">
 <label class="subfield field-2">Όροι Χρήσης</label><p class="hide text text-1">Ο ιστότοπος ARGIRO.GR E.E θα χρησιμοποιήσει τα emails των εγγεγραμμένων χρηστών, αποκλειστικά για την αποστολή ενημερωτικών newsletter και των προσφορών μας.</p><fieldset class="mc_fieldset gdprRequired mc-field-group" name="interestgroup_field">
-<label class="checkbox subfield field-3" for="gdpr_1"><input type="checkbox" id="gdpr_1" name="gdpr[1]" value="Y" class="av-checkbox "><span>Συμφωνώ με τους Όρους Χρήσης</span> </label></fieldset><p class="text text-2">Τα emails των εγγεγραμμένων χρηστών δεν θα δοθούν ποτέ σε τρίτους και φυλάσσονται στην πλατφόρμα του mailchimp για 5 χρόνια. Μπορείτε ανά πάσα στιγμή να απ εγγραφείτε πατώντας στο κάτω μέρος κάθε newsletter μας το κουμπί Unsubscribe ( Απ εγγραφή) το οποίο έχει αποστολή από το www.argiro.gr. Μπορείτε να δείτε την πολιτική απορρήτου μας στο https://argiro.gr/cookie-policy/</p></div><div class="content__gdprLegal"><p class="text text-3">We use Mailchimp as our marketing platform. By clicking below to subscribe, you acknowledge that your information will be transferred to Mailchimp for processing. <a href="https://mailchimp.com/legal/" target="_self">Learn more about Mailchimp's privacy practices here.</a></p></div></div><div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_a17ec46081cab13cd78c1b370_42d82881b1" tabindex="-1" value=""></div></div></div></div><label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off" /></label><input type="hidden" name="_mc4wp_timestamp" value="1720536017" /><input type="hidden" name="_mc4wp_form_id" value="5469" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1" /><div class="mc4wp-response"></div></form></div><img src="https://www.argiro.gr/wp-content/uploads/2021/11/argiro_symbol.svg" alt="logo "></article></div></div><div id="global-loader" class=""><div class="loader-wrap"><div class="text asty-med">Κάτι μαγειρεύεται<div class="pan-loader"><div class="loader"></div><div class="pan-container"><div class="pan"></div><div class="handle"></div></div><div class="shadow"></div></div></div></div></div> <script>(function(e){
+<label class="checkbox subfield field-3" for="gdpr_1"><input type="checkbox" id="gdpr_1" name="gdpr[1]" value="Y" class="av-checkbox "><span>Συμφωνώ με τους Όρους Χρήσης</span> </label></fieldset><p class="text text-2">Τα emails των εγγεγραμμένων χρηστών δεν θα δοθούν ποτέ σε τρίτους και φυλάσσονται στην πλατφόρμα του mailchimp για 5 χρόνια. Μπορείτε ανά πάσα στιγμή να απ εγγραφείτε πατώντας στο κάτω μέρος κάθε newsletter μας το κουμπί Unsubscribe ( Απ εγγραφή) το οποίο έχει αποστολή από το www.argiro.gr. Μπορείτε να δείτε την πολιτική απορρήτου μας στο https://argiro.gr/cookie-policy/</p></div><div class="content__gdprLegal"><p class="text text-3">We use Mailchimp as our marketing platform. By clicking below to subscribe, you acknowledge that your information will be transferred to Mailchimp for processing. <a href="https://mailchimp.com/legal/" target="_self">Learn more about Mailchimp's privacy practices here.</a></p></div></div><div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_a17ec46081cab13cd78c1b370_42d82881b1" tabindex="-1" value=""></div></div></div></div><label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off" /></label><input type="hidden" name="_mc4wp_timestamp" value="1734123789" /><input type="hidden" name="_mc4wp_form_id" value="5469" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1" /><div class="mc4wp-response"></div></form></div><img src="https://www.argiro.gr/wp-content/uploads/2021/11/argiro_symbol.svg" alt="logo "></article></div></div><div id="global-loader" class=""><div class="loader-wrap"><div class="text asty-med">Κάτι μαγειρεύεται<div class="pan-loader"><div class="loader"></div><div class="pan-container"><div class="pan"></div><div class="handle"></div></div><div class="shadow"></div></div></div></div></div> <script>(function(e){
                   var el = document.createElement('script');
                   el.setAttribute('data-account', '2bHHC0msXn');
                   el.setAttribute('src', 'https://cdn.userway.org/widget.js');
@@ -816,7 +878,7 @@ for (let j = 0; j < urlFields.length; j++) {
             }
             .yasr-star-rating .yasr-star-value {
                 background: url('https://www.argiro.gr/wp-content/plugins/yet-another-stars-rating/includes/img/star_3.svg') ;
-            }</style> <script id="superpwa-register-sw-js-extra">var superpwa_sw = {"url":"\/superpwa-sw.js?2.2.17","disable_addtohome":"0","enableOnDesktop":"","offline_message":"1","offline_message_txt":"You are currently offline."};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/10ec3c64e56ff410cc2a8e0309fb4457.js?ver=b4457" id="superpwa-register-sw-js"></script> <script id="superpwa-cta-button-script-js-extra">var superpwa_cta = {"a2h_sticky_on_desktop_cta":"0","a2h_sticky_on_tablet_cta":"0","a2h_banner_without_scroll_cta":"0","a2h_banner_delay_cta":"0","a2h_banner_delay_sec_cta":"5","a2h_banner_on_scroll":"1","a2h_sticky_on_android":"0","a2h_sticky_on_ios":"0","a2h_sticky_show_only_on_ios":"0"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/d6b9c85480a7e25312d463100870d61c.js?ver=b2a5e" id="superpwa-cta-button-script-js"></script> <script id="superpwa_data_analytics_frontend_script-js-extra">var SuperPwaAnalyticsData = {"ajax_url":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php","nonce_csrf":"3ba549669a"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/f4f2e51a1fab0c869cfdcc2398328c95.js?ver=8c504" id="superpwa_data_analytics_frontend_script-js"></script> <script id="yasr-window-var-js-extra">var yasrWindowVar = {"siteUrl":"https:\/\/www.argiro.gr","adminUrl":"https:\/\/www.argiro.gr\/wp-admin\/","ajaxurl":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php","visitorStatsEnabled":"no","ajaxEnabled":"yes","loaderHtml":"<div id=\"yasr-loader\" style=\"display: inline-block\">\u00a0 <img src=\"https:\/\/www.argiro.gr\/wp-content\/plugins\/yet-another-stars-rating\/includes\/img\/loader.gif\" \n                 title=\"yasr-loader\" alt=\"yasr-loader\" height=\"16\" width=\"16\"><\/div>","loaderUrl":"https:\/\/www.argiro.gr\/wp-content\/plugins\/yet-another-stars-rating\/includes\/img\/loader.gif","isUserLoggedIn":"false","isRtl":"false","starSingleForm":"\"star\"","starsPluralForm":"\"stars\"","textAfterVr":"\"\"","textRating":"\"Rating\"","textLoadRanking":"\"Loading, please wait\"","textVvStats":"\"out of 5 stars\"","textOrderBy":"\"Order by\"","textMostRated":"\"Most Rated\"","textHighestRated":"\"Highest Rated\"","textLeftColumnHeader":"\"Post\""};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/3d709e8939c9c7008963f270e4f4005f.js?ver=5fb0b" id="stories-main-js-js"></script> <script id="main-js-compiled-gulp-js-extra">var argiro_global_var = {"ajaxurl":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php","ajax_nonce":"74ade77cfe","redirecturl":"\/recipe\/kotopoulo-ala-krem-me-ruzi\/","loadingmessage":"\u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03c0\u03b5\u03c1\u03b9\u03bc\u03ad\u03bd\u03b5\u03c4\u03b5...","voted_msg":"\u0388\u03c7\u03b5\u03c4\u03b5 \u03c8\u03b7\u03c6\u03af\u03c3\u03b5\u03b9. \u0395\u03c5\u03c7\u03b1\u03c1\u03b9\u03c3\u03c4\u03bf\u03cd\u03bc\u03b5 \u03b3\u03b9\u03b1 \u03c4\u03b7\u03bd \u03c8\u03ae\u03c6\u03bf \u03c3\u03b1\u03c2.","login_string":"\u039a\u03c9\u03b4\u03b9\u03ba\u03cc\u03c2","search_form":"\u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03b5\u03b9\u03c3\u03ac\u03b3\u03b5\u03c4\u03b5 \u03c4\u03bf\u03c5\u03bb\u03ac\u03c7\u03b9\u03c3\u03c4\u03bf\u03bd 4 \u03c7\u03b1\u03c1\u03b1\u03ba\u03c4\u03ae\u03c1\u03b5\u03c2.","error_msg_global":"\u03a0\u03b1\u03c1\u03bf\u03c5\u03c3\u03b9\u03ac\u03c3\u03c4\u03b7\u03ba\u03b5 \u03ad\u03bd\u03b1 \u03c3\u03c6\u03ac\u03bb\u03bc\u03b1. \u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03b4\u03bf\u03ba\u03b9\u03bc\u03ac\u03c3\u03c4\u03b5 \u03be\u03b1\u03bd\u03ac \u03b7 \u03b5\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03ae\u03c3\u03c4\u03b5 \u03bc\u03b1\u03b6\u03af \u03bc\u03b1\u03c2.","add_recipe_to_book":"\u0397 \u03c3\u03c5\u03bd\u03c4\u03b1\u03b3\u03ae \u03c0\u03c1\u03bf\u03c3\u03c4\u03ad\u03b8\u03b7\u03ba\u03b5 \u03b5\u03c0\u03b9\u03c4\u03c5\u03c7\u03ce\u03c2","json_tax_url":"https:\/\/www.argiro.gr\/task-search.json","json_cpt_url":"https:\/\/www.argiro.gr\/search-cpt.json"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/9ea371ad722f2c14496222e9e044ad2b.js?ver=34599" id="main-js-compiled-gulp-js"></script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/1343dd8445770599e00cf32ea917440a.js?ver=62e6e" id="exis-main-js-js"></script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/6501ee2e46c25589d02ce30e304f476f.js?ver=24ed2" id="yasr-global-functions-js"></script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/533fd8dcb43d1b7122a5cb24a5f27df9.js?ver=ef8c1" id="yasr-ov-multi-js"></script> <script data-optimized="1" defer src="https://www.argiro.gr/wp-content/litespeed/js/eb95ab779b257fb314eb584a257e6b85.js?ver=c93bf" id="mc4wp-forms-api-js"></script> <script id="mc4wp-ajax-forms-js-extra">var mc4wp_ajax_vars = {"loading_character":"\u2022","ajax_url":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php?action=mc4wp-form","error_text":"Oops. \u039a\u03ac\u03c4\u03b9 \u03c0\u03ae\u03b3\u03b5 \u03bb\u03ac\u03b8\u03bf\u03c2.. \u039e\u03b1\u03bd\u03b1\u03b4\u03bf\u03ba\u03b9\u03bc\u03ac\u03c3\u03c4\u03b5 \u03b1\u03c1\u03b3\u03cc\u03c4\u03b5\u03c1\u03b1!"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/cf22ed970025c9c4c257fac0a00092af.js?ver=270f9" id="mc4wp-ajax-forms-js"></script> <script type="text/javascript">(function (undefined) {let scriptOptions={"_localizedStrings":{"redirect_overlay_title":"Hold On","redirect_overlay_text":"You are being redirected to another page,<br>it may take a few seconds.","webview_notification_text":"The selected provider doesn't support embedded browsers!"},"_targetWindow":"prefer-popup","_redirectOverlay":"overlay-with-spinner-and-message","_unsupportedWebviewBehavior":""};
+            }</style> <script id="superpwa-register-sw-js-extra">var superpwa_sw = {"url":"\/superpwa-sw.js?2.2.17","disable_addtohome":"0","enableOnDesktop":"","offline_message":"1","offline_message_txt":"You are currently offline."};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/10ec3c64e56ff410cc2a8e0309fb4457.js?ver=b4457" id="superpwa-register-sw-js"></script> <script id="superpwa-cta-button-script-js-extra">var superpwa_cta = {"a2h_sticky_on_desktop_cta":"0","a2h_sticky_on_tablet_cta":"0","a2h_banner_without_scroll_cta":"0","a2h_banner_delay_cta":"0","a2h_banner_delay_sec_cta":"5","a2h_banner_on_scroll":"1","a2h_sticky_on_android":"0","a2h_sticky_on_ios":"0","a2h_sticky_show_only_on_ios":"0"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/d6b9c85480a7e25312d463100870d61c.js?ver=b2a5e" id="superpwa-cta-button-script-js"></script> <script id="superpwa_data_analytics_frontend_script-js-extra">var SuperPwaAnalyticsData = {"ajax_url":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php","nonce_csrf":"813e149ce7"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/f4f2e51a1fab0c869cfdcc2398328c95.js?ver=8c504" id="superpwa_data_analytics_frontend_script-js"></script> <script id="yasr-window-var-js-extra">var yasrWindowVar = {"siteUrl":"https:\/\/www.argiro.gr","adminUrl":"https:\/\/www.argiro.gr\/wp-admin\/","ajaxurl":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php","visitorStatsEnabled":"no","ajaxEnabled":"yes","loaderHtml":"<div id=\"yasr-loader\" style=\"display: inline-block\">\u00a0 <img src=\"https:\/\/www.argiro.gr\/wp-content\/plugins\/yet-another-stars-rating\/includes\/img\/loader.gif\" \n                 title=\"yasr-loader\" alt=\"yasr-loader\" height=\"16\" width=\"16\"><\/div>","loaderUrl":"https:\/\/www.argiro.gr\/wp-content\/plugins\/yet-another-stars-rating\/includes\/img\/loader.gif","isUserLoggedIn":"false","isRtl":"false","starSingleForm":"\"star\"","starsPluralForm":"\"stars\"","textAfterVr":"\"\"","textRating":"\"Rating\"","textLoadRanking":"\"Loading, please wait\"","textVvStats":"\"out of 5 stars\"","textOrderBy":"\"Order by\"","textMostRated":"\"Most Rated\"","textHighestRated":"\"Highest Rated\"","textLeftColumnHeader":"\"Post\""};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/3d709e8939c9c7008963f270e4f4005f.js?ver=5fb0b" id="stories-main-js-js"></script> <script id="main-js-compiled-gulp-js-extra">var argiro_global_var = {"ajaxurl":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php","ajax_nonce":"5d61867f33","redirecturl":"\/recipe\/kotopoulo-ala-krem-me-ruzi\/","loadingmessage":"\u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03c0\u03b5\u03c1\u03b9\u03bc\u03ad\u03bd\u03b5\u03c4\u03b5...","voted_msg":"\u0388\u03c7\u03b5\u03c4\u03b5 \u03c8\u03b7\u03c6\u03af\u03c3\u03b5\u03b9. \u0395\u03c5\u03c7\u03b1\u03c1\u03b9\u03c3\u03c4\u03bf\u03cd\u03bc\u03b5 \u03b3\u03b9\u03b1 \u03c4\u03b7\u03bd \u03c8\u03ae\u03c6\u03bf \u03c3\u03b1\u03c2.","login_string":"\u039a\u03c9\u03b4\u03b9\u03ba\u03cc\u03c2","search_form":"\u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03b5\u03b9\u03c3\u03ac\u03b3\u03b5\u03c4\u03b5 \u03c4\u03bf\u03c5\u03bb\u03ac\u03c7\u03b9\u03c3\u03c4\u03bf\u03bd 4 \u03c7\u03b1\u03c1\u03b1\u03ba\u03c4\u03ae\u03c1\u03b5\u03c2.","error_msg_global":"\u03a0\u03b1\u03c1\u03bf\u03c5\u03c3\u03b9\u03ac\u03c3\u03c4\u03b7\u03ba\u03b5 \u03ad\u03bd\u03b1 \u03c3\u03c6\u03ac\u03bb\u03bc\u03b1. \u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03b4\u03bf\u03ba\u03b9\u03bc\u03ac\u03c3\u03c4\u03b5 \u03be\u03b1\u03bd\u03ac \u03b7 \u03b5\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03ae\u03c3\u03c4\u03b5 \u03bc\u03b1\u03b6\u03af \u03bc\u03b1\u03c2.","add_recipe_to_book":"\u0397 \u03c3\u03c5\u03bd\u03c4\u03b1\u03b3\u03ae \u03c0\u03c1\u03bf\u03c3\u03c4\u03ad\u03b8\u03b7\u03ba\u03b5 \u03b5\u03c0\u03b9\u03c4\u03c5\u03c7\u03ce\u03c2","json_tax_url":"https:\/\/www.argiro.gr\/task-search.json","json_cpt_url":"https:\/\/www.argiro.gr\/search-cpt.json"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/9ea371ad722f2c14496222e9e044ad2b.js?ver=34599" id="main-js-compiled-gulp-js"></script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/1343dd8445770599e00cf32ea917440a.js?ver=62e6e" id="exis-main-js-js"></script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/6501ee2e46c25589d02ce30e304f476f.js?ver=24ed2" id="yasr-global-functions-js"></script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/533fd8dcb43d1b7122a5cb24a5f27df9.js?ver=ef8c1" id="yasr-ov-multi-js"></script> <script data-optimized="1" defer src="https://www.argiro.gr/wp-content/litespeed/js/eb95ab779b257fb314eb584a257e6b85.js?ver=c93bf" id="mc4wp-forms-api-js"></script> <script id="mc4wp-ajax-forms-js-extra">var mc4wp_ajax_vars = {"loading_character":"\u2022","ajax_url":"https:\/\/www.argiro.gr\/wp-admin\/admin-ajax.php?action=mc4wp-form","error_text":"Oops. \u039a\u03ac\u03c4\u03b9 \u03c0\u03ae\u03b3\u03b5 \u03bb\u03ac\u03b8\u03bf\u03c2.. \u039e\u03b1\u03bd\u03b1\u03b4\u03bf\u03ba\u03b9\u03bc\u03ac\u03c3\u03c4\u03b5 \u03b1\u03c1\u03b3\u03cc\u03c4\u03b5\u03c1\u03b1!"};</script> <script data-optimized="1" src="https://www.argiro.gr/wp-content/litespeed/js/cf22ed970025c9c4c257fac0a00092af.js?ver=270f9" id="mc4wp-ajax-forms-js"></script> <script type="text/javascript">(function (undefined) {let scriptOptions={"_localizedStrings":{"redirect_overlay_title":"Hold On","redirect_overlay_text":"You are being redirected to another page,<br>it may take a few seconds.","webview_notification_text":"The selected provider doesn't support embedded browsers!"},"_targetWindow":"prefer-popup","_redirectOverlay":"overlay-with-spinner-and-message","_unsupportedWebviewBehavior":""};
 /**
  * Used when Cross-Origin-Opener-Policy blocked the access to the opener. We can't have a reference of the opened windows, so we should attempt to refresh only the windows that has opened popups.
  */
@@ -1207,6 +1269,6 @@ if (typeof BroadcastChannel === "function") {
 				.superpwa-installable-btn-class {
 					display:none !important;
 				}}</style></body></html>
-<!-- Page optimized by LiteSpeed Cache @2024-07-09 17:40:17 -->
+<!-- Page optimized by LiteSpeed Cache @2024-12-13 23:03:10 -->
 
-<!-- Page cached by LiteSpeed Cache 6.2.0.1 on 2024-07-09 17:40:17 -->
+<!-- Page cached by LiteSpeed Cache 6.4.1 on 2024-12-13 23:03:10 -->

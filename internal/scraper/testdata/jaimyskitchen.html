@@ -27,8 +27,7 @@
         <meta property="og:type" content="article" />
         
         <!-- Styles -->
-                    <link media="all" rel="stylesheet" href="https://jaimyskitchen.nl/dist/critical-recipe.css">        
-       
+                    <link media="all" rel="stylesheet" href="https://jaimyskitchen.nl/dist/critical-recipe.css">
                  
         <style >[wire\:loading], [wire\:loading\.delay], [wire\:loading\.inline-block], [wire\:loading\.inline], [wire\:loading\.block], [wire\:loading\.flex], [wire\:loading\.table], [wire\:loading\.grid], [wire\:loading\.inline-flex] {display: none;}[wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short], [wire\:loading\.delay\.long], [wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest] {display:none;}[wire\:offline] {display: none;}[wire\:dirty]:not(textarea):not(input):not(select) {display: none;}input:-webkit-autofill, select:-webkit-autofill, textarea:-webkit-autofill {animation-duration: 50000s;animation-name: livewireautofill;}@keyframes livewireautofill { from {} }</style>
         
@@ -114,12 +113,16 @@
             "url": "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu/kookmodus#stap2"                      },                     {
             "@type": "HowToStep",
             "name": "Stap 3",
-            "text": "Maak in de tussentijd de boemboe door de ingrediënten heel fijn te snijden (ui, knoflook) en samen te voegen. Kneus de stengel citroengras. Fruit de boemboe inclusief de stengel citroengras aan in een steelpan met een beetje zonnebloemolie. Voeg na ongeveer 3 minuten kokosmelk en het bouillonblokje toe en laat op laag vuur nog 5 minuten sudderen.",
+            "text": "Maak in de tussentijd de boemboe door de ingrediënten heel fijn te snijden (ui, knoflook) en samen te voegen met de droge kruiden in de ingrediëntenlijst. Kneus de stengel citroengras. Fruit de boemboe inclusief de stengel citroengras aan in een steelpan met een beetje zonnebloemolie. Voeg na ongeveer 3 minuten kokosmelk en het bouillonblokje toe en laat op laag vuur nog 5 minuten sudderen.",
             "url": "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu/kookmodus#stap3"                      },                     {
             "@type": "HowToStep",
             "name": "Stap 4",
-            "text": "Voeg de wortel in de hapjespan met zonnebloemolie. Roerbak ongeveer 5 minuten en voeg dan ook de spitskool toe. Na ongeveer 5 minuten is de spitskool een beetje geslonken, voeg dan ook de bloemkool, sperziebonen en de boemboe met kokosmelk (verwijder de stengel citroengras) toe. Maak af met limoensap naar smaak.",
-            "url": "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu/kookmodus#stap4"                      }                  
+            "text": "Voeg de wortel in de hapjespan met zonnebloemolie. Roerbak ongeveer 5 minuten en voeg dan ook de spitskool toe. Na ongeveer 5 minuten is de spitskool een beetje geslonken, voeg dan ook de bloemkool, sperziebonen, tofu en de boemboe met kokosmelk toe.",
+            "url": "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu/kookmodus#stap4"                      },                     {
+            "@type": "HowToStep",
+            "name": "Stap 5",
+            "text": "Verwijder de stengel citroengras. Maak af met limoensap naar smaak.",
+            "url": "https://jaimyskitchen.nl/recepten/sajoer-lodeh-indonesisch-groente-recept-met-tofu/kookmodus#stap5"                      }                  
         ]
           }
 </script>
@@ -292,7 +295,7 @@
                                         <div x-data="{ nav: 'hide', showNav: false }"
     class="                
             
-        absolute p-2 md:p-4 left-0 top-0 z-60  w-full dark:text-white bg-transparent noPrint 
+        absolute p-2 lg:p-4 left-0 top-0 z-60  w-full dark:text-white bg-transparent noPrint 
     ">
 
     <nav class="relative mx-auto
@@ -304,7 +307,7 @@
         <div class="absolute rounded-t-2xl left-0 top-0 bg-gradient-to-b from-gray-600 
          w-full max-w-sreen2xl h-full z-10 mx4"></div>
         
-        <div class="md:hidden w-full z-20">
+        <div class="lg:hidden w-full z-20">
                         
                 <div class="flex justify-between items-center"> 
                     <div>                        
@@ -324,25 +327,25 @@
             x-cloak
             class="
                 flex
-                fixed md:static
+                fixed lg:static
                 flex-grow
-                h-screen md:h-auto
-                w-full md:w-auto
-                right-0 md:right-auto
-                top-0 md:top-auto
-                transform md:transform-none
-                bg-transparent dark:bg-blue-900 md:bg-transparent
-                overflow-auto md:overflow-visible
+                h-screen lg:h-auto
+                w-full lg:w-auto
+                right-0 lg:right-auto
+                top-0 lg:top-auto
+                transform lg:transform-none
+                bg-transparent dark:bg-blue-900 lg:bg-transparent
+                overflow-auto lg:overflow-visible
                 ease-in-out transition-all duration-300 z-60
                 
             "
-            :class="showNav ? 'block' : 'hidden md:block'"
+            :class="showNav ? 'block' : 'hidden lg:block'"
             >
-            <div class=" flex flex-col items-left md:flex-row w-full bg-green-900 md:bg-transparent"
+            <div class=" flex flex-col items-left lg:flex-row w-full bg-green-900 lg:bg-transparent"
                 :style="showNav ? 'background-image: url(https://jaimyskitchen.nl/img/icn_wallpaper.png)' : ''"
             >
 
-                    <div class="md:hidden px-8 pt-6">
+                    <div class="lg:hidden px-8 pt-6">
                         <div class="flex justify-center items-center">
                             <div class="flex-grow text-right">
                                 <a 
@@ -353,49 +356,62 @@
                             </div>
                         </div>
                     </div>
-                    <div class="md:flex-grow flex flex-col md:flex-row py-8 md:py-0 px-8 md:px-0 md:items-center text-white">
-                                                                                    <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
+                    <div class="lg:flex-grow flex flex-col lg:flex-row py-8 lg:py-0 px-8 lg:px-0 lg:items-center text-white">
+                                                     
+                                                                                        <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
                                     "
-                                href="https://jaimyskitchen.nl">
-                                    Home 
-                                </a> <span class="hidden md:block last:hidden">|</span>
-                                                                                                                <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
+                                    target="_self" href="https://jaimyskitchen.nl">
+                                    Home
+                                </a> 
+                                                                <span class="hidden lg:block last:hidden">|</span>
+                                                                                                                 
+                                                            
+                                 
+                                                                                        <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
+                                    "
+                                    target="_blank" href="https://shop.jaimyskitchen.nl">
+                                    Shop
+                                </a> 
+                                                                <span class="hidden lg:block last:hidden">|</span>
+                                                                                                                 
+                                                                                        <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
                                                                             is-active
                                     "
-                                href="https://jaimyskitchen.nl/recepten">
-                                    Recepten 
-                                </a> <span class="hidden md:block last:hidden">|</span>
-                                                                                                                <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
+                                    target="_self" href="https://jaimyskitchen.nl/recepten">
+                                    Recepten
+                                </a> 
+                                                                <span class="hidden lg:block last:hidden">|</span>
+                                                                                                                 
+                                                                                        <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
                                     "
-                                href="https://jaimyskitchen.nl/inspiratie">
-                                    Inspiratie 
-                                </a> <span class="hidden md:block last:hidden">|</span>
-                                                                                                                <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
+                                    target="_self" href="https://jaimyskitchen.nl/inspiratie">
+                                    Inspiratie
+                                </a> 
+                                                                <span class="hidden lg:block last:hidden">|</span>
+                                                                                                                 
+                                                                                        <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
                                     "
-                                href="https://jaimyskitchen.nl/weekmenu">
-                                    Weekmenu 
-                                </a> <span class="hidden md:block last:hidden">|</span>
-                                                                                                                <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
+                                    target="_self" href="https://jaimyskitchen.nl/weekmenu">
+                                    Weekmenu
+                                </a> 
+                                                                <span class="hidden lg:block last:hidden">|</span>
+                                                                                                                 
+                                                                                        <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
                                     "
-                                href="https://jaimyskitchen.nl/over-jaimy">
-                                    Over Jaimy 
-                                </a> <span class="hidden md:block last:hidden">|</span>
-                                                                                                                <a class="navbar-item inline-block px-4 py-2 text-white hover:underline capitalize sm:uppercase text-2xl sm:text-lg
-                                    "
-                                href="https://jaimyskitchen.nl/contact">
-                                    Contact 
-                                </a> <span class="hidden md:block last:hidden">|</span>
-                                                                                                    <a class="navbar-item flex md:hidden px-4 py-2 gap-4 items-center text-white hover:underline sm:uppercase text-2xl sm:text-lg mt-10" 
+                                    target="_self" href="https://jaimyskitchen.nl/over-jaimy">
+                                    Over Jaimy
+                                </a> 
+                                                                                                                                    <a class="navbar-item flex lg:hidden px-4 py-2 gap-4 items-center text-white hover:underline sm:uppercase text-2xl sm:text-lg mt-10" 
                         href="https://jaimyskitchen.nl/profile"> 
                             Inloggen
                         </a>
-                        <a class="navbar-item md:hidden flex px-4 py-2 gap-4 items-center text-white hover:underline sm:uppercase text-2xl sm:text-lg" 
+                        <a class="navbar-item lg:hidden flex px-4 py-2 gap-4 items-center text-white hover:underline sm:uppercase text-2xl sm:text-lg" 
                         href="/register"> 
                             Meld je aan
                         </a>
                                                 
                         <div x-show="showNav" class="mt-8">
-                            <div wire:id="L01rqaNzuc1dHtkNR7t4" wire:initial-data="{&quot;fingerprint&quot;:{&quot;id&quot;:&quot;L01rqaNzuc1dHtkNR7t4&quot;,&quot;name&quot;:&quot;mobile-search&quot;,&quot;locale&quot;:&quot;nl&quot;,&quot;path&quot;:&quot;recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;v&quot;:&quot;acj&quot;},&quot;effects&quot;:{&quot;listeners&quot;:[]},&quot;serverMemo&quot;:{&quot;children&quot;:[],&quot;errors&quot;:[],&quot;htmlHash&quot;:&quot;74a912c0&quot;,&quot;data&quot;:{&quot;menu&quot;:true,&quot;searchTerm&quot;:null,&quot;tags&quot;:[],&quot;recipeUrl&quot;:&quot;https:\/\/jaimyskitchen.nl\/recepten&quot;},&quot;dataMeta&quot;:[],&quot;checksum&quot;:&quot;bdae833b947892cf8dfec5c8aa4c73bc513b995398b6d3eb519e9f5380c93c18&quot;}}" class="relative w-full z-50" x-data>
+                            <div wire:id="TQUSR2j2I41JkqUCe9Uo" wire:initial-data="{&quot;fingerprint&quot;:{&quot;id&quot;:&quot;TQUSR2j2I41JkqUCe9Uo&quot;,&quot;name&quot;:&quot;mobile-search&quot;,&quot;locale&quot;:&quot;nl&quot;,&quot;path&quot;:&quot;recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;v&quot;:&quot;acj&quot;},&quot;effects&quot;:{&quot;listeners&quot;:[]},&quot;serverMemo&quot;:{&quot;children&quot;:[],&quot;errors&quot;:[],&quot;htmlHash&quot;:&quot;74a912c0&quot;,&quot;data&quot;:{&quot;menu&quot;:true,&quot;searchTerm&quot;:null,&quot;tags&quot;:[],&quot;recipeUrl&quot;:&quot;https:\/\/jaimyskitchen.nl\/recepten&quot;},&quot;dataMeta&quot;:[],&quot;checksum&quot;:&quot;b493fed035f1337225e95193d53920cdc9cf115196b6a8144c13e4cefe57203b&quot;}}" class="relative w-full z-50" x-data>
     <div class="absolute right-4 h-6 top-1/2" style="margin-top:-10px;"><svg width="20" height="20"><path d="m20 17.4-5.334-5.295a7.797 7.797 0 0 0 1.232-4.216C15.898 3.54 12.332 0 7.949 0S0 3.54 0 7.89s3.566 7.89 7.949 7.89a7.945 7.945 0 0 0 4.063-1.11l5.37 5.33L20 17.4zM2.962 7.89c0-2.728 2.237-4.948 4.986-4.948 2.75 0 4.987 2.22 4.987 4.948 0 2.73-2.237 4.95-4.987 4.95-2.749 0-4.986-2.22-4.986-4.95z" fill="#FFF" fill-rule="nonzero"/></svg></div>
     <input 
         placeholder="Waar heb je zin in?" class="w-full  bg-black/80  py-4 text-white text-italic px-6 placeholder:text-white italic  rounded-xl" type="text"        
@@ -404,7 +420,7 @@
 
     
 </div>
-<!-- Livewire Component wire-end:L01rqaNzuc1dHtkNR7t4 -->                        </div>
+<!-- Livewire Component wire-end:TQUSR2j2I41JkqUCe9Uo -->                        </div>
                     </div>
                     <a x-show="!showNav" href="https://jaimyskitchen.nl/profile"> 
                         <svg class="rounded-full w-12 h-12" width="42" height="41" viewbox="0 0 42 41" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -453,7 +469,7 @@
 
             <div class="py-16 hidden sm:block">
     <a href="https://jaimyskitchen.nl">
-    <img width="160" height="200"  class=" w-28 sm:w-40" src="https://jaimyskitchen.nl/img/cache/media_44293_original_85-jaimys_kitchen_logo_herfst_sweet-pea_RGB.webp" alt="Logo">
+    <img width="160" height="200"  class=" w-28 sm:w-40" src="https://jaimyskitchen.nl/img/cache/media_44299_original_85-logo-winter4.svg" alt="Logo">
     </a>
 </div>
             
@@ -728,6 +744,7 @@
                 </ul>
 
     </div>                        <img class="md:hidden absolute z-10 w-full object-none pointer-events-none object-top bottom-0 left-0 h-12" src="https://jaimyskitchen.nl/img/bck_wave_bottom.svg" />
+
                     </div>                    
                 
                 
@@ -804,7 +821,7 @@
             <h3>Login of registreer</h3>
             <p>Je hebt een account nodig om dit recept te beoordelen</p>
             <form method="POST" action="https://jaimyskitchen.nl/login">
-    <input type="hidden" name="_token" value="zD7boZk1GPMhF8w0p88WEhiuJyGKh6Kc8A3ZqXfp">    <div class="flex flex-col my-8">
+    <input type="hidden" name="_token" value="5tzx44raQV1NZm3Kktxubv7rnMi2UuJoXqz6osSS">    <div class="flex flex-col my-8">
         <label for="email" class="col-md-4 col-form-label text-md-right">E-mailadres</label>
 
         <div class="w-full">
@@ -928,7 +945,7 @@
             <h3>Login of registreer</h3>
             <p>Je hebt een account nodig om dit recept te beoordelen</p>
             <form method="POST" action="https://jaimyskitchen.nl/login">
-    <input type="hidden" name="_token" value="zD7boZk1GPMhF8w0p88WEhiuJyGKh6Kc8A3ZqXfp">    <div class="flex flex-col my-8">
+    <input type="hidden" name="_token" value="5tzx44raQV1NZm3Kktxubv7rnMi2UuJoXqz6osSS">    <div class="flex flex-col my-8">
         <label for="email" class="col-md-4 col-form-label text-md-right">E-mailadres</label>
 
         <div class="w-full">
@@ -1091,15 +1108,22 @@
                             <div class="w-28">
                                 <h3 class="mt-0 mb-2">Stap 3</h3>
                             </div>
-                            <div class="w-full"><p>Maak in de tussentijd de boemboe door de ingrediënten heel fijn te snijden (ui, knoflook) en samen te voegen. Kneus de stengel citroengras. Fruit de boemboe inclusief de stengel citroengras aan in een steelpan met een beetje zonnebloemolie. Voeg na ongeveer 3 minuten kokosmelk en het bouillonblokje toe en laat op laag vuur nog 5 minuten sudderen.</p></div>
+                            <div class="w-full"><p>Maak in de tussentijd de boemboe door de ingrediënten heel fijn te snijden (ui, knoflook) en samen te voegen met de droge kruiden in de ingrediëntenlijst. Kneus de stengel citroengras. Fruit de boemboe inclusief de stengel citroengras aan in een steelpan met een beetje zonnebloemolie. Voeg na ongeveer 3 minuten kokosmelk en het bouillonblokje toe en laat op laag vuur nog 5 minuten sudderen.</p></div>
                         </div>
                                                                     <div class="flex gap-2 md:gap-8 pt-4 mb-8 items-top">
                             <div class="w-28">
                                 <h3 class="mt-0 mb-2">Stap 4</h3>
                             </div>
-                            <div class="w-full"><p>Voeg de wortel in de hapjespan met zonnebloemolie. Roerbak ongeveer 5 minuten en voeg dan ook de spitskool toe. Na ongeveer 5 minuten is de spitskool een beetje geslonken, voeg dan ook de bloemkool, sperziebonen en de boemboe met kokosmelk (verwijder de stengel citroengras) toe. Maak af met limoensap naar smaak.</p></div>
+                            <div class="w-full"><p>Voeg de wortel in de hapjespan met zonnebloemolie. Roerbak ongeveer 5 minuten en voeg dan ook de spitskool toe. Na ongeveer 5 minuten is de spitskool een beetje geslonken, voeg dan ook de bloemkool, sperziebonen, tofu en de boemboe met kokosmelk toe.</p></div>
                         </div>
-                                                    <div class="noPrint">
+                                                                    <div class="flex gap-2 md:gap-8 pt-4 mb-8 items-top">
+                            <div class="w-28">
+                                <h3 class="mt-0 mb-2">Stap 5</h3>
+                            </div>
+                            <div class="w-full"><p>Verwijder de stengel citroengras. Maak af met limoensap naar smaak.</p></div>
+                        </div>
+                                                    <p><small>* Merknamen in dit artikel kunnen het gevolg zijn van een betaalde samenwerking. Sommige linkjes op deze pagina kunnen affiliate links zijn.</small></p>
+                <div class="noPrint">
                     <div class="my-8">
                         <div class="pt-8 pb-12" x-data="{ toggleFeedback: false }">
     <h3 class="mb-2">Feedback?</h3>
@@ -1109,7 +1133,7 @@
         Geef je feedback
     </button>
     <div class="py-2" x-show="toggleFeedback" x-transition:enter-start="opacity-0 -translate-y-20" x-transition:enter="ease-out duration-300"  x-transition:enter-end="opacity-100 translate-y-0">
-        <div wire:id="C8pNWLCwvrgtciBH0G1s" wire:initial-data="{&quot;fingerprint&quot;:{&quot;id&quot;:&quot;C8pNWLCwvrgtciBH0G1s&quot;,&quot;name&quot;:&quot;contact-form&quot;,&quot;locale&quot;:&quot;nl&quot;,&quot;path&quot;:&quot;recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;v&quot;:&quot;acj&quot;},&quot;effects&quot;:{&quot;listeners&quot;:[]},&quot;serverMemo&quot;:{&quot;children&quot;:[],&quot;errors&quot;:[],&quot;htmlHash&quot;:&quot;d44bd623&quot;,&quot;data&quot;:{&quot;name&quot;:null,&quot;email&quot;:null,&quot;messageBody&quot;:null,&quot;recipe&quot;:&quot;Sajoer Lodeh - Indonesisch groente recept met tofu&quot;,&quot;recipeURL&quot;:&quot;https:\/\/jaimyskitchen.nl\/recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;},&quot;dataMeta&quot;:[],&quot;checksum&quot;:&quot;da80cb1ca6ad613ff72fbcf4dcfc7fa8b967ab2c10f2f6a53fb2a84082915831&quot;}}">
+        <div wire:id="We8UcP2Oneyp2FT85B87" wire:initial-data="{&quot;fingerprint&quot;:{&quot;id&quot;:&quot;We8UcP2Oneyp2FT85B87&quot;,&quot;name&quot;:&quot;contact-form&quot;,&quot;locale&quot;:&quot;nl&quot;,&quot;path&quot;:&quot;recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;v&quot;:&quot;acj&quot;},&quot;effects&quot;:{&quot;listeners&quot;:[]},&quot;serverMemo&quot;:{&quot;children&quot;:[],&quot;errors&quot;:[],&quot;htmlHash&quot;:&quot;d44bd623&quot;,&quot;data&quot;:{&quot;name&quot;:null,&quot;email&quot;:null,&quot;messageBody&quot;:null,&quot;recipe&quot;:&quot;Sajoer Lodeh - Indonesisch groente recept met tofu&quot;,&quot;recipeURL&quot;:&quot;https:\/\/jaimyskitchen.nl\/recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;},&quot;dataMeta&quot;:[],&quot;checksum&quot;:&quot;4d4e36e288907216240a5b9939f565f81631103c9ecbb65cbeb939680fe9224e&quot;}}">
     <h3>Stuur een bericht</h3>
     <div class="flex gap-4 flex-wrap">
         <div class="hidden" wire:model="recipe"></div>
@@ -1124,7 +1148,7 @@
 
     </div>
 
-<!-- Livewire Component wire-end:C8pNWLCwvrgtciBH0G1s -->    </div>
+<!-- Livewire Component wire-end:We8UcP2Oneyp2FT85B87 -->    </div>
 </div>                                                    <a href="https://jaimyskitchen.nl/recepten/wortel"
                                 class="btn btn-small noPrint">wortel</a>
                                                     <a href="https://jaimyskitchen.nl/recepten/hoofdgerechten"
@@ -1156,7 +1180,786 @@
 
     </section>
 
+            <section class="
+        relative px-6 sm:px-20 py-40 overflow-hidden
+        bg-orange-200        
+    ">
+    <img class="absolute z-10 w-full object-none object-top top-0 left-0 h-32" src="https://jaimyskitchen.nl/img/bck_wave_top.svg" />
+    <div class="absolute z-10 top-60 -left-24 w-80 h-96 -rotate-90 opacity-30">
+        <?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" class="fill-orange-800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 78.8 123.3" style="enable-background:new 0 0 78.8 123.3;" xml:space="preserve">
+<g id="Layer_1">
+	<g>
+		<path class="st0" d="M7.3,106.6c-0.3-0.1-1.5-0.2-1.2,0.3c0.1,0.1,0.3,0.1,0.4,0.1c0.6,0.1,1.1,0.2,1.6,0.6c0.1,0.1,0.3,0.1,0.4,0
+			C8.9,107.1,7.7,106.7,7.3,106.6z"/>
+		<path class="st0" d="M72.8,41.5c0.2-0.8,0.1-1.6-0.2-2.3c-0.3-0.8-0.2-1.8,0.1-2.6c0.8-1.3,1.7-2.9,1.1-4.5
+			c-0.4-1.3-1.6-2.1-2.7-2.8c-0.7-0.6-1.4-1.1-2.2-1.5c-0.7-0.3-1.4-0.5-2-0.9c-0.8-0.6-1-1.7-2.1-2c-0.6-0.2-1.4,0-2-0.4
+			c-0.4-0.3-0.3-0.9-0.2-1.4c0-0.4,0-0.8,0-1.1c0-0.9,0.1-1.8,0.2-2.7c0-0.5,0-1-0.3-1.4c-0.8-1-2.1-0.4-3.2-0.5
+			c-0.5-0.1-1-0.3-1.5-0.3c-0.6,0-1.2,0-1.8-0.2c-2.2-0.5-3.6-3.1-5.7-0.8c-0.8,0.8-0.6,2.1-0.9,3.1c-0.2,0.9-0.7,1.1-1.5,1.2
+			c-0.8,0.2-1.6,0.6-2.4,0.8c-1,0.2-1.8-0.7-2.8-0.9c-1-0.2-2.4-0.1-2.6,1.2c-0.1,0.9,0.2,1.8,0.1,2.8c-0.1,0.4-0.1,0.9-0.5,1.3
+			c-0.4,0.1-0.9,0.1-1.4,0.1c-0.4,0-0.7-0.1-1-0.2c-0.6-0.2-1.1,0.1-1.2,0.8c-0.2,0.5-0.4,1.1-0.7,1.5c-0.2,0.3-0.7,0.2-1,0
+			c-1.1-0.7-2.2-1.7-3.6-1.5c-1.2,0.3-2.6,1.3-2.3,2.7c0.1,0.7,1.3,2.6,0.4,3.1c-0.6,0.1-1.2-0.2-1.8-0.2c-1.4,0-2.7,1.1-2.7,2.5
+			c-0.1,1.2,1.3,1.8,1.5,2.9c0,0.4-0.3,0.6-0.4,1c-0.5,1-1,2.2-0.6,3.3c0.2,0.9,1.2,1.6,1,2.5c0,0.1-0.1,0.1-0.1,0.2
+			c-0.3,0.2-0.6,0.4-0.9,0.7c-0.7,0.6-1.7,2.3-2.7,1.8c-0.8-0.5-1.6-1.1-2.6-1.1c-0.6,0.1-1.1,0.4-1.6,0.6c-1.6,0.2-3,0.7-3.8,2.3
+			c-0.5,0.8-0.3,1.7-0.1,2.5c0.1,0.8,0.6,1.5,1.2,1.9c0.5,0.5,1.4,0.8,1.5,1.6c0.2,0.6-0.2,1.1-0.4,1.7c-0.1,0.5-0.2,1.1-0.2,1.6
+			c0.1,1.2,1.6,1.7,1.6,3c0,0.2,0,0.4-0.2,0.5c-0.5,0.1-0.8-0.5-1.1-0.8c-0.3-0.3-0.6-0.5-0.9-0.7c-0.7-0.5-1.5-0.3-2.3-0.3
+			c-1.5-0.1-2.7,1.2-3.1,2.5c-0.1,0.3-0.2,0.6-0.4,0.9c-0.2,0.3-0.5,0.4-0.7,0.7c-0.5,0.6-0.7,1.3-0.6,2c0.1,1.6,1.4,2.2,2.5,3
+			c0.1,0.1,0.2,0.2,0.3,0.3c-0.1,0-0.1,0.1-0.2,0.1c-0.3,0.3-0.5,0.7-0.8,1c-0.3,0.3-0.5,0.6-0.6,1c-0.1,0.8,0.2,1.6,0.7,2.2
+			c0.4,0.5,1,0.7,1.5,1.2c0.6,0.7,1.1,1.8-0.1,2.2c-0.5-0.1-1-0.2-1.4-0.4c-0.5-0.2-1-0.5-1.6-0.6c-0.6,0-1.4,0.1-1.5,0.8
+			c0,0.6,0.3,1,0.5,1.6c0,0.2,0.2,0.6,0,0.8c-0.3,0.2-0.5,0.6-0.6,1c-0.1,0.4,0.2,0.7,0.4,0.9c0.3,0.4,0.8,0.8,1,1.3
+			c0.1,0.4,0.1,0.8-0.2,1.1c-0.4,0.3-1,0.7-0.7,1.3c0.1,0.4,0.4,0.6,0.6,0.9c0.2,0.3,0.4,0.6,0.6,1c0.4,0.7-0.1,1.1-0.4,1.6
+			c-1,1.9,0.1,2.9,1,4.5c0.1,0.3,0.3,0.6,0.3,0.9c-0.9,1.9-1.7,3.8-2.4,5.7c-0.9,2.5-1.8,5-2.3,7.6c-0.6,0.6,0,1.5,0.5,1.9
+			c0.8,0.6,1.8,1,2.8,1c1.5,0.1,1.5-1,1.7-2c0.3-1.4,0.7-2.7,1.1-4.1c0.6-2.3,1.3-4.7,2.1-7c0.4-1.2,0.8-2.3,1.3-3.4
+			c0.1-0.1,0.2-0.2,0.3-0.3c1.3-0.8,2.8-0.7,4.3-0.9c0.8-0.1,1.6-0.3,2.3-0.6c0.4-0.2,0.7-0.4,0.9-0.7c0.3-0.5,0.5-1,1-1.3
+			c0.4-0.3,1-0.5,1.4-0.8c0.4-0.4,0.6-1,0.5-1.5c-0.2-0.9-1.1-1.2-1.7-1.7c1-0.4,2.2,0,3.2-0.2c1.4-0.3,2.6-1.2,4.1-1.4
+			c1-0.2,2.1,0,3.1,0.2c1.1,0.2,2.2,0.1,3.3-0.3c0.8-0.3,1.4-0.9,2.1-1.2c1.2-0.5,2.2-1.7,1.9-3.1c-0.5-3.1,0.5-2,1.4-4.3
+			c0.9-2.7-2.2-3.6-4.3-3.8c1.3-0.2,2.8,0,4-0.7c0.8-0.5,1-1.5,0.9-2.3c0.1-0.9,0.9-1.7,1.8-1.4c1.2,0.3,2.5,0.6,3.8,0.4
+			c0.6-0.1,1.1-0.5,1.7-0.5c0.5,0,0.9,0.3,1.4,0.4c0.3,0.1,0.6,0.2,1,0.2c1.1,0.2,2.3,0.2,3.4-0.2c1-0.4,1.9-1.1,2.5-2
+			c0.6-0.8,0.8-1.9,1.5-2.6c1.2-1,3.1-0.8,3.8-2.3c0.4-0.8,0.5-1.8,1.1-2.5c0.2-0.2,0.5-0.4,0.7-0.7c1.3-1.9,0.3-4.4,1.2-6.5
+			c0.2-0.3,0.4-0.5,0.8-0.6c0.7-0.3,1.4-0.5,2-0.8c1.4-0.7,2.9-2.1,3.3-3.8c0.2-0.9-0.3-1.6-0.5-2.4C72.7,42.2,72.8,41.9,72.8,41.5z
+			 M12.1,96.1c-1.1,3.7-2.2,7.4-3,11.1c-0.1,0.4-0.1,0.7-0.2,1.1c-0.1,0.1-0.3,0.1-0.4,0.1c-1,0-2.3-0.2-3-1c0.9-3.2,2-6.3,3.3-9.4
+			c2.6-6.5,5.9-12.8,9.6-18.8c3.9-6,8.3-11.7,12.9-17.2c2.8-3.3,5.7-6.4,8.7-9.5c4.7-4.8,9.4-9.9,12.5-15.9c-1.1,2.7-2.4,5.3-4,7.8
+			c-2.2,3.4-4.9,6.6-7.5,9.8c-5.4,6.3-10.5,12.8-15.9,19.1C19.7,80.1,14.9,87.7,12.1,96.1z M71.8,45.8c-1.2,1.7-2.6,2.2-4.4,2.8
+			c-0.8,0.3-1.3,1-1.5,1.8c-0.5,1.9,0.1,3.9-0.8,5.7c-0.2,0.4-0.6,0.6-0.8,1c-0.6,0.8-0.8,1.7-1.1,2.5c-0.3,0.6-0.9,0.8-1.5,1
+			c-0.7,0.3-1.7,0.5-2.2,1.2c-1.4,2-1.4,3.9-4.3,4.4c-1,0.1-2,0.1-2.9-0.1c-0.4-0.1-0.9-0.3-1.3-0.3c-1.1,0-2.1,0.7-3.2,0.5
+			c-0.5-0.1-0.9-0.1-1.4-0.2c-0.5-0.1-0.9-0.3-1.4-0.4c-0.9-0.1-1.8,0.4-2.2,1.2c-0.2,0.4-0.3,0.8-0.3,1.2c0,0.3,0.1,0.6,0,0.8
+			c-0.1,0.3-0.2,0.5-0.5,0.7c-1,0.5-2.3,0.3-3.4,0.5c-0.7,0.1-2.4,0.4-1.7,1.4c0.4,0.4,1.1,0.4,1.6,0.5c1.1,0.2,2.2,0.4,3.1,1
+			c0.7,0.6,0.4,1.6-0.1,2.3c-0.3,0.4-0.7,0.7-0.9,1.2c-0.6,1-0.1,2.3-0.1,3.4c-0.1,1-1.2,1.4-2,1.9c-0.4,0.2-0.8,0.6-1.3,0.8
+			c-0.8,0.3-1.7,0.4-2.6,0.3c-0.7-0.1-1.3-0.2-1.9-0.3c-2-0.3-3.8,0.6-5.6,1.4c-1.1,0.3-2.4-0.1-3.5,0.3c-1,0.2-1.1,1.2-0.3,1.7
+			c0.4,0.3,0.9,0.5,1.2,0.9c0.1,0.2,0,0.5-0.1,0.7c-0.3,0.5-0.9,0.6-1.4,0.9c-0.6,0.4-0.8,1-1.2,1.6c-0.7,0.6-1.7,0.7-2.6,0.9
+			c-1.3,0.2-2.9,0.2-4,1c0.8-1.8,1.7-3.6,2.6-5.3c0.1-0.2,0.2-0.3,0.3-0.5c0.1-0.1,0.1-0.1,0.2-0.2c0.6-0.5,1.3-0.9,2-1.2
+			c0.4-0.2,0.8-0.4,1.3-0.6c0.1,0,0.1-0.2,0.1-0.3c0-0.1-0.2-0.1-0.3-0.1c-1,0.5-1.9,0.8-2.8,1.5c1.5-2.7,3.2-5.2,5-7.7
+			c0.3,0,0.6-0.3,0.8-0.4c0.5-0.2,0.9-0.4,1.4-0.6c1.2-0.5,2.4-0.9,3.7-1.3c1.3-0.5,2.7-1.1,4-1.7c0.2-0.1,0.5-0.2,0.4-0.5
+			c-0.1-0.1-0.2-0.2-0.3-0.1c-0.3,0.1-0.6,0.2-0.9,0.3c-0.5,0.2-1,0.4-1.5,0.6c-1,0.4-4.9,1.6-6.8,2.6c1.4-1.9,2.9-3.8,4.4-5.6
+			c1.3-1.6,2.5-3.1,3.8-4.7c0.1,0,0.1-0.1,0.2-0.1c1.1-0.5,2.3-1,3.4-1.4c2.6-0.9,5.3-1.5,7.9-2.5c2.4-0.8,4.6-2.3,6.6-3.9
+			c0.1-0.1,0.1-0.2,0-0.3c-0.1-0.1-0.2-0.1-0.3,0c-0.3,0.2-0.6,0.4-0.9,0.6c-3.8,2.7-8.4,3.5-12.7,5c-0.4,0.1-2.1,0.8-3.3,1.4
+			c1.6-1.9,3.2-3.9,4.7-5.8c1.3-1.7,2.7-3.3,4.1-4.9c0.1,0,0.1,0,0.2-0.1c1.1-0.5,2.2-1,3.3-1.5c0.1,0,0.2-0.1,0.3-0.1
+			c1-0.3,2.1-0.7,3.1-1c1.7-0.6,3.4-1.2,4.9-1.9c1.4-0.7,2.6-1.5,3.9-2.4c0.2-0.2,1-0.5,0.7-0.8c-0.1-0.1-0.2-0.1-0.3-0.1
+			c-2.6,1.7-5.3,3.2-8.3,4.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-1.8,0.7-3.7,1.3-5.6,2c-0.2,0.1-0.7,0.3-1.3,0.5
+			c2.5-3.1,4.9-6.2,6.9-9.7c0-0.1,0.1-0.1,0.1-0.2c0.5-0.3,1.3-0.9,1.6-1.2c0,0,0,0,0.1,0c1-0.7,2-1.4,3-2.1
+			c1.6-1.2,3.2-2.4,4.7-3.6c0.8-0.6,1.5-1.2,2.3-1.8c0.1,0,0.1-0.1,0.1-0.2c-0.1-0.3-0.6,0.2-0.8,0.3c-0.3,0.2-0.6,0.4-1,0.7
+			c-1.9,1.3-3.8,2.7-5.7,4c-1.1,0.7-2.1,1.5-3.2,2.2c-0.1,0.1-0.3,0.2-0.4,0.3c1.8-3.5,3-7.2,4.1-11c0.1-0.2,0.1-0.4,0.2-0.6
+			c0-0.1,0-0.1,0-0.2c-0.1-0.1-0.3-0.1-0.4,0c-0.1,0.2-0.1,0.3-0.2,0.5c-0.9,2.2-1.9,4.3-3.1,6.4c-1.5,2.7-3.3,5.2-5.3,7.6
+			c0.2-1,0.4-2.2,0.4-2.5c0.2-1.6,0.3-3.3,0.2-4.9c-0.1-2-0.4-4-0.7-6c0-0.1-0.2-0.2-0.3-0.2c-0.1,0-0.2,0.1-0.2,0.3
+			c0,0.4,0.1,0.9,0.1,1.3c0.2,1.5,0.3,3,0.4,4.5c0.1,1.7-0.1,3.3-0.2,5c-0.1,0.8-0.2,1.6-0.3,2.4c0,0.3-0.2,0.7-0.2,1
+			c-3.3,3.9-7,7.4-10.4,11.2c0.4-1.1,0.9-2.7,0.9-3c0.5-2,0.7-4,0.7-6c-0.1-3-0.7-6-1.6-8.9c0,0,0,0,0,0c0,0,0,0,0,0
+			c0-0.1-0.1-0.3-0.2-0.4c-0.2-0.2-0.5,0.1-0.5,0.3c0.1,0.4,0.1,0.8,0.2,1.2c0.6,2.5,1.2,5.1,1.2,7.7c0,2.3-0.3,4.7-0.8,6.9
+			c-0.2,0.9-0.4,1.7-0.7,2.6c0,0.1-0.1,0.3-0.2,0.4c-0.5,0.5-0.9,1-1.3,1.5c-2.1,2.4-4.2,4.9-6.2,7.4c0.3-0.8,0.4-1.7,0.6-2.6
+			c0.5-2.4,0.5-4.8,0.4-7.3c-0.1-2.6-0.4-5.3-1.3-7.8c0-0.3-0.4-0.2-0.4,0c0,0.1,0,0.2,0,0.4c0.5,2.3,0.8,4.7,0.9,7.1
+			c0.1,2.1,0.1,4.2-0.2,6.3c-0.2,1.5-0.5,3-0.9,4.5c0,0.2-0.2,0.5-0.2,0.7c-2.2,2.8-4.2,5.6-6.2,8.5c0-0.5,0-1.1-0.1-1.6
+			c-0.4-3.1-0.8-6.5-2.6-9.3c-0.3-0.4-0.6-0.1-0.3,0.3c1.2,2.8,1.7,5.8,2.1,8.8c0.1,0.8,0.1,1.7,0.1,2.6c0,0.1,0,0.2,0,0.4
+			c-1.7,2.5-3.3,5.1-4.7,7.8c0-0.1,0-0.1,0-0.2c0-1.7-0.5-3.4-1.3-5c0-0.2-0.3-0.1-0.2,0.1c0,0,0,0,0,0.1c0.3,1,0.6,2.1,0.8,3.1
+			c0.1,0.8,0.2,1.7,0.1,2.6c0,0.2-0.1,0.5-0.1,0.8c-0.6,1-1.1,2.1-1.6,3.1c-0.5,0.9-0.9,1.9-1.4,2.9c-0.2-0.6-0.5-1.1-0.8-1.6
+			C8.8,90,8.6,89.2,9,88.4c0.1-0.4,0.4-0.7,0.6-1c0.2-0.4,0.2-1-0.1-1.4C9.3,85.5,9,85,8.6,84.7c-0.2-0.2-0.4-0.4-0.4-0.6l0,0
+			c0.1-0.4,0.6-0.5,0.8-0.8c0.5-0.8,0.2-1.9-0.5-2.5c-0.4-0.5-1.1-0.8-0.5-1.4c0.2-0.1,0.3-0.3,0.4-0.4c0.1-0.2,0.1-0.5,0-0.7
+			c-0.1-0.6-0.5-1.1-0.5-1.7c0.1-0.3,0.5-0.3,0.8-0.3c0.5,0,0.9,0.4,1.4,0.5c0.5,0.2,1,0.4,1.5,0.5c0.8,0.2,1.5-0.5,1.6-1.2
+			c0.1-0.8-0.4-1.7-1-2.2c-0.5-0.4-1.1-0.7-1.4-1.3c-0.3-0.7-0.5-1.4,0.3-2c0.3-0.4,0.5-0.8,0.9-1.2c0,0,0,0,0.1,0
+			c0.1,0,0.1-0.1,0.1-0.1c0.6-0.2,1.1,0.3,1.6-0.5c0.2-0.2,0.7-1.1,0.3-1.3c-0.1,0-0.3,0-0.3,0.1c-0.1,0.4-0.3,0.8-0.6,1
+			c-0.2,0.1-0.4,0-0.6,0c-0.2,0-0.3,0-0.5,0c-0.1-0.2-0.3-0.4-0.3-0.4c-0.5-0.6-1.2-1-1.8-1.6c-0.5-0.7-0.7-1.7-0.2-2.4
+			c0.2-0.5,0.8-0.7,1-1.2c0.3-0.5,0.4-1.2,0.8-1.7c0.5-0.7,1.4-1,2.3-0.9c0.4,0,0.8-0.1,1.2,0c0.9,0.3,1.4,1.3,2.4,1.6
+			c0.4,0.2,0.8,0,1.1-0.3c0.6-0.7,0.3-1.7-0.1-2.4c-0.1-0.2-0.3-0.4-0.5-0.6c-0.3-0.3-0.6-0.5-0.7-1c-0.1-0.6,0-1.2,0.2-1.7
+			c0.4-0.7,0.5-1.6,0.1-2.4c-0.3-0.4-0.7-0.7-1.1-1c-1.1-0.7-1.5-1.6-1.6-2.9c0-0.5,0.3-0.9,0.6-1.4c0.3-0.5,0.9-0.8,1.5-1
+			c0.7-0.2,1.4-0.1,2.1-0.5c0.3-0.1,0.6-0.4,0.9-0.3c0.9,0.1,1.5,0.7,2.3,1.1c0.7,0.2,1.5,0,2-0.5c0.8-0.6,1.2-1.4,1.9-2
+			c1-0.6,1-1.8,0.5-2.7c-0.9-1.3-1-2.2-0.2-3.7c0.2-0.3,0.5-0.6,0.6-1c0.3-1.2-0.8-2.1-1.4-3c-0.1-0.2-0.1-0.5,0-0.8
+			c0.2-0.6,0.7-1,1.3-1.2c0.8-0.3,1.6,0.3,2.4,0.1c1.8-0.6,0.6-2.8,0.2-4c-0.2-0.7,0.6-1.3,1.1-1.6c1.5-0.7,2.7,0.9,4,1.4
+			c1.8,0.7,2.3-1.1,2.7-2.5c0.3,0,0.5,0.2,0.9,0.2c0.4,0.1,0.7,0,1.1-0.1c0.5-0.1,1.1,0.1,1.5-0.4c0.8-0.9,0.7-2.2,0.6-3.3
+			c0-0.4-0.1-0.9,0.1-1.3c0.2-0.2,0.5-0.2,0.7-0.2c0.8,0,1.4,0.4,2.1,0.7c1,0.6,2.2,0.3,3.3-0.2c0.5-0.3,1.1-0.5,1.7-0.6
+			c1.5-0.4,1.5-2.3,1.6-3.6c0-0.5,0.4-0.9,0.8-1.2c0.3-0.2,0.8-0.4,1.1-0.1c0.6,0.3,1.2,0.8,1.9,1.2c0.9,0.5,2,0.7,3,0.7
+			c0.8-0.2,1.5,0.3,2.3,0.3c0.6,0,1.1-0.3,1.7-0.1c0.7,0.1,0.6,0.9,0.5,1.4c-0.1,0.9-0.1,1.9-0.1,2.8c0,0.7-0.3,1.4-0.1,2.1
+			c0.2,0.8,1,1.2,1.7,1.2c0.5,0.1,1-0.1,1.4,0.2c0.4,0.3,0.5,0.8,0.9,1.2c0.8,1,2,1.2,3.1,1.8c0.6,0.3,1.1,0.7,1.7,1.2
+			c2,1.2,3.2,2.3,2.1,4.7c-0.2,0.5-0.6,1-0.9,1.5c-0.3,0.6-0.3,1.3-0.3,2c-0.1,0.9,0.5,1.6,0.4,2.5c0,0.5-0.2,0.9-0.3,1.4
+			c0,0.5,0.1,1,0.3,1.4c0.1,0.3,0.3,0.5,0.3,0.8C72.3,45,72.1,45.4,71.8,45.8z"/>
+		<polygon class="st0" points="12.6,79.8 12.6,79.8 12.6,79.8 12.6,79.8 		"/>
+		<polygon class="st0" points="50,50.4 50,50.4 50,50.4 50,50.4 		"/>
+		<path class="st0" d="M36.6,63.5C36.6,63.5,36.6,63.5,36.6,63.5C36.6,63.5,36.6,63.5,36.6,63.5C36.6,63.5,36.6,63.5,36.6,63.5z"/>
+		<path class="st0" d="M36.6,63.6C36.6,63.6,36.6,63.5,36.6,63.6C36.6,63.5,36.6,63.5,36.6,63.6C36.6,63.5,36.6,63.5,36.6,63.6z"/>
+		<path class="st0" d="M35.8,79.8c-0.6-0.2-1.3-0.1-1.8,0.1c-0.2,0.1-0.4,0.2-0.6,0.3c-0.2,0.1-0.4,0-0.6,0
+			c-0.4-0.1-1.2-0.1-1.1,0.5C31.7,81,32,81,32.2,81c0.3,0,0.6,0.1,0.9,0.1c0.5,0.1,0.9-0.3,1.4-0.4c0.5-0.2,1,0,1.5,0.1
+			c0.4,0.1,0.8,0.1,1.2,0c0.6-0.3,1.2-0.8,1.3-1.5c0.3-1.4-0.1-2.9,0.7-4.1c0.2-0.3,0.4-0.5,0.6-0.8c-0.1-0.7-1.3,0.6-1.4,0.9
+			c-0.6,0.9-0.5,1.9-0.6,2.9c-0.1,0.4,0,0.8-0.2,1.2C37.1,79.9,36.6,80.1,35.8,79.8z"/>
+		<path class="st0" d="M38.4,32.9c0.2-0.6,0.4-1.3,0.4-1.9c0.1-0.7-0.5-1.4-1.2-1.2c-1,0.2-1.7,0.9-2.7,1.2c-0.8,0.3-1.6-0.3-2.4,0
+			c-0.6,0.1-1,0.7-1.3,1.1c-0.1,0.2-0.6,0.5-0.3,0.7c0.5,0.2,1.2-0.7,1.6-0.9c0.1,0,0.1-0.1,0.2-0.1c0.5-0.1,1,0,1.5,0.1
+			c0.8,0.2,1.6-0.3,2.2-0.6c0.4-0.3,0.9-0.6,1.5-0.6c0.3,0.5-0.2,1.6-0.3,2.2c-0.2,1,0.8,1.7,1.4,2.4c0.2,0.5-1.1,1.4-0.5,1.7
+			c0.2,0.1,0.4-0.1,0.4-0.3c0.3-0.4,0.6-0.7,0.7-1.1c0.2-0.6-0.4-0.9-0.7-1.3C38.7,33.6,38.3,33.3,38.4,32.9z"/>
+		<path class="st0" d="M22.1,50c-0.1-0.4-0.5-0.6-0.8-0.9c-1-0.8-2.4-0.6-3.6-0.2c-0.1,0.1-0.3,0.1-0.4,0.2c-0.1,0.1-0.1,0.2,0,0.3
+			c0.1,0.1,0.2,0,0.3,0c1.3-0.2,2.8-0.4,3.6,0.9c0,0.7-0.4,1.3-0.8,1.9c-0.2,0.4-0.6,0.7-0.7,1.1c-0.2,0.8,0.5,1.3,0.8,2
+			c0.7,0.9-0.9,1.9-0.2,2.3c0.1,0.1,0.3,0,0.4-0.1c0.2-0.3,0.3-0.5,0.5-0.8c0.6-1.1-0.2-1.8-0.7-2.7c-0.3-0.4,0.3-0.7,0.5-1.1
+			C21.7,52.1,22.4,50.9,22.1,50z"/>
+		<path class="st0" d="M12.7,62.1c-0.5,0.9-1.6,1.4-1.9,2.5c-0.1,0.2-0.1,0.5,0,0.7c0.2,0.3,0.6,0.5,1,0.7c0.2,0.1,0.5,0.1,0.7,0.3
+			c0.1,0.3,0.5,0.1,0.5-0.2c-0.2-0.7-1-0.6-1.4-1.1c0-0.4,0.4-0.7,0.6-1c0.3-0.4,0.7-0.8,0.9-1.2c0.1-0.2,0.1-0.5,0-0.7
+			C13,61.9,12.8,62,12.7,62.1z"/>
+		<path class="st0" d="M65,29.4c0.4-0.3-0.1-0.8-0.3-1c-0.5-0.6-1.4-0.4-2.1-0.4c-0.2,0-0.5,0-0.6-0.1c-0.2-0.2-0.4-0.5-0.5-0.7
+			c-0.3-0.7-0.8-0.8-1.5-0.8c-0.5-0.1-1.1-0.1-1.4-0.5c-0.6-0.6-0.5-1.4-0.4-2.1c0-0.7,0-1.6-0.6-2c-0.2-0.1-0.4-0.2-0.6-0.4
+			c-0.4-0.3-0.6-0.7-0.9-1c-0.6-0.5-1.5-0.7-2.2-0.5c-0.9,0.4-1.8,1.1-2.5,1.9c-0.6,0.7-1,1.9-1.9,2.3c-0.6,0.2-1.2,0.1-1.7,0.4
+			c-0.5,0.2-1.1,0.6-1.6,0.6c-0.4,0-0.7-0.4-1.1-0.6c-0.4-0.2-0.8-0.5-1.2-0.6c-0.4-0.2-1.2-0.1-1,0.5c0.1,0.2,0.3,0.2,0.4,0
+			c0.7,0.2,1.2,0.7,1.8,1.1c0.5,0.4,1.1,0.5,1.7,0.3c0.6-0.2,1.1-0.5,1.7-0.7c2.1-0.1,2.4-0.9,3.3-2.6c0.6-0.8,1.4-1.4,2.2-1.9
+			c0.6-0.2,1.3,0.2,1.7,0.6c0.2,0.2,0.4,0.4,0.6,0.6c0.2,0.2,0.6,0.3,0.9,0.5c0.7,0.7,0.2,1.8,0.3,2.7c0.1,0.7,0.5,1.4,1.1,1.7
+			c0.5,0.2,1,0.2,1.5,0.3c0.2,0,0.5,0,0.7,0.1c0.3,0.4,0.4,0.8,0.7,1.1c0.5,0.5,1.4,0.4,2.1,0.3c0.3,0,0.5,0.1,0.7,0.2
+			c0.1,0.1,0.3,0.4,0.3,0.6C64.6,29.4,64.8,29.5,65,29.4z"/>
+		<path class="st0" d="M69.7,33.3c-0.4-0.4-0.8-1-1.5-0.9c0,0-0.1,0.1-0.1,0.1c0,0,0,0.1,0,0.1c0.2,0.1,0.3,0.2,0.4,0.4
+			c0.2,0.3,0.5,0.6,0.6,1c-0.2,0.7-1,1-1.4,1.6c-0.2,0.2-0.3,0.5-0.3,0.8c0,0.6,0.2,1.2,0.5,1.8c0.1,0.2,0.1,0.3,0.1,0.5
+			c-0.2,0.6-0.6,1.1-0.8,1.7c-0.3,1.4,1.5,1.9,1.6,3.1c-0.2,2-1.6,1.5-2.9,2.1c-0.4,0.2-1.9,0.8-1.3,1.4c0.3,0.3,0.6-0.1,0.9-0.3
+			c0.4-0.3,0.8-0.5,1.3-0.6c0.9-0.1,1.9-0.3,2.4-1.1c0.3-0.6,0.6-1.3,0.4-1.9c-0.2-0.8-0.9-1.3-1.3-1.9c-0.4-0.4,0-0.8,0.2-1.2
+			c0.4-0.7,0.8-1.5,0.3-2.2c-0.2-0.5-0.5-1-0.3-1.5C69,35.3,70.7,34.4,69.7,33.3z"/>
+		<path class="st0" d="M60.2,54.4c0.2,0,0.4,0.1,0.5-0.1c0.2-0.4-0.8-0.7-1.1-0.8c-1.4-0.3-3-0.5-4.2,0.4c-0.6,0.5-0.9,1.4-1.3,2.1
+			c-0.2,0.3-0.4,0.4-0.6,0.7c-0.7,1.3,0.5,2.5,1.4,3.3c0.5,0.6,0.4,1.7-0.2,2.2c-0.4,0.3-0.9,0.5-1.3,0.6c-0.6,0.2-1.3,0.4-1.9,0.7
+			c-0.3,0.2-0.6,0.2-1,0.3c-0.3,0-0.5,0.1-0.5,0.4c0.1,0.6,1,0.1,1.4,0.1c0.7-0.3,1.3-0.7,2.1-0.9c0.8-0.1,1.7-0.5,2.3-1.2
+			c0.5-0.8,0.5-1.8,0-2.6c-0.5-0.7-1.3-1.2-1.4-2.1c-0.1-0.5,0.5-0.8,0.7-1.2c0.4-0.6,0.5-1.5,1.2-1.9c0.8-0.5,1.7-0.4,2.6-0.4
+			c0.2,0,0.5,0,0.8,0.1C59.8,54.3,60,54.4,60.2,54.4z"/>
+		<path class="st0" d="M62.5,55.3c-0.2,0.5-0.4,1-0.9,1.3c-1.1,0.7-2.3,0.9-2.6,2.4c-0.1,0.3-0.1,0.5-0.1,0.8c0,0.2,0.1,0.3,0.3,0.3
+			c0.2,0,0.3-0.1,0.3-0.2c0.1-0.3,0.1-0.6,0.3-0.9c0.2-0.5,0.7-0.8,1.2-1c0.8-0.4,1.7-0.9,1.8-1.9c0.1-0.3,0.1-0.6,0.2-0.8
+			c0-0.1,0-0.2,0-0.3C62.8,54.7,62.6,55.1,62.5,55.3z"/>
+		<path class="st0" d="M30.2,79.5c-0.3,0-0.5-0.2-0.8-0.1c-0.5,0-1,0.2-1.4,0.5c-0.3,0.3-0.6,0.7-1,1c-0.2,0.1-0.5,0.2-0.8,0.3
+			c-0.6-0.1-1.1-0.2-1.7,0.1c-0.1,0.1-0.2,0.1-0.2,0.2c-0.1,0.1,0,0.4,0.2,0.4c0.5-0.2,1.1,0,1.6,0c0.8,0,1.5-0.4,1.9-1
+			c0.2-0.3,0.5-0.7,0.9-0.8c0.2,0,0.5-0.1,0.7,0c0.1,0,0.2,0.1,0.4,0.1c0.3,0,0.7-0.1,0.6-0.5C30.7,79.5,30.4,79.5,30.2,79.5z"/>
+	</g>
+</g>
+<g id="Layer_2">
+</g>
+</svg>
+    </div>
+    <div class="flex flex-col lg:flex-row items-center relative z-20">
+        <div class="w-full lg:w-1/2 ">
+            <div class="flex flex-wrap justify-center relative w-60 h-72 mb-12 mx-auto ">
+                <div wire:loading.remove class="rounded-lg 
+            w-60 sm:w-60 
+     
+            ">
+    <a class="block relative" href="https://jaimyskitchen.nl/recepten/tiramisu-kidsproof-en-zwangerproof">
+                <div class="bg-black opacity-20 rotate-6 w-full h-full absolute rounded-md"></div>
+                <div class="relative animate-fadeIn animate-animated animate-delay-[300ms] rounded-b-md
+                    ">
+            <div class="relative roundedmd">
+
+                                <div class="absolute top-2 left-3 font-serif text-3xl">
+                                                                                                                                                            </div>
+                
+                        
+                <img width="315" height="350" class="shadow rounded-t-lg  "
+                    src="https://jaimyskitchen.nl/img/cache/media_44825_fit_315-350-center_85-Tiramisu%3A%20kidsproof%20en%20zwangerproof%211.webp"/>
+                            </div>
+
+                        <div class="flex justify-between text-orange-800 p-2 h-10 bg-orange-300 rounded-b-md ">
+                
+                                <div class="flex items-center">
+                    <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
+                    <span class="pl-1">
+                                                15<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
+                </div>
+                
+                                <div class="hidden sm:flex items-center">
+                    <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.822 18.096c-3.439-.794-6.641-1.49-5.09-4.418 4.719-8.912 1.251-13.678-3.732-13.678-5.082 0-8.465 4.949-3.732 13.678 1.598 2.945-1.725 3.641-5.09 4.418-2.979.688-3.178 2.143-3.178 4.663l.005 1.241h1.995c0-3.134-.125-3.55 1.838-4.003 2.851-.657 5.543-1.278 6.525-3.456.359-.795.592-2.103-.338-3.815-2.058-3.799-2.578-7.089-1.423-9.026 1.354-2.275 5.426-2.264 6.767-.034 1.15 1.911.639 5.219-1.403 9.076-.91 1.719-.671 3.023-.31 3.814.99 2.167 3.707 2.794 6.584 3.458 1.879.436 1.76.882 1.76 3.986h1.995l.005-1.241c0-2.52-.199-3.975-3.178-4.663z"/></svg>
+                    <span class="pl-1">4</span>
+                </div>
+                                
+                                <div class="flex items-center">                    
+                    <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" clip-rule="evenodd"><path d="M18.496 24h-.001c-.715 0-1.5-.569-1.5-1.5v-8.5s-1.172-.003-2.467 0c.802-6.996 3.103-14 4.66-14 .447 0 .804.357.807.851.01 1.395.003 16.612.001 21.649 0 .828-.672 1.5-1.5 1.5zm-11.505-12.449c0-.691-.433-.917-1.377-1.673-.697-.56-1.177-1.433-1.088-2.322.252-2.537.862-7.575.862-7.575h.6v6h1.003l.223-6h.607l.173 6h1.003l.242-6h.562l.199 6h1.003v-6h.549s.674 5.005.951 7.55c.098.902-.409 1.792-1.122 2.356-.949.751-1.381.967-1.381 1.669v10.925c0 .828-.673 1.5-1.505 1.5-.831 0-1.504-.672-1.504-1.5v-10.93z"/></svg>
+                    <span class="pl-1 capitalize">Zoet</span>                    
+                </div>
+                                
+            </div>
+            
+        </div>
+
+            </a>
+</div>
+
+
+            </div>
+        </div>
+        <div class="w-full lg:w-1/2">
+            <h2 class="mb-0">Tiramisu: kidsproof en zwangerproof!</h2>            
+            
+            <div class="mt-2 mb-8 -ml-6 flex">
+                <div 
+    x-init="{
+        rating: 0,
+        loginPopup: false,
+        showMessage: false,
+                    showLogin: false,
+            }" 
+    x-data="
+    {
+                    loggedIn: false,
+                showMessage: false,
+        rating: 0,
+        ownRating: false,
+        hoverRating: 0,
+        loginPopup: false,
+        avgrating: 0,
+        toggleLoginPopup() {
+            this.loginPopup = ! this.loginPopup;
+        },
+        reload() {
+            this.showMessage = true;
+            setTimeout(() => window.location.reload(), 1000);
+        },
+        rateIt(contentId, rating) {
+            this.rated = true;
+            this.alpineAddRate(contentId, rating);
+            this.hoverRating = 0;
+            this.reload();
+        },
+        hoverRate(ownRating, rating) {
+            this.ownRating = ownRating;
+            this.hoverRating = rating;
+        },
+        alpineRemoveRate(contentId, rating) {
+            axios.post('/removeRating', {
+                cm_content_id: contentId
+            })
+            .then(function (response) {                    
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        alpineAddRate(contentId, rating) {
+            axios.post('/addRating', {
+                cm_content_id: contentId,
+                rating: rating               
+            })
+            .then(function (response) {                
+                
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });            
+        }
+    }">
+        <div class="fixed inset-0 z-50 items-center flex-col justify-center bg-white/20" :class="{'': loginPopup}" x-show="loginPopup">
+        <div class="p-4 max-w-lg overflow-hidden mx-auto my-20 bg-white relative rounded-xl shadow-lg" x-transition x-transition:leave.duration.0ms x-show="loginPopup" x-on:click.outside="toggleLoginPopup()">
+            <a x-on:click="loginPopup = (loginPopup === false) ? true : false" class="h-8 w-8 hover:cursor-pointer right-8 absolute">
+                <div class="rounded-full w-10 h-10 flex justify-center items-center bg-blue-500 group-hover:bg-white transition-colors"><svg class="scale-75" width="17" height="17" viewBox="0 0 57 57"><path d="M46.719 1.226a3.49 3.49 0 0 1 4.936 4.936l-20.28 20.277 20.279 20.278a3.492 3.492 0 0 1-4.936 4.937L26.44 31.376 6.162 51.654a3.492 3.492 0 0 1-4.936-4.937l20.278-20.278L1.226 6.162a3.49 3.49 0 0 1 4.936-4.936L26.44 21.504 46.719 1.226z" fill="#000" fill-rule="nonzero"></path></svg></div>
+            </a>
+            <h3>Login of registreer</h3>
+            <p>Je hebt een account nodig om dit recept te beoordelen</p>
+            <form method="POST" action="https://jaimyskitchen.nl/login">
+    <input type="hidden" name="_token" value="5tzx44raQV1NZm3Kktxubv7rnMi2UuJoXqz6osSS">    <div class="flex flex-col my-8">
+        <label for="email" class="col-md-4 col-form-label text-md-right">E-mailadres</label>
+
+        <div class="w-full">
+            <input class="w-full" id="email" type="email" class="form-control " name="email" value="" required autocomplete="email" autofocus>
+
+                    </div>
+    </div>
+    <div class="">
+        <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
+
+        <div class="w-full">
+            <input class="w-full" id="password" type="password" class="form-control " name="password" required autocomplete="current-password">
+
+                    </div>
+        <div class="my-2">
+                    <a class="text-blue-500 mt-8" href="https://jaimyskitchen.nl/password/reset">
+                Wachtwoord vergeten?
+            </a>
+                    </div>
+    </div>
     
+    
+    <div class="">
+        <div class="mt-2 mb-8">
+            <div class="form-check flex items-center gap-2">
+                <input class="form-check-input" type="checkbox" name="remember" id="remember" >
+
+                <label class="form-check-label" for="remember">
+                    Bewaar mijn login
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center mt-8 mb-4">
+        
+        <button type="submit" class="btn btn-primary w-full md:w-auto px-8 py-2 inline-block">
+            Login
+        </button>
+    </div>
+    <div class="w-full text-center">
+        <a href="/register" class="text-blue-500 text-sm">Heb je nog geen account?</a>
+    </div>
+</form>        </div>
+    </div>
+            <div x-show="showMessage" class="max-w-lg absolute mx-auto z-50 overflow-hidden bg-white rounded-xl shadow-lg" x-on:click.outside="showMessage = false">
+        <div class="p-16"><p>Je hebt dit recept met
+            <div class="flex">
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': rating > 0}" x-transition viewbox="0 0 37 35" width="37" height="35">
+                    <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                </svg>
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': rating > 1}" x-transition viewbox="0 0 37 35" width="37" height="35">
+                    <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                </svg>
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': rating > 2}" x-transition viewbox="0 0 37 35" width="37" height="35">
+                    <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                </svg>
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': rating > 3}" x-transition viewbox="0 0 37 35" width="37" height="35">
+                    <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                </svg>
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': rating > 4}" x-transition viewbox="0 0 37 35" width="37" height="35">
+                    <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                </svg>
+                        </div>
+            <span class="text-blue-500" x-text="rating">5</span> ster<span x-show="rating>1">ren</span> beoordeeld.</p>
+        </div>
+    </div>
+    <div class="z-20 noPrint relative mt-1 group scale-75">
+        <div class="flex items-center gap-2">
+            <div class="absolute left-0 top-0 z-20 opacity-0 hover:opacity-100">
+                <div class="relative flex gap-1 max-w-40 justify-around">
+                                            <button x-on:mouseover="hoverRating = 1" x-on:click="rating = 1;  toggleLoginPopup(69617, rating) ">
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': hoverRating > 0 }" x-transition viewbox="0 0 37 35" width="37" height="35">
+                                <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                            </svg>
+                        </button>
+                                            <button x-on:mouseover="hoverRating = 2" x-on:click="rating = 2;  toggleLoginPopup(69617, rating) ">
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': hoverRating > 1 }" x-transition viewbox="0 0 37 35" width="37" height="35">
+                                <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                            </svg>
+                        </button>
+                                            <button x-on:mouseover="hoverRating = 3" x-on:click="rating = 3;  toggleLoginPopup(69617, rating) ">
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': hoverRating > 2 }" x-transition viewbox="0 0 37 35" width="37" height="35">
+                                <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                            </svg>
+                        </button>
+                                            <button x-on:mouseover="hoverRating = 4" x-on:click="rating = 4;  toggleLoginPopup(69617, rating) ">
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': hoverRating > 3 }" x-transition viewbox="0 0 37 35" width="37" height="35">
+                                <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                            </svg>
+                        </button>
+                                            <button x-on:mouseover="hoverRating = 5" x-on:click="rating = 5;  toggleLoginPopup(69617, rating) ">
+                            <svg class="fill-neutral-200" :class="{'fill-blue-500': hoverRating > 4 }" x-transition viewbox="0 0 37 35" width="37" height="35">
+                                <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33z"/>
+                            </svg>
+                        </button>
+                                    </div>
+            </div>
+            <div class="relative left-0 top-0 pointer-events-none">
+                                <svg width="200" height="35">
+                    <rect class="fill-neutral-200" x="0" y="0" width="200" height="35" clip-path="url(#stars)" />
+                    <rect class="fill-yellow-400" x="0" y="0" width="0" height="35" clip-path="url(#stars)" />
+                        <clipPath x="0" y="0" id="stars" width="199" height="35">
+                            <path d="M17.5 27.363 6.685 33 8.75 21.06 0 12.606l12.092-1.742L17.5 0l5.408 10.863L35 12.605l-8.75 8.456L28.314 33zM58.5 27.363 47.685 33l2.066-11.94L41 12.606l12.092-1.742L58.5 0l5.408 10.863L76 12.605l-8.75 8.456L69.314 33zM99.5 27.363 88.685 33l2.066-11.94L82 12.606l12.092-1.742L99.5 0l5.408 10.863L117 12.605l-8.75 8.456L110.314 33zM140.5 27.363 129.685 33l2.066-11.94L123 12.606l12.092-1.742L140.5 0l5.408 10.863L158 12.605l-8.75 8.456L151.314 33zM181.5 27.363 170.685 33l2.066-11.94L164 12.606l12.092-1.742L181.5 0l5.408 10.863L199 12.605l-8.75 8.456L192.314 33z"/>
+                        </clipPath>
+                </svg>
+            </div>
+            
+        </div>
+    </div>
+</div>            </div>
+            
+            <p>Deze <strong>kidsproof tiramisu</strong> is de ideale afsluiter van een kerstdiner of elk ander feest! Er zit geen koffie, rauw ei of alcohol in, dus het is helemaal geschikt voor de kleintjes en zwangerproof.</p>
+            
+            <p class="mt-4"><a class="btn" href="https://jaimyskitchen.nl/recepten/tiramisu-kidsproof-en-zwangerproof">Bekijk dit recept</a></p>
+        </div>
+    </div>
+    <div class="absolute z-10 top-72 -translate-y-1/2 -right-12 w-80 h-96 rotate-12 opacity-30">
+        <?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" class="fill-orange-800" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 78.8 123.3" style="enable-background:new 0 0 78.8 123.3;" xml:space="preserve">
+<g>
+	<path class="st0" d="M39.5,71.6C39.5,71.6,39.5,71.6,39.5,71.6C39.5,71.6,39.5,71.6,39.5,71.6C39.5,71.6,39.5,71.6,39.5,71.6z"/>
+	<path class="st0" d="M52.2,77.8C52.2,77.8,52.2,77.8,52.2,77.8C52.2,77.8,52.2,77.8,52.2,77.8C52.2,77.8,52.2,77.8,52.2,77.8z"/>
+	<path class="st0" d="M29.3,43.1C29.3,43.1,29.3,43.1,29.3,43.1c0,0.1,0,0.1,0.1,0.1C29.3,43.1,29.3,43.1,29.3,43.1z"/>
+	<path class="st0" d="M30.6,15.8C30.6,15.8,30.6,15.8,30.6,15.8C30.6,15.9,30.6,15.9,30.6,15.8C30.6,15.9,30.6,15.8,30.6,15.8z"/>
+	<polygon class="st0" points="26.8,26.1 26.8,26.1 26.8,26.1 	"/>
+	<path class="st0" d="M26.8,26.3C26.8,26.3,26.8,26.3,26.8,26.3C26.8,26.2,26.8,26.2,26.8,26.3C26.8,26.2,26.8,26.3,26.8,26.3z"/>
+	<path class="st0" d="M25.5,20.6C25.5,20.6,25.5,20.6,25.5,20.6C25.5,20.6,25.5,20.6,25.5,20.6C25.5,20.6,25.5,20.6,25.5,20.6z"/>
+	<polygon class="st0" points="17.4,13.1 17.4,13.1 17.4,13.1 	"/>
+	<path class="st0" d="M32.9,46.2C32.9,46.2,32.9,46.2,32.9,46.2C32.9,46.2,32.9,46.2,32.9,46.2C32.9,46.2,32.9,46.2,32.9,46.2z"/>
+	<path class="st0" d="M47.1,10.6C47.1,10.7,47.1,10.7,47.1,10.6C47.1,10.7,47.1,10.7,47.1,10.6C47.1,10.7,47.1,10.7,47.1,10.6z"/>
+	<path class="st0" d="M51.6,46.9C51.6,46.9,51.6,46.9,51.6,46.9C51.6,46.9,51.6,46.9,51.6,46.9C51.6,46.9,51.6,46.9,51.6,46.9z"/>
+	<path class="st0" d="M76,20.1c0-0.3-0.1-0.6-0.2-0.9c-0.1-0.1-0.1-0.3-0.2-0.4c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.3-0.4-0.4-0.6
+		c-0.1-0.1-0.1-0.2-0.2-0.3c-0.1-0.1-0.2-0.2-0.3-0.3c-0.1-0.1-0.3-0.2-0.4-0.3c-0.1,0-0.2-0.1-0.2-0.1c-0.1-0.1-0.3-0.2-0.4-0.3
+		c-0.3-0.3-0.6-0.6-1-0.8c-0.2-0.1-0.4-0.3-0.6-0.4c-0.2-0.1-0.4-0.2-0.6-0.3c-0.6-0.2-1.3-0.4-2-0.2c-0.2,0.1-0.4,0.1-0.6,0.2
+		c-0.2,0.1-0.4,0.2-0.6,0.2c-0.4,0.2-0.7,0.3-1.1,0.6c-0.2,0.1-0.3,0.2-0.5,0.3c-0.2,0.1-0.3,0.2-0.5,0.3c-0.1,0.1-0.2,0.1-0.3,0.2
+		c-0.2,0.1-0.4,0.2-0.6,0.3c-0.2,0.1-0.4,0.2-0.5,0.4c-0.3,0.2-0.6,0.5-0.9,0.8c-0.3,0.3-0.6,0.5-0.8,0.8c-0.3,0.3-0.5,0.6-0.7,0.9
+		c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1-0.4-0.1-0.7-0.2-1.1c0-0.2,0-0.3,0-0.5c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0.1-0.3c0-0.1,0-0.1,0.1-0.2
+		c0.1-0.1,0.1-0.2,0.2-0.3c0.3-0.4,0.7-0.8,1-1.2c0.3-0.4,0.6-0.8,0.9-1.2c0.2-0.3,0.4-0.6,0.5-0.9c0.1-0.3,0.3-0.6,0.3-1
+		c0-0.3,0-0.6-0.1-0.9c-0.2-0.6-0.6-1.1-1-1.5c-0.4-0.4-0.7-0.7-1.1-1c-0.1-0.1-0.2-0.2-0.2-0.3C62.1,9,62,8.9,62,8.8
+		c-0.1-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.1-0.1-0.2c0-0.2-0.1-0.5-0.1-0.7c0-0.2-0.1-0.5-0.2-0.7c-0.1-0.2-0.2-0.5-0.2-0.7
+		C61.1,6,61,5.7,60.8,5.5c-0.2-0.2-0.4-0.4-0.6-0.6c-0.5-0.4-1.1-0.7-1.8-0.8c-0.4-0.1-0.7-0.1-1.1-0.1c-0.3,0-0.5,0-0.8,0
+		c-0.3,0-0.5,0-0.8,0.1c-0.5,0.1-1,0.2-1.5,0.3c-0.5,0.1-1,0.3-1.4,0.4c-0.1,0-0.2,0-0.4,0.1c-0.2,0-0.5,0.1-0.7,0.1
+		c-0.3,0-0.5,0.1-0.8,0.1c-0.2,0.1-0.5,0.1-0.7,0.2c-0.2,0.1-0.4,0.1-0.6,0.2c-0.3,0.1-0.5,0.2-0.8,0.4c-0.6,0.4-1.1,1-1.4,1.7
+		c-0.1,0.2-0.2,0.5-0.4,0.7c-0.1,0.2-0.2,0.4-0.3,0.6c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0c-0.2,0.4-0.4,0.8-0.7,1.1
+		c-0.2,0.2-0.3,0.4-0.5,0.6c-0.3,0.3-0.6,0.6-0.9,0.9c-0.3,0.3-0.6,0.5-0.9,0.7c-0.1,0.1-0.3,0.2-0.4,0.3c0-0.1-0.1-0.2-0.1-0.3
+		c-0.1-0.3-0.3-0.6-0.4-0.8c-0.3-0.5-0.7-0.9-1.1-1.3c-0.3-0.3-0.6-0.7-0.8-1c-0.1-0.2-0.2-0.3-0.3-0.5c-0.1-0.1-0.1-0.2-0.2-0.4
+		c-0.1-0.4-0.2-0.7-0.4-1.1c-0.1-0.2-0.2-0.4-0.3-0.5c-0.1-0.2-0.2-0.3-0.4-0.5c-0.2-0.2-0.4-0.4-0.6-0.6c-0.4-0.3-0.8-0.5-1.2-0.6
+		c-0.2-0.1-0.4-0.1-0.6-0.1c-0.2,0-0.4,0-0.6,0c-0.4,0-0.7,0-1.1,0.1c-0.2,0-0.4,0-0.6,0c-0.2,0-0.4,0-0.6,0c-0.1,0-0.2,0-0.3,0
+		c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.3-0.1c-0.1,0-0.1,0-0.2-0.1c-0.2-0.1-0.3-0.1-0.5-0.2c-0.3-0.2-0.6-0.3-1-0.5
+		c-0.2-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1,0-0.2-0.1-0.3-0.1c-0.2-0.1-0.5-0.2-0.7-0.2c-0.5-0.1-1-0.1-1.5,0.1
+		c-0.6,0.2-1.1,0.6-1.5,1c-0.3,0.3-0.6,0.6-0.8,0.9c-0.2,0.3-0.5,0.6-0.7,0.9c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0.1-0.2,0.1-0.3,0.2
+		c-0.3,0.2-0.7,0.4-1,0.7c-0.3,0.3-0.7,0.6-1,0.9c-0.5,0.5-0.9,1-1.2,1.7c-0.1,0.2-0.2,0.5-0.2,0.7c0,0.1,0,0.2-0.1,0.3
+		c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2,0,0.3c0,0.2,0,0.4,0,0.6c0,0.2,0,0.4,0.1,0.6c0,0.2,0.1,0.3,0.1,0.5c-0.2-0.1-0.4-0.2-0.6-0.3
+		c-0.6-0.2-1.3-0.2-2-0.2c-0.2,0-0.4,0-0.6,0.1c-0.2,0-0.5,0.1-0.7,0.1c-0.3,0.1-0.6,0.2-1,0.3c-0.3,0.1-0.6,0.2-0.9,0.2
+		c-0.2,0-0.4,0.1-0.6,0.1c-0.1,0-0.2,0-0.3,0c-0.2,0-0.4-0.1-0.6-0.1c-0.2,0-0.3,0-0.5-0.1c-0.3,0-0.7,0-1,0c-0.7,0-1.3,0.1-2,0.3
+		c-0.7,0.2-1.4,0.5-1.9,1c-0.4,0.4-0.7,0.8-1,1.3c-0.2,0.5-0.4,1.1-0.4,1.6c0,0.2,0,0.4,0,0.6c0,0.1,0,0.2,0,0.3
+		c0,0.2,0.1,0.4,0.1,0.7c0,0.2,0.1,0.4,0.1,0.6c0,0.2,0.1,0.4,0.1,0.6c0,0.1,0,0.2,0,0.3c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.1-0.1,0.2c-0.1,0.1-0.2,0.3-0.2,0.4c0,0,0,0,0,0c-0.2,0.3-0.5,0.7-0.7,1c-0.2,0.3-0.4,0.7-0.6,1
+		c-0.2,0.4-0.4,0.8-0.5,1.2c-0.1,0.5-0.1,1.1,0,1.6c0.2,0.7,0.5,1.3,0.9,1.9c0.2,0.3,0.5,0.7,0.7,1c0.3,0.4,0.6,0.7,0.8,1.1
+		c0.1,0.1,0.1,0.2,0.2,0.3c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.2,0,0.3c0,0.3-0.1,0.6-0.1,0.8
+		c0,0.3,0,0.5-0.1,0.8c0,0.7-0.1,1.5,0.1,2.2c0.1,0.5,0.4,1,0.7,1.5c0.2,0.3,0.4,0.5,0.6,0.7c0.1,0.1,0.2,0.2,0.2,0.2
+		c0.1,0.1,0.1,0.1,0.2,0.2c0.2,0.2,0.3,0.3,0.5,0.4c0.3,0.3,0.7,0.5,1,0.7c0.2,0.1,0.4,0.2,0.6,0.3c0.2,0.1,0.4,0.2,0.6,0.3
+		c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0.1,0,0.1,0,0.2
+		c0,0.2,0.1,0.3,0.1,0.4c0,0.1,0.1,0.3,0.1,0.4c0.1,0.3,0.2,0.5,0.3,0.8c0.2,0.5,0.4,1,0.8,1.4c0.4,0.5,0.8,1,1.3,1.3
+		c0.2,0.2,0.5,0.3,0.7,0.4c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.2,0.1,0.4,0.1,0.6,0.2c0.2,0.1,0.4,0.1,0.6,0.1
+		c0.4,0.1,0.8,0.2,1.2,0.3c0.1,0.1,0.3,0.1,0.4,0.2c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.1,0.1,0.2,0.2
+		c0.1,0.1,0.1,0.1,0.2,0.2c0.2,0.3,0.4,0.5,0.7,0.8c0.2,0.3,0.5,0.5,0.7,0.8c0.1,0.1,0.2,0.2,0.4,0.4c0.1,0.1,0.3,0.2,0.4,0.3
+		c0.2,0.1,0.3,0.2,0.5,0.3c0.2,0.1,0.3,0.2,0.5,0.3c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0,0.2,0.1,0.2,0.1c0.1,0,0.2,0.1,0.3,0.1
+		c0.1,0,0.2,0.1,0.4,0.1c0.1,0,0.2,0,0.3,0.1c0.1,0,0.2,0,0.3,0.1c0.2,0,0.4,0.1,0.6,0.1c0.8,0,1.6,0,2.5,0.1c0.3,0,0.6,0,0.8,0.1
+		c0.1,0,0.2,0,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0,0,0.1,0,0.1,0.1c0.5,1.2,0.9,2.5,1.3,3.8c0,0,0,0,0,0
+		c0,0.1,0,0.1,0.1,0.2c0,0,0,0,0,0c0,0.1,0,0.1,0.1,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0.8,2.6,1.5,5.2,2.1,7.8
+		c0.4,1.6,0.7,3.2,1.1,4.8c0.2,0.8,0.3,1.6,0.5,2.3c0.1,0.4,0.2,0.8,0.3,1.1c0,0.1,0.1,0.2,0.1,0.3c0,0-0.1,0-0.1,0
+		c-0.2,0-0.3,0-0.5,0c-0.2,0-0.4,0-0.6,0c-0.5,0-0.9,0.1-1.4,0.2c-0.9,0.2-1.9,0.4-2.7,0.7c-1,0.4-1.9,0.8-2.8,1.4
+		c-0.9,0.5-1.7,1.2-2.4,1.9c-0.4,0.4-0.7,0.8-1.1,1.2c-0.3,0.4-0.6,0.8-0.9,1.2c-0.5,0.8-1,1.6-1.4,2.4c0,0,0,0.1,0,0.1
+		c0,0.1,0,0.1-0.1,0.2c-0.1,0.2-0.2,0.4-0.2,0.7c-0.1,0.3-0.2,0.5-0.2,0.8c-0.1,0.5-0.2,1-0.2,1.5c0,0.5,0,1.1,0,1.6
+		c0,0.5,0.1,1,0.2,1.5c0.2,1,0.5,2,0.9,2.9c0.2,0.5,0.4,1,0.7,1.4c0.2,0.4,0.5,0.9,0.7,1.3c0.6,0.8,1.3,1.6,2,2.2
+		c0.8,0.7,1.6,1.2,2.5,1.8c0.9,0.5,1.8,1,2.7,1.5c0.4,0.2,0.9,0.4,1.3,0.6c0.5,0.2,0.9,0.4,1.4,0.6c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0.6,0.2,1.1,0.5,1.7,0.8c0.2,0.1,0.4,0.3,0.6,0.4c0.2,0.1,0.3,0.3,0.5,0.4c0.1,0.1,0.1,0.1,0.2,0.2
+		c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.2,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1-0.1,0.2c0,0.1-0.1,0.2-0.1,0.2c-0.2,0.4-0.5,0.7-0.8,1.1c-0.3,0.4-0.5,0.8-0.8,1.3
+		c-0.1,0.2-0.2,0.5-0.2,0.7c-0.1,0.3-0.1,0.5-0.2,0.8c-0.1,0.3-0.1,0.7,0,1.1c0.1,0.3,0.1,0.5,0.3,0.8c0.4,0.9,1.2,1.6,1.9,2.4
+		c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.2,0.2,0.3,0.3
+		c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.2-0.1,0.3c0,0.1-0.1,0.3-0.1,0.4c-0.1,0.1-0.1,0.3-0.2,0.4c-0.3,0.4-0.6,0.9-0.9,1.3c-0.3,0.4-0.6,0.8-0.8,1.2
+		c-0.2,0.4-0.4,0.9-0.5,1.4c-0.1,0.3-0.1,0.7,0,1c0.1,0.2,0.2,0.4,0.3,0.7c0.2,0.4,0.5,0.8,0.7,1.2c0,0.1,0.1,0.1,0.2,0.1
+		c0.1,0,0.1,0,0.2-0.1c0.1-0.1,0.1-0.2,0-0.3c0-0.1-0.1-0.1-0.1-0.2c-0.1-0.2-0.2-0.3-0.3-0.5c-0.1-0.2-0.2-0.4-0.2-0.7
+		c0-0.1,0-0.2-0.1-0.3c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.2,0.1-0.3c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.5,0.3-0.7
+		c0.2-0.4,0.4-0.7,0.7-1c0.3-0.3,0.5-0.7,0.7-1c0.3-0.4,0.6-0.9,0.7-1.4c0.1-0.4,0.1-0.7,0.1-1.1c0-0.3-0.1-0.6-0.2-0.8
+		c-0.1-0.2-0.3-0.5-0.4-0.7c-0.2-0.2-0.3-0.3-0.5-0.5c-0.3-0.3-0.7-0.7-1-1.1c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.1-0.1-0.2-0.2-0.3
+		c0-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.2-0.1-0.3c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3c0-0.2,0.1-0.3,0.1-0.5c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0-0.1,0-0.1,0.1-0.2c0,0,0,0,0,0.1c0.1-0.2,0.1-0.4,0.2-0.5c0.1-0.3,0.3-0.5,0.4-0.8c0.1-0.2,0.3-0.5,0.5-0.7
+		c0.1-0.2,0.3-0.4,0.4-0.6c0.1-0.1,0.1-0.2,0.2-0.3c0.4-0.4,0.8-0.7,1.2-1c0.9-0.7,1.8-1.3,2.7-1.8c0.8-0.4,1.6-0.8,2.5-1.1
+		c0.7-0.3,1.4-0.5,2.1-0.8c0.5-0.2,0.9-0.4,1.4-0.7c0.5-0.2,0.9-0.5,1.4-0.8c0.9-0.6,1.7-1.2,2.5-1.9c0.8-0.8,1.5-1.6,2-2.6
+		c0.5-0.9,0.9-1.9,1.2-2.9c0.1-0.5,0.2-1,0.3-1.6c0.1-0.5,0.1-1,0.1-1.5c0-0.5,0-1-0.1-1.6c-0.1-0.5-0.1-1-0.2-1.5
+		c-0.2-1-0.5-2-0.8-2.9c-0.4-0.9-0.8-1.9-1.3-2.7c0,0,0-0.1-0.1-0.1c0,0,0,0,0,0c-0.5-0.8-1-1.6-1.6-2.2c-0.7-0.7-1.6-1.3-2.4-1.8
+		c-0.4-0.2-0.7-0.4-1.1-0.5c0.1-0.2,0.2-0.5,0.3-0.7c0.2-0.7,0.4-1.4,0.6-2.1c0.2-0.7,0.3-1.4,0.5-2.1c0.3-1.4,0.6-2.7,0.9-4.1
+		c0.3-1.4,0.6-2.8,1-4.2c0.4-1.4,0.7-2.7,1.1-4.1c0.4-1.3,0.9-2.6,1.3-3.9c0.3-0.2,0.5-0.4,0.8-0.6c0.4-0.3,0.8-0.5,1.1-0.7
+		c0.4-0.2,0.8-0.5,1.3-0.7c0.4-0.2,0.7-0.4,1.1-0.6c0.4-0.2,0.7-0.4,1.1-0.7c0.3-0.3,0.6-0.6,0.9-1c0.2-0.3,0.5-0.6,0.7-1
+		c0.1-0.1,0.2-0.2,0.3-0.3c0.1,0,0.1-0.1,0.2-0.1c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2-0.1,0.4-0.1
+		c0.1,0,0.2-0.1,0.3-0.1c0.4-0.1,0.7-0.1,1.1-0.2c0.6-0.1,1.2-0.2,1.6-0.6c0.5-0.4,0.7-1.1,0.9-1.7c0.1-0.3,0.2-0.7,0.3-1
+		c0-0.1,0-0.1,0.1-0.2c0-0.1,0.1-0.2,0.1-0.2c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.3-0.3,0.4-0.4
+		c0.2-0.1,0.3-0.2,0.5-0.4c0.3-0.2,0.6-0.4,0.8-0.5c0.3-0.2,0.5-0.3,0.8-0.5c0.1-0.1,0.3-0.2,0.4-0.3c0.2-0.1,0.3-0.3,0.4-0.5
+		c0.1-0.2,0.2-0.5,0.3-0.8c0.1-0.3,0.1-0.7,0.2-1c0-0.1,0-0.2,0.1-0.2c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1
+		c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0.3-0.2,0.5-0.3,0.8-0.5c0.4-0.2,0.9-0.5,1.1-1c0.2-0.4,0.3-0.9,0.3-1.4
+		c0-0.3,0-0.7,0.1-1c0-0.1,0-0.2,0.1-0.3c0-0.1,0.1-0.2,0.1-0.2c0.1-0.2,0.2-0.3,0.3-0.4c0.2-0.2,0.3-0.5,0.5-0.7
+		c0.1-0.1,0.1-0.1,0.2-0.2c0,0,0,0,0,0c0.2-0.3,0.5-0.6,0.7-0.8c0.3-0.4,0.6-0.8,0.7-1.3c0.1-0.4,0.1-0.9,0.1-1.3c0-0.2,0-0.5,0-0.7
+		c0-0.2-0.1-0.5-0.1-0.7c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.2,0.1-0.3c0-0.1,0-0.1,0.1-0.2c0.2-0.4,0.3-0.8,0.5-1.2
+		c0.2-0.4,0.3-0.8,0.3-1.3c0-0.2,0-0.4,0.1-0.6c0-0.2,0-0.4,0-0.6C76,20.6,76,20.3,76,20.1z M43.7,14c0.3-0.2,0.6-0.4,0.8-0.7
+		c0.3-0.2,0.6-0.5,0.9-0.8c0.3-0.3,0.6-0.6,0.8-0.9c0.1-0.2,0.3-0.3,0.4-0.5c0.1-0.2,0.2-0.3,0.3-0.5c0.2-0.3,0.4-0.7,0.6-1.1
+		c0,0,0,0,0-0.1c0,0,0,0,0,0c0.2-0.4,0.4-0.9,0.6-1.3c0.1-0.2,0.3-0.5,0.4-0.7c0.1-0.1,0.2-0.3,0.3-0.4c0.1-0.1,0.2-0.2,0.2-0.3
+		c0.1-0.1,0.2-0.2,0.3-0.2c0.1-0.1,0.2-0.1,0.3-0.2c0.1-0.1,0.3-0.1,0.4-0.2c0.4-0.1,0.9-0.3,1.3-0.4c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2,0c0,0,0,0-0.1,0c0.3-0.1,0.6-0.1,0.9-0.1c0.3-0.1,0.6-0.1,0.9-0.2c0.3-0.1,0.5-0.2,0.8-0.3
+		C54.6,5.1,54.9,5,55.2,5c0.2,0,0.5-0.1,0.7-0.1c0.2,0,0.5-0.1,0.7-0.1c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.2,0,0.5,0,0.7,0.1
+		c0.2,0,0.4,0.1,0.6,0.1c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.3,0.2c0.1,0.1,0.1,0.1,0.2,0.2
+		C60,5.9,60.1,5.9,60.2,6c0.1,0.1,0.1,0.2,0.2,0.3c0.1,0.3,0.3,0.6,0.4,0.9c0.1,0.2,0.1,0.4,0.2,0.6C61,8.2,61,8.7,61.2,9
+		c0.1,0.3,0.3,0.5,0.5,0.8c0.2,0.3,0.5,0.5,0.7,0.7c0.2,0.2,0.4,0.4,0.6,0.6c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.2,0.3,0.2,0.4
+		c0,0.1,0.1,0.2,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.2,0,0.2c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2-0.1,0.3
+		c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.2,0.4-0.3,0.6c-0.1,0.2-0.3,0.4-0.5,0.6c-0.2,0.2-0.3,0.4-0.5,0.6c-0.3,0.3-0.6,0.7-0.9,1
+		c-0.2,0.2-0.3,0.4-0.4,0.7c-0.2,0.4-0.3,1-0.3,1.5c0,0.9,0.2,1.8,0.3,2.7c0,0.1,0,0.2,0,0.3c0,0.1,0,0.1,0,0.2c0,0.1,0,0.2-0.1,0.2
+		c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.2-0.2,0.3c-0.1,0.1-0.1,0.2-0.2,0.3c0,0,0,0,0-0.1c-0.1,0.1-0.2,0.2-0.3,0.3
+		c-0.3,0.3-0.6,0.6-1,0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.3,0.3-0.7,0.6-1,0.9c-0.5,0.5-0.9,1.1-1.1,1.7
+		c-0.1,0.4-0.2,0.9-0.2,1.3c0,0.4-0.1,0.8-0.2,1.2c0,0.2-0.1,0.4-0.2,0.6c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.2,0.3-0.3,0.5
+		c-0.2,0.3-0.5,0.7-0.8,1c-0.1,0.2-0.3,0.3-0.4,0.5c-0.1,0.2-0.3,0.4-0.4,0.6c-0.2,0.3-0.3,0.6-0.4,1c-0.1,0.2-0.1,0.4-0.1,0.7
+		c0,0.4-0.1,0.8-0.1,1.2c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2,0,0.2c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.1,0.3-0.2,0.4
+		c-0.1,0.3-0.3,0.6-0.5,0.8c-0.2,0.2-0.3,0.5-0.5,0.7c-0.2,0.3-0.3,0.5-0.5,0.8c-0.1,0.1-0.1,0.3-0.2,0.4c0,0.2-0.1,0.3-0.1,0.5
+		c0,0.3,0,0.6,0,0.9c0,0.4-0.1,0.7-0.1,1.1c-0.1,0.6-0.2,1.2-0.4,1.7c-0.1,0.3-0.2,0.7-0.4,1c-0.1,0.3-0.3,0.6-0.5,0.8
+		c-0.3,0.4-0.6,0.8-0.9,1.2c-0.3,0.4-0.7,0.8-1,1.2c-0.3,0.4-0.6,0.7-0.8,1.1c-0.3,0.4-0.5,0.8-0.8,1.2c-0.1,0.2-0.2,0.3-0.3,0.5
+		c0.1-0.6,0.1-1.1,0.2-1.7c0.2-1.4,0.4-2.8,0.7-4.2c0.2-1.3,0.4-2.7,0.6-4c0.1-0.4,0.1-0.7,0.2-1.1c0.1-0.1,0.1-0.2,0.2-0.2
+		c0,0,0,0,0,0c0.1-0.1,0.1-0.1,0.2-0.2c0.4-0.4,0.7-0.8,1.1-1.2c0.4-0.4,0.7-0.8,1.1-1.2c0.1-0.1,0.1-0.3,0-0.4
+		c-0.1-0.1-0.3-0.1-0.4,0c-0.3,0.3-0.7,0.7-1,1c-0.3,0.3-0.6,0.7-0.9,1c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.4,0.2-0.8,0.3-1.3
+		c0.2-1.2,0.5-2.3,0.7-3.4c0.1-0.5,0.3-1.1,0.4-1.6c0.2-0.3,0.5-0.6,0.7-0.9c0.4-0.4,0.7-0.8,1.1-1.2c0.1-0.1,0.1-0.1,0.2-0.2
+		c0.3-0.3,0.7-0.6,1.1-1c0.3-0.3,0.7-0.6,1-0.9c0.1-0.1,0.2-0.3,0-0.5c-0.1-0.1-0.3-0.2-0.5,0c-0.3,0.3-0.7,0.5-1,0.8
+		c-0.3,0.3-0.7,0.6-1,0.9c-0.5,0.4-0.9,0.9-1.4,1.4c0.4-1.7,0.9-3.4,1.4-5c0,0,0,0,0,0.1c0.1-0.3,0.2-0.5,0.3-0.8
+		c0,0,0.1-0.1,0.1-0.1c0,0,0,0,0,0c0.4-0.5,0.9-1.1,1.4-1.5c0,0,0,0,0.1-0.1c0.3-0.2,0.5-0.5,0.8-0.7c0.3-0.2,0.6-0.4,0.8-0.6
+		c0,0,0,0,0.1,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1
+		c0,0,0.1-0.1,0.1-0.1c0-0.1,0-0.1,0-0.2c-0.1-0.1-0.2-0.1-0.3-0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0-0.1,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0.1-0.3,0.2-0.4,0.3c-0.2,0.2-0.4,0.3-0.6,0.5c-0.2,0.2-0.4,0.3-0.6,0.5
+		c-0.2,0.2-0.4,0.4-0.6,0.6c-0.1,0.2-0.3,0.3-0.4,0.5c0.1-0.4,0.2-0.8,0.4-1.2c0,0,0,0,0,0c0.1-0.3,0.2-0.6,0.3-0.9c0,0,0,0,0,0
+		c0.1-0.2,0.1-0.4,0.2-0.6c0.8-2.6,1.6-5.1,2.5-7.7c0.1-0.2-0.2-0.3-0.3-0.1c-0.2,0.5-0.3,1-0.5,1.4c-0.2,0.6-0.4,1.3-0.7,1.9
+		c-0.2,0.7-0.4,1.3-0.7,2c-0.3,0.7-0.5,1.4-0.8,2.1c0,0,0,0,0,0c0,0,0,0,0,0c0-0.2,0-0.3-0.1-0.5c-0.1-0.5-0.2-1-0.4-1.5
+		c-0.1-0.5-0.3-1-0.5-1.5c-0.2-0.5-0.4-1-0.5-1.5c-0.1-0.2-0.2-0.5-0.3-0.7c0-0.1-0.1-0.3-0.1-0.4c0-0.1-0.1-0.2-0.1-0.3
+		c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1,0.1-0.1,0.2c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.3,0.1,0.4c0.1,0.2,0.2,0.5,0.3,0.7
+		c0.2,0.5,0.3,1,0.5,1.5c0.1,0.2,0.1,0.5,0.2,0.7c0.1,0.2,0.1,0.5,0.2,0.7c0.1,0.4,0.2,0.7,0.3,1.1c0.1,0.3,0.1,0.7,0.2,1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0.2-0.1,0.4-0.1,0.6c-0.1,0.3-0.1,0.6-0.2,0.9
+		c-0.5,1.2-0.9,2.4-1.4,3.6c-0.1,0.4-0.3,0.8-0.4,1.2c-0.1-0.1-0.1-0.3-0.2-0.4c-0.2-0.5-0.4-1-0.7-1.5c-0.5-1-1-2-1.6-3
+		c-0.3-0.5-0.6-1-0.9-1.5c-0.1-0.2-0.3-0.5-0.4-0.7c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.1-0.2-0.3-0.3-0.4c0,0-0.1-0.1-0.2-0.1
+		c-0.1,0-0.1,0-0.2,0.1c0,0.1,0,0.1,0,0.2c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0.1,0.2,0.3,0.4,0.4,0.6c0.3,0.6,0.7,1.2,1,1.8
+		c0,0,0,0,0,0c0.1,0.1,0.1,0.2,0.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.1,0.2,0.2,0.3c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0.1,0.2,0.3,0.5,0.4,0.7c0.3,0.5,0.5,1,0.8,1.5c0.2,0.5,0.4,1,0.6,1.5
+		c0,0,0,0.1,0,0.1c0.1,0.3,0.2,0.5,0.3,0.8c0,0.1,0.1,0.2,0.1,0.3c-0.2,0.6-0.4,1.2-0.5,1.8c-0.5,1.6-0.9,3.2-1.4,4.8
+		c-0.2-0.5-0.3-1-0.5-1.5c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c-0.3-0.8-0.6-1.5-1-2.2c-0.2-0.5-0.5-1-0.8-1.4c-0.3-0.5-0.5-1-0.8-1.4c0,0,0,0,0,0
+		c0-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2c0,0-0.1-0.1-0.1-0.1c-0.1,0-0.2,0-0.2,0.1c0,0.1,0,0.2,0.1,0.2c0,0,0,0,0,0
+		c0.2,0.4,0.4,0.7,0.5,1.1c0.2,0.4,0.3,0.7,0.5,1.1c0.2,0.5,0.5,1,0.7,1.5c0.2,0.5,0.5,1,0.7,1.5c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0.1,0.1,0.2,0.1,0.2c0.3,0.8,0.5,1.5,0.7,2.3c-0.2,0.8-0.4,1.6-0.6,2.3c-0.2,0.8-0.4,1.7-0.6,2.5c-0.1-0.2-0.1-0.4-0.2-0.7
+		c-0.3-1-0.6-2.1-1-3c-0.2-0.5-0.4-1-0.7-1.4c-0.1-0.2-0.2-0.5-0.4-0.7c-0.1-0.1-0.1-0.2-0.2-0.3c0-0.1-0.1-0.2-0.2-0.3
+		c-0.1-0.1-0.2-0.1-0.3,0c-0.1,0.1-0.1,0.2,0,0.2c0,0,0,0,0,0c0.1,0.1,0.1,0.2,0.1,0.3c0.1,0.1,0.1,0.2,0.2,0.4
+		c0.1,0.2,0.2,0.5,0.3,0.7c0.2,0.5,0.4,0.9,0.6,1.4c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0.1,0.1c0,0,0,0,0,0
+		c0.1,0.3,0.3,0.7,0.4,1c0.2,0.5,0.3,1,0.5,1.5c0.1,0.5,0.3,1,0.4,1.5c0,0.1,0.1,0.3,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4
+		c-0.3,1.4-0.6,2.8-0.9,4.1c-0.2,0.8-0.3,1.7-0.5,2.5c0-0.1,0-0.1-0.1-0.2c-0.1-0.4-0.4-0.8-0.6-1.2c-0.2-0.4-0.5-0.7-0.7-1.1
+		c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.4-0.2-0.8-0.3-1.2c-0.1-0.3-0.1-0.6-0.1-0.9c0-0.2,0-0.4,0-0.6c0-0.2-0.1-0.4-0.1-0.5
+		c0-0.2-0.1-0.4-0.2-0.6c-0.1-0.2-0.1-0.4-0.2-0.6c-0.3-0.7-0.6-1.4-0.9-2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.2-0.4-0.2-0.5c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.4
+		c0-0.2,0-0.5,0.1-0.7c0-0.2,0.1-0.5,0.1-0.7c0.1-0.5,0.1-1,0-1.5c-0.1-0.5-0.2-1-0.3-1.5c-0.1-0.3-0.1-0.5-0.1-0.8
+		c0-0.2-0.1-0.5-0.1-0.7c0-0.2,0-0.4,0-0.6c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0-0.2,0-0.4,0.1-0.5
+		c0-0.2,0.1-0.3,0.1-0.5c0-0.2,0.1-0.3,0.1-0.5c0.1-0.3,0.2-0.5,0.3-0.8c0.1-0.3,0.2-0.6,0.3-0.9c0.2-0.6,0.2-1.1,0.2-1.7
+		c0-0.6-0.1-1.1-0.1-1.7c0-0.2,0-0.4,0-0.5c0-0.2,0-0.4,0-0.6c0-0.1,0-0.2,0-0.4c0-0.1,0-0.3,0.1-0.4c0-0.2,0.1-0.3,0.1-0.5
+		c0.2-0.4,0.3-0.9,0.5-1.3c0,0,0,0,0-0.1c0.2-0.4,0.5-0.9,0.7-1.3c0.2-0.5,0.3-1,0.4-1.5c0.1-0.9,0.2-1.9,0.3-2.8
+		c0-0.1,0-0.2,0.1-0.3c0-0.1,0.1-0.2,0.1-0.3c0,0,0-0.1,0.1-0.1C43.6,14.1,43.6,14.1,43.7,14C43.6,14,43.7,14,43.7,14z M44.3,51.2
+		c-0.2,1.4-0.4,2.8-0.6,4.2c-0.3,2.8-0.6,5.6-0.9,8.3c-0.1,1.4-0.2,2.8-0.3,4.2c0,0.3,0,0.6,0,0.9c0,0.2-0.1,0.3-0.1,0.5
+		c0,0,0,0,0,0c-0.1,0.5-0.2,1-0.3,1.4c0,0.2-0.1,0.5-0.1,0.7c0,0.1,0,0.2,0,0.3c-0.2,0-0.4,0-0.6-0.1c0-0.1,0-0.2,0.1-0.3
+		c0-0.1,0-0.2,0.1-0.4c0.1-0.4,0.1-0.7,0.1-1.1c0.1-1.1,0.1-2.2,0.1-3.4c-0.1-2.8-0.4-5.6-0.8-8.3c-0.2-1.4-0.4-2.8-0.7-4.1
+		c-0.3-1.4-0.5-2.9-0.8-4.3c-0.1-0.5-0.2-1-0.3-1.4c0.1-0.3,0.1-0.7,0.2-1c0.1-0.6,0.3-1.1,0.5-1.7c0.2-0.6,0.4-1.1,0.5-1.7
+		c0.1-0.4,0.3-0.8,0.4-1.1c0.1-0.3,0.2-0.6,0.3-0.9c0.1,0.2,0.2,0.5,0.3,0.7c0.1,0.2,0.2,0.5,0.2,0.7c0,0.2,0.1,0.4,0.1,0.6
+		c0,0.2,0,0.5,0.1,0.7c0.1,0.5,0.2,0.9,0.3,1.3c0.1,0.5,0.3,0.9,0.5,1.3c0.2,0.4,0.5,0.8,0.8,1.1c0.1,0.2,0.3,0.4,0.4,0.6
+		c0.1,0.2,0.2,0.5,0.3,0.8c0.1,0.2,0.1,0.4,0.2,0.6c0,0.2,0.1,0.3,0.1,0.5C44.4,51.1,44.4,51.1,44.3,51.2z M21.9,13.3
+		c0-0.2,0-0.4-0.1-0.5c0-0.2,0-0.5,0-0.7c0-0.1,0-0.3,0-0.4c0-0.1,0-0.3,0.1-0.4c0-0.2,0.1-0.3,0.1-0.5c0.1-0.2,0.1-0.3,0.2-0.5
+		c0.1-0.1,0.1-0.2,0.2-0.4c0.1-0.1,0.2-0.2,0.3-0.4C22.8,9.3,23,9.2,23.2,9c0.4-0.3,0.8-0.7,1.2-1c0.3-0.2,0.5-0.3,0.8-0.5
+		c0.3-0.2,0.5-0.4,0.7-0.7c0.2-0.3,0.4-0.5,0.6-0.8c0.2-0.2,0.4-0.5,0.6-0.7c0.1-0.1,0.1-0.1,0.2-0.2C27.4,5,27.4,5,27.5,4.9
+		c0.1-0.1,0.2-0.2,0.4-0.3c0.1-0.1,0.2-0.1,0.3-0.2c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0.1,0.4,0.1c0.2,0.1,0.4,0.2,0.6,0.3c0.5,0.3,1,0.6,1.4,0.8
+		c0.4,0.2,0.7,0.3,1.1,0.4C33.2,6,33.4,6,33.6,6c0.2,0,0.4,0,0.6,0c0.4,0,0.8,0,1.2-0.1c0.4,0,0.7,0,1.1,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0.1,0.2,0.1,0.3,0.2
+		c0.1,0.1,0.1,0.1,0.2,0.2C38.7,7,38.8,7.1,39,7.3c0.1,0.1,0.2,0.3,0.3,0.5c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+		c0.2,0.3,0.3,0.7,0.4,1c0.2,0.4,0.3,0.7,0.6,1c0.5,0.6,1,1.2,1.5,1.8c0,0,0,0,0,0c0.2,0.2,0.3,0.4,0.5,0.6c0.2,0.3,0.3,0.5,0.5,0.8
+		c0.1,0.1,0.1,0.2,0.1,0.3c-0.1,0.1-0.2,0.3-0.3,0.4c-0.1,0.2-0.2,0.4-0.2,0.6c-0.1,0.2-0.1,0.5-0.1,0.7c-0.1,0.5-0.1,1-0.1,1.4
+		c0,0.5-0.1,0.9-0.2,1.4c-0.1,0.3-0.1,0.6-0.2,1c0,0,0,0.1,0,0.1c-0.2,0.5-0.4,0.9-0.6,1.4c-0.2,0.5-0.4,1-0.5,1.5
+		c-0.1,0.5-0.2,1-0.2,1.6c0,0.3,0,0.5,0,0.8c0,0.2,0,0.5,0.1,0.7c0,0,0,0,0,0c0,0.3,0.1,0.6,0.1,1c0,0.3,0,0.6,0,0.9
+		c0,0.1,0,0.2,0,0.3c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.3-0.1,0.4c-0.2,0.5-0.4,0.9-0.5,1.4c-0.2,0.5-0.3,1-0.3,1.5
+		c-0.1,0.5-0.1,1,0,1.6c0.1,0.5,0.2,1,0.3,1.6c0.1,0.5,0.2,1,0.2,1.5c0,0.2,0,0.3,0,0.5c0,0.2,0,0.4-0.1,0.6
+		c-0.1,0.3-0.1,0.5-0.2,0.8c-0.1,0.5-0.1,1,0,1.5c0,0.3,0.1,0.5,0.2,0.8c0.1,0.2,0.2,0.4,0.3,0.6c0.2,0.4,0.4,0.8,0.6,1.2
+		c-0.1,0.1-0.1,0.2-0.1,0.3c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.2,0.4-0.2,0.6c-0.2,0.6-0.4,1.1-0.6,1.7c-0.2,0.6-0.3,1.2-0.5,1.7
+		c-0.1,0.5-0.2,0.9-0.3,1.4c-0.4-1.9-0.9-3.8-1.4-5.6c-0.2-0.7-0.4-1.3-0.5-1.9c0-0.2,0.1-0.3,0.1-0.5c0.1-0.3,0.2-0.6,0.3-0.9
+		c0.1-0.3,0.3-0.7,0.4-1c0.1-0.1,0-0.3-0.2-0.4c-0.1,0-0.3,0-0.3,0.1c-0.2,0.4-0.4,0.8-0.6,1.2c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c0,0.1,0,0.1-0.1,0.2c-0.5-1.7-1-3.4-1.5-5.1c0-0.1,0.1-0.2,0.1-0.3c0.3-1.2,0.6-2.4,0.9-3.5c0,0,0,0,0,0
+		c0.1-0.3,0.1-0.5,0.2-0.8c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.5,0.3-1,0.4-1.4c0-0.1,0.1-0.2,0.1-0.2
+		c0.2-0.5,0.4-1,0.6-1.5c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0-0.3-0.1-0.3c-0.1-0.1-0.3,0-0.3,0.1c-0.1,0.1-0.1,0.3-0.2,0.4
+		c0,0-0.1,0-0.1,0.1c-0.1,0.1-0.1,0.3-0.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c-0.1,0.1-0.1,0.3-0.2,0.4c-0.1,0.2-0.2,0.5-0.3,0.7c-0.2,0.5-0.4,0.9-0.6,1.4c-0.2,0.5-0.4,1-0.5,1.5c-0.1,0.3-0.2,0.6-0.2,0.9
+		c0,0.1-0.1,0.3-0.1,0.4c0,0.1-0.1,0.2-0.1,0.4c0,0.2-0.1,0.4-0.1,0.6c0,0,0,0.1,0,0.1c-0.3-1.1-0.7-2.2-1-3.3
+		c-0.4-1.3-0.8-2.6-1.1-4c0.1-0.3,0.1-0.6,0.2-1c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.4,0.2-0.6c0.1-0.3,0.3-0.6,0.4-0.9
+		c0.2-0.3,0.3-0.6,0.5-0.9c0.3-0.6,0.7-1.2,1-1.7c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0.2-0.3,0.3-0.5,0.5-0.7
+		c0.1-0.1,0.1-0.3-0.1-0.4c-0.1-0.1-0.3-0.1-0.4,0.1c-0.7,1-1.4,2.1-2,3.2c-0.3,0.6-0.6,1.2-0.9,1.9c-0.1,0.1-0.1,0.3-0.1,0.4
+		c-0.2-0.9-0.5-1.9-0.7-2.8c-0.3-1.4-0.6-2.8-0.9-4.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0-0.1
+		c0,0,0,0,0,0.1c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0-0.2-0.1-0.3c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0,0,0,0,0-0.1
+		c-0.4-1.9-0.7-3.7-0.8-5.6c0-0.1,0-0.2,0-0.2c0-0.1-0.1-0.3-0.2-0.3c-0.2,0-0.3,0.2-0.2,0.3c-0.1,0.9,0,1.9,0.1,2.8
+		c0.1,1.4,0.4,2.8,0.6,4.2c0.2,1.4,0.5,2.8,0.7,4.2c-0.1-0.1-0.2-0.2-0.4-0.3c0,0,0,0,0,0c0,0-0.1-0.1-0.1-0.1c0,0,0,0,0,0
+		c-0.5-0.4-0.9-0.8-1.4-1.2c-0.4-0.4-0.8-0.7-1.2-1.1c-0.2-0.2-0.4-0.3-0.6-0.5c-0.1-0.1-0.2-0.2-0.3-0.2c-0.1-0.1-0.2-0.2-0.3-0.2
+		c0,0,0,0,0,0c-0.1-0.1-0.3-0.1-0.3,0c-0.1,0.1,0,0.2,0.1,0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.2,0.1,0.3,0.2,0.4,0.4
+		c0.2,0.1,0.3,0.3,0.4,0.4c0.3,0.3,0.6,0.5,0.9,0.8c0,0,0,0,0,0c0.2,0.2,0.4,0.4,0.7,0.6c0.4,0.4,0.8,0.8,1.2,1.1
+		c0.4,0.4,0.8,0.8,1.2,1.1c0.1,0.7,0.3,1.3,0.4,2c0.3,1.4,0.6,2.7,0.9,4.1c0.1,0.2,0.1,0.5,0.2,0.7c-0.5-0.3-1-0.7-1.5-1
+		c-0.5-0.4-1.1-0.7-1.7-1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.3-0.2-0.6-0.3-0.9-0.4c-0.2-0.1-0.5-0.2-0.7-0.3c0,0,0,0,0,0
+		c0-0.2,0-0.4,0-0.5c0.1-0.8,0.2-1.6,0.1-2.4c0-0.7-0.2-1.4-0.6-2c-0.3-0.4-0.6-0.7-1-1c0,0,0,0,0,0c-0.1-0.1-0.1-0.1-0.2-0.2
+		c-0.3-0.3-0.6-0.6-0.9-0.9c-0.1-0.1-0.2-0.2-0.2-0.3c-0.1-0.1-0.1-0.2-0.2-0.3c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.2-0.1-0.3
+		c0-0.1-0.1-0.2-0.1-0.3c-0.2-0.6-0.4-1.2-0.6-1.8c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.1-0.1-0.2-0.2-0.3
+		c-0.2-0.2-0.4-0.4-0.6-0.6c-0.1-0.1-0.1-0.1-0.2-0.1c0,0,0-0.1,0-0.1C21.9,13.5,21.9,13.4,21.9,13.3z M37.3,49.1
+		C37.3,49.1,37.3,49.1,37.3,49.1C37.3,49.1,37.3,49.1,37.3,49.1C37.3,49.1,37.3,49.1,37.3,49.1z M32.6,44.4c0-0.4-0.1-0.8-0.1-1.2
+		c0-0.4,0-0.8,0-1.2c0-0.2,0-0.4,0.1-0.6c0.1-0.3,0.1-0.6,0.2-1c0-0.4,0.1-0.7,0.1-1.1c0,0,0,0,0,0c0-0.1,0-0.2,0-0.3
+		c0-0.2,0-0.4,0-0.6c0-0.2,0-0.4,0-0.6c0-0.2-0.1-0.4-0.1-0.6c-0.1-0.2-0.1-0.4-0.2-0.6c-0.1-0.4-0.3-0.7-0.5-1.1
+		c-0.2-0.4-0.3-0.7-0.4-1.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1-0.1-0.2-0.1-0.3c0.1,0.1,0.2,0.1,0.3,0.2
+		c0.2,0.1,0.4,0.3,0.7,0.5c0,0,0,0,0,0c0.4,0.3,0.8,0.6,1.2,0.9c0.3,0.2,0.5,0.4,0.8,0.6c0.4,1.4,0.7,2.9,1.1,4.3
+		c0.1,0.4,0.2,0.9,0.3,1.3c-0.1,0-0.1-0.1-0.2-0.1c-0.3-0.2-0.5-0.4-0.8-0.6c-0.1-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.2-0.1-0.3-0.2
+		c0-0.1-0.1-0.1-0.2-0.1c-0.2-0.1-0.4,0-0.4,0.2c-0.1,0.2,0,0.4,0.2,0.5c0,0,0.1,0,0.1,0.1c0.4,0.2,0.7,0.4,1.1,0.6
+		c0.4,0.3,0.9,0.6,1.3,1c0.3,1.4,0.6,2.8,0.9,4.3c0,0,0,0-0.1-0.1c-0.1-0.1-0.2-0.2-0.3-0.2c-0.1-0.1-0.2-0.1-0.3-0.2
+		c-0.2-0.1-0.5-0.2-0.7-0.3c-0.2-0.1-0.5-0.1-0.7-0.2c-0.1,0-0.2-0.1-0.4-0.1c-0.1,0-0.2-0.1-0.4-0.1c-0.2-0.1-0.4-0.2-0.6-0.3
+		c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1,0-0.1-0.1-0.2-0.1C32.6,45,32.6,44.7,32.6,44.4z M28.2,27c0.5,0.3,1,0.5,1.5,0.8
+		c0.6,0.3,1.1,0.7,1.7,1.1c0.4,0.3,0.9,0.6,1.3,0.8c0.2,0.9,0.5,1.8,0.7,2.7c0.3,1,0.5,2,0.8,3.1c0,0-0.1,0-0.1-0.1
+		c-0.5-0.3-0.9-0.6-1.4-0.9c-0.2-0.1-0.5-0.3-0.7-0.4c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1,0-0.1-0.1-0.2-0.1c0,0-0.1,0-0.1,0
+		c0-0.1-0.1-0.2-0.1-0.3c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c-0.1-0.3-0.1-0.6-0.1-0.9c0-0.4-0.1-0.8-0.1-1.2
+		c0-0.2-0.1-0.4-0.1-0.6c-0.1-0.3-0.2-0.7-0.4-0.9c-0.1-0.2-0.2-0.3-0.4-0.5c-0.1-0.2-0.3-0.3-0.4-0.5c-0.3-0.3-0.6-0.5-0.9-0.7
+		c-0.2-0.2-0.4-0.4-0.6-0.6c-0.1-0.1-0.2-0.2-0.2-0.3c0-0.1-0.1-0.1-0.1-0.2c0,0,0-0.1-0.1-0.1C27.8,26.8,28,26.9,28.2,27z
+		 M37.5,25.4C37.5,25.4,37.5,25.4,37.5,25.4C37.5,25.4,37.5,25.4,37.5,25.4C37.6,25.4,37.5,25.4,37.5,25.4z M33.3,22.8
+		C33.3,22.8,33.3,22.8,33.3,22.8C33.3,22.8,33.3,22.8,33.3,22.8C33.3,22.8,33.3,22.8,33.3,22.8z M29.8,50c-0.2-0.1-0.4-0.1-0.6-0.2
+		c-0.4-0.1-0.8-0.1-1.2-0.1c-0.4,0-0.8,0-1.2-0.1c-0.2,0-0.5,0-0.7-0.1c-0.1,0-0.3,0-0.4,0c-0.1,0-0.2,0-0.3-0.1
+		c-0.1,0-0.2-0.1-0.4-0.1c-0.1,0-0.2-0.1-0.3-0.1c-0.1,0-0.2-0.1-0.4-0.1c-0.1,0-0.2-0.1-0.3-0.1c-0.1-0.1-0.2-0.1-0.3-0.2
+		c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1-0.1-0.2-0.1-0.2-0.2c-0.2-0.2-0.4-0.4-0.6-0.6c-0.2-0.2-0.3-0.4-0.5-0.6
+		c0,0,0,0,0-0.1c-0.3-0.3-0.5-0.6-0.8-0.9c-0.1-0.1-0.2-0.2-0.2-0.2c-0.1-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.5-0.2-0.8-0.3
+		c-0.4-0.1-0.8-0.2-1.2-0.3c-0.2,0-0.4-0.1-0.6-0.1c-0.2-0.1-0.4-0.1-0.6-0.2c-0.1,0-0.2-0.1-0.3-0.1c-0.1,0-0.2-0.1-0.3-0.1
+		c-0.2-0.1-0.4-0.2-0.5-0.3c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.3-0.2-0.4-0.4c-0.1-0.1-0.1-0.1-0.2-0.2c-0.1-0.1-0.1-0.2-0.2-0.2
+		c-0.1-0.1-0.1-0.2-0.2-0.3c-0.1-0.1-0.1-0.2-0.2-0.3c-0.2-0.4-0.4-0.9-0.6-1.3c0-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.2-0.1-0.4
+		c-0.1-0.3-0.2-0.5-0.3-0.7c-0.2-0.2-0.5-0.4-0.8-0.6c-0.2-0.1-0.4-0.2-0.6-0.3c-0.2-0.1-0.4-0.2-0.6-0.3c-0.1-0.1-0.2-0.2-0.4-0.3
+		c-0.1-0.1-0.2-0.2-0.4-0.3c-0.2-0.1-0.3-0.3-0.5-0.4c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.1-0.2-0.3-0.4-0.5c-0.1-0.1-0.2-0.3-0.2-0.4
+		C9.1,36,9.1,35.9,9,35.8c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.2-0.1-0.3-0.1-0.5c0-0.6,0-1.1,0-1.7c0-0.2,0-0.3,0-0.5
+		c0-0.2,0.1-0.4,0.1-0.5c0-0.2,0-0.4,0-0.6c0-0.2,0-0.4-0.1-0.7c-0.1-0.4-0.3-0.7-0.6-1c-0.2-0.3-0.5-0.6-0.7-0.9
+		c-0.2-0.3-0.4-0.5-0.6-0.8c-0.2-0.3-0.4-0.6-0.6-0.9c-0.1-0.2-0.2-0.3-0.2-0.5c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.1,0-0.2-0.1-0.4
+		c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.3,0.1-0.4c0.1-0.2,0.1-0.4,0.2-0.5c0.3-0.6,0.6-1.1,0.9-1.6
+		c0.2-0.2,0.3-0.5,0.5-0.7c0.2-0.3,0.4-0.6,0.4-1c0-0.3,0-0.5,0-0.8c0-0.3-0.1-0.6-0.1-0.8C8,19.3,8,19,8,18.7c0-0.2,0-0.4,0-0.7
+		c0-0.2,0-0.4,0.1-0.6c0-0.2,0.1-0.3,0.1-0.5c0-0.1,0.1-0.3,0.2-0.4c0.1-0.1,0.1-0.2,0.2-0.4c0.1-0.1,0.2-0.2,0.2-0.3
+		c0.1-0.1,0.2-0.2,0.3-0.3c0.1-0.1,0.2-0.2,0.3-0.3c0.2-0.1,0.3-0.2,0.5-0.3c0.2-0.1,0.4-0.2,0.7-0.3c0.1,0,0.2-0.1,0.4-0.1
+		c0.1,0,0.2-0.1,0.4-0.1c0.2,0,0.4-0.1,0.6-0.1c0.2,0,0.4,0,0.6-0.1c0.2,0,0.4,0,0.5,0c0.2,0,0.4,0,0.5,0c0.1,0,0.3,0,0.4,0.1
+		c0.2,0,0.5,0.1,0.7,0.1c0.4,0,0.8-0.1,1.2-0.2c0.6-0.2,1.2-0.3,1.8-0.5c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.3-0.1,0.7-0.1,1-0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.2,0,0.3,0,0.5,0.1
+		c0.2,0,0.3,0.1,0.4,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.2,0.2,0.4,0.3
+		c0.1,0.1,0.2,0.3,0.3,0.4c0.1,0.1,0.1,0.2,0.2,0.3c0,0.1,0.1,0.2,0.1,0.3c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.2,0.4,0.3,0.7
+		c0.1,0.3,0.2,0.7,0.4,1c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.2,0.3,0.3,0.5c0.2,0.3,0.5,0.6,0.8,0.8c0.3,0.2,0.5,0.5,0.8,0.7
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.1,0.2,0.2,0.3
+		c0.1,0.1,0.1,0.2,0.2,0.3c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.3,0.1,0.4c0,0.2,0.1,0.3,0.1,0.5c0,0.2,0,0.3,0,0.5c0,0.2,0,0.3,0,0.5
+		c0,0.4-0.1,0.7-0.1,1.1c0,0.3-0.1,0.7,0,1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0.5,0.3,1,0.6,1.5
+		c0.2,0.2,0.3,0.4,0.5,0.6c0.4,0.3,0.8,0.6,1.1,1c0.1,0.1,0.3,0.3,0.4,0.4c0.1,0.1,0.2,0.3,0.4,0.5c0.1,0.1,0.1,0.2,0.2,0.3
+		c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.2,0.1,0.4c0.1,0.3,0.1,0.5,0.1,0.8c0,0.3,0.1,0.5,0.1,0.8c0,0.4,0.1,0.8,0.2,1.2
+		c0.1,0.4,0.2,0.8,0.4,1.2c0.3,0.8,0.7,1.5,1,2.2c0.1,0.2,0.1,0.4,0.2,0.6c0,0.1,0.1,0.3,0.1,0.4c0,0.2,0,0.4,0,0.7
+		c0,0.2,0,0.4,0,0.6c0,0.3,0,0.7-0.1,1c0,0.3-0.1,0.7-0.2,1c-0.1,0.7-0.1,1.4,0,2.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0.3,0.1,0.7,0.1,1c0,0,0,0,0,0c0,0.3,0,0.6,0,0.9c0,0.2,0,0.5-0.1,0.7c-0.1,0.8-0.3,1.5-0.3,2.3c0,0,0,0,0,0
+		c-0.2-0.4-0.3-0.7-0.5-1.1c-0.6-1.5-1.3-2.9-2-4.3c0-0.1-0.1-0.2-0.1-0.3c0.1-0.4,0.2-0.8,0.3-1.2c0.1-0.5,0.3-0.9,0.4-1.4
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.2,0.1-0.4,0.2-0.5c0.1-0.1,0-0.3-0.1-0.4c-0.1-0.1-0.3,0-0.4,0.1
+		c-0.1,0.3-0.2,0.6-0.4,0.9c-0.1,0.3-0.3,0.6-0.4,1c-0.1,0.2-0.1,0.3-0.1,0.5c0-0.1-0.1-0.2-0.1-0.3c-0.6-1.1-1.2-2.2-1.7-3.3
+		c0-0.2,0-0.4,0-0.6c0-0.3,0-0.5,0-0.8c0-0.1,0-0.2,0-0.3c0,0,0,0,0,0c0.1-0.6,0.1-1.3,0.2-1.9c0.1-0.6,0.2-1.3,0.3-1.9
+		c0-0.2-0.1-0.3-0.2-0.3c-0.2,0-0.3,0.1-0.3,0.2c-0.1,0.5-0.1,1-0.2,1.6c-0.1,0.5-0.1,1-0.2,1.5c0,0.3-0.1,0.7-0.1,1
+		c0,0.2,0,0.3,0,0.5c-0.7-1.4-1.5-2.7-2.4-4c-0.4-0.6-0.8-1.1-1.2-1.7c-0.2-0.7-0.4-1.5-0.5-2.2c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.4-0.1-0.9-0.2-1.3c0-0.4-0.1-0.8-0.1-1.2c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1,0-0.2,0-0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0-0.2,0-0.3,0-0.5
+		c0-1.2-0.1-2.4-0.1-3.6c0-0.2-0.1-0.3-0.3-0.3c-0.2,0-0.3,0.1-0.3,0.3c0,0.2,0,0.4,0,0.6c0,0.6,0,1.2,0,1.8c0,0.6,0,1.2,0,1.8
+		c0,1,0.2,2.1,0.4,3.1c0.1,0.4,0.2,0.8,0.3,1.2c-0.3-0.3-0.5-0.7-0.8-1c-0.5-0.6-1-1.2-1.5-1.8c-0.5-0.6-1-1.2-1.5-1.8c0,0,0,0,0,0
+		c-0.6-0.7-1.1-1.3-1.6-2c-0.1-0.1-0.3-0.2-0.5-0.1c-0.1,0.1-0.2,0.3-0.1,0.5c0.4,0.5,0.8,1.1,1.3,1.6c0.4,0.5,0.8,1.1,1.2,1.7
+		c0.8,1.2,1.6,2.3,2.4,3.5c0.2,0.3,0.4,0.6,0.6,1c-0.2-0.1-0.3-0.2-0.5-0.4c-1.2-0.8-2.5-1.5-3.8-2.2c0,0,0,0,0,0
+		c-0.5-0.3-1.1-0.5-1.6-0.7c-0.3-0.1-0.6-0.2-0.9-0.3c-0.3-0.1-0.5-0.2-0.8-0.3c0,0,0,0-0.1,0c-0.2-0.1-0.4,0-0.4,0.2
+		c0,0.2,0.1,0.4,0.4,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0.1,0.3,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.8,0.3,1.6,0.7,2.4,1.1c0,0,0,0,0,0c0.1,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c1.3,0.7,2.5,1.4,3.7,2.2c0,0,0,0,0,0c0.1,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0.4,0.3,0.7,0.5,1.1,0.8
+		c0.2,0.2,0.4,0.3,0.7,0.5c0,0.1,0.1,0.1,0.1,0.1c0.5,0.9,1,1.9,1.4,2.8c0.3,0.6,0.6,1.2,0.8,1.7c-0.1,0-0.1-0.1-0.2-0.1
+		c0,0,0,0,0,0c0,0-0.1,0-0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0
+		c0,0-0.1-0.1-0.1-0.1c-0.2-0.1-0.4-0.3-0.6-0.4c-0.2-0.1-0.4-0.3-0.7-0.4c-0.5-0.3-0.9-0.5-1.4-0.8c-0.5-0.2-1-0.5-1.4-0.7
+		c-0.5-0.2-1-0.4-1.6-0.6c0,0,0,0,0,0c-0.3-0.1-0.5-0.2-0.8-0.3c-0.2-0.1-0.4-0.1-0.7-0.2c-0.1,0-0.2,0.1-0.2,0.1
+		c0,0.1,0,0.2,0.1,0.2c0.1,0,0.1,0,0.2,0.1c0,0,0,0,0,0c0.2,0.1,0.4,0.2,0.6,0.3c0.5,0.2,1,0.4,1.5,0.6c0.5,0.2,1,0.4,1.5,0.7
+		c0,0,0,0,0,0c0.1,0.1,0.3,0.1,0.4,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.9,0.4,1.7,0.9,2.5,1.5c0,0,0,0,0.1,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.3,0.2,0.6,0.4,0.9,0.7c0.2,0.1,0.3,0.3,0.5,0.4c0,0,0,0.1,0,0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+		c0.1,0.1,0.1,0.2,0.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0.5,0.9,0.9,1.9,1.3,2.8c0.2,0.5,0.5,1,0.7,1.6
+		c-0.2-0.1-0.3-0.3-0.5-0.4c-0.2-0.1-0.3-0.2-0.5-0.4c-0.9-0.6-1.9-1.1-2.9-1.5c-0.5-0.2-1-0.4-1.5-0.6c-0.3-0.1-0.6-0.2-0.8-0.3
+		c-0.2-0.1-0.5-0.1-0.7-0.2c-0.1,0-0.2,0-0.2,0.1c0,0.1,0,0.2,0.1,0.2c0.2,0.1,0.3,0.1,0.5,0.2c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1c1,0.4,2,0.8,3,1.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.4,0.2,0.8,0.4,1.2,0.6c0.2,0.1,0.4,0.3,0.6,0.4c0.2,0.1,0.3,0.2,0.5,0.3c0.2,0.2,0.5,0.3,0.7,0.5
+		c0.2,0.1,0.3,0.3,0.5,0.4c0.1,0.2,0.1,0.3,0.2,0.5c0.6,1.4,1.2,2.7,1.7,4.1C29.9,50.1,29.9,50.1,29.8,50z M35.3,58.9
+		c-0.2-0.8-0.4-1.5-0.6-2.3c-0.5-1.6-1-3.2-1.6-4.7c-0.3-0.8-0.6-1.6-0.9-2.4c0-0.1,0-0.2,0-0.2c0-0.4,0.1-0.9,0.1-1.3
+		c0.1-0.4,0.1-0.8,0.2-1.3c0-0.2,0.1-0.4,0.1-0.6c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0.1,0.1,0.2,0.2,0.3,0.3c0.2,0.1,0.4,0.2,0.6,0.3
+		c0.2,0.1,0.4,0.2,0.6,0.2c0.2,0.1,0.4,0.1,0.6,0.2c0.2,0.1,0.4,0.1,0.6,0.2c0.3,0.1,0.6,0.2,0.9,0.3c0.1,0,0.1,0.1,0.2,0.1
+		c0.2,0.1,0.3,0.2,0.4,0.3c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.3,0.1,0.6,0.2,1c0.5,2.5,0.9,5,1.3,7.6c0.2,1.4,0.4,2.8,0.6,4.2
+		c0.2,1.3,0.3,2.7,0.4,4c0,0,0-0.1,0-0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,1.3,0.1,2.6,0.1,3.9
+		c0,0.3,0,0.7,0,1c0,0.2-0.1,0.5-0.1,0.7c0,0.2-0.1,0.5-0.1,0.7c0,0.1,0,0.3,0,0.4c0,0-0.1,0-0.1,0c-0.2,0-0.4,0-0.6,0
+		c-0.5,0-1,0-1.5,0c0-0.2,0-0.3,0-0.5c0-0.8-0.1-1.6-0.2-2.4c-0.1-0.8-0.2-1.6-0.3-2.4c-0.3-1.6-0.6-3.3-0.9-4.9
+		C35.7,60.6,35.5,59.8,35.3,58.9z M48.4,75.1c0.3,0.2,0.6,0.4,0.9,0.6c0.2,0.2,0.4,0.3,0.6,0.5c0.2,0.2,0.4,0.4,0.5,0.6
+		c0,0,0.1,0.1,0.1,0.1c-0.2,0-0.3,0-0.5,0.1c0,0,0,0,0,0c-0.2,0-0.5,0.1-0.7,0.1c-1.2,0.2-2.4,0.3-3.5,0.5c-0.6,0.1-1.2,0.1-1.8,0.2
+		c-0.6,0.1-1.2,0.1-1.8,0.1c-0.1,0-0.3,0.1-0.2,0.3c0,0.1,0.1,0.2,0.3,0.2c0,0,0,0,0,0c0.8,0,1.5-0.1,2.3-0.1c0.6,0,1.2-0.1,1.8-0.1
+		c0.6-0.1,1.2-0.1,1.9-0.2c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0.4-0.1,0.9-0.1,1.3-0.2c0.2,0,0.4-0.1,0.6-0.1c0.1,0,0.2-0.1,0.3-0.1
+		c0,0,0.1,0,0.1-0.1c0.1,0.2,0.2,0.3,0.3,0.5c0.2,0.4,0.4,0.8,0.6,1.2c-0.3,0.1-0.5,0.1-0.8,0.2c-1.1,0.2-2.1,0.5-3.2,0.7
+		c-0.1,0-0.2,0.2-0.2,0.3c0,0.1,0.1,0.2,0.3,0.2c0,0,0,0,0.1,0c0.4-0.1,0.9-0.2,1.3-0.3c0.5-0.1,1.1-0.2,1.6-0.3
+		c0.3-0.1,0.5-0.1,0.8-0.2c0.1,0,0.3-0.1,0.4-0.1c0,0,0,0,0,0c0.1,0.2,0.2,0.4,0.3,0.6c0.3,0.6,0.5,1.3,0.7,2c0.1,0.5,0.2,1,0.3,1.5
+		c0.1,0.7,0.1,1.5,0.1,2.2c0,0.3,0,0.6,0,1c0,0.3-0.1,0.7-0.1,1c0,0.2-0.1,0.4-0.1,0.7c-0.1,0.2-0.1,0.5-0.2,0.7
+		c0,0.1-0.1,0.2-0.1,0.2c-0.2,0-0.4,0.1-0.6,0.1c-0.3,0.1-0.6,0.1-0.8,0.2c-0.1,0-0.2,0.1-0.2,0.3c0,0.1,0.1,0.2,0.2,0.2
+		c0,0,0,0,0,0c0.3-0.1,0.6-0.1,1-0.2c0.1,0,0.2,0,0.2-0.1c0,0,0,0.1,0,0.1c-0.1,0.3-0.2,0.5-0.3,0.8c-0.1,0.2-0.2,0.4-0.3,0.6
+		c-0.1,0.2-0.2,0.4-0.3,0.6c0,0,0,0.1-0.1,0.1c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0
+		c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0c0,0,0,0,0,0c-0.4,0.1-0.9,0.2-1.3,0.4c-1.1,0.3-2.2,0.5-3.4,0.8c-0.1,0-0.2,0.2-0.2,0.3
+		c0,0.1,0.1,0.2,0.2,0.2c0,0,0,0,0.1,0c0.4-0.1,0.8-0.2,1.1-0.2c0.5-0.1,1.1-0.2,1.6-0.4c0.3-0.1,0.6-0.1,0.8-0.2
+		c0.3-0.1,0.5-0.1,0.8-0.2c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1c0,0,0,0,0,0c-0.1,0.2-0.3,0.3-0.4,0.5c-0.1,0.2-0.3,0.3-0.4,0.5c-0.2,0.2-0.5,0.5-0.7,0.7
+		c-0.3,0.2-0.5,0.4-0.8,0.6c-0.3,0.2-0.6,0.5-1,0.7c-0.3,0.2-0.7,0.4-1,0.7c0,0,0.1,0,0.1,0c-0.1,0.1-0.2,0.1-0.3,0.2c0,0,0,0,0,0
+		c-0.2,0.1-0.4,0.2-0.6,0.3c-0.4,0.2-0.9,0.5-1.4,0.7c-0.4,0.2-0.9,0.4-1.3,0.6c-0.9,0.5-1.9,0.9-2.7,1.5c-0.9,0.6-1.7,1.2-2.5,1.8
+		c-0.1,0.1-0.3,0.3-0.4,0.4c0,0,0,0,0-0.1c-0.1-0.5-0.3-1-0.6-1.4c-0.2-0.2-0.3-0.3-0.5-0.5c-0.2-0.2-0.4-0.3-0.6-0.4
+		c-0.4-0.3-0.8-0.5-1.2-0.7c-0.8-0.4-1.7-0.8-2.6-1.2c-0.9-0.4-1.8-0.9-2.6-1.4c-0.8-0.5-1.5-1-2.3-1.5c-0.1,0-0.1-0.1-0.2-0.1
+		c0,0,0,0,0,0c-0.4-0.3-0.8-0.7-1.2-1.1c-0.3-0.3-0.6-0.6-0.9-1c-0.3-0.3-0.5-0.7-0.7-1.1c0,0,0-0.1-0.1-0.1c0,0,0,0,0,0
+		c-0.3-0.5-0.5-1-0.7-1.5c0.1,0,0.3,0,0.4,0.1c0.4,0,0.8,0.1,1.2,0.1c0,0,0,0,0,0c0.1,0,0.2-0.1,0.2-0.2c0-0.1-0.1-0.2-0.2-0.2
+		c-0.4,0-0.7-0.1-1.1-0.1c-0.2,0-0.3,0-0.5,0c0,0-0.1,0-0.1,0c-0.2-0.6-0.4-1.2-0.6-1.9c-0.1-0.2-0.1-0.4-0.1-0.6
+		c0.3,0,0.6,0.1,0.8,0.1c0.7,0.1,1.4,0.2,2,0.3c0.7,0.1,1.4,0.2,2.1,0.2c0.7,0,1.4,0.1,2.1,0.1c1.4,0,2.8,0.1,4.2,0.1c0,0,0,0,0,0
+		c0.2,0,0.3-0.1,0.3-0.3c0-0.2-0.1-0.3-0.3-0.3c-1.1,0-2.3-0.1-3.4-0.1c-0.7,0-1.4-0.1-2.1-0.1c-0.7,0-1.4-0.1-2-0.2c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.7-0.1-1.3-0.2-2-0.2c-0.6-0.1-1.3-0.2-1.9-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0-0.1,0-0.1c-0.1-0.5-0.1-1.1-0.1-1.6c0-0.3,0-0.5,0.1-0.8c0-0.2,0.1-0.5,0.1-0.7c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.4,0,0.8,0.1,1.3,0.1c0.4,0,0.8,0.1,1.3,0.1c1.2,0.1,2.5,0.1,3.7,0.2c0,0,0,0,0,0c0.2,0,0.3-0.1,0.3-0.3
+		c0-0.2-0.1-0.3-0.3-0.3c-0.9,0-1.9-0.1-2.8-0.2c-0.6,0-1.3-0.1-1.9-0.1c-0.6,0-1.1-0.1-1.7-0.1c0.1-0.3,0.2-0.7,0.4-1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.3,0.3-0.5,0.4-0.8c0.2,0,0.3,0,0.5,0c0.3,0,0.5,0,0.8,0.1
+		c0,0,0,0,0,0c0.2,0,0.4-0.2,0.4-0.4c0-0.3-0.2-0.4-0.4-0.5c-0.3,0-0.5,0-0.8-0.1c0.3-0.5,0.6-1,1-1.4c0,0,0.1-0.1,0.1-0.1
+		c0,0,0,0-0.1,0.1c0-0.1,0.1-0.1,0.1-0.2c0.2-0.3,0.4-0.5,0.7-0.8c0.2-0.2,0.4-0.5,0.7-0.7c0.4-0.4,0.7-0.7,1.1-1
+		c0.5-0.4,1.1-0.8,1.7-1.1c0.5-0.3,1.1-0.6,1.6-0.8c0.6-0.3,1.3-0.5,2-0.6c0.2-0.1,0.4-0.1,0.7-0.1c0.3,0,0.7,0,1,0
+		c0.4,0,0.9,0,1.3,0c0.9,0,1.8,0,2.7,0c0.9,0,1.9,0.1,2.8,0.2c0,0,0,0,0,0c1,0.1,1.9,0.3,2.9,0.6c0.9,0.2,1.7,0.5,2.5,0.9
+		C47.4,74.6,47.9,74.8,48.4,75.1z M49.8,53.4c-0.5,1.4-1,2.8-1.4,4.2c-0.4,1.3-0.8,2.7-1.1,4.1c-0.5,2-0.9,4-1.2,6
+		c-0.1,0.5-0.3,1-0.4,1.5c-0.2,0.6-0.3,1.2-0.5,1.8c-0.1,0.5-0.2,1-0.3,1.4c-0.2-0.1-0.4-0.1-0.6-0.1c0-0.2,0-0.4,0-0.6
+		c0-0.3,0-0.6,0-0.8c0-0.4,0-0.7,0-1.1c0-0.2,0.1-0.4,0.1-0.6c0.2-1.1,0.3-2.2,0.4-3.3c0.3-2.8,0.7-5.5,1-8.3
+		c0.1-1.4,0.3-2.8,0.4-4.2c0-0.4,0.1-0.8,0.1-1.2c0,0,0,0,0-0.1c0.2-0.3,0.4-0.7,0.6-1c0.2-0.4,0.4-0.7,0.6-1.1
+		c0.2-0.4,0.5-0.7,0.8-1.1c0.3-0.4,0.6-0.7,0.9-1c0.5-0.6,1.1-1.3,1.6-1.9c0,0.3,0.1,0.6,0.1,0.8c0,0,0,0,0,0c0,0.1,0,0.1,0,0.2
+		c0,0.4,0.1,0.8,0.1,1.2c0,0.5,0,1.1,0.1,1.6c0,0,0,0.1,0,0.1C50.7,51.1,50.2,52.3,49.8,53.4z M75.1,21.6c0,0.1,0,0.2,0,0.3
+		c0,0.1,0,0.2,0,0.3c0,0.1-0.1,0.3-0.1,0.4c0,0.1-0.1,0.2-0.1,0.4c-0.2,0.5-0.4,1-0.5,1.5c-0.1,0.2-0.1,0.4-0.1,0.6
+		c0,0.3,0,0.5,0,0.8c0,0.1,0,0.3,0.1,0.4c0,0.1,0,0.3,0,0.4c0,0.2,0,0.4,0,0.6c0,0.2,0,0.4-0.1,0.5c0,0.1,0,0.2-0.1,0.3
+		c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.1-0.1,0.2-0.2,0.3c-0.1,0.1-0.2,0.3-0.3,0.4c-0.2,0.3-0.5,0.5-0.7,0.8c-0.1,0.2-0.3,0.3-0.4,0.5
+		c-0.1,0.2-0.2,0.3-0.3,0.5C72,30.8,72,30.9,71.9,31c-0.1,0.2-0.2,0.4-0.3,0.5c-0.1,0.3-0.2,0.7-0.2,1c0,0.4-0.1,0.7-0.1,1.1
+		c0,0.1,0,0.2-0.1,0.4c0,0,0,0.1-0.1,0.1c0,0,0,0.1-0.1,0.1c0,0,0,0,0,0.1c0,0-0.1,0.1-0.1,0.1c-0.1,0-0.1,0.1-0.2,0.1
+		c-0.4,0.2-0.8,0.5-1.1,0.7c-0.4,0.3-0.7,0.6-0.9,1.1c-0.1,0.3-0.2,0.6-0.2,0.9c0,0.2-0.1,0.4-0.2,0.6c0,0.1-0.1,0.2-0.1,0.2
+		c0,0,0,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0-0.1,0c-0.3,0.2-0.7,0.4-1,0.6
+		c-0.4,0.2-0.7,0.5-1.1,0.7c-0.2,0.2-0.4,0.3-0.6,0.5c-0.3,0.3-0.6,0.7-0.8,1.1c-0.2,0.4-0.3,0.8-0.4,1.1c-0.1,0.3-0.2,0.6-0.3,0.8
+		c-0.1,0.1-0.1,0.2-0.2,0.3c0,0-0.1,0.1-0.1,0.1c0,0,0,0-0.1,0.1c0,0,0,0-0.1,0.1c0,0-0.1,0-0.1,0c-0.1,0-0.1,0-0.2,0.1
+		c-0.1,0-0.2,0.1-0.3,0.1c-0.1,0-0.3,0.1-0.4,0.1c-0.4,0.1-0.8,0.1-1.2,0.2c-0.7,0.2-1.3,0.4-1.8,0.9c-0.4,0.3-0.6,0.7-0.9,1.1
+		c-0.2,0.3-0.5,0.7-0.7,1c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0.1-0.2,0.2-0.3,0.2c-0.3,0.2-0.5,0.3-0.8,0.5c-0.3,0.2-0.5,0.3-0.7,0.5
+		c-0.4,0.2-0.7,0.5-1,0.7c-0.4,0.3-0.7,0.5-1,0.8c-0.1,0.1-0.2,0.2-0.4,0.3c0-0.1,0.1-0.2,0.1-0.3c0.5-1.4,1-2.7,1.5-4
+		c0.5-1.2,1-2.4,1.5-3.7c0.1-0.1,0.3-0.2,0.4-0.3c0.2-0.1,0.3-0.2,0.5-0.3c0.3-0.2,0.6-0.3,0.9-0.4c0.3-0.1,0.6-0.3,1-0.4
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0.6-0.2,1.2-0.4,1.8-0.6c0.3-0.1,0.5-0.1,0.8-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.2-0.2c0-0.1-0.1-0.2-0.2-0.2c-0.1,0-0.2,0-0.3,0
+		c-0.1,0-0.2,0-0.3,0c-0.3,0-0.6,0.1-0.9,0.1c-0.3,0.1-0.6,0.1-0.8,0.2c-0.5,0.1-1.1,0.3-1.6,0.5c-0.3,0.1-0.6,0.2-0.8,0.3
+		c-0.2,0.1-0.5,0.2-0.7,0.3c-0.1,0.1-0.2,0.1-0.3,0.2c0.6-1.2,1.3-2.5,1.9-3.7c0.4-0.7,0.8-1.3,1.2-2c0.1,0,0.2-0.1,0.2-0.1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.4-0.2,0.8-0.4,1.2-0.6c0.4-0.2,0.8-0.4,1.2-0.5
+		c0.1,0,0.1-0.1,0.2-0.1c0,0,0,0,0,0c0.4-0.1,0.7-0.3,1.1-0.4c0.4-0.1,0.7-0.2,1.1-0.3c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.3-0.1,0.5-0.1,0.8-0.2c0.2,0,0.5-0.1,0.7-0.1c0.1,0,0.2-0.1,0.2-0.3
+		c0-0.1-0.1-0.2-0.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.3,0-0.4,0c-0.3,0-0.6,0.1-0.8,0.2
+		c-0.3,0.1-0.6,0.1-0.8,0.2c-0.6,0.1-1.1,0.3-1.6,0.5c-0.5,0.2-1.1,0.4-1.6,0.6c-0.2,0.1-0.3,0.2-0.5,0.3c0.1-0.2,0.2-0.4,0.3-0.5
+		c0,0,0,0,0,0c0.1-0.1,0.1-0.2,0.2-0.3c0,0,0,0,0,0c0.7-1.1,1.4-2.2,2-3.2c0,0,0.1-0.1,0.1-0.1c0,0,0-0.1,0-0.1
+		c0.1-0.2,0.3-0.4,0.4-0.7c0,0,0,0,0-0.1c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.3-0.2c0.1-0.1,0.2-0.1,0.4-0.2
+		c0.3-0.1,0.5-0.2,0.8-0.4c0,0,0,0,0,0c0.5-0.2,1.1-0.4,1.6-0.5c0.5-0.2,1.1-0.3,1.6-0.5c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.2-0.1,0.3-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2-0.1,0.2-0.2c0-0.1-0.1-0.2-0.2-0.2c-0.4,0-0.8,0.1-1.3,0.2
+		c-0.5,0.1-0.9,0.2-1.3,0.3c-0.6,0.1-1.1,0.3-1.6,0.5c-0.2,0.1-0.4,0.2-0.6,0.3c0.5-0.8,1-1.7,1.5-2.5c0.7-1.2,1.4-2.3,2.1-3.5
+		c0.1-0.1-0.1-0.3-0.2-0.1c-0.6,0.9-1.1,1.9-1.7,2.8c-0.6,0.9-1.1,1.7-1.7,2.6c-0.2,0.3-0.5,0.7-0.7,1c0,0,0,0,0,0
+		c0.1-0.6,0.1-1.3,0.2-1.9c0-0.7,0.1-1.3,0-2c0-0.2,0-0.3-0.1-0.5c0-0.1,0-0.2-0.1-0.2c0,0,0-0.1,0-0.1c0-0.1,0-0.1-0.1-0.2
+		c-0.1-0.1-0.3-0.1-0.4-0.1c-0.1,0.1-0.2,0.2-0.2,0.4c0,0,0,0,0,0c0,0.2,0.1,0.3,0.1,0.5c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0.1,0.6,0.1,1.2,0.1,1.8c0,0.5,0,1-0.1,1.5c0,0.4-0.1,0.9-0.1,1.3
+		c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0.1,0,0.3-0.1,0.4c0,0,0,0.1,0,0.1c-0.1,0.1-0.2,0.3-0.3,0.4c-0.8,1.2-1.7,2.4-2.5,3.5
+		c-0.1,0.2-0.2,0.4-0.4,0.5c0-0.3,0.1-0.6,0.1-0.9c0-0.5,0.1-1.1,0.1-1.6c0-0.6,0-1.1,0-1.7c0-0.3,0-0.5,0-0.8c0-0.1,0-0.3,0-0.4
+		c0-0.1,0-0.2,0-0.3c0,0,0,0,0,0c0-0.1-0.1-0.2-0.2-0.2c-0.1,0-0.2,0.1-0.2,0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0.2,0,0.3,0,0.5
+		c0,0.2,0,0.4,0,0.6c0,0.3,0,0.7,0,1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0
+		c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0.1,0,0.2,0,0.3c0,0,0,0,0,0c0,0.1,0,0.1,0,0.2c0,0.5,0,1.1-0.1,1.6c0,0.5-0.1,1-0.1,1.5
+		c0,0.1,0,0.1,0,0.2c0,0,0,0,0,0c0,0.2-0.1,0.4-0.1,0.6c-0.5,0.7-0.9,1.3-1.4,2c-0.5,0.8-1,1.6-1.5,2.4c0-0.4,0-0.8,0-1.2
+		c0,0,0,0,0,0c0-0.4,0-0.9,0-1.3c0-0.2,0-0.5-0.1-0.7c0-0.2,0-0.4,0-0.6c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0-0.1
+		c0-0.1-0.1-0.2-0.2-0.2c-0.1,0-0.2,0-0.3,0c-0.1,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0.2,0,0.3,0,0.5
+		c0,0.2,0,0.4,0,0.6c0,0.4,0,0.8,0,1.2c0,0.1,0,0.2,0,0.3c0,0,0,0,0,0c0,0.1,0,0.3,0,0.4c0,0.7-0.1,1.4-0.2,2c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c-0.7,1.2-1.3,2.4-1.9,3.7c-0.5,1.1-1,2.2-1.5,3.3c0-0.1,0-0.2,0-0.2c0-0.5,0-1.1-0.1-1.6c0-0.3-0.1-0.7-0.1-1
+		c0-0.2,0-0.3-0.1-0.5c0.4-0.6,0.7-1.3,0.9-2c0.1-0.5,0.3-1,0.4-1.5c0-0.2,0.1-0.5,0.1-0.7c0-0.2,0-0.5,0-0.7c0-0.1,0-0.3,0-0.4
+		c0,0,0-0.1,0-0.1c0-0.1,0.1-0.1,0.1-0.2c0.1-0.2,0.2-0.4,0.3-0.6c0.2-0.3,0.4-0.5,0.6-0.8c0.1-0.2,0.2-0.3,0.3-0.5
+		c0.1-0.1,0.2-0.3,0.2-0.4c0.1-0.2,0.3-0.5,0.3-0.8c0-0.2,0.1-0.4,0.1-0.5c0-0.3,0.1-0.7,0.1-1c0-0.2,0-0.5,0.1-0.7
+		c0-0.2,0.1-0.4,0.1-0.6c0-0.1,0.1-0.2,0.1-0.3c0.1-0.1,0.1-0.3,0.2-0.4c0.1-0.2,0.3-0.4,0.4-0.6c0.2-0.2,0.3-0.4,0.5-0.6
+		c0.2-0.2,0.3-0.4,0.5-0.6c0.2-0.3,0.4-0.7,0.6-1c0.1-0.2,0.2-0.5,0.2-0.8c0.1-0.2,0.1-0.5,0.1-0.8c0-0.5,0.1-0.9,0.2-1.4
+		c0-0.2,0.1-0.4,0.1-0.5c0-0.1,0.1-0.2,0.1-0.3c0-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.2,0.3-0.3,0.5-0.5
+		c0.4-0.3,0.8-0.7,1.2-1.1c0.2-0.2,0.4-0.4,0.6-0.6c0.3-0.4,0.6-0.7,0.8-1.2c0.1-0.3,0.2-0.7,0.2-1c0-0.2,0-0.5-0.1-0.7
+		c0-0.1,0-0.2,0-0.2c0.1-0.1,0.2-0.1,0.3-0.2c0.1-0.1,0.2-0.2,0.4-0.3c0.2-0.2,0.4-0.5,0.6-0.7c0.4-0.5,0.9-1,1.4-1.4
+		c0.2-0.1,0.3-0.3,0.5-0.4c0.1-0.1,0.2-0.1,0.3-0.2c0.2-0.1,0.4-0.2,0.6-0.3c0.2-0.1,0.4-0.2,0.6-0.3c0.2-0.1,0.4-0.3,0.6-0.4
+		c0.2-0.1,0.4-0.2,0.6-0.3c0.4-0.2,0.8-0.4,1.2-0.5c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.2,0,0.3,0.1,0.5,0.1c0.1,0.1,0.3,0.1,0.4,0.2c0.1,0.1,0.3,0.1,0.4,0.2c0.2,0.1,0.3,0.2,0.5,0.4c0.3,0.2,0.5,0.5,0.8,0.7
+		c0.1,0.1,0.3,0.2,0.4,0.4c0.2,0.1,0.3,0.2,0.5,0.3c0,0,0,0,0.1,0c0,0,0,0,0,0c0.2,0.2,0.3,0.4,0.5,0.6c0.2,0.3,0.4,0.6,0.6,1
+		c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.2,0.1,0.3c0,0.2,0.1,0.4,0.1,0.6c0,0.2,0,0.3,0,0.5C75.1,21.3,75.1,21.4,75.1,21.6z"/>
+	<path class="st0" d="M75.5,18.8C75.5,18.8,75.5,18.8,75.5,18.8C75.5,18.8,75.6,18.8,75.5,18.8C75.5,18.8,75.5,18.8,75.5,18.8z"/>
+	<path class="st0" d="M27.1,44.1C27.1,44.1,27.1,44.1,27.1,44.1C27.1,44.1,27.1,44.1,27.1,44.1C27.1,44.1,27.1,44.1,27.1,44.1z"/>
+	<path class="st0" d="M24.3,37.9C24.3,37.9,24.3,37.9,24.3,37.9C24.3,37.9,24.3,37.9,24.3,37.9C24.3,37.9,24.3,37.9,24.3,37.9z"/>
+	<polygon class="st0" points="21.2,36.8 21.2,36.8 21.2,36.8 	"/>
+	<polygon class="st0" points="21.1,25.9 21.1,25.9 21.1,25.9 	"/>
+	<path class="st0" d="M29.1,26.8C29.1,26.8,29.1,26.8,29.1,26.8C29.1,26.8,29.1,26.8,29.1,26.8C29.1,26.8,29.1,26.8,29.1,26.8z"/>
+	<path class="st0" d="M34.9,31.4C34.9,31.4,34.9,31.4,34.9,31.4C34.9,31.4,34.9,31.4,34.9,31.4C34.9,31.4,34.9,31.4,34.9,31.4z"/>
+	<path class="st0" d="M36.7,38.2C36.7,38.2,36.7,38.2,36.7,38.2C36.7,38.2,36.7,38.2,36.7,38.2C36.7,38.2,36.7,38.2,36.7,38.2z"/>
+	<polygon class="st0" points="54.9,21.5 54.9,21.5 55,21.5 	"/>
+	<polygon class="st0" points="58.9,41.5 58.9,41.5 58.9,41.5 	"/>
+	<path class="st0" d="M63.5,25.5C63.5,25.5,63.5,25.5,63.5,25.5C63.5,25.5,63.5,25.5,63.5,25.5C63.5,25.5,63.5,25.5,63.5,25.5z"/>
+	<path class="st0" d="M55.2,36.6C55.2,36.6,55.2,36.6,55.2,36.6C55.2,36.6,55.2,36.6,55.2,36.6C55.2,36.6,55.2,36.6,55.2,36.6z"/>
+	<polygon class="st0" points="22.8,82.9 22.8,82.9 22.8,82.9 	"/>
+</g>
+</svg>
+    </div>
+    <img class="absolute z-10 w-full object-none object-bottom bottom-0 left-0 h-32 " src="https://jaimyskitchen.nl/img/bck_wave_bottom.svg" />
+</section>    
     <section class="relative z-10">
     <div class="px-6 sm:px-20 py-0">
         <div class="w-full">
@@ -1188,7 +1991,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                15 min.</span>
+                                                15<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1233,7 +2037,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                20 min.</span>
+                                                20<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1278,7 +2083,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                20 min.</span>
+                                                20<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1323,7 +2129,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                40 min.</span>
+                                                40<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1368,7 +2175,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                25 min.</span>
+                                                25<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1413,7 +2221,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                30 min.</span>
+                                                30<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1458,7 +2267,8 @@
                                 <div class="flex items-center">
                     <svg class="fill-orange-800" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>
                     <span class="pl-1">
-                                                20 min.</span>
+                                                20<span class="sm:hidden">m</span> <span class="hidden sm:inline">min</span>
+                    </span>
                 </div>
                 
                                 <div class="hidden sm:flex items-center">
@@ -1488,12 +2298,542 @@
     </section>
 
 
-                        <div wire:id="gkGwikvvp2ipbUYtz9zT" wire:initial-data="{&quot;fingerprint&quot;:{&quot;id&quot;:&quot;gkGwikvvp2ipbUYtz9zT&quot;,&quot;name&quot;:&quot;popups&quot;,&quot;locale&quot;:&quot;nl&quot;,&quot;path&quot;:&quot;recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;v&quot;:&quot;acj&quot;},&quot;effects&quot;:{&quot;listeners&quot;:[]},&quot;serverMemo&quot;:{&quot;children&quot;:[],&quot;errors&quot;:[],&quot;htmlHash&quot;:&quot;88168339&quot;,&quot;data&quot;:{&quot;popups&quot;:[],&quot;cookies&quot;:[&quot;&quot;],&quot;model&quot;:&quot;App\\Cms\\Models\\Recipe&quot;,&quot;item&quot;:[]},&quot;dataMeta&quot;:{&quot;modelCollections&quot;:{&quot;popups&quot;:{&quot;class&quot;:null,&quot;id&quot;:[],&quot;relations&quot;:[],&quot;connection&quot;:null}},&quot;models&quot;:{&quot;item&quot;:{&quot;class&quot;:&quot;App\\Cms\\Models\\Recipe&quot;,&quot;id&quot;:69358,&quot;relations&quot;:[&quot;children&quot;,&quot;image_usage&quot;,&quot;image_usage.media&quot;,&quot;image_usage.media.image&quot;,&quot;list_ingredients&quot;,&quot;list_preparation&quot;,&quot;ratings&quot;,&quot;tags&quot;,&quot;parent&quot;],&quot;connection&quot;:&quot;mysql&quot;}}},&quot;checksum&quot;:&quot;32dcc5d2fa363420ec32adcdb27795bc8cb4b8f51df8542c84c9d1e98f090f36&quot;}}">
+                        <div wire:id="TNl62D1YSVpn4MlRrtEg" wire:initial-data="{&quot;fingerprint&quot;:{&quot;id&quot;:&quot;TNl62D1YSVpn4MlRrtEg&quot;,&quot;name&quot;:&quot;popups&quot;,&quot;locale&quot;:&quot;nl&quot;,&quot;path&quot;:&quot;recepten\/sajoer-lodeh-indonesisch-groente-recept-met-tofu&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;v&quot;:&quot;acj&quot;},&quot;effects&quot;:{&quot;listeners&quot;:[]},&quot;serverMemo&quot;:{&quot;children&quot;:[],&quot;errors&quot;:[],&quot;htmlHash&quot;:&quot;4ee3c17d&quot;,&quot;data&quot;:{&quot;popups&quot;:[],&quot;cookies&quot;:[&quot;&quot;],&quot;model&quot;:&quot;App\\Cms\\Models\\Recipe&quot;,&quot;item&quot;:[]},&quot;dataMeta&quot;:{&quot;modelCollections&quot;:{&quot;popups&quot;:{&quot;class&quot;:&quot;App\\Cms\\Models\\Popup&quot;,&quot;id&quot;:[69586],&quot;relations&quot;:[&quot;image_usage&quot;,&quot;image_usage.media&quot;,&quot;image_usage.media.image&quot;],&quot;connection&quot;:&quot;mysql&quot;}},&quot;models&quot;:{&quot;item&quot;:{&quot;class&quot;:&quot;App\\Cms\\Models\\Recipe&quot;,&quot;id&quot;:69358,&quot;relations&quot;:[&quot;children&quot;,&quot;image_usage&quot;,&quot;image_usage.media&quot;,&quot;image_usage.media.image&quot;,&quot;list_ingredients&quot;,&quot;list_preparation&quot;,&quot;tags&quot;,&quot;parent&quot;],&quot;connection&quot;:&quot;mysql&quot;}}},&quot;checksum&quot;:&quot;98c7be4b968f2306005a5bb3ed3dbe4949296421d7c383456c2c1a307fbe3e04&quot;}}">
     
+        <div
+        x-cloak  
+        id="popupModal" 
+        x-init="            
+            popups = docCookies.getItem('popups');
+            timeout = 0;
+            scrollPos = 0;
+            title = 'Actie: Eetkaartjes + gratis e-boek!';
+            setTimeout(() => showModal = true, timeout*1000);
+        "
+        x-on:scroll.window="   
+            getScrollPosition();
+            if(currentScrollPos > scrollPos) {scrollShow = true};
+        "
+        x-data="{                 
+            popups: '',
+            showModal: false,
+            timeout: 0,
+            scrollPos: 0,
+            currentScrollPos: 0,            
+            scrollShow: false,   
+            title: '',
+            getScrollPosition() {
+                scrollTop = window.scrollY;
+                docHeight = document.body.clientHeight;
+                winHeight = window.innerHeight;
+                scrollPercent = (scrollTop) / (docHeight - winHeight);
+                scrollPercentRounded = Math.round(scrollPercent*100);
+                this.currentScrollPos = scrollPercentRounded;
+            },
+            checkLocalCookie(value) { 
+                if(this.popups) {
+                    cookies = this.popups.split(',');                     
+                    let position = cookies.indexOf(value); 
+                    if ( ~position ) {
+                        return true; 
+                    } else {
+                        return false; 
+                    }                    
+                } else {
+                    return false;
+                }
+            },             
+            toggleCookie(value) {
+                if (this.popups === null) {
+                    cookies = [];
+                } else if (this.popups instanceof Array) {
+                } else {
+                    cookies = this.popups.split(','); 
+                }
+
+                let position = cookies.indexOf(value); 
+                if ( ~position ) {
+                    cookies.splice(position, 1);
+                } else {
+                    cookies.push(value);
+                }
+                if (cookies instanceof Array) {
+                    cookies = cookies.toString();
+                    if(cookies.slice(-1) == ',') {
+                        cookies = cookies.slice(0,-1);
+                    }
+                }
+                docCookies.setItem('popups', cookies, (365*24*60*60));
+                this.popups = cookies;
+            },        
+            closeModal(always = false) {
+                if(always) {
+                    this.toggleCookie('69586');
+                }
+                this.showModal = false;
+            }
+        }"
+
+        x-show="showModal && scrollShow"
+        x-bind:class="{ 'hidden absolute top-0': !showModal && !scrollShow, 'flex fixed': showModal && scrollShow }"
+        class="               
+            min-w-screen h-screen animated fadeIn faster left-0 top-0 
+            justify-center items-center inset-0 z-60 outline-none focus:outline-none
+            p-4 sm:p-0           
+        "
+        style="background: rgba(0,0,0,.2);" id="modal-id"
+        x-on:click="closeModal()"
+        >
+
+        <div class="w-full max-w-2xl p-5 relative mx-auto my-auto rounded-xl shadow-lg  
+            max-h-[90vh] overflow-y-scroll sm:overflow-y-hidden
+            border-4 border-white
+                        bg-orange-300
+                        overflow-hidden
+            ">
+
+            <div class="modal-content is-clipped  px-4">
+
+                <a
+                    x-on:click="closeModal(true)"
+                    type="submit" class="absolute z-20 cursor-pointer right-5 top-5 btnbtn-base">                    
+                    <img src="https://jaimyskitchen.nl/img/close-icn.svg" />
+                </a>
+
+                <div class="columns is-multiline is-mobile">
+                    <div class="column is-12">
+
+                        <div class="absolute z-0 top-96 sm:top-48 -translate-y-1/2 -right-32 w-72 h-80 rotate-12 opacity-30">
+                            <?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" class="fill-orange-800" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 78.8 123.3" style="enable-background:new 0 0 78.8 123.3;" xml:space="preserve">
+<g>
+	<path class="st0" d="M39.5,71.6C39.5,71.6,39.5,71.6,39.5,71.6C39.5,71.6,39.5,71.6,39.5,71.6C39.5,71.6,39.5,71.6,39.5,71.6z"/>
+	<path class="st0" d="M52.2,77.8C52.2,77.8,52.2,77.8,52.2,77.8C52.2,77.8,52.2,77.8,52.2,77.8C52.2,77.8,52.2,77.8,52.2,77.8z"/>
+	<path class="st0" d="M29.3,43.1C29.3,43.1,29.3,43.1,29.3,43.1c0,0.1,0,0.1,0.1,0.1C29.3,43.1,29.3,43.1,29.3,43.1z"/>
+	<path class="st0" d="M30.6,15.8C30.6,15.8,30.6,15.8,30.6,15.8C30.6,15.9,30.6,15.9,30.6,15.8C30.6,15.9,30.6,15.8,30.6,15.8z"/>
+	<polygon class="st0" points="26.8,26.1 26.8,26.1 26.8,26.1 	"/>
+	<path class="st0" d="M26.8,26.3C26.8,26.3,26.8,26.3,26.8,26.3C26.8,26.2,26.8,26.2,26.8,26.3C26.8,26.2,26.8,26.3,26.8,26.3z"/>
+	<path class="st0" d="M25.5,20.6C25.5,20.6,25.5,20.6,25.5,20.6C25.5,20.6,25.5,20.6,25.5,20.6C25.5,20.6,25.5,20.6,25.5,20.6z"/>
+	<polygon class="st0" points="17.4,13.1 17.4,13.1 17.4,13.1 	"/>
+	<path class="st0" d="M32.9,46.2C32.9,46.2,32.9,46.2,32.9,46.2C32.9,46.2,32.9,46.2,32.9,46.2C32.9,46.2,32.9,46.2,32.9,46.2z"/>
+	<path class="st0" d="M47.1,10.6C47.1,10.7,47.1,10.7,47.1,10.6C47.1,10.7,47.1,10.7,47.1,10.6C47.1,10.7,47.1,10.7,47.1,10.6z"/>
+	<path class="st0" d="M51.6,46.9C51.6,46.9,51.6,46.9,51.6,46.9C51.6,46.9,51.6,46.9,51.6,46.9C51.6,46.9,51.6,46.9,51.6,46.9z"/>
+	<path class="st0" d="M76,20.1c0-0.3-0.1-0.6-0.2-0.9c-0.1-0.1-0.1-0.3-0.2-0.4c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.3-0.4-0.4-0.6
+		c-0.1-0.1-0.1-0.2-0.2-0.3c-0.1-0.1-0.2-0.2-0.3-0.3c-0.1-0.1-0.3-0.2-0.4-0.3c-0.1,0-0.2-0.1-0.2-0.1c-0.1-0.1-0.3-0.2-0.4-0.3
+		c-0.3-0.3-0.6-0.6-1-0.8c-0.2-0.1-0.4-0.3-0.6-0.4c-0.2-0.1-0.4-0.2-0.6-0.3c-0.6-0.2-1.3-0.4-2-0.2c-0.2,0.1-0.4,0.1-0.6,0.2
+		c-0.2,0.1-0.4,0.2-0.6,0.2c-0.4,0.2-0.7,0.3-1.1,0.6c-0.2,0.1-0.3,0.2-0.5,0.3c-0.2,0.1-0.3,0.2-0.5,0.3c-0.1,0.1-0.2,0.1-0.3,0.2
+		c-0.2,0.1-0.4,0.2-0.6,0.3c-0.2,0.1-0.4,0.2-0.5,0.4c-0.3,0.2-0.6,0.5-0.9,0.8c-0.3,0.3-0.6,0.5-0.8,0.8c-0.3,0.3-0.5,0.6-0.7,0.9
+		c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1-0.4-0.1-0.7-0.2-1.1c0-0.2,0-0.3,0-0.5c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0.1-0.3c0-0.1,0-0.1,0.1-0.2
+		c0.1-0.1,0.1-0.2,0.2-0.3c0.3-0.4,0.7-0.8,1-1.2c0.3-0.4,0.6-0.8,0.9-1.2c0.2-0.3,0.4-0.6,0.5-0.9c0.1-0.3,0.3-0.6,0.3-1
+		c0-0.3,0-0.6-0.1-0.9c-0.2-0.6-0.6-1.1-1-1.5c-0.4-0.4-0.7-0.7-1.1-1c-0.1-0.1-0.2-0.2-0.2-0.3C62.1,9,62,8.9,62,8.8
+		c-0.1-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.1-0.1-0.2c0-0.2-0.1-0.5-0.1-0.7c0-0.2-0.1-0.5-0.2-0.7c-0.1-0.2-0.2-0.5-0.2-0.7
+		C61.1,6,61,5.7,60.8,5.5c-0.2-0.2-0.4-0.4-0.6-0.6c-0.5-0.4-1.1-0.7-1.8-0.8c-0.4-0.1-0.7-0.1-1.1-0.1c-0.3,0-0.5,0-0.8,0
+		c-0.3,0-0.5,0-0.8,0.1c-0.5,0.1-1,0.2-1.5,0.3c-0.5,0.1-1,0.3-1.4,0.4c-0.1,0-0.2,0-0.4,0.1c-0.2,0-0.5,0.1-0.7,0.1
+		c-0.3,0-0.5,0.1-0.8,0.1c-0.2,0.1-0.5,0.1-0.7,0.2c-0.2,0.1-0.4,0.1-0.6,0.2c-0.3,0.1-0.5,0.2-0.8,0.4c-0.6,0.4-1.1,1-1.4,1.7
+		c-0.1,0.2-0.2,0.5-0.4,0.7c-0.1,0.2-0.2,0.4-0.3,0.6c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0c-0.2,0.4-0.4,0.8-0.7,1.1
+		c-0.2,0.2-0.3,0.4-0.5,0.6c-0.3,0.3-0.6,0.6-0.9,0.9c-0.3,0.3-0.6,0.5-0.9,0.7c-0.1,0.1-0.3,0.2-0.4,0.3c0-0.1-0.1-0.2-0.1-0.3
+		c-0.1-0.3-0.3-0.6-0.4-0.8c-0.3-0.5-0.7-0.9-1.1-1.3c-0.3-0.3-0.6-0.7-0.8-1c-0.1-0.2-0.2-0.3-0.3-0.5c-0.1-0.1-0.1-0.2-0.2-0.4
+		c-0.1-0.4-0.2-0.7-0.4-1.1c-0.1-0.2-0.2-0.4-0.3-0.5c-0.1-0.2-0.2-0.3-0.4-0.5c-0.2-0.2-0.4-0.4-0.6-0.6c-0.4-0.3-0.8-0.5-1.2-0.6
+		c-0.2-0.1-0.4-0.1-0.6-0.1c-0.2,0-0.4,0-0.6,0c-0.4,0-0.7,0-1.1,0.1c-0.2,0-0.4,0-0.6,0c-0.2,0-0.4,0-0.6,0c-0.1,0-0.2,0-0.3,0
+		c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.3-0.1c-0.1,0-0.1,0-0.2-0.1c-0.2-0.1-0.3-0.1-0.5-0.2c-0.3-0.2-0.6-0.3-1-0.5
+		c-0.2-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1,0-0.2-0.1-0.3-0.1c-0.2-0.1-0.5-0.2-0.7-0.2c-0.5-0.1-1-0.1-1.5,0.1
+		c-0.6,0.2-1.1,0.6-1.5,1c-0.3,0.3-0.6,0.6-0.8,0.9c-0.2,0.3-0.5,0.6-0.7,0.9c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0.1-0.2,0.1-0.3,0.2
+		c-0.3,0.2-0.7,0.4-1,0.7c-0.3,0.3-0.7,0.6-1,0.9c-0.5,0.5-0.9,1-1.2,1.7c-0.1,0.2-0.2,0.5-0.2,0.7c0,0.1,0,0.2-0.1,0.3
+		c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2,0,0.3c0,0.2,0,0.4,0,0.6c0,0.2,0,0.4,0.1,0.6c0,0.2,0.1,0.3,0.1,0.5c-0.2-0.1-0.4-0.2-0.6-0.3
+		c-0.6-0.2-1.3-0.2-2-0.2c-0.2,0-0.4,0-0.6,0.1c-0.2,0-0.5,0.1-0.7,0.1c-0.3,0.1-0.6,0.2-1,0.3c-0.3,0.1-0.6,0.2-0.9,0.2
+		c-0.2,0-0.4,0.1-0.6,0.1c-0.1,0-0.2,0-0.3,0c-0.2,0-0.4-0.1-0.6-0.1c-0.2,0-0.3,0-0.5-0.1c-0.3,0-0.7,0-1,0c-0.7,0-1.3,0.1-2,0.3
+		c-0.7,0.2-1.4,0.5-1.9,1c-0.4,0.4-0.7,0.8-1,1.3c-0.2,0.5-0.4,1.1-0.4,1.6c0,0.2,0,0.4,0,0.6c0,0.1,0,0.2,0,0.3
+		c0,0.2,0.1,0.4,0.1,0.7c0,0.2,0.1,0.4,0.1,0.6c0,0.2,0.1,0.4,0.1,0.6c0,0.1,0,0.2,0,0.3c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.1-0.1,0.2c-0.1,0.1-0.2,0.3-0.2,0.4c0,0,0,0,0,0c-0.2,0.3-0.5,0.7-0.7,1c-0.2,0.3-0.4,0.7-0.6,1
+		c-0.2,0.4-0.4,0.8-0.5,1.2c-0.1,0.5-0.1,1.1,0,1.6c0.2,0.7,0.5,1.3,0.9,1.9c0.2,0.3,0.5,0.7,0.7,1c0.3,0.4,0.6,0.7,0.8,1.1
+		c0.1,0.1,0.1,0.2,0.2,0.3c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.2,0,0.3c0,0.3-0.1,0.6-0.1,0.8
+		c0,0.3,0,0.5-0.1,0.8c0,0.7-0.1,1.5,0.1,2.2c0.1,0.5,0.4,1,0.7,1.5c0.2,0.3,0.4,0.5,0.6,0.7c0.1,0.1,0.2,0.2,0.2,0.2
+		c0.1,0.1,0.1,0.1,0.2,0.2c0.2,0.2,0.3,0.3,0.5,0.4c0.3,0.3,0.7,0.5,1,0.7c0.2,0.1,0.4,0.2,0.6,0.3c0.2,0.1,0.4,0.2,0.6,0.3
+		c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0.1,0,0.1,0,0.2
+		c0,0.2,0.1,0.3,0.1,0.4c0,0.1,0.1,0.3,0.1,0.4c0.1,0.3,0.2,0.5,0.3,0.8c0.2,0.5,0.4,1,0.8,1.4c0.4,0.5,0.8,1,1.3,1.3
+		c0.2,0.2,0.5,0.3,0.7,0.4c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.2,0.1,0.4,0.1,0.6,0.2c0.2,0.1,0.4,0.1,0.6,0.1
+		c0.4,0.1,0.8,0.2,1.2,0.3c0.1,0.1,0.3,0.1,0.4,0.2c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.1,0.1,0.2,0.2
+		c0.1,0.1,0.1,0.1,0.2,0.2c0.2,0.3,0.4,0.5,0.7,0.8c0.2,0.3,0.5,0.5,0.7,0.8c0.1,0.1,0.2,0.2,0.4,0.4c0.1,0.1,0.3,0.2,0.4,0.3
+		c0.2,0.1,0.3,0.2,0.5,0.3c0.2,0.1,0.3,0.2,0.5,0.3c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0,0.2,0.1,0.2,0.1c0.1,0,0.2,0.1,0.3,0.1
+		c0.1,0,0.2,0.1,0.4,0.1c0.1,0,0.2,0,0.3,0.1c0.1,0,0.2,0,0.3,0.1c0.2,0,0.4,0.1,0.6,0.1c0.8,0,1.6,0,2.5,0.1c0.3,0,0.6,0,0.8,0.1
+		c0.1,0,0.2,0,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0,0,0.1,0,0.1,0.1c0.5,1.2,0.9,2.5,1.3,3.8c0,0,0,0,0,0
+		c0,0.1,0,0.1,0.1,0.2c0,0,0,0,0,0c0,0.1,0,0.1,0.1,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0.8,2.6,1.5,5.2,2.1,7.8
+		c0.4,1.6,0.7,3.2,1.1,4.8c0.2,0.8,0.3,1.6,0.5,2.3c0.1,0.4,0.2,0.8,0.3,1.1c0,0.1,0.1,0.2,0.1,0.3c0,0-0.1,0-0.1,0
+		c-0.2,0-0.3,0-0.5,0c-0.2,0-0.4,0-0.6,0c-0.5,0-0.9,0.1-1.4,0.2c-0.9,0.2-1.9,0.4-2.7,0.7c-1,0.4-1.9,0.8-2.8,1.4
+		c-0.9,0.5-1.7,1.2-2.4,1.9c-0.4,0.4-0.7,0.8-1.1,1.2c-0.3,0.4-0.6,0.8-0.9,1.2c-0.5,0.8-1,1.6-1.4,2.4c0,0,0,0.1,0,0.1
+		c0,0.1,0,0.1-0.1,0.2c-0.1,0.2-0.2,0.4-0.2,0.7c-0.1,0.3-0.2,0.5-0.2,0.8c-0.1,0.5-0.2,1-0.2,1.5c0,0.5,0,1.1,0,1.6
+		c0,0.5,0.1,1,0.2,1.5c0.2,1,0.5,2,0.9,2.9c0.2,0.5,0.4,1,0.7,1.4c0.2,0.4,0.5,0.9,0.7,1.3c0.6,0.8,1.3,1.6,2,2.2
+		c0.8,0.7,1.6,1.2,2.5,1.8c0.9,0.5,1.8,1,2.7,1.5c0.4,0.2,0.9,0.4,1.3,0.6c0.5,0.2,0.9,0.4,1.4,0.6c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0.6,0.2,1.1,0.5,1.7,0.8c0.2,0.1,0.4,0.3,0.6,0.4c0.2,0.1,0.3,0.3,0.5,0.4c0.1,0.1,0.1,0.1,0.2,0.2
+		c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.2,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1-0.1,0.2c0,0.1-0.1,0.2-0.1,0.2c-0.2,0.4-0.5,0.7-0.8,1.1c-0.3,0.4-0.5,0.8-0.8,1.3
+		c-0.1,0.2-0.2,0.5-0.2,0.7c-0.1,0.3-0.1,0.5-0.2,0.8c-0.1,0.3-0.1,0.7,0,1.1c0.1,0.3,0.1,0.5,0.3,0.8c0.4,0.9,1.2,1.6,1.9,2.4
+		c0,0,0,0,0,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.2,0.2,0.3,0.3
+		c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2
+		c0,0.1,0,0.2-0.1,0.3c0,0.1-0.1,0.3-0.1,0.4c-0.1,0.1-0.1,0.3-0.2,0.4c-0.3,0.4-0.6,0.9-0.9,1.3c-0.3,0.4-0.6,0.8-0.8,1.2
+		c-0.2,0.4-0.4,0.9-0.5,1.4c-0.1,0.3-0.1,0.7,0,1c0.1,0.2,0.2,0.4,0.3,0.7c0.2,0.4,0.5,0.8,0.7,1.2c0,0.1,0.1,0.1,0.2,0.1
+		c0.1,0,0.1,0,0.2-0.1c0.1-0.1,0.1-0.2,0-0.3c0-0.1-0.1-0.1-0.1-0.2c-0.1-0.2-0.2-0.3-0.3-0.5c-0.1-0.2-0.2-0.4-0.2-0.7
+		c0-0.1,0-0.2-0.1-0.3c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.2,0.1-0.3c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.5,0.3-0.7
+		c0.2-0.4,0.4-0.7,0.7-1c0.3-0.3,0.5-0.7,0.7-1c0.3-0.4,0.6-0.9,0.7-1.4c0.1-0.4,0.1-0.7,0.1-1.1c0-0.3-0.1-0.6-0.2-0.8
+		c-0.1-0.2-0.3-0.5-0.4-0.7c-0.2-0.2-0.3-0.3-0.5-0.5c-0.3-0.3-0.7-0.7-1-1.1c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.1-0.1-0.2-0.2-0.3
+		c0-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.2-0.1-0.3c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3c0-0.2,0.1-0.3,0.1-0.5c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0-0.1,0-0.1,0.1-0.2c0,0,0,0,0,0.1c0.1-0.2,0.1-0.4,0.2-0.5c0.1-0.3,0.3-0.5,0.4-0.8c0.1-0.2,0.3-0.5,0.5-0.7
+		c0.1-0.2,0.3-0.4,0.4-0.6c0.1-0.1,0.1-0.2,0.2-0.3c0.4-0.4,0.8-0.7,1.2-1c0.9-0.7,1.8-1.3,2.7-1.8c0.8-0.4,1.6-0.8,2.5-1.1
+		c0.7-0.3,1.4-0.5,2.1-0.8c0.5-0.2,0.9-0.4,1.4-0.7c0.5-0.2,0.9-0.5,1.4-0.8c0.9-0.6,1.7-1.2,2.5-1.9c0.8-0.8,1.5-1.6,2-2.6
+		c0.5-0.9,0.9-1.9,1.2-2.9c0.1-0.5,0.2-1,0.3-1.6c0.1-0.5,0.1-1,0.1-1.5c0-0.5,0-1-0.1-1.6c-0.1-0.5-0.1-1-0.2-1.5
+		c-0.2-1-0.5-2-0.8-2.9c-0.4-0.9-0.8-1.9-1.3-2.7c0,0,0-0.1-0.1-0.1c0,0,0,0,0,0c-0.5-0.8-1-1.6-1.6-2.2c-0.7-0.7-1.6-1.3-2.4-1.8
+		c-0.4-0.2-0.7-0.4-1.1-0.5c0.1-0.2,0.2-0.5,0.3-0.7c0.2-0.7,0.4-1.4,0.6-2.1c0.2-0.7,0.3-1.4,0.5-2.1c0.3-1.4,0.6-2.7,0.9-4.1
+		c0.3-1.4,0.6-2.8,1-4.2c0.4-1.4,0.7-2.7,1.1-4.1c0.4-1.3,0.9-2.6,1.3-3.9c0.3-0.2,0.5-0.4,0.8-0.6c0.4-0.3,0.8-0.5,1.1-0.7
+		c0.4-0.2,0.8-0.5,1.3-0.7c0.4-0.2,0.7-0.4,1.1-0.6c0.4-0.2,0.7-0.4,1.1-0.7c0.3-0.3,0.6-0.6,0.9-1c0.2-0.3,0.5-0.6,0.7-1
+		c0.1-0.1,0.2-0.2,0.3-0.3c0.1,0,0.1-0.1,0.2-0.1c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2-0.1,0.4-0.1
+		c0.1,0,0.2-0.1,0.3-0.1c0.4-0.1,0.7-0.1,1.1-0.2c0.6-0.1,1.2-0.2,1.6-0.6c0.5-0.4,0.7-1.1,0.9-1.7c0.1-0.3,0.2-0.7,0.3-1
+		c0-0.1,0-0.1,0.1-0.2c0-0.1,0.1-0.2,0.1-0.2c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.3-0.3,0.4-0.4
+		c0.2-0.1,0.3-0.2,0.5-0.4c0.3-0.2,0.6-0.4,0.8-0.5c0.3-0.2,0.5-0.3,0.8-0.5c0.1-0.1,0.3-0.2,0.4-0.3c0.2-0.1,0.3-0.3,0.4-0.5
+		c0.1-0.2,0.2-0.5,0.3-0.8c0.1-0.3,0.1-0.7,0.2-1c0-0.1,0-0.2,0.1-0.2c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1
+		c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0.3-0.2,0.5-0.3,0.8-0.5c0.4-0.2,0.9-0.5,1.1-1c0.2-0.4,0.3-0.9,0.3-1.4
+		c0-0.3,0-0.7,0.1-1c0-0.1,0-0.2,0.1-0.3c0-0.1,0.1-0.2,0.1-0.2c0.1-0.2,0.2-0.3,0.3-0.4c0.2-0.2,0.3-0.5,0.5-0.7
+		c0.1-0.1,0.1-0.1,0.2-0.2c0,0,0,0,0,0c0.2-0.3,0.5-0.6,0.7-0.8c0.3-0.4,0.6-0.8,0.7-1.3c0.1-0.4,0.1-0.9,0.1-1.3c0-0.2,0-0.5,0-0.7
+		c0-0.2-0.1-0.5-0.1-0.7c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.2,0.1-0.3c0-0.1,0-0.1,0.1-0.2c0.2-0.4,0.3-0.8,0.5-1.2
+		c0.2-0.4,0.3-0.8,0.3-1.3c0-0.2,0-0.4,0.1-0.6c0-0.2,0-0.4,0-0.6C76,20.6,76,20.3,76,20.1z M43.7,14c0.3-0.2,0.6-0.4,0.8-0.7
+		c0.3-0.2,0.6-0.5,0.9-0.8c0.3-0.3,0.6-0.6,0.8-0.9c0.1-0.2,0.3-0.3,0.4-0.5c0.1-0.2,0.2-0.3,0.3-0.5c0.2-0.3,0.4-0.7,0.6-1.1
+		c0,0,0,0,0-0.1c0,0,0,0,0,0c0.2-0.4,0.4-0.9,0.6-1.3c0.1-0.2,0.3-0.5,0.4-0.7c0.1-0.1,0.2-0.3,0.3-0.4c0.1-0.1,0.2-0.2,0.2-0.3
+		c0.1-0.1,0.2-0.2,0.3-0.2c0.1-0.1,0.2-0.1,0.3-0.2c0.1-0.1,0.3-0.1,0.4-0.2c0.4-0.1,0.9-0.3,1.3-0.4c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2,0c0,0,0,0-0.1,0c0.3-0.1,0.6-0.1,0.9-0.1c0.3-0.1,0.6-0.1,0.9-0.2c0.3-0.1,0.5-0.2,0.8-0.3
+		C54.6,5.1,54.9,5,55.2,5c0.2,0,0.5-0.1,0.7-0.1c0.2,0,0.5-0.1,0.7-0.1c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.2,0,0.5,0,0.7,0.1
+		c0.2,0,0.4,0.1,0.6,0.1c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.3,0.2c0.1,0.1,0.1,0.1,0.2,0.2
+		C60,5.9,60.1,5.9,60.2,6c0.1,0.1,0.1,0.2,0.2,0.3c0.1,0.3,0.3,0.6,0.4,0.9c0.1,0.2,0.1,0.4,0.2,0.6C61,8.2,61,8.7,61.2,9
+		c0.1,0.3,0.3,0.5,0.5,0.8c0.2,0.3,0.5,0.5,0.7,0.7c0.2,0.2,0.4,0.4,0.6,0.6c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.2,0.3,0.2,0.4
+		c0,0.1,0.1,0.2,0.1,0.2c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.2,0,0.2c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2-0.1,0.3
+		c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.2,0.4-0.3,0.6c-0.1,0.2-0.3,0.4-0.5,0.6c-0.2,0.2-0.3,0.4-0.5,0.6c-0.3,0.3-0.6,0.7-0.9,1
+		c-0.2,0.2-0.3,0.4-0.4,0.7c-0.2,0.4-0.3,1-0.3,1.5c0,0.9,0.2,1.8,0.3,2.7c0,0.1,0,0.2,0,0.3c0,0.1,0,0.1,0,0.2c0,0.1,0,0.2-0.1,0.2
+		c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.2-0.2,0.3c-0.1,0.1-0.1,0.2-0.2,0.3c0,0,0,0,0-0.1c-0.1,0.1-0.2,0.2-0.3,0.3
+		c-0.3,0.3-0.6,0.6-1,0.9c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.3,0.3-0.7,0.6-1,0.9c-0.5,0.5-0.9,1.1-1.1,1.7
+		c-0.1,0.4-0.2,0.9-0.2,1.3c0,0.4-0.1,0.8-0.2,1.2c0,0.2-0.1,0.4-0.2,0.6c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.2,0.3-0.3,0.5
+		c-0.2,0.3-0.5,0.7-0.8,1c-0.1,0.2-0.3,0.3-0.4,0.5c-0.1,0.2-0.3,0.4-0.4,0.6c-0.2,0.3-0.3,0.6-0.4,1c-0.1,0.2-0.1,0.4-0.1,0.7
+		c0,0.4-0.1,0.8-0.1,1.2c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2,0,0.2c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.1,0.3-0.2,0.4
+		c-0.1,0.3-0.3,0.6-0.5,0.8c-0.2,0.2-0.3,0.5-0.5,0.7c-0.2,0.3-0.3,0.5-0.5,0.8c-0.1,0.1-0.1,0.3-0.2,0.4c0,0.2-0.1,0.3-0.1,0.5
+		c0,0.3,0,0.6,0,0.9c0,0.4-0.1,0.7-0.1,1.1c-0.1,0.6-0.2,1.2-0.4,1.7c-0.1,0.3-0.2,0.7-0.4,1c-0.1,0.3-0.3,0.6-0.5,0.8
+		c-0.3,0.4-0.6,0.8-0.9,1.2c-0.3,0.4-0.7,0.8-1,1.2c-0.3,0.4-0.6,0.7-0.8,1.1c-0.3,0.4-0.5,0.8-0.8,1.2c-0.1,0.2-0.2,0.3-0.3,0.5
+		c0.1-0.6,0.1-1.1,0.2-1.7c0.2-1.4,0.4-2.8,0.7-4.2c0.2-1.3,0.4-2.7,0.6-4c0.1-0.4,0.1-0.7,0.2-1.1c0.1-0.1,0.1-0.2,0.2-0.2
+		c0,0,0,0,0,0c0.1-0.1,0.1-0.1,0.2-0.2c0.4-0.4,0.7-0.8,1.1-1.2c0.4-0.4,0.7-0.8,1.1-1.2c0.1-0.1,0.1-0.3,0-0.4
+		c-0.1-0.1-0.3-0.1-0.4,0c-0.3,0.3-0.7,0.7-1,1c-0.3,0.3-0.6,0.7-0.9,1c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.4,0.2-0.8,0.3-1.3
+		c0.2-1.2,0.5-2.3,0.7-3.4c0.1-0.5,0.3-1.1,0.4-1.6c0.2-0.3,0.5-0.6,0.7-0.9c0.4-0.4,0.7-0.8,1.1-1.2c0.1-0.1,0.1-0.1,0.2-0.2
+		c0.3-0.3,0.7-0.6,1.1-1c0.3-0.3,0.7-0.6,1-0.9c0.1-0.1,0.2-0.3,0-0.5c-0.1-0.1-0.3-0.2-0.5,0c-0.3,0.3-0.7,0.5-1,0.8
+		c-0.3,0.3-0.7,0.6-1,0.9c-0.5,0.4-0.9,0.9-1.4,1.4c0.4-1.7,0.9-3.4,1.4-5c0,0,0,0,0,0.1c0.1-0.3,0.2-0.5,0.3-0.8
+		c0,0,0.1-0.1,0.1-0.1c0,0,0,0,0,0c0.4-0.5,0.9-1.1,1.4-1.5c0,0,0,0,0.1-0.1c0.3-0.2,0.5-0.5,0.8-0.7c0.3-0.2,0.6-0.4,0.8-0.6
+		c0,0,0,0,0.1,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1
+		c0,0,0.1-0.1,0.1-0.1c0-0.1,0-0.1,0-0.2c-0.1-0.1-0.2-0.1-0.3-0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0-0.1,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0.1-0.3,0.2-0.4,0.3c-0.2,0.2-0.4,0.3-0.6,0.5c-0.2,0.2-0.4,0.3-0.6,0.5
+		c-0.2,0.2-0.4,0.4-0.6,0.6c-0.1,0.2-0.3,0.3-0.4,0.5c0.1-0.4,0.2-0.8,0.4-1.2c0,0,0,0,0,0c0.1-0.3,0.2-0.6,0.3-0.9c0,0,0,0,0,0
+		c0.1-0.2,0.1-0.4,0.2-0.6c0.8-2.6,1.6-5.1,2.5-7.7c0.1-0.2-0.2-0.3-0.3-0.1c-0.2,0.5-0.3,1-0.5,1.4c-0.2,0.6-0.4,1.3-0.7,1.9
+		c-0.2,0.7-0.4,1.3-0.7,2c-0.3,0.7-0.5,1.4-0.8,2.1c0,0,0,0,0,0c0,0,0,0,0,0c0-0.2,0-0.3-0.1-0.5c-0.1-0.5-0.2-1-0.4-1.5
+		c-0.1-0.5-0.3-1-0.5-1.5c-0.2-0.5-0.4-1-0.5-1.5c-0.1-0.2-0.2-0.5-0.3-0.7c0-0.1-0.1-0.3-0.1-0.4c0-0.1-0.1-0.2-0.1-0.3
+		c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.1,0.1-0.1,0.2c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.3,0.1,0.4c0.1,0.2,0.2,0.5,0.3,0.7
+		c0.2,0.5,0.3,1,0.5,1.5c0.1,0.2,0.1,0.5,0.2,0.7c0.1,0.2,0.1,0.5,0.2,0.7c0.1,0.4,0.2,0.7,0.3,1.1c0.1,0.3,0.1,0.7,0.2,1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0.2-0.1,0.4-0.1,0.6c-0.1,0.3-0.1,0.6-0.2,0.9
+		c-0.5,1.2-0.9,2.4-1.4,3.6c-0.1,0.4-0.3,0.8-0.4,1.2c-0.1-0.1-0.1-0.3-0.2-0.4c-0.2-0.5-0.4-1-0.7-1.5c-0.5-1-1-2-1.6-3
+		c-0.3-0.5-0.6-1-0.9-1.5c-0.1-0.2-0.3-0.5-0.4-0.7c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.1-0.2-0.3-0.3-0.4c0,0-0.1-0.1-0.2-0.1
+		c-0.1,0-0.1,0-0.2,0.1c0,0.1,0,0.1,0,0.2c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0.1,0.2,0.3,0.4,0.4,0.6c0.3,0.6,0.7,1.2,1,1.8
+		c0,0,0,0,0,0c0.1,0.1,0.1,0.2,0.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.1,0.2,0.2,0.3c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0.1,0.2,0.3,0.5,0.4,0.7c0.3,0.5,0.5,1,0.8,1.5c0.2,0.5,0.4,1,0.6,1.5
+		c0,0,0,0.1,0,0.1c0.1,0.3,0.2,0.5,0.3,0.8c0,0.1,0.1,0.2,0.1,0.3c-0.2,0.6-0.4,1.2-0.5,1.8c-0.5,1.6-0.9,3.2-1.4,4.8
+		c-0.2-0.5-0.3-1-0.5-1.5c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c-0.3-0.8-0.6-1.5-1-2.2c-0.2-0.5-0.5-1-0.8-1.4c-0.3-0.5-0.5-1-0.8-1.4c0,0,0,0,0,0
+		c0-0.1-0.1-0.2-0.1-0.2c0-0.1-0.1-0.1-0.1-0.2c0,0-0.1-0.1-0.1-0.1c-0.1,0-0.2,0-0.2,0.1c0,0.1,0,0.2,0.1,0.2c0,0,0,0,0,0
+		c0.2,0.4,0.4,0.7,0.5,1.1c0.2,0.4,0.3,0.7,0.5,1.1c0.2,0.5,0.5,1,0.7,1.5c0.2,0.5,0.5,1,0.7,1.5c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0.1,0.1,0.2,0.1,0.2c0.3,0.8,0.5,1.5,0.7,2.3c-0.2,0.8-0.4,1.6-0.6,2.3c-0.2,0.8-0.4,1.7-0.6,2.5c-0.1-0.2-0.1-0.4-0.2-0.7
+		c-0.3-1-0.6-2.1-1-3c-0.2-0.5-0.4-1-0.7-1.4c-0.1-0.2-0.2-0.5-0.4-0.7c-0.1-0.1-0.1-0.2-0.2-0.3c0-0.1-0.1-0.2-0.2-0.3
+		c-0.1-0.1-0.2-0.1-0.3,0c-0.1,0.1-0.1,0.2,0,0.2c0,0,0,0,0,0c0.1,0.1,0.1,0.2,0.1,0.3c0.1,0.1,0.1,0.2,0.2,0.4
+		c0.1,0.2,0.2,0.5,0.3,0.7c0.2,0.5,0.4,0.9,0.6,1.4c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0.1,0.1c0,0,0,0,0,0
+		c0.1,0.3,0.3,0.7,0.4,1c0.2,0.5,0.3,1,0.5,1.5c0.1,0.5,0.3,1,0.4,1.5c0,0.1,0.1,0.3,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4
+		c-0.3,1.4-0.6,2.8-0.9,4.1c-0.2,0.8-0.3,1.7-0.5,2.5c0-0.1,0-0.1-0.1-0.2c-0.1-0.4-0.4-0.8-0.6-1.2c-0.2-0.4-0.5-0.7-0.7-1.1
+		c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.4-0.2-0.8-0.3-1.2c-0.1-0.3-0.1-0.6-0.1-0.9c0-0.2,0-0.4,0-0.6c0-0.2-0.1-0.4-0.1-0.5
+		c0-0.2-0.1-0.4-0.2-0.6c-0.1-0.2-0.1-0.4-0.2-0.6c-0.3-0.7-0.6-1.4-0.9-2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.2-0.4-0.2-0.5c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.4
+		c0-0.2,0-0.5,0.1-0.7c0-0.2,0.1-0.5,0.1-0.7c0.1-0.5,0.1-1,0-1.5c-0.1-0.5-0.2-1-0.3-1.5c-0.1-0.3-0.1-0.5-0.1-0.8
+		c0-0.2-0.1-0.5-0.1-0.7c0-0.2,0-0.4,0-0.6c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0-0.2,0-0.4,0.1-0.5
+		c0-0.2,0.1-0.3,0.1-0.5c0-0.2,0.1-0.3,0.1-0.5c0.1-0.3,0.2-0.5,0.3-0.8c0.1-0.3,0.2-0.6,0.3-0.9c0.2-0.6,0.2-1.1,0.2-1.7
+		c0-0.6-0.1-1.1-0.1-1.7c0-0.2,0-0.4,0-0.5c0-0.2,0-0.4,0-0.6c0-0.1,0-0.2,0-0.4c0-0.1,0-0.3,0.1-0.4c0-0.2,0.1-0.3,0.1-0.5
+		c0.2-0.4,0.3-0.9,0.5-1.3c0,0,0,0,0-0.1c0.2-0.4,0.5-0.9,0.7-1.3c0.2-0.5,0.3-1,0.4-1.5c0.1-0.9,0.2-1.9,0.3-2.8
+		c0-0.1,0-0.2,0.1-0.3c0-0.1,0.1-0.2,0.1-0.3c0,0,0-0.1,0.1-0.1C43.6,14.1,43.6,14.1,43.7,14C43.6,14,43.7,14,43.7,14z M44.3,51.2
+		c-0.2,1.4-0.4,2.8-0.6,4.2c-0.3,2.8-0.6,5.6-0.9,8.3c-0.1,1.4-0.2,2.8-0.3,4.2c0,0.3,0,0.6,0,0.9c0,0.2-0.1,0.3-0.1,0.5
+		c0,0,0,0,0,0c-0.1,0.5-0.2,1-0.3,1.4c0,0.2-0.1,0.5-0.1,0.7c0,0.1,0,0.2,0,0.3c-0.2,0-0.4,0-0.6-0.1c0-0.1,0-0.2,0.1-0.3
+		c0-0.1,0-0.2,0.1-0.4c0.1-0.4,0.1-0.7,0.1-1.1c0.1-1.1,0.1-2.2,0.1-3.4c-0.1-2.8-0.4-5.6-0.8-8.3c-0.2-1.4-0.4-2.8-0.7-4.1
+		c-0.3-1.4-0.5-2.9-0.8-4.3c-0.1-0.5-0.2-1-0.3-1.4c0.1-0.3,0.1-0.7,0.2-1c0.1-0.6,0.3-1.1,0.5-1.7c0.2-0.6,0.4-1.1,0.5-1.7
+		c0.1-0.4,0.3-0.8,0.4-1.1c0.1-0.3,0.2-0.6,0.3-0.9c0.1,0.2,0.2,0.5,0.3,0.7c0.1,0.2,0.2,0.5,0.2,0.7c0,0.2,0.1,0.4,0.1,0.6
+		c0,0.2,0,0.5,0.1,0.7c0.1,0.5,0.2,0.9,0.3,1.3c0.1,0.5,0.3,0.9,0.5,1.3c0.2,0.4,0.5,0.8,0.8,1.1c0.1,0.2,0.3,0.4,0.4,0.6
+		c0.1,0.2,0.2,0.5,0.3,0.8c0.1,0.2,0.1,0.4,0.2,0.6c0,0.2,0.1,0.3,0.1,0.5C44.4,51.1,44.4,51.1,44.3,51.2z M21.9,13.3
+		c0-0.2,0-0.4-0.1-0.5c0-0.2,0-0.5,0-0.7c0-0.1,0-0.3,0-0.4c0-0.1,0-0.3,0.1-0.4c0-0.2,0.1-0.3,0.1-0.5c0.1-0.2,0.1-0.3,0.2-0.5
+		c0.1-0.1,0.1-0.2,0.2-0.4c0.1-0.1,0.2-0.2,0.3-0.4C22.8,9.3,23,9.2,23.2,9c0.4-0.3,0.8-0.7,1.2-1c0.3-0.2,0.5-0.3,0.8-0.5
+		c0.3-0.2,0.5-0.4,0.7-0.7c0.2-0.3,0.4-0.5,0.6-0.8c0.2-0.2,0.4-0.5,0.6-0.7c0.1-0.1,0.1-0.1,0.2-0.2C27.4,5,27.4,5,27.5,4.9
+		c0.1-0.1,0.2-0.2,0.4-0.3c0.1-0.1,0.2-0.1,0.3-0.2c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0.1,0.4,0.1c0.2,0.1,0.4,0.2,0.6,0.3c0.5,0.3,1,0.6,1.4,0.8
+		c0.4,0.2,0.7,0.3,1.1,0.4C33.2,6,33.4,6,33.6,6c0.2,0,0.4,0,0.6,0c0.4,0,0.8,0,1.2-0.1c0.4,0,0.7,0,1.1,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0.1,0.2,0.1,0.3,0.2
+		c0.1,0.1,0.1,0.1,0.2,0.2C38.7,7,38.8,7.1,39,7.3c0.1,0.1,0.2,0.3,0.3,0.5c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+		c0.2,0.3,0.3,0.7,0.4,1c0.2,0.4,0.3,0.7,0.6,1c0.5,0.6,1,1.2,1.5,1.8c0,0,0,0,0,0c0.2,0.2,0.3,0.4,0.5,0.6c0.2,0.3,0.3,0.5,0.5,0.8
+		c0.1,0.1,0.1,0.2,0.1,0.3c-0.1,0.1-0.2,0.3-0.3,0.4c-0.1,0.2-0.2,0.4-0.2,0.6c-0.1,0.2-0.1,0.5-0.1,0.7c-0.1,0.5-0.1,1-0.1,1.4
+		c0,0.5-0.1,0.9-0.2,1.4c-0.1,0.3-0.1,0.6-0.2,1c0,0,0,0.1,0,0.1c-0.2,0.5-0.4,0.9-0.6,1.4c-0.2,0.5-0.4,1-0.5,1.5
+		c-0.1,0.5-0.2,1-0.2,1.6c0,0.3,0,0.5,0,0.8c0,0.2,0,0.5,0.1,0.7c0,0,0,0,0,0c0,0.3,0.1,0.6,0.1,1c0,0.3,0,0.6,0,0.9
+		c0,0.1,0,0.2,0,0.3c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.3-0.1,0.4c-0.2,0.5-0.4,0.9-0.5,1.4c-0.2,0.5-0.3,1-0.3,1.5
+		c-0.1,0.5-0.1,1,0,1.6c0.1,0.5,0.2,1,0.3,1.6c0.1,0.5,0.2,1,0.2,1.5c0,0.2,0,0.3,0,0.5c0,0.2,0,0.4-0.1,0.6
+		c-0.1,0.3-0.1,0.5-0.2,0.8c-0.1,0.5-0.1,1,0,1.5c0,0.3,0.1,0.5,0.2,0.8c0.1,0.2,0.2,0.4,0.3,0.6c0.2,0.4,0.4,0.8,0.6,1.2
+		c-0.1,0.1-0.1,0.2-0.1,0.3c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.2-0.2,0.4-0.2,0.6c-0.2,0.6-0.4,1.1-0.6,1.7c-0.2,0.6-0.3,1.2-0.5,1.7
+		c-0.1,0.5-0.2,0.9-0.3,1.4c-0.4-1.9-0.9-3.8-1.4-5.6c-0.2-0.7-0.4-1.3-0.5-1.9c0-0.2,0.1-0.3,0.1-0.5c0.1-0.3,0.2-0.6,0.3-0.9
+		c0.1-0.3,0.3-0.7,0.4-1c0.1-0.1,0-0.3-0.2-0.4c-0.1,0-0.3,0-0.3,0.1c-0.2,0.4-0.4,0.8-0.6,1.2c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c0,0.1,0,0.1-0.1,0.2c-0.5-1.7-1-3.4-1.5-5.1c0-0.1,0.1-0.2,0.1-0.3c0.3-1.2,0.6-2.4,0.9-3.5c0,0,0,0,0,0
+		c0.1-0.3,0.1-0.5,0.2-0.8c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.5,0.3-1,0.4-1.4c0-0.1,0.1-0.2,0.1-0.2
+		c0.2-0.5,0.4-1,0.6-1.5c0.1-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0-0.3-0.1-0.3c-0.1-0.1-0.3,0-0.3,0.1c-0.1,0.1-0.1,0.3-0.2,0.4
+		c0,0-0.1,0-0.1,0.1c-0.1,0.1-0.1,0.3-0.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c-0.1,0.1-0.1,0.3-0.2,0.4c-0.1,0.2-0.2,0.5-0.3,0.7c-0.2,0.5-0.4,0.9-0.6,1.4c-0.2,0.5-0.4,1-0.5,1.5c-0.1,0.3-0.2,0.6-0.2,0.9
+		c0,0.1-0.1,0.3-0.1,0.4c0,0.1-0.1,0.2-0.1,0.4c0,0.2-0.1,0.4-0.1,0.6c0,0,0,0.1,0,0.1c-0.3-1.1-0.7-2.2-1-3.3
+		c-0.4-1.3-0.8-2.6-1.1-4c0.1-0.3,0.1-0.6,0.2-1c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.4,0.2-0.6c0.1-0.3,0.3-0.6,0.4-0.9
+		c0.2-0.3,0.3-0.6,0.5-0.9c0.3-0.6,0.7-1.2,1-1.7c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0.2-0.3,0.3-0.5,0.5-0.7
+		c0.1-0.1,0.1-0.3-0.1-0.4c-0.1-0.1-0.3-0.1-0.4,0.1c-0.7,1-1.4,2.1-2,3.2c-0.3,0.6-0.6,1.2-0.9,1.9c-0.1,0.1-0.1,0.3-0.1,0.4
+		c-0.2-0.9-0.5-1.9-0.7-2.8c-0.3-1.4-0.6-2.8-0.9-4.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0-0.1
+		c0,0,0,0,0,0.1c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0-0.1,0-0.2-0.1-0.3c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0,0,0,0,0-0.1
+		c-0.4-1.9-0.7-3.7-0.8-5.6c0-0.1,0-0.2,0-0.2c0-0.1-0.1-0.3-0.2-0.3c-0.2,0-0.3,0.2-0.2,0.3c-0.1,0.9,0,1.9,0.1,2.8
+		c0.1,1.4,0.4,2.8,0.6,4.2c0.2,1.4,0.5,2.8,0.7,4.2c-0.1-0.1-0.2-0.2-0.4-0.3c0,0,0,0,0,0c0,0-0.1-0.1-0.1-0.1c0,0,0,0,0,0
+		c-0.5-0.4-0.9-0.8-1.4-1.2c-0.4-0.4-0.8-0.7-1.2-1.1c-0.2-0.2-0.4-0.3-0.6-0.5c-0.1-0.1-0.2-0.2-0.3-0.2c-0.1-0.1-0.2-0.2-0.3-0.2
+		c0,0,0,0,0,0c-0.1-0.1-0.3-0.1-0.3,0c-0.1,0.1,0,0.2,0.1,0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.2,0.1,0.3,0.2,0.4,0.4
+		c0.2,0.1,0.3,0.3,0.4,0.4c0.3,0.3,0.6,0.5,0.9,0.8c0,0,0,0,0,0c0.2,0.2,0.4,0.4,0.7,0.6c0.4,0.4,0.8,0.8,1.2,1.1
+		c0.4,0.4,0.8,0.8,1.2,1.1c0.1,0.7,0.3,1.3,0.4,2c0.3,1.4,0.6,2.7,0.9,4.1c0.1,0.2,0.1,0.5,0.2,0.7c-0.5-0.3-1-0.7-1.5-1
+		c-0.5-0.4-1.1-0.7-1.7-1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.3-0.2-0.6-0.3-0.9-0.4c-0.2-0.1-0.5-0.2-0.7-0.3c0,0,0,0,0,0
+		c0-0.2,0-0.4,0-0.5c0.1-0.8,0.2-1.6,0.1-2.4c0-0.7-0.2-1.4-0.6-2c-0.3-0.4-0.6-0.7-1-1c0,0,0,0,0,0c-0.1-0.1-0.1-0.1-0.2-0.2
+		c-0.3-0.3-0.6-0.6-0.9-0.9c-0.1-0.1-0.2-0.2-0.2-0.3c-0.1-0.1-0.1-0.2-0.2-0.3c0-0.1-0.1-0.1-0.1-0.2c0-0.1-0.1-0.2-0.1-0.3
+		c0-0.1-0.1-0.2-0.1-0.3c-0.2-0.6-0.4-1.2-0.6-1.8c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.2-0.2-0.4-0.3-0.6c-0.1-0.1-0.1-0.2-0.2-0.3
+		c-0.2-0.2-0.4-0.4-0.6-0.6c-0.1-0.1-0.1-0.1-0.2-0.1c0,0,0-0.1,0-0.1C21.9,13.5,21.9,13.4,21.9,13.3z M37.3,49.1
+		C37.3,49.1,37.3,49.1,37.3,49.1C37.3,49.1,37.3,49.1,37.3,49.1C37.3,49.1,37.3,49.1,37.3,49.1z M32.6,44.4c0-0.4-0.1-0.8-0.1-1.2
+		c0-0.4,0-0.8,0-1.2c0-0.2,0-0.4,0.1-0.6c0.1-0.3,0.1-0.6,0.2-1c0-0.4,0.1-0.7,0.1-1.1c0,0,0,0,0,0c0-0.1,0-0.2,0-0.3
+		c0-0.2,0-0.4,0-0.6c0-0.2,0-0.4,0-0.6c0-0.2-0.1-0.4-0.1-0.6c-0.1-0.2-0.1-0.4-0.2-0.6c-0.1-0.4-0.3-0.7-0.5-1.1
+		c-0.2-0.4-0.3-0.7-0.4-1.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1-0.1-0.2-0.1-0.3c0.1,0.1,0.2,0.1,0.3,0.2
+		c0.2,0.1,0.4,0.3,0.7,0.5c0,0,0,0,0,0c0.4,0.3,0.8,0.6,1.2,0.9c0.3,0.2,0.5,0.4,0.8,0.6c0.4,1.4,0.7,2.9,1.1,4.3
+		c0.1,0.4,0.2,0.9,0.3,1.3c-0.1,0-0.1-0.1-0.2-0.1c-0.3-0.2-0.5-0.4-0.8-0.6c-0.1-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.2-0.1-0.3-0.2
+		c0-0.1-0.1-0.1-0.2-0.1c-0.2-0.1-0.4,0-0.4,0.2c-0.1,0.2,0,0.4,0.2,0.5c0,0,0.1,0,0.1,0.1c0.4,0.2,0.7,0.4,1.1,0.6
+		c0.4,0.3,0.9,0.6,1.3,1c0.3,1.4,0.6,2.8,0.9,4.3c0,0,0,0-0.1-0.1c-0.1-0.1-0.2-0.2-0.3-0.2c-0.1-0.1-0.2-0.1-0.3-0.2
+		c-0.2-0.1-0.5-0.2-0.7-0.3c-0.2-0.1-0.5-0.1-0.7-0.2c-0.1,0-0.2-0.1-0.4-0.1c-0.1,0-0.2-0.1-0.4-0.1c-0.2-0.1-0.4-0.2-0.6-0.3
+		c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1,0-0.1-0.1-0.2-0.1C32.6,45,32.6,44.7,32.6,44.4z M28.2,27c0.5,0.3,1,0.5,1.5,0.8
+		c0.6,0.3,1.1,0.7,1.7,1.1c0.4,0.3,0.9,0.6,1.3,0.8c0.2,0.9,0.5,1.8,0.7,2.7c0.3,1,0.5,2,0.8,3.1c0,0-0.1,0-0.1-0.1
+		c-0.5-0.3-0.9-0.6-1.4-0.9c-0.2-0.1-0.5-0.3-0.7-0.4c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1,0-0.1-0.1-0.2-0.1c0,0-0.1,0-0.1,0
+		c0-0.1-0.1-0.2-0.1-0.3c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c-0.1-0.3-0.1-0.6-0.1-0.9c0-0.4-0.1-0.8-0.1-1.2
+		c0-0.2-0.1-0.4-0.1-0.6c-0.1-0.3-0.2-0.7-0.4-0.9c-0.1-0.2-0.2-0.3-0.4-0.5c-0.1-0.2-0.3-0.3-0.4-0.5c-0.3-0.3-0.6-0.5-0.9-0.7
+		c-0.2-0.2-0.4-0.4-0.6-0.6c-0.1-0.1-0.2-0.2-0.2-0.3c0-0.1-0.1-0.1-0.1-0.2c0,0,0-0.1-0.1-0.1C27.8,26.8,28,26.9,28.2,27z
+		 M37.5,25.4C37.5,25.4,37.5,25.4,37.5,25.4C37.5,25.4,37.5,25.4,37.5,25.4C37.6,25.4,37.5,25.4,37.5,25.4z M33.3,22.8
+		C33.3,22.8,33.3,22.8,33.3,22.8C33.3,22.8,33.3,22.8,33.3,22.8C33.3,22.8,33.3,22.8,33.3,22.8z M29.8,50c-0.2-0.1-0.4-0.1-0.6-0.2
+		c-0.4-0.1-0.8-0.1-1.2-0.1c-0.4,0-0.8,0-1.2-0.1c-0.2,0-0.5,0-0.7-0.1c-0.1,0-0.3,0-0.4,0c-0.1,0-0.2,0-0.3-0.1
+		c-0.1,0-0.2-0.1-0.4-0.1c-0.1,0-0.2-0.1-0.3-0.1c-0.1,0-0.2-0.1-0.4-0.1c-0.1,0-0.2-0.1-0.3-0.1c-0.1-0.1-0.2-0.1-0.3-0.2
+		c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1-0.1-0.2-0.1-0.2-0.2c-0.2-0.2-0.4-0.4-0.6-0.6c-0.2-0.2-0.3-0.4-0.5-0.6
+		c0,0,0,0,0-0.1c-0.3-0.3-0.5-0.6-0.8-0.9c-0.1-0.1-0.2-0.2-0.2-0.2c-0.1-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.5-0.2-0.8-0.3
+		c-0.4-0.1-0.8-0.2-1.2-0.3c-0.2,0-0.4-0.1-0.6-0.1c-0.2-0.1-0.4-0.1-0.6-0.2c-0.1,0-0.2-0.1-0.3-0.1c-0.1,0-0.2-0.1-0.3-0.1
+		c-0.2-0.1-0.4-0.2-0.5-0.3c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.3-0.2-0.4-0.4c-0.1-0.1-0.1-0.1-0.2-0.2c-0.1-0.1-0.1-0.2-0.2-0.2
+		c-0.1-0.1-0.1-0.2-0.2-0.3c-0.1-0.1-0.1-0.2-0.2-0.3c-0.2-0.4-0.4-0.9-0.6-1.3c0-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.2-0.1-0.4
+		c-0.1-0.3-0.2-0.5-0.3-0.7c-0.2-0.2-0.5-0.4-0.8-0.6c-0.2-0.1-0.4-0.2-0.6-0.3c-0.2-0.1-0.4-0.2-0.6-0.3c-0.1-0.1-0.2-0.2-0.4-0.3
+		c-0.1-0.1-0.2-0.2-0.4-0.3c-0.2-0.1-0.3-0.3-0.5-0.4c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.1-0.2-0.3-0.4-0.5c-0.1-0.1-0.2-0.3-0.2-0.4
+		C9.1,36,9.1,35.9,9,35.8c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.2-0.1-0.3-0.1-0.5c0-0.6,0-1.1,0-1.7c0-0.2,0-0.3,0-0.5
+		c0-0.2,0.1-0.4,0.1-0.5c0-0.2,0-0.4,0-0.6c0-0.2,0-0.4-0.1-0.7c-0.1-0.4-0.3-0.7-0.6-1c-0.2-0.3-0.5-0.6-0.7-0.9
+		c-0.2-0.3-0.4-0.5-0.6-0.8c-0.2-0.3-0.4-0.6-0.6-0.9c-0.1-0.2-0.2-0.3-0.2-0.5c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.1,0-0.2-0.1-0.4
+		c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.3,0.1-0.4c0.1-0.2,0.1-0.4,0.2-0.5c0.3-0.6,0.6-1.1,0.9-1.6
+		c0.2-0.2,0.3-0.5,0.5-0.7c0.2-0.3,0.4-0.6,0.4-1c0-0.3,0-0.5,0-0.8c0-0.3-0.1-0.6-0.1-0.8C8,19.3,8,19,8,18.7c0-0.2,0-0.4,0-0.7
+		c0-0.2,0-0.4,0.1-0.6c0-0.2,0.1-0.3,0.1-0.5c0-0.1,0.1-0.3,0.2-0.4c0.1-0.1,0.1-0.2,0.2-0.4c0.1-0.1,0.2-0.2,0.2-0.3
+		c0.1-0.1,0.2-0.2,0.3-0.3c0.1-0.1,0.2-0.2,0.3-0.3c0.2-0.1,0.3-0.2,0.5-0.3c0.2-0.1,0.4-0.2,0.7-0.3c0.1,0,0.2-0.1,0.4-0.1
+		c0.1,0,0.2-0.1,0.4-0.1c0.2,0,0.4-0.1,0.6-0.1c0.2,0,0.4,0,0.6-0.1c0.2,0,0.4,0,0.5,0c0.2,0,0.4,0,0.5,0c0.1,0,0.3,0,0.4,0.1
+		c0.2,0,0.5,0.1,0.7,0.1c0.4,0,0.8-0.1,1.2-0.2c0.6-0.2,1.2-0.3,1.8-0.5c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.3-0.1,0.7-0.1,1-0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.2,0,0.3,0,0.5,0.1
+		c0.2,0,0.3,0.1,0.4,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.2,0.2,0.4,0.3
+		c0.1,0.1,0.2,0.3,0.3,0.4c0.1,0.1,0.1,0.2,0.2,0.3c0,0.1,0.1,0.2,0.1,0.3c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.2,0.4,0.3,0.7
+		c0.1,0.3,0.2,0.7,0.4,1c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.2,0.3,0.3,0.5c0.2,0.3,0.5,0.6,0.8,0.8c0.3,0.2,0.5,0.5,0.8,0.7
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.1,0.2,0.2,0.3
+		c0.1,0.1,0.1,0.2,0.2,0.3c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.3,0.1,0.4c0,0.2,0.1,0.3,0.1,0.5c0,0.2,0,0.3,0,0.5c0,0.2,0,0.3,0,0.5
+		c0,0.4-0.1,0.7-0.1,1.1c0,0.3-0.1,0.7,0,1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0.5,0.3,1,0.6,1.5
+		c0.2,0.2,0.3,0.4,0.5,0.6c0.4,0.3,0.8,0.6,1.1,1c0.1,0.1,0.3,0.3,0.4,0.4c0.1,0.1,0.2,0.3,0.4,0.5c0.1,0.1,0.1,0.2,0.2,0.3
+		c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.2,0.1,0.4c0.1,0.3,0.1,0.5,0.1,0.8c0,0.3,0.1,0.5,0.1,0.8c0,0.4,0.1,0.8,0.2,1.2
+		c0.1,0.4,0.2,0.8,0.4,1.2c0.3,0.8,0.7,1.5,1,2.2c0.1,0.2,0.1,0.4,0.2,0.6c0,0.1,0.1,0.3,0.1,0.4c0,0.2,0,0.4,0,0.7
+		c0,0.2,0,0.4,0,0.6c0,0.3,0,0.7-0.1,1c0,0.3-0.1,0.7-0.2,1c-0.1,0.7-0.1,1.4,0,2.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0.3,0.1,0.7,0.1,1c0,0,0,0,0,0c0,0.3,0,0.6,0,0.9c0,0.2,0,0.5-0.1,0.7c-0.1,0.8-0.3,1.5-0.3,2.3c0,0,0,0,0,0
+		c-0.2-0.4-0.3-0.7-0.5-1.1c-0.6-1.5-1.3-2.9-2-4.3c0-0.1-0.1-0.2-0.1-0.3c0.1-0.4,0.2-0.8,0.3-1.2c0.1-0.5,0.3-0.9,0.4-1.4
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.2,0.1-0.4,0.2-0.5c0.1-0.1,0-0.3-0.1-0.4c-0.1-0.1-0.3,0-0.4,0.1
+		c-0.1,0.3-0.2,0.6-0.4,0.9c-0.1,0.3-0.3,0.6-0.4,1c-0.1,0.2-0.1,0.3-0.1,0.5c0-0.1-0.1-0.2-0.1-0.3c-0.6-1.1-1.2-2.2-1.7-3.3
+		c0-0.2,0-0.4,0-0.6c0-0.3,0-0.5,0-0.8c0-0.1,0-0.2,0-0.3c0,0,0,0,0,0c0.1-0.6,0.1-1.3,0.2-1.9c0.1-0.6,0.2-1.3,0.3-1.9
+		c0-0.2-0.1-0.3-0.2-0.3c-0.2,0-0.3,0.1-0.3,0.2c-0.1,0.5-0.1,1-0.2,1.6c-0.1,0.5-0.1,1-0.2,1.5c0,0.3-0.1,0.7-0.1,1
+		c0,0.2,0,0.3,0,0.5c-0.7-1.4-1.5-2.7-2.4-4c-0.4-0.6-0.8-1.1-1.2-1.7c-0.2-0.7-0.4-1.5-0.5-2.2c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.4-0.1-0.9-0.2-1.3c0-0.4-0.1-0.8-0.1-1.2c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1,0-0.2,0-0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0-0.2,0-0.3,0-0.5
+		c0-1.2-0.1-2.4-0.1-3.6c0-0.2-0.1-0.3-0.3-0.3c-0.2,0-0.3,0.1-0.3,0.3c0,0.2,0,0.4,0,0.6c0,0.6,0,1.2,0,1.8c0,0.6,0,1.2,0,1.8
+		c0,1,0.2,2.1,0.4,3.1c0.1,0.4,0.2,0.8,0.3,1.2c-0.3-0.3-0.5-0.7-0.8-1c-0.5-0.6-1-1.2-1.5-1.8c-0.5-0.6-1-1.2-1.5-1.8c0,0,0,0,0,0
+		c-0.6-0.7-1.1-1.3-1.6-2c-0.1-0.1-0.3-0.2-0.5-0.1c-0.1,0.1-0.2,0.3-0.1,0.5c0.4,0.5,0.8,1.1,1.3,1.6c0.4,0.5,0.8,1.1,1.2,1.7
+		c0.8,1.2,1.6,2.3,2.4,3.5c0.2,0.3,0.4,0.6,0.6,1c-0.2-0.1-0.3-0.2-0.5-0.4c-1.2-0.8-2.5-1.5-3.8-2.2c0,0,0,0,0,0
+		c-0.5-0.3-1.1-0.5-1.6-0.7c-0.3-0.1-0.6-0.2-0.9-0.3c-0.3-0.1-0.5-0.2-0.8-0.3c0,0,0,0-0.1,0c-0.2-0.1-0.4,0-0.4,0.2
+		c0,0.2,0.1,0.4,0.4,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0.1,0.3,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.8,0.3,1.6,0.7,2.4,1.1c0,0,0,0,0,0c0.1,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c1.3,0.7,2.5,1.4,3.7,2.2c0,0,0,0,0,0c0.1,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0.4,0.3,0.7,0.5,1.1,0.8
+		c0.2,0.2,0.4,0.3,0.7,0.5c0,0.1,0.1,0.1,0.1,0.1c0.5,0.9,1,1.9,1.4,2.8c0.3,0.6,0.6,1.2,0.8,1.7c-0.1,0-0.1-0.1-0.2-0.1
+		c0,0,0,0,0,0c0,0-0.1,0-0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0
+		c0,0-0.1-0.1-0.1-0.1c-0.2-0.1-0.4-0.3-0.6-0.4c-0.2-0.1-0.4-0.3-0.7-0.4c-0.5-0.3-0.9-0.5-1.4-0.8c-0.5-0.2-1-0.5-1.4-0.7
+		c-0.5-0.2-1-0.4-1.6-0.6c0,0,0,0,0,0c-0.3-0.1-0.5-0.2-0.8-0.3c-0.2-0.1-0.4-0.1-0.7-0.2c-0.1,0-0.2,0.1-0.2,0.1
+		c0,0.1,0,0.2,0.1,0.2c0.1,0,0.1,0,0.2,0.1c0,0,0,0,0,0c0.2,0.1,0.4,0.2,0.6,0.3c0.5,0.2,1,0.4,1.5,0.6c0.5,0.2,1,0.4,1.5,0.7
+		c0,0,0,0,0,0c0.1,0.1,0.3,0.1,0.4,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.9,0.4,1.7,0.9,2.5,1.5c0,0,0,0,0.1,0c0,0,0.1,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.3,0.2,0.6,0.4,0.9,0.7c0.2,0.1,0.3,0.3,0.5,0.4c0,0,0,0.1,0,0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+		c0.1,0.1,0.1,0.2,0.2,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0.5,0.9,0.9,1.9,1.3,2.8c0.2,0.5,0.5,1,0.7,1.6
+		c-0.2-0.1-0.3-0.3-0.5-0.4c-0.2-0.1-0.3-0.2-0.5-0.4c-0.9-0.6-1.9-1.1-2.9-1.5c-0.5-0.2-1-0.4-1.5-0.6c-0.3-0.1-0.6-0.2-0.8-0.3
+		c-0.2-0.1-0.5-0.1-0.7-0.2c-0.1,0-0.2,0-0.2,0.1c0,0.1,0,0.2,0.1,0.2c0.2,0.1,0.3,0.1,0.5,0.2c0,0,0.1,0,0.1,0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0.1c1,0.4,2,0.8,3,1.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.4,0.2,0.8,0.4,1.2,0.6c0.2,0.1,0.4,0.3,0.6,0.4c0.2,0.1,0.3,0.2,0.5,0.3c0.2,0.2,0.5,0.3,0.7,0.5
+		c0.2,0.1,0.3,0.3,0.5,0.4c0.1,0.2,0.1,0.3,0.2,0.5c0.6,1.4,1.2,2.7,1.7,4.1C29.9,50.1,29.9,50.1,29.8,50z M35.3,58.9
+		c-0.2-0.8-0.4-1.5-0.6-2.3c-0.5-1.6-1-3.2-1.6-4.7c-0.3-0.8-0.6-1.6-0.9-2.4c0-0.1,0-0.2,0-0.2c0-0.4,0.1-0.9,0.1-1.3
+		c0.1-0.4,0.1-0.8,0.2-1.3c0-0.2,0.1-0.4,0.1-0.6c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0.1,0.1,0.2,0.2,0.3,0.3c0.2,0.1,0.4,0.2,0.6,0.3
+		c0.2,0.1,0.4,0.2,0.6,0.2c0.2,0.1,0.4,0.1,0.6,0.2c0.2,0.1,0.4,0.1,0.6,0.2c0.3,0.1,0.6,0.2,0.9,0.3c0.1,0,0.1,0.1,0.2,0.1
+		c0.2,0.1,0.3,0.2,0.4,0.3c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.3,0.1,0.6,0.2,1c0.5,2.5,0.9,5,1.3,7.6c0.2,1.4,0.4,2.8,0.6,4.2
+		c0.2,1.3,0.3,2.7,0.4,4c0,0,0-0.1,0-0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,1.3,0.1,2.6,0.1,3.9
+		c0,0.3,0,0.7,0,1c0,0.2-0.1,0.5-0.1,0.7c0,0.2-0.1,0.5-0.1,0.7c0,0.1,0,0.3,0,0.4c0,0-0.1,0-0.1,0c-0.2,0-0.4,0-0.6,0
+		c-0.5,0-1,0-1.5,0c0-0.2,0-0.3,0-0.5c0-0.8-0.1-1.6-0.2-2.4c-0.1-0.8-0.2-1.6-0.3-2.4c-0.3-1.6-0.6-3.3-0.9-4.9
+		C35.7,60.6,35.5,59.8,35.3,58.9z M48.4,75.1c0.3,0.2,0.6,0.4,0.9,0.6c0.2,0.2,0.4,0.3,0.6,0.5c0.2,0.2,0.4,0.4,0.5,0.6
+		c0,0,0.1,0.1,0.1,0.1c-0.2,0-0.3,0-0.5,0.1c0,0,0,0,0,0c-0.2,0-0.5,0.1-0.7,0.1c-1.2,0.2-2.4,0.3-3.5,0.5c-0.6,0.1-1.2,0.1-1.8,0.2
+		c-0.6,0.1-1.2,0.1-1.8,0.1c-0.1,0-0.3,0.1-0.2,0.3c0,0.1,0.1,0.2,0.3,0.2c0,0,0,0,0,0c0.8,0,1.5-0.1,2.3-0.1c0.6,0,1.2-0.1,1.8-0.1
+		c0.6-0.1,1.2-0.1,1.9-0.2c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0.4-0.1,0.9-0.1,1.3-0.2c0.2,0,0.4-0.1,0.6-0.1c0.1,0,0.2-0.1,0.3-0.1
+		c0,0,0.1,0,0.1-0.1c0.1,0.2,0.2,0.3,0.3,0.5c0.2,0.4,0.4,0.8,0.6,1.2c-0.3,0.1-0.5,0.1-0.8,0.2c-1.1,0.2-2.1,0.5-3.2,0.7
+		c-0.1,0-0.2,0.2-0.2,0.3c0,0.1,0.1,0.2,0.3,0.2c0,0,0,0,0.1,0c0.4-0.1,0.9-0.2,1.3-0.3c0.5-0.1,1.1-0.2,1.6-0.3
+		c0.3-0.1,0.5-0.1,0.8-0.2c0.1,0,0.3-0.1,0.4-0.1c0,0,0,0,0,0c0.1,0.2,0.2,0.4,0.3,0.6c0.3,0.6,0.5,1.3,0.7,2c0.1,0.5,0.2,1,0.3,1.5
+		c0.1,0.7,0.1,1.5,0.1,2.2c0,0.3,0,0.6,0,1c0,0.3-0.1,0.7-0.1,1c0,0.2-0.1,0.4-0.1,0.7c-0.1,0.2-0.1,0.5-0.2,0.7
+		c0,0.1-0.1,0.2-0.1,0.2c-0.2,0-0.4,0.1-0.6,0.1c-0.3,0.1-0.6,0.1-0.8,0.2c-0.1,0-0.2,0.1-0.2,0.3c0,0.1,0.1,0.2,0.2,0.2
+		c0,0,0,0,0,0c0.3-0.1,0.6-0.1,1-0.2c0.1,0,0.2,0,0.2-0.1c0,0,0,0.1,0,0.1c-0.1,0.3-0.2,0.5-0.3,0.8c-0.1,0.2-0.2,0.4-0.3,0.6
+		c-0.1,0.2-0.2,0.4-0.3,0.6c0,0,0,0.1-0.1,0.1c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0
+		c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0c0,0,0,0,0,0c-0.4,0.1-0.9,0.2-1.3,0.4c-1.1,0.3-2.2,0.5-3.4,0.8c-0.1,0-0.2,0.2-0.2,0.3
+		c0,0.1,0.1,0.2,0.2,0.2c0,0,0,0,0.1,0c0.4-0.1,0.8-0.2,1.1-0.2c0.5-0.1,1.1-0.2,1.6-0.4c0.3-0.1,0.6-0.1,0.8-0.2
+		c0.3-0.1,0.5-0.1,0.8-0.2c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1c0,0,0,0,0,0c-0.1,0.2-0.3,0.3-0.4,0.5c-0.1,0.2-0.3,0.3-0.4,0.5c-0.2,0.2-0.5,0.5-0.7,0.7
+		c-0.3,0.2-0.5,0.4-0.8,0.6c-0.3,0.2-0.6,0.5-1,0.7c-0.3,0.2-0.7,0.4-1,0.7c0,0,0.1,0,0.1,0c-0.1,0.1-0.2,0.1-0.3,0.2c0,0,0,0,0,0
+		c-0.2,0.1-0.4,0.2-0.6,0.3c-0.4,0.2-0.9,0.5-1.4,0.7c-0.4,0.2-0.9,0.4-1.3,0.6c-0.9,0.5-1.9,0.9-2.7,1.5c-0.9,0.6-1.7,1.2-2.5,1.8
+		c-0.1,0.1-0.3,0.3-0.4,0.4c0,0,0,0,0-0.1c-0.1-0.5-0.3-1-0.6-1.4c-0.2-0.2-0.3-0.3-0.5-0.5c-0.2-0.2-0.4-0.3-0.6-0.4
+		c-0.4-0.3-0.8-0.5-1.2-0.7c-0.8-0.4-1.7-0.8-2.6-1.2c-0.9-0.4-1.8-0.9-2.6-1.4c-0.8-0.5-1.5-1-2.3-1.5c-0.1,0-0.1-0.1-0.2-0.1
+		c0,0,0,0,0,0c-0.4-0.3-0.8-0.7-1.2-1.1c-0.3-0.3-0.6-0.6-0.9-1c-0.3-0.3-0.5-0.7-0.7-1.1c0,0,0-0.1-0.1-0.1c0,0,0,0,0,0
+		c-0.3-0.5-0.5-1-0.7-1.5c0.1,0,0.3,0,0.4,0.1c0.4,0,0.8,0.1,1.2,0.1c0,0,0,0,0,0c0.1,0,0.2-0.1,0.2-0.2c0-0.1-0.1-0.2-0.2-0.2
+		c-0.4,0-0.7-0.1-1.1-0.1c-0.2,0-0.3,0-0.5,0c0,0-0.1,0-0.1,0c-0.2-0.6-0.4-1.2-0.6-1.9c-0.1-0.2-0.1-0.4-0.1-0.6
+		c0.3,0,0.6,0.1,0.8,0.1c0.7,0.1,1.4,0.2,2,0.3c0.7,0.1,1.4,0.2,2.1,0.2c0.7,0,1.4,0.1,2.1,0.1c1.4,0,2.8,0.1,4.2,0.1c0,0,0,0,0,0
+		c0.2,0,0.3-0.1,0.3-0.3c0-0.2-0.1-0.3-0.3-0.3c-1.1,0-2.3-0.1-3.4-0.1c-0.7,0-1.4-0.1-2.1-0.1c-0.7,0-1.4-0.1-2-0.2c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.7-0.1-1.3-0.2-2-0.2c-0.6-0.1-1.3-0.2-1.9-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0-0.1,0-0.1c-0.1-0.5-0.1-1.1-0.1-1.6c0-0.3,0-0.5,0.1-0.8c0-0.2,0.1-0.5,0.1-0.7c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.4,0,0.8,0.1,1.3,0.1c0.4,0,0.8,0.1,1.3,0.1c1.2,0.1,2.5,0.1,3.7,0.2c0,0,0,0,0,0c0.2,0,0.3-0.1,0.3-0.3
+		c0-0.2-0.1-0.3-0.3-0.3c-0.9,0-1.9-0.1-2.8-0.2c-0.6,0-1.3-0.1-1.9-0.1c-0.6,0-1.1-0.1-1.7-0.1c0.1-0.3,0.2-0.7,0.4-1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1-0.3,0.3-0.5,0.4-0.8c0.2,0,0.3,0,0.5,0c0.3,0,0.5,0,0.8,0.1
+		c0,0,0,0,0,0c0.2,0,0.4-0.2,0.4-0.4c0-0.3-0.2-0.4-0.4-0.5c-0.3,0-0.5,0-0.8-0.1c0.3-0.5,0.6-1,1-1.4c0,0,0.1-0.1,0.1-0.1
+		c0,0,0,0-0.1,0.1c0-0.1,0.1-0.1,0.1-0.2c0.2-0.3,0.4-0.5,0.7-0.8c0.2-0.2,0.4-0.5,0.7-0.7c0.4-0.4,0.7-0.7,1.1-1
+		c0.5-0.4,1.1-0.8,1.7-1.1c0.5-0.3,1.1-0.6,1.6-0.8c0.6-0.3,1.3-0.5,2-0.6c0.2-0.1,0.4-0.1,0.7-0.1c0.3,0,0.7,0,1,0
+		c0.4,0,0.9,0,1.3,0c0.9,0,1.8,0,2.7,0c0.9,0,1.9,0.1,2.8,0.2c0,0,0,0,0,0c1,0.1,1.9,0.3,2.9,0.6c0.9,0.2,1.7,0.5,2.5,0.9
+		C47.4,74.6,47.9,74.8,48.4,75.1z M49.8,53.4c-0.5,1.4-1,2.8-1.4,4.2c-0.4,1.3-0.8,2.7-1.1,4.1c-0.5,2-0.9,4-1.2,6
+		c-0.1,0.5-0.3,1-0.4,1.5c-0.2,0.6-0.3,1.2-0.5,1.8c-0.1,0.5-0.2,1-0.3,1.4c-0.2-0.1-0.4-0.1-0.6-0.1c0-0.2,0-0.4,0-0.6
+		c0-0.3,0-0.6,0-0.8c0-0.4,0-0.7,0-1.1c0-0.2,0.1-0.4,0.1-0.6c0.2-1.1,0.3-2.2,0.4-3.3c0.3-2.8,0.7-5.5,1-8.3
+		c0.1-1.4,0.3-2.8,0.4-4.2c0-0.4,0.1-0.8,0.1-1.2c0,0,0,0,0-0.1c0.2-0.3,0.4-0.7,0.6-1c0.2-0.4,0.4-0.7,0.6-1.1
+		c0.2-0.4,0.5-0.7,0.8-1.1c0.3-0.4,0.6-0.7,0.9-1c0.5-0.6,1.1-1.3,1.6-1.9c0,0.3,0.1,0.6,0.1,0.8c0,0,0,0,0,0c0,0.1,0,0.1,0,0.2
+		c0,0.4,0.1,0.8,0.1,1.2c0,0.5,0,1.1,0.1,1.6c0,0,0,0.1,0,0.1C50.7,51.1,50.2,52.3,49.8,53.4z M75.1,21.6c0,0.1,0,0.2,0,0.3
+		c0,0.1,0,0.2,0,0.3c0,0.1-0.1,0.3-0.1,0.4c0,0.1-0.1,0.2-0.1,0.4c-0.2,0.5-0.4,1-0.5,1.5c-0.1,0.2-0.1,0.4-0.1,0.6
+		c0,0.3,0,0.5,0,0.8c0,0.1,0,0.3,0.1,0.4c0,0.1,0,0.3,0,0.4c0,0.2,0,0.4,0,0.6c0,0.2,0,0.4-0.1,0.5c0,0.1,0,0.2-0.1,0.3
+		c0,0.1-0.1,0.2-0.1,0.3c-0.1,0.1-0.1,0.2-0.2,0.3c-0.1,0.1-0.2,0.3-0.3,0.4c-0.2,0.3-0.5,0.5-0.7,0.8c-0.1,0.2-0.3,0.3-0.4,0.5
+		c-0.1,0.2-0.2,0.3-0.3,0.5C72,30.8,72,30.9,71.9,31c-0.1,0.2-0.2,0.4-0.3,0.5c-0.1,0.3-0.2,0.7-0.2,1c0,0.4-0.1,0.7-0.1,1.1
+		c0,0.1,0,0.2-0.1,0.4c0,0,0,0.1-0.1,0.1c0,0,0,0.1-0.1,0.1c0,0,0,0,0,0.1c0,0-0.1,0.1-0.1,0.1c-0.1,0-0.1,0.1-0.2,0.1
+		c-0.4,0.2-0.8,0.5-1.1,0.7c-0.4,0.3-0.7,0.6-0.9,1.1c-0.1,0.3-0.2,0.6-0.2,0.9c0,0.2-0.1,0.4-0.2,0.6c0,0.1-0.1,0.2-0.1,0.2
+		c0,0,0,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0-0.1,0c-0.3,0.2-0.7,0.4-1,0.6
+		c-0.4,0.2-0.7,0.5-1.1,0.7c-0.2,0.2-0.4,0.3-0.6,0.5c-0.3,0.3-0.6,0.7-0.8,1.1c-0.2,0.4-0.3,0.8-0.4,1.1c-0.1,0.3-0.2,0.6-0.3,0.8
+		c-0.1,0.1-0.1,0.2-0.2,0.3c0,0-0.1,0.1-0.1,0.1c0,0,0,0-0.1,0.1c0,0,0,0-0.1,0.1c0,0-0.1,0-0.1,0c-0.1,0-0.1,0-0.2,0.1
+		c-0.1,0-0.2,0.1-0.3,0.1c-0.1,0-0.3,0.1-0.4,0.1c-0.4,0.1-0.8,0.1-1.2,0.2c-0.7,0.2-1.3,0.4-1.8,0.9c-0.4,0.3-0.6,0.7-0.9,1.1
+		c-0.2,0.3-0.5,0.7-0.7,1c-0.1,0.1-0.2,0.2-0.3,0.3c-0.1,0.1-0.2,0.2-0.3,0.2c-0.3,0.2-0.5,0.3-0.8,0.5c-0.3,0.2-0.5,0.3-0.7,0.5
+		c-0.4,0.2-0.7,0.5-1,0.7c-0.4,0.3-0.7,0.5-1,0.8c-0.1,0.1-0.2,0.2-0.4,0.3c0-0.1,0.1-0.2,0.1-0.3c0.5-1.4,1-2.7,1.5-4
+		c0.5-1.2,1-2.4,1.5-3.7c0.1-0.1,0.3-0.2,0.4-0.3c0.2-0.1,0.3-0.2,0.5-0.3c0.3-0.2,0.6-0.3,0.9-0.4c0.3-0.1,0.6-0.3,1-0.4
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0.6-0.2,1.2-0.4,1.8-0.6c0.3-0.1,0.5-0.1,0.8-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.2-0.2c0-0.1-0.1-0.2-0.2-0.2c-0.1,0-0.2,0-0.3,0
+		c-0.1,0-0.2,0-0.3,0c-0.3,0-0.6,0.1-0.9,0.1c-0.3,0.1-0.6,0.1-0.8,0.2c-0.5,0.1-1.1,0.3-1.6,0.5c-0.3,0.1-0.6,0.2-0.8,0.3
+		c-0.2,0.1-0.5,0.2-0.7,0.3c-0.1,0.1-0.2,0.1-0.3,0.2c0.6-1.2,1.3-2.5,1.9-3.7c0.4-0.7,0.8-1.3,1.2-2c0.1,0,0.2-0.1,0.2-0.1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.4-0.2,0.8-0.4,1.2-0.6c0.4-0.2,0.8-0.4,1.2-0.5
+		c0.1,0,0.1-0.1,0.2-0.1c0,0,0,0,0,0c0.4-0.1,0.7-0.3,1.1-0.4c0.4-0.1,0.7-0.2,1.1-0.3c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.3-0.1,0.5-0.1,0.8-0.2c0.2,0,0.5-0.1,0.7-0.1c0.1,0,0.2-0.1,0.2-0.3
+		c0-0.1-0.1-0.2-0.3-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.3,0-0.4,0c-0.3,0-0.6,0.1-0.8,0.2
+		c-0.3,0.1-0.6,0.1-0.8,0.2c-0.6,0.1-1.1,0.3-1.6,0.5c-0.5,0.2-1.1,0.4-1.6,0.6c-0.2,0.1-0.3,0.2-0.5,0.3c0.1-0.2,0.2-0.4,0.3-0.5
+		c0,0,0,0,0,0c0.1-0.1,0.1-0.2,0.2-0.3c0,0,0,0,0,0c0.7-1.1,1.4-2.2,2-3.2c0,0,0.1-0.1,0.1-0.1c0,0,0-0.1,0-0.1
+		c0.1-0.2,0.3-0.4,0.4-0.7c0,0,0,0,0-0.1c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.3-0.2c0.1-0.1,0.2-0.1,0.4-0.2
+		c0.3-0.1,0.5-0.2,0.8-0.4c0,0,0,0,0,0c0.5-0.2,1.1-0.4,1.6-0.5c0.5-0.2,1.1-0.3,1.6-0.5c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.2-0.1,0.3-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2-0.1,0.2-0.2c0-0.1-0.1-0.2-0.2-0.2c-0.4,0-0.8,0.1-1.3,0.2
+		c-0.5,0.1-0.9,0.2-1.3,0.3c-0.6,0.1-1.1,0.3-1.6,0.5c-0.2,0.1-0.4,0.2-0.6,0.3c0.5-0.8,1-1.7,1.5-2.5c0.7-1.2,1.4-2.3,2.1-3.5
+		c0.1-0.1-0.1-0.3-0.2-0.1c-0.6,0.9-1.1,1.9-1.7,2.8c-0.6,0.9-1.1,1.7-1.7,2.6c-0.2,0.3-0.5,0.7-0.7,1c0,0,0,0,0,0
+		c0.1-0.6,0.1-1.3,0.2-1.9c0-0.7,0.1-1.3,0-2c0-0.2,0-0.3-0.1-0.5c0-0.1,0-0.2-0.1-0.2c0,0,0-0.1,0-0.1c0-0.1,0-0.1-0.1-0.2
+		c-0.1-0.1-0.3-0.1-0.4-0.1c-0.1,0.1-0.2,0.2-0.2,0.4c0,0,0,0,0,0c0,0.2,0.1,0.3,0.1,0.5c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0.1,0.6,0.1,1.2,0.1,1.8c0,0.5,0,1-0.1,1.5c0,0.4-0.1,0.9-0.1,1.3
+		c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0.1,0,0.3-0.1,0.4c0,0,0,0.1,0,0.1c-0.1,0.1-0.2,0.3-0.3,0.4c-0.8,1.2-1.7,2.4-2.5,3.5
+		c-0.1,0.2-0.2,0.4-0.4,0.5c0-0.3,0.1-0.6,0.1-0.9c0-0.5,0.1-1.1,0.1-1.6c0-0.6,0-1.1,0-1.7c0-0.3,0-0.5,0-0.8c0-0.1,0-0.3,0-0.4
+		c0-0.1,0-0.2,0-0.3c0,0,0,0,0,0c0-0.1-0.1-0.2-0.2-0.2c-0.1,0-0.2,0.1-0.2,0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0.2,0,0.3,0,0.5
+		c0,0.2,0,0.4,0,0.6c0,0.3,0,0.7,0,1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0
+		c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0.1,0,0.2,0,0.3c0,0,0,0,0,0c0,0.1,0,0.1,0,0.2c0,0.5,0,1.1-0.1,1.6c0,0.5-0.1,1-0.1,1.5
+		c0,0.1,0,0.1,0,0.2c0,0,0,0,0,0c0,0.2-0.1,0.4-0.1,0.6c-0.5,0.7-0.9,1.3-1.4,2c-0.5,0.8-1,1.6-1.5,2.4c0-0.4,0-0.8,0-1.2
+		c0,0,0,0,0,0c0-0.4,0-0.9,0-1.3c0-0.2,0-0.5-0.1-0.7c0-0.2,0-0.4,0-0.6c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0-0.1
+		c0-0.1-0.1-0.2-0.2-0.2c-0.1,0-0.2,0-0.3,0c-0.1,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0.2,0,0.3,0,0.5
+		c0,0.2,0,0.4,0,0.6c0,0.4,0,0.8,0,1.2c0,0.1,0,0.2,0,0.3c0,0,0,0,0,0c0,0.1,0,0.3,0,0.4c0,0.7-0.1,1.4-0.2,2c0,0,0,0,0,0
+		c0,0,0,0,0,0.1c-0.7,1.2-1.3,2.4-1.9,3.7c-0.5,1.1-1,2.2-1.5,3.3c0-0.1,0-0.2,0-0.2c0-0.5,0-1.1-0.1-1.6c0-0.3-0.1-0.7-0.1-1
+		c0-0.2,0-0.3-0.1-0.5c0.4-0.6,0.7-1.3,0.9-2c0.1-0.5,0.3-1,0.4-1.5c0-0.2,0.1-0.5,0.1-0.7c0-0.2,0-0.5,0-0.7c0-0.1,0-0.3,0-0.4
+		c0,0,0-0.1,0-0.1c0-0.1,0.1-0.1,0.1-0.2c0.1-0.2,0.2-0.4,0.3-0.6c0.2-0.3,0.4-0.5,0.6-0.8c0.1-0.2,0.2-0.3,0.3-0.5
+		c0.1-0.1,0.2-0.3,0.2-0.4c0.1-0.2,0.3-0.5,0.3-0.8c0-0.2,0.1-0.4,0.1-0.5c0-0.3,0.1-0.7,0.1-1c0-0.2,0-0.5,0.1-0.7
+		c0-0.2,0.1-0.4,0.1-0.6c0-0.1,0.1-0.2,0.1-0.3c0.1-0.1,0.1-0.3,0.2-0.4c0.1-0.2,0.3-0.4,0.4-0.6c0.2-0.2,0.3-0.4,0.5-0.6
+		c0.2-0.2,0.3-0.4,0.5-0.6c0.2-0.3,0.4-0.7,0.6-1c0.1-0.2,0.2-0.5,0.2-0.8c0.1-0.2,0.1-0.5,0.1-0.8c0-0.5,0.1-0.9,0.2-1.4
+		c0-0.2,0.1-0.4,0.1-0.5c0-0.1,0.1-0.2,0.1-0.3c0-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.2,0.3-0.3,0.5-0.5
+		c0.4-0.3,0.8-0.7,1.2-1.1c0.2-0.2,0.4-0.4,0.6-0.6c0.3-0.4,0.6-0.7,0.8-1.2c0.1-0.3,0.2-0.7,0.2-1c0-0.2,0-0.5-0.1-0.7
+		c0-0.1,0-0.2,0-0.2c0.1-0.1,0.2-0.1,0.3-0.2c0.1-0.1,0.2-0.2,0.4-0.3c0.2-0.2,0.4-0.5,0.6-0.7c0.4-0.5,0.9-1,1.4-1.4
+		c0.2-0.1,0.3-0.3,0.5-0.4c0.1-0.1,0.2-0.1,0.3-0.2c0.2-0.1,0.4-0.2,0.6-0.3c0.2-0.1,0.4-0.2,0.6-0.3c0.2-0.1,0.4-0.3,0.6-0.4
+		c0.2-0.1,0.4-0.2,0.6-0.3c0.4-0.2,0.8-0.4,1.2-0.5c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.2,0,0.3,0.1,0.5,0.1c0.1,0.1,0.3,0.1,0.4,0.2c0.1,0.1,0.3,0.1,0.4,0.2c0.2,0.1,0.3,0.2,0.5,0.4c0.3,0.2,0.5,0.5,0.8,0.7
+		c0.1,0.1,0.3,0.2,0.4,0.4c0.2,0.1,0.3,0.2,0.5,0.3c0,0,0,0,0.1,0c0,0,0,0,0,0c0.2,0.2,0.3,0.4,0.5,0.6c0.2,0.3,0.4,0.6,0.6,1
+		c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.2,0.1,0.3c0,0.2,0.1,0.4,0.1,0.6c0,0.2,0,0.3,0,0.5C75.1,21.3,75.1,21.4,75.1,21.6z"/>
+	<path class="st0" d="M75.5,18.8C75.5,18.8,75.5,18.8,75.5,18.8C75.5,18.8,75.6,18.8,75.5,18.8C75.5,18.8,75.5,18.8,75.5,18.8z"/>
+	<path class="st0" d="M27.1,44.1C27.1,44.1,27.1,44.1,27.1,44.1C27.1,44.1,27.1,44.1,27.1,44.1C27.1,44.1,27.1,44.1,27.1,44.1z"/>
+	<path class="st0" d="M24.3,37.9C24.3,37.9,24.3,37.9,24.3,37.9C24.3,37.9,24.3,37.9,24.3,37.9C24.3,37.9,24.3,37.9,24.3,37.9z"/>
+	<polygon class="st0" points="21.2,36.8 21.2,36.8 21.2,36.8 	"/>
+	<polygon class="st0" points="21.1,25.9 21.1,25.9 21.1,25.9 	"/>
+	<path class="st0" d="M29.1,26.8C29.1,26.8,29.1,26.8,29.1,26.8C29.1,26.8,29.1,26.8,29.1,26.8C29.1,26.8,29.1,26.8,29.1,26.8z"/>
+	<path class="st0" d="M34.9,31.4C34.9,31.4,34.9,31.4,34.9,31.4C34.9,31.4,34.9,31.4,34.9,31.4C34.9,31.4,34.9,31.4,34.9,31.4z"/>
+	<path class="st0" d="M36.7,38.2C36.7,38.2,36.7,38.2,36.7,38.2C36.7,38.2,36.7,38.2,36.7,38.2C36.7,38.2,36.7,38.2,36.7,38.2z"/>
+	<polygon class="st0" points="54.9,21.5 54.9,21.5 55,21.5 	"/>
+	<polygon class="st0" points="58.9,41.5 58.9,41.5 58.9,41.5 	"/>
+	<path class="st0" d="M63.5,25.5C63.5,25.5,63.5,25.5,63.5,25.5C63.5,25.5,63.5,25.5,63.5,25.5C63.5,25.5,63.5,25.5,63.5,25.5z"/>
+	<path class="st0" d="M55.2,36.6C55.2,36.6,55.2,36.6,55.2,36.6C55.2,36.6,55.2,36.6,55.2,36.6C55.2,36.6,55.2,36.6,55.2,36.6z"/>
+	<polygon class="st0" points="22.8,82.9 22.8,82.9 22.8,82.9 	"/>
+</g>
+</svg>
+                        </div>
+
+                        <span class="relative z-10">
+                                                            <div class="flex flex-col sm:flex-row items-center space-x-8 py-8">
+                                                                        <div class="w-full sm:w-1/2">                                    
+                                        <img class="rounded-2xl" src="https://jaimyskitchen.nl/img/cache/media_44751_widen_768-upscale_85-eetkaartjes16.webp" />
+                                    </div>
+                                                                 
+                                    <div class=" w-full sm:w-1/2 ">
+                                        <h3 class="title is-6">Actie: Eetkaartjes + gratis e-boek!</h3>                                
+                                        <div class="prose marker:text-green-900">
+                                            <p style="margin-left:0px;">Deze actie is speciaal voor de kids die van de Sint een duwtje in de rug krijgen om gezellig aan tafel te eten en misschien wel groenten (of fruit) te proeven. Het spel zorgt ervoor dat jullie plezier aan tafel hebben en er geproefd gaat worden!</p><ul><li>'Samen Lekker Proeven'-eetkaartjes</li><li>GRATIS: E-boek 6 x lunch recepten</li></ul><p><a class="btn" target="_blank" rel="noopener noreferrer" href="https://shop.jaimyskitchen.nl/products/eetkaartjes-e-boek-lunch">Shop hier!&nbsp;</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                                    </span>
+
+                    </div>
+                    
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
     
 </div>
 
-<!-- Livewire Component wire-end:gkGwikvvp2ipbUYtz9zT -->                        
+<!-- Livewire Component wire-end:TNl62D1YSVpn4MlRrtEg -->                        
                                         <footer class="bg-green-900 text-white pt-32 pb-12 rounded-b-2xl px-6 sm:px-20 relative">
     <img class="absolute z-10 w-full object-none object-top -top-1 left-0 h-32" src="https://jaimyskitchen.nl/img/bck_wave_top.svg" />
     
@@ -1812,12 +3152,12 @@
 </div>        </div>
         
             
-        <link rel="preload" href="/dist/app.css?id=ad2486be6980305f0fa8b22d2c4171f7" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/dist/app.css?id=ad2486be6980305f0fa8b22d2c4171f7"></noscript>                
+        <link rel="preload" href="/dist/app.css?id=456df371c96a12fff6948b2763f3700c" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/dist/app.css?id=456df371c96a12fff6948b2763f3700c"></noscript>                
         
-        <script>window.__GlobalVariables = window.__GlobalVariables || {};</script><!-- LATEN STAAN! -->        <script >console.warn("Livewire: The published Livewire assets are out of date See: https://laravel-livewire.com/docs/installation/")</script><script src="/vendor/livewire/livewire.js?id=c69d0f2801c01fcf8166" data-turbo-eval="false" data-turbolinks-eval="false" ></script><script data-turbo-eval="false" data-turbolinks-eval="false" >window.livewire = new Livewire();window.Livewire = window.livewire;window.livewire_app_url = '';window.livewire_token = 'zD7boZk1GPMhF8w0p88WEhiuJyGKh6Kc8A3ZqXfp';window.deferLoadingAlpine = function (callback) {window.addEventListener('livewire:load', function () {callback();});};let started = false;window.addEventListener('alpine:initializing', function () {if (! started) {window.livewire.start();started = true;}});document.addEventListener("DOMContentLoaded", function () {if (! started) {window.livewire.start();started = true;}});</script>
+        <script>window.__GlobalVariables = window.__GlobalVariables || {};</script><!-- LATEN STAAN! -->        <script >console.warn("Livewire: The published Livewire assets are out of date See: https://laravel-livewire.com/docs/installation/")</script><script src="/vendor/livewire/livewire.js?id=c69d0f2801c01fcf8166" data-turbo-eval="false" data-turbolinks-eval="false" ></script><script data-turbo-eval="false" data-turbolinks-eval="false" >window.livewire = new Livewire();window.Livewire = window.livewire;window.livewire_app_url = '';window.livewire_token = '5tzx44raQV1NZm3Kktxubv7rnMi2UuJoXqz6osSS';window.deferLoadingAlpine = function (callback) {window.addEventListener('livewire:load', function () {callback();});};let started = false;window.addEventListener('alpine:initializing', function () {if (! started) {window.livewire.start();started = true;}});document.addEventListener("DOMContentLoaded", function () {if (! started) {window.livewire.start();started = true;}});</script>
 
-        <script src="/dist/app.js?id=14d065dab6a2904f28f1db020724640e"></script>
+        <script src="/dist/app.js?id=52d0e147cc6a6342a9f519573173b290"></script>
 
                     <!-- Start of Food Influencers United code -->
             <script async src="https://cdn.foodinfluencersunited.nl/prod.js"></script>
