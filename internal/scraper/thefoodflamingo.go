@@ -32,19 +32,19 @@ func scrapeTheFoodFlamingo(root *goquery.Document) (models.RecipeSchema, error) 
 		rs.Category.Value = strings.TrimSpace(strings.TrimPrefix(cat, "course:"))
 	}
 
-	root.Find("ul").FilterFunction(func(_ int, sel *goquery.Selection) bool {
-		_, exists := sel.Attr("class")
-		return !exists && goquery.NodeName(sel.Prev()) != "h2"
-	}).Each(func(_ int, ul *goquery.Selection) {
-		isEquipment := strings.Contains(ul.Prev().Text(), "Equipment")
-		ul.Children().Each(func(_ int, li *goquery.Selection) {
-			s := strings.TrimSpace(li.Text())
-			if isEquipment {
-				rs.Tools.Values = append(rs.Tools.Values, models.NewHowToTool(s))
-			} else {
-				rs.Ingredients.Values = append(rs.Ingredients.Values, s)
-			}
-		})
+	root.Find("h3:contains('Ingredients')").NextUntil("h3").Each(func(_ int, sel *goquery.Selection) {
+		switch goquery.NodeName(sel) {
+		case "p":
+			rs.Ingredients.Values = append(rs.Ingredients.Values, sel.Text())
+		case "ul":
+			sel.Children().Each(func(_ int, li *goquery.Selection) {
+				rs.Ingredients.Values = append(rs.Ingredients.Values, li.Text())
+			})
+		}
+	})
+
+	root.Find("h3:contains('Equipment')").Next().Children().Each(func(_ int, sel *goquery.Selection) {
+		rs.Tools.Values = append(rs.Tools.Values, models.NewHowToTool(sel.Text()))
 	})
 
 	root.Find("ol").Each(func(_ int, ol *goquery.Selection) {

@@ -3,6 +3,7 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
+	"slices"
 	"strings"
 )
 
@@ -26,7 +27,9 @@ func scrapeReisHunger(root *goquery.Document) (models.RecipeSchema, error) {
 		}
 	})
 
-	rs.Instructions = &models.Instructions{Values: instructions}
 	rs.Ingredients = &models.Ingredients{Values: ingredients}
+	rs.Instructions = &models.Instructions{Values: slices.DeleteFunc(instructions, func(item models.HowToItem) bool {
+		return strings.HasPrefix(item.Text, "Schritt")
+	})}
 	return rs, nil
 }

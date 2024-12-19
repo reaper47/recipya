@@ -76,11 +76,11 @@ func TestScraper_H(t *testing.T) {
 				Description: &models.Description{
 					Value: "This homemade Peanut Butter Pie is made from scratch with just a few ingredients and will have everyone coming back for seconds! It's CRAZY good! With step-by-step video.",
 				},
-				Keywords: &models.Keywords{Values: "peanut butter cups, peanut butter pie, peanut butter pie recipe"},
+				Keywords: &models.Keywords{Values: "peanut butter cups, peanut butter pie, peanut butter pie recipe, thanksgiving"},
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"14 whole chocolate graham crackers (196 grams)",
+						"14 whole (196 grams) chocolate graham crackers*",
 						"1 tablespoon light brown sugar",
 						"7 tablespoons (99 grams) unsalted butter, (melted)",
 						"8 ounces (227 grams) cream cheese, (at room temperature)",
@@ -270,16 +270,17 @@ func TestScraper_H(t *testing.T) {
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"550g (around 2 medium) Broccoli",
-						"2 Eggs",
-						"60g (¾ Cup) Almond Meal",
-						"75g (¾ Cup) Extra Mature Cheddar Cheese",
-						"2 Garlic Cloves (,minced)",
+						"2 medium broccoli (, 550g / 19.5 oz)",
+						"2 eggs",
+						"¾ cup (60g) almond meal/flour",
+						"¾ packed cup (75g) sharp cheddar cheese",
+						"2 garlic cloves (,minced)",
+						"½ tsp salt (,optional - do not add for baby)",
 					},
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "Preheat oven to 190C/375F. Line a baking tray with baking/parchment paper."},
+						{Type: "HowToStep", Text: "Preheat oven to 375℉/190℃ and line a baking sheet with parchment paper."},
 						{Type: "HowToStep", Text: "Cut the florets off the broccoli and break them up into medium pieces. Remove the tough outer skin of the stem and then cut the stem into pieces around 1-2 cm / ½-¾ inch in size."},
 						{Type: "HowToStep", Text: "Steam (or boil) the stems for 1 minute and then add the florets and steam for a further 3-4 minutes, or until soft. Drain well"},
 						{Type: "HowToStep", Text: "Chop the cooked broccoli up and transfer to a large mixing bowl."},
@@ -389,12 +390,12 @@ func TestScraper_H(t *testing.T) {
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "main course"},
 				CookingMethod: &models.CookingMethod{},
-				Cuisine:       &models.Cuisine{Value: "American"},
+				Cuisine:       &models.Cuisine{Value: "North America"},
 				DatePublished: "2018-02-22T18:45:31+00:00",
 				Description: &models.Description{
 					Value: "Pronto! Pronto! You can make this dinner recipe with the lightning speed of an Italian race car. Thanks to fresh tagliatelle, which cooks faster than the dried kind, you arrive at al dente perfection in a matter of minutes. The shrimp and heirloom tomatoes only need a quick toss in the pan, too, becoming tender on the count of uno, due, tre.",
 				},
-				Keywords: &models.Keywords{Values: "Spicy,Dinner Ideas"},
+				Keywords: &models.Keywords{Values: "Spicy,Dinner Ideas,SEO"},
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{

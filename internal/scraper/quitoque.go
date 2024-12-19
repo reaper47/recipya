@@ -1,304 +1,151 @@
 package scraper
 
 import (
-	"encoding/json"
-	"errors"
-	"io"
-	"net/http"
+	"github.com/PuerkitoBio/goquery"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/utils/extensions"
+	"github.com/reaper47/recipya/internal/utils/regex"
+	"slices"
 	"strconv"
 	"strings"
-
-	"github.com/reaper47/recipya/internal/models"
 )
 
-type quitoque struct {
-	Data struct {
-		Recipe struct {
-			Name             string `json:"name"`
-			ShortDescription string `json:"shortDescription"`
-			Image            string `json:"image"`
-			Pools            []struct {
-				NbPerson     int `json:"nbPerson"`
-				CookingModes []struct {
-					Name        string `json:"name"`
-					CookingTime int    `json:"cookingTime"`
-					WaitingTime int    `json:"waitingTime"`
-					Stacks      struct {
-						Tools []struct {
-							ID              string `json:"id"`
-							Name            string `json:"name"`
-							Position        int    `json:"position"`
-							QuantityToGram  any    `json:"quantityToGram"`
-							QuantityToOrder any    `json:"quantityToOrder"`
-							LiteralQuantity string `json:"literalQuantity"`
-							Quantity        int    `json:"quantity"`
-							Product         struct {
-								ID                   string `json:"id"`
-								Slug                 any    `json:"slug"`
-								OriginalID           string `json:"originalId"`
-								WeekDetailID         any    `json:"weekDetailId"`
-								Nutriscore           any    `json:"nutriscore"`
-								EtchebestPartnership any    `json:"etchebestPartnership"`
-								Type                 string `json:"type"`
-								QuitoqueID           any    `json:"quitoqueId"`
-								Name                 any    `json:"name"`
-								NbMeal               any    `json:"nbMeal"`
-								Subtitle             any    `json:"subtitle"`
-								Description          any    `json:"description"`
-								Components           string `json:"components"`
-								StorageWay           string `json:"storageWay"`
-								Manual               string `json:"manual"`
-								Images               []any  `json:"images"`
-								RemainingQuantity    any    `json:"remainingQuantity"`
-								QuantityThreshold    any    `json:"quantityThreshold"`
-								Responsive           struct {
-									ID       string `json:"id"`
-									Medium   any    `json:"medium"`
-									Large    any    `json:"large"`
-									Typename string `json:"__typename"`
-								} `json:"responsive"`
-								NbPerson               any `json:"nbPerson"`
-								PriceIncludingTax      any `json:"priceIncludingTax"`
-								OriginalPrice          any `json:"originalPrice"`
-								Origin                 any `json:"origin"`
-								Weight                 any `json:"weight"`
-								Unit                   any `json:"unit"`
-								IsFoodProduct          any `json:"isFoodProduct"`
-								MaxQuantity            any `json:"maxQuantity"`
-								NutritionalInformation struct {
-									NbPerson          any    `json:"nbPerson"`
-									Protein           any    `json:"protein"`
-									Fat               any    `json:"fat"`
-									SaturatedFat      any    `json:"saturatedFat"`
-									Carbohydrate      any    `json:"carbohydrate"`
-									SugarCarbohydrate any    `json:"sugarCarbohydrate"`
-									WeightPerPerson   any    `json:"weightPerPerson"`
-									Fiber             any    `json:"fiber"`
-									Salt              any    `json:"salt"`
-									KiloCalorie       any    `json:"kiloCalorie"`
-									KiloJoule         any    `json:"kiloJoule"`
-									Typename          string `json:"__typename"`
-								} `json:"nutritionalInformation"`
-								Allergens            []any  `json:"allergens"`
-								AllergenTraces       []any  `json:"allergenTraces"`
-								Facets               []any  `json:"facets"`
-								BoxDescription       any    `json:"boxDescription"`
-								BoxByWeekDescription any    `json:"boxByWeekDescription"`
-								CookingTime          any    `json:"cookingTime"`
-								WaitingTime          any    `json:"waitingTime"`
-								UserMark             any    `json:"userMark"`
-								Typename             string `json:"__typename"`
-								SubProducts          []any  `json:"subProducts"`
-							} `json:"product"`
-							Typename string `json:"__typename"`
-						} `json:"tools"`
-						Ingredients []struct {
-							ID              string `json:"id"`
-							Name            string `json:"name"`
-							Position        int    `json:"position"`
-							QuantityToGram  any    `json:"quantityToGram"`
-							QuantityToOrder any    `json:"quantityToOrder"`
-							LiteralQuantity string `json:"literalQuantity"`
-							Quantity        int    `json:"quantity"`
-							Product         struct {
-								ID                   string   `json:"id"`
-								Slug                 any      `json:"slug"`
-								OriginalID           string   `json:"originalId"`
-								WeekDetailID         any      `json:"weekDetailId"`
-								Nutriscore           any      `json:"nutriscore"`
-								EtchebestPartnership any      `json:"etchebestPartnership"`
-								Type                 string   `json:"type"`
-								QuitoqueID           any      `json:"quitoqueId"`
-								Name                 string   `json:"name"`
-								NbMeal               any      `json:"nbMeal"`
-								Subtitle             string   `json:"subtitle"`
-								Description          string   `json:"description"`
-								Components           string   `json:"components"`
-								StorageWay           string   `json:"storageWay"`
-								Manual               string   `json:"manual"`
-								Images               []string `json:"images"`
-								RemainingQuantity    any      `json:"remainingQuantity"`
-								QuantityThreshold    any      `json:"quantityThreshold"`
-								Responsive           struct {
-									ID       string `json:"id"`
-									Medium   string `json:"medium"`
-									Large    string `json:"large"`
-									Typename string `json:"__typename"`
-								} `json:"responsive"`
-								NbPerson               any    `json:"nbPerson"`
-								PriceIncludingTax      any    `json:"priceIncludingTax"`
-								OriginalPrice          any    `json:"originalPrice"`
-								Origin                 string `json:"origin"`
-								Weight                 int    `json:"weight"`
-								Unit                   string `json:"unit"`
-								IsFoodProduct          bool   `json:"isFoodProduct"`
-								MaxQuantity            int    `json:"maxQuantity"`
-								NutritionalInformation struct {
-									NbPerson          any     `json:"nbPerson"`
-									Protein           float64 `json:"protein"`
-									Fat               float64 `json:"fat"`
-									SaturatedFat      float64 `json:"saturatedFat"`
-									Carbohydrate      float64 `json:"carbohydrate"`
-									SugarCarbohydrate float64 `json:"sugarCarbohydrate"`
-									WeightPerPerson   any     `json:"weightPerPerson"`
-									Fiber             float64 `json:"fiber"`
-									Salt              float64 `json:"salt"`
-									KiloCalorie       float64 `json:"kiloCalorie"`
-									KiloJoule         float64 `json:"kiloJoule"`
-									Typename          string  `json:"__typename"`
-								} `json:"nutritionalInformation"`
-								Allergens []struct {
-									ID       string `json:"id"`
-									Name     string `json:"name"`
-									Typename string `json:"__typename"`
-								} `json:"allergens"`
-								AllergenTraces []struct {
-									ID       string `json:"id"`
-									Name     string `json:"name"`
-									Typename string `json:"__typename"`
-								} `json:"allergenTraces"`
-								Facets               []any  `json:"facets"`
-								BoxDescription       any    `json:"boxDescription"`
-								BoxByWeekDescription any    `json:"boxByWeekDescription"`
-								CookingTime          any    `json:"cookingTime"`
-								WaitingTime          any    `json:"waitingTime"`
-								UserMark             any    `json:"userMark"`
-								Typename             string `json:"__typename"`
-								SubProducts          []any  `json:"subProducts"`
-							} `json:"product"`
-							Typename string `json:"__typename"`
-						} `json:"ingredients"`
-						CupboardIngredients []struct {
-							ID              string `json:"id"`
-							Name            string `json:"name"`
-							Position        int    `json:"position"`
-							QuantityToGram  any    `json:"quantityToGram"`
-							QuantityToOrder any    `json:"quantityToOrder"`
-							LiteralQuantity string `json:"literalQuantity"`
-							Quantity        int    `json:"quantity"`
-						} `json:"cupboardIngredients"`
-						Typename string `json:"__typename"`
-					} `json:"stacks"`
-					Steps []struct {
-						Position    int    `json:"position"`
-						Title       string `json:"title"`
-						Description string `json:"description"`
-					} `json:"steps"`
-				} `json:"cookingModes"`
-			} `json:"pools"`
-			NutritionalInformations []struct {
-				NbPerson          int     `json:"nbPerson"`
-				Protein           float64 `json:"protein"`
-				Fat               float64 `json:"fat"`
-				SaturatedFat      float64 `json:"saturatedFat"`
-				Carbohydrate      float64 `json:"carbohydrate"`
-				SugarCarbohydrate float64 `json:"sugarCarbohydrate"`
-				WeightPerPerson   int     `json:"weightPerPerson"`
-				Fiber             float64 `json:"fiber"`
-				Salt              float64 `json:"salt"`
-				KiloCalorie       float64 `json:"kiloCalorie"`
-				KiloJoule         float64 `json:"kiloJoule"`
-				Typename          string  `json:"__typename"`
-			} `json:"nutritionalInformations"`
-		} `json:"recipe"`
-	} `json:"data"`
-}
-
-func (s *Scraper) scrapeQuitoque(rawURL string) (models.RecipeSchema, error) {
-	_, after, ok := strings.Cut(rawURL, "quitoque.fr/recette/")
-	if !ok {
-		return models.RecipeSchema{}, errors.New("url is invalid")
-	}
-
-	before, _, ok := strings.Cut(after, "/")
-	if !ok {
-		return models.RecipeSchema{}, errors.New("url is invalid")
-	}
-
-	api := `https://mgs.quitoque.fr/graphql?operationName=getRecipe&variables={"id":"` + before + `"}&extensions={"persistedQuery":{"version":1,"sha256Hash":"04af4d1a48fd536a67292733e23a2afcf6d0da9770ab07055c59b754eec9bd6d"}}`
-	req, err := http.NewRequest(http.MethodGet, api, nil)
-	if err != nil {
-		return models.RecipeSchema{}, err
-	}
-
-	res, err := s.HTTP.Client.Do(req)
-	if err != nil {
-		return models.RecipeSchema{}, err
-	}
-	defer res.Body.Close()
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return models.RecipeSchema{}, err
-	}
-
-	var q quitoque
-	err = json.Unmarshal(buf, &q)
-	if err != nil {
-		return models.RecipeSchema{}, err
-	}
-
-	var ns models.NutritionSchema
-	if len(q.Data.Recipe.NutritionalInformations) > 0 {
-		n := q.Data.Recipe.NutritionalInformations[0]
-		ns = models.NutritionSchema{
-			Calories:      strconv.FormatFloat(n.KiloCalorie, 'g', 10, 64),
-			Carbohydrates: strconv.FormatFloat(n.Carbohydrate, 'g', 10, 64),
-			Fat:           strconv.FormatFloat(n.Fat, 'g', 10, 64),
-			Fiber:         strconv.FormatFloat(n.Fiber, 'g', 10, 64),
-			Protein:       strconv.FormatFloat(n.Protein, 'g', 10, 64),
-			SaturatedFat:  strconv.FormatFloat(n.SaturatedFat, 'g', 10, 64),
-			Servings:      strconv.Itoa(n.NbPerson),
-			Sodium:        strconv.FormatFloat(n.Salt, 'g', 10, 64),
-			Sugar:         strconv.FormatFloat(n.SugarCarbohydrate, 'g', 10, 64),
-		}
-	}
-
+func scrapeQuitoque(root *goquery.Document) (models.RecipeSchema, error) {
 	rs := models.NewRecipeSchema()
 
-	rs.Description.Value = q.Data.Recipe.ShortDescription
-	rs.Image.Value = q.Data.Recipe.Image
-	rs.Name = q.Data.Recipe.Name
-	rs.NutritionSchema = &ns
+	rs.Name = root.Find("#sylius-product-name").Text()
 
-	if len(q.Data.Recipe.Pools) > 0 && len(q.Data.Recipe.Pools[0].CookingModes) > 0 {
-		m := q.Data.Recipe.Pools[0].CookingModes[0]
+	productTagsNode := root.Find("#product-tags")
 
-		rs.Yield.Value = int16(q.Data.Recipe.Pools[0].NbPerson)
+	var keywords []string
+	productTagsNode.Find("span").Each(func(i int, s *goquery.Selection) {
+		keywords = append(keywords, strings.TrimSpace(s.Text()))
+	})
+	rs.Keywords.Values = strings.Join(keywords, ",")
 
-		rs.PrepTime = "PT" + strconv.Itoa(m.WaitingTime) + "M"
-		rs.CookTime = "PT" + strconv.Itoa(m.CookingTime) + "M"
+	rs.Description.Value = strings.TrimSpace(productTagsNode.Next().Text())
 
-		rs.Instructions.Values = make([]models.HowToItem, 0, len(m.Steps))
-		for _, step := range m.Steps {
-			ins := step.Title + "\n" + step.Description
-			ins = strings.ReplaceAll(ins, "\u00a0", " ")
-			rs.Instructions.Values = append(rs.Instructions.Values, models.NewHowToStep(ins))
-		}
+	ingredientsNode := root.Find("#ingredients ul")
+	rs.Yield.Value = findYield(ingredientsNode.Prev().Children().Last().Text())
 
-		rs.Ingredients.Values = make([]string, 0, len(m.Stacks.Ingredients)+len(m.Stacks.Ingredients))
-		for _, ing := range m.Stacks.Ingredients {
-			var sb strings.Builder
-			if ing.LiteralQuantity != "" {
-				sb.WriteString(ing.LiteralQuantity)
-				sb.WriteString(" ")
+	nodes := root.Find("#ingredients .ingredient-list li")
+	nodes = nodes.AddSelection(root.Find("ul.kitchen-list li"))
+	getIngredients(&rs, nodes, []models.Replace{{"useFields", ""}}...)
+
+	getInstructions(&rs, root.Find("#steps-default > div").Children(), models.Replace{
+		Old: "\n                                    ",
+		New: "\n",
+	})
+	rs.Instructions.Values = slices.DeleteFunc(rs.Instructions.Values, func(item models.HowToItem) bool {
+		return len(item.Text) < 10
+	})
+
+	root.Find("#equipment ul li").Each(func(_ int, s *goquery.Selection) {
+		rs.Tools.Values = append(rs.Tools.Values, models.NewHowToTool(s.Text()))
+	})
+
+	extractTime := func(value string) string {
+		parts := strings.Split(value, " ")
+		var s string
+		if len(parts) == 2 {
+			s = "PT"
+			if strings.HasPrefix(parts[1], "min") {
+				s += parts[0] + "M"
+			} else {
+				s += parts[0] + "H"
 			}
-
-			sb.WriteString(ing.Name)
-			rs.Ingredients.Values = append(rs.Ingredients.Values, sb.String())
+		} else if len(parts) == 4 {
+			s = "PT" + parts[0] + "H" + parts[1] + "M"
 		}
-
-		for _, ing := range m.Stacks.CupboardIngredients {
-			var sb strings.Builder
-			if ing.LiteralQuantity != "0" {
-				sb.WriteString(ing.LiteralQuantity)
-				sb.WriteString(" ")
-			}
-
-			sb.WriteString(ing.Name)
-			rs.Ingredients.Values = append(rs.Ingredients.Values, sb.String())
-		}
+		return s
 	}
+
+	root.Find(".recipe-infos-short .item-info").Each(func(_ int, sel *goquery.Selection) {
+		value := strings.TrimSpace(sel.Find("p").First().Text())
+
+		text := strings.TrimSpace(sel.Find(".regular").Text())
+		if strings.Contains(text, "cuisine") {
+			rs.PrepTime = extractTime(value)
+		} else if strings.HasPrefix(text, "Total") {
+			totalTimeStr := extractTime(value)
+			var (
+				totalTime int
+				err       error
+			)
+			if strings.Contains(totalTimeStr, "H") {
+				totalTimeStr = strings.TrimPrefix(totalTimeStr, "PT")
+				parts := strings.Split(totalTimeStr, "H")
+				minutes, err := strconv.Atoi(parts[1])
+				if err != nil {
+					return
+				}
+
+				hours, err := strconv.Atoi(parts[0])
+				if err != nil {
+					return
+				}
+
+				totalTime = minutes + (hours * 60)
+			} else {
+				totalTime, err = strconv.Atoi(regex.Digit.FindString(totalTimeStr))
+				if err != nil {
+					return
+				}
+			}
+
+			var prepTime int
+			prepTimeStr := strings.TrimPrefix(rs.PrepTime, "PT")
+			if strings.Contains(prepTimeStr, "H") {
+				parts := strings.Split(prepTimeStr, "H")
+				minutes, err := strconv.Atoi(parts[1])
+				if err != nil {
+					return
+				}
+
+				hours, err := strconv.Atoi(parts[0])
+				if err != nil {
+					return
+				}
+
+				prepTime = minutes + (hours * 60)
+			} else {
+				prepTime, err = strconv.Atoi(strings.TrimSuffix(prepTimeStr, "M"))
+				if err != nil {
+					return
+				}
+			}
+
+			rs.CookTime = "PT" + strconv.Itoa(totalTime-prepTime) + "M"
+		}
+	})
+
+	extractNutrition := func(nutrition string) string {
+		return regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(nutrition), ",", "."))
+	}
+
+	root.Find("#quantity ul li").Each(func(_ int, sel *goquery.Selection) {
+		name := strings.ToLower(sel.Children().First().Text())
+		v := extractNutrition(sel.Children().Last().Text())
+
+		switch name {
+		case "énergie (kcal)":
+			rs.NutritionSchema.Calories = v
+		case "matières grasses":
+			rs.NutritionSchema.Fat = v
+		case "dont acides gras saturés":
+			rs.NutritionSchema.SaturatedFat = v
+		case "glucides":
+			rs.NutritionSchema.Carbohydrates = v
+		case "dont sucre":
+			rs.NutritionSchema.Sugar = v
+		case "fibres":
+			rs.NutritionSchema.Fiber = v
+		case "protéines":
+			rs.NutritionSchema.Protein = v
+		case "sel":
+			rs.NutritionSchema.Sodium = v
+		}
+	})
 
 	return rs, nil
 }
