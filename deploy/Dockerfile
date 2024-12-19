@@ -20,6 +20,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
 
 # Deploy the application binary into a lean image
 FROM alpine AS build-release-stage
+LABEL org.opencontainers.image.source="https://github.com/reaper47/recipya"
 
 WORKDIR /
 
