@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"io"
 	"net/http"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -159,7 +160,7 @@ func (s *Scraper) scrapeGousto(rawURL string) (models.RecipeSchema, error) {
 
 	entry := g.Data.Entry
 	rs := models.NewRecipeSchema()
-	rs.Name = entry.Title
+	rs.Name = strings.TrimSpace(entry.Title)
 
 	if len(entry.Categories) > 0 {
 		cat := strings.ToLower(entry.Categories[len(entry.Categories)-1].Title)
@@ -174,7 +175,7 @@ func (s *Scraper) scrapeGousto(rawURL string) (models.RecipeSchema, error) {
 		rs.Image.Value = entry.Media.Images[len(entry.Media.Images)-1].Image
 	}
 
-	rs.Description.Value = entry.Description
+	rs.Description.Value = strings.TrimSpace(entry.Description)
 
 	if entry.PrepTimes.For2 > 0 {
 		rs.PrepTime = "PT" + strconv.Itoa(entry.PrepTimes.For2) + "M"
@@ -189,6 +190,9 @@ func (s *Scraper) scrapeGousto(rawURL string) (models.RecipeSchema, error) {
 	for _, basic := range entry.Basics {
 		rs.Ingredients.Values = append(rs.Ingredients.Values, basic.Title)
 	}
+	rs.Ingredients.Values = slices.DeleteFunc(rs.Ingredients.Values, func(s string) bool {
+		return s == ""
+	})
 
 	rs.Instructions.Values = make([]models.HowToItem, 0, len(entry.CookingInstructions))
 	for _, ins := range entry.CookingInstructions {

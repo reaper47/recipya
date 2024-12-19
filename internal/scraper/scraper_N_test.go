@@ -136,7 +136,7 @@ func TestScraper_N(t *testing.T) {
 						{Text: "Carefully lay the ﬁlo pastry sheets on a chopping board and trim the sheets to ﬁt the size of the prepared pan or tin. Discard any pastry offcuts. Cover the ﬁlo pastry with a clean, slightly damp tea towel, to prevent the sheets from drying out.", Type: "HowToStep"},
 						{Text: "Brush one ﬁlo pastry sheet with butter, then place in the prepared tin. Repeat with another seven sheets of ﬁlo pastry, buttering each layer. Scatter over one-third of the nut mixture and top with another four ﬁlo sheets, brushing each layer with butter. Repeat this process twice more. Gently press the ﬁnal ﬁlo layer to compress the baklava slightly. Brush generously with the remaining butter.", Type: "HowToStep"},
 						{Text: "Using a small sharp knife, score the top ﬁlo layer into 24 squares. Bake for 25–30 minutes, until the pastry is golden and crispy.", Type: "HowToStep"},
-						{Text: "Pour the cooled coffee honey syrup over the hot baklava and stand for 1 hour or until the baklava is cool. Using a sharp knife, cut the baklava into pieces along the score marks and serve.", Type: "HowToStep"},
+						{Text: "Pour the cooled coffee honey syrup over the hot baklava and stand for 1 hour  or until the baklava is cool. Using a sharp knife, cut the baklava into pieces along the score marks and serve.", Type: "HowToStep"},
 					},
 				},
 				Name:            "Coffee Baklava With Dried Figs",
@@ -235,7 +235,7 @@ func TestScraper_N(t *testing.T) {
 				AtContext:     atContext,
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "uncategorized"},
-				CookTime:      "PT-477927H16M",
+				CookTime:      "PT-481701H5M56S",
 				DatePublished: "2022-02-09",
 				Description: &models.Description{
 					Value: "Rich and fudgy gluten-free tahini brownies that just happen to be also be grain-free and nut-free! These tahini brownies make for the perfect healthier chocolate dessert!",
@@ -283,7 +283,7 @@ func TestScraper_N(t *testing.T) {
 					Value: "Az igazi pizzatészta friss élesztőből, BL &#39;00&#39;-ás finomlisztből és extra szűz olívaolajból az igazi. A tisztított víz pedig nem kötelező, de itt leírtam, hogy miért jobb választás.",
 				},
 				Keywords: &models.Keywords{
-					Values: "buli receptek, ebéd, vacsora, ovo-lakto vegetáriánus, lakto vegetáriánus, ovo vegetáriánus, vegetáriánus, tejmentes, tojásmentes, laktózmentes, vegán, Finomliszt, Élesztő, Víz, Cukor, Finomliszt, Olívaolaj, Só, közepes, gyors",
+					Values: "buli receptek, ovo-lakto vegetáriánus, lakto vegetáriánus, ovo vegetáriánus, vegetáriánus, tejmentes, tojásmentes, laktózmentes, vegán, Finomliszt, Élesztő, Víz, Cukor, Finomliszt, Olívaolaj, Só, közepes, gyors",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -413,7 +413,7 @@ func TestScraper_N(t *testing.T) {
 				Category:      &models.Category{Value: "Forrett/smårett"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "Japan"},
-				DateModified:  "2023-12-19T10:49:36+01:00",
+				DateModified:  "2024-09-20T13:28:14+02:00",
 				DatePublished: "2023-06-14T11:18:23+02:00",
 				Description: &models.Description{
 					Value: "Tamagoyaki er japansk rullet omelett. Den serveres oftest som smakfull siderett eller til frokost. Den lages ved å brette sammen tynne lag med krydret egg.",
@@ -436,7 +436,7 @@ func TestScraper_N(t *testing.T) {
 						{Type: "HowToStep", Text: "Pynt gjerne med vårløk."},
 					},
 				},
-				Name:            "Japansk omelett (Tamagoyaki)",
+				Name:            "Japansk omelett (Tama\u00adgoyaki)",
 				NutritionSchema: &models.NutritionSchema{},
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},

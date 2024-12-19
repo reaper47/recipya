@@ -3,6 +3,7 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/utils/extensions"
 	"strconv"
 	"strings"
 )
@@ -25,6 +26,7 @@ func scrapeSallysblog(root *goquery.Document) (models.RecipeSchema, error) {
 
 	getTime(&rs, root.Find("span:contains('Zubereitungszeit')"), true)
 	getIngredients(&rs, root.Find(".shop-studio-recipes-recipe-detail-tabs-description-ingredients__content__ingredient-list__ingredient"))
+	rs.Ingredients.Values = extensions.Unique(rs.Ingredients.Values)
 	getInstructions(&rs, root.Find(".shop-studio-recipes-recipe-detail-tabs-description-preparations__content__preparation__text"))
 
 	return rs, nil

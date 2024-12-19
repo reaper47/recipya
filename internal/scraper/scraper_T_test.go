@@ -773,6 +773,22 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT20M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.thecookierookie.com/blt-guacamole/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1719763521/m4wwwxfo86grwtzi31wh.mp4",
+							Description: "I heard a tip recently to add guacamole to a BLT, and I haven't been able to stop thinking about it since. It adds a great creamy element and is richer and fresher tasting than traditional mayo. But what if I took it one step further? What if I did away with the sandwich altogether and created BLT guacamole?! Well, folks, I've done it, and I'm proud to say it's been a rousing success. This bacon guacamole has all the great flavors of traditional guacamole, plus the crunchy and savory elements of a BLT sandwich. I don't know why I didn't think of this sooner.",
+							Duration:    "PT75S",
+							EmbedURL:    "https://video.mediavine.com/videos/m4wwwxfo86grwtzi31wh.js",
+							Name:        "How to make BLT Guacamole",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/video/upload/s--VfE4U2D4--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1719763521/m4wwwxfo86grwtzi31wh.jpg",
+							},
+							UploadDate: time.Date(2024, 6, 30, 16, 6, 33, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -784,7 +800,7 @@ func TestScraper_T(t *testing.T) {
 				Category:      &models.Category{Value: "uncategorized"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
-				DatePublished: "2024-01-29",
+				DatePublished: "2024-09-20",
 				Description:   &models.Description{Value: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?"},
 				Keywords:      &models.Keywords{Values: "Cooking, Guy, Grill, Grilling, Grilled, BBQ, Dinner, Family Meal, Chicken, Beef, Steak, Pork, Seafood, Fish, Lobster, Sauce, Tacos, Sam The Cooking Guy"},
 				Image:         &models.Image{Value: anUploadedImage.String()},
@@ -834,12 +850,12 @@ func TestScraper_T(t *testing.T) {
 					Values: []models.VideoObject{
 						{
 							AtType:      "VideoObject",
-							ContentURL:  "https://www.youtube.com/watch?v=",
+							ContentURL:  "https://www.youtube.com/watch?v=vCCmoP0qb-U",
 							Description: "Super delicious roast, homemade brioche sliders, melty cheese and an amped up garlic butter - what could be better?",
-							EmbedURL:    "https://www.youtube.com/embed/",
+							EmbedURL:    "https://www.youtube.com/embed/vCCmoP0qb-U",
 							Name:        "Funeral Sandwiches",
 							ThumbnailURL: &models.ThumbnailURL{
-								Value: "https://cdn.prod.website-files.com/657a7aac36df076237527e36/65b7bf33ae368a434c7e4132_funeralsandwiches_youtube_2.webp",
+								Value: "https://cdn.prod.website-files.com/657a7aac36df076237527e36/65b7bf33ae368a434c7e4132_funeralsandwiches_youtube_2.avif",
 							},
 						},
 					},
@@ -902,6 +918,7 @@ func TestScraper_T(t *testing.T) {
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
+						"For the sponge cake:",
 						"4 eggs, separated into whites and yolks, room temp.",
 						"3/4 cup granulated sugar, separated into 1/2 and 1/4 cups (150g)",
 						"1/4 tsp salt",
@@ -911,14 +928,17 @@ func TestScraper_T(t *testing.T) {
 						"1 cup + 2 tbsp. all purpose flour (140g)",
 						"2 tsp baking powder",
 						"1 tsp  ground cardamom",
+						"For the milk bath:",
 						"3 1/2 cups whole milk, warm",
 						"1/2 cup heavy cream (120ml)",
 						"1/2 cup condensed milk (120ml)",
 						"2 tsp ground cardamom",
 						"1/2 tsp saffron",
+						"For the whipped cream topping:",
 						"1 cup heavy cream, cold (240ml)",
-						"2-3 tbsp. powdered sugar (depending on how sweet you want it)",
+						"2-3 tbsp. powdered sugar (depending on how sweet you want it) ",
 						"1/2 tsp ground cardamom *optional",
+						"Other ingredients",
 						"1/4 cup pistachios, finely chopped",
 					},
 				},
@@ -1383,55 +1403,20 @@ func TestScraper_T(t *testing.T) {
 				TotalTime: "PT495M",
 				Yield:     &models.Yield{Value: 6},
 				URL:       "https://www.themagicalslowcooker.com/slow-cooker-apple-cider-pot-roast/",
-			},
-		},
-		{
-			name: "thenutritiouskitchen.co",
-			in:   "http://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
-			want: models.RecipeSchema{
-				AtContext:     atContext,
-				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "breakfast"},
-				CookTime:      "PT15M",
-				CookingMethod: &models.CookingMethod{Value: "stove top"},
-				Cuisine:       &models.Cuisine{Value: "pancakes"},
-				DatePublished: "2022-04-08",
-				Description: &models.Description{
-					Value: "Delicious paleo blueberry pancakes made extra fluffy with simple, healthy ingredients all made in one bowl! The perfect weekend breakfast or brunch recipe packed with refreshing blueberry flavors, no added sugars and 100% dairy-free + gluten-free!",
-				},
-				Keywords: &models.Keywords{
-					Values: "paleo, pancakes, gluten-free, dairy-free",
-				},
-				Image: &models.Image{Value: anUploadedImage.String()},
-				Ingredients: &models.Ingredients{
-					Values: []string{
-						"3/4 cup unsweetened apple sauce",
-						"1/4 cup cashew butter",
-						"1 large egg",
-						"1 cup Bobs Red Mill super fine almond flour",
-						"1 cup tapioca flour, or arrowroot flour",
-						"2 teaspoons baking powder",
-						"Sea salt + cinnamon to taste",
-						"1/3 cup fresh blueberries",
-						"Pure maple syrup",
-						"Coconut cream (optional)",
-						"Vegan butter or ghee",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://www.youtube.com/watch?v=DHi5xnDnv1k",
+							Description:  "SLOW COOKER APPLE CIDER POT ROAST\n\nSEE THE RECIPE BELOW👇👇👇\n\nPRINTABLE RECIPE AND NUTRITIONAL INFO: https://www.themagicalslowcooker.com/slow-cooker-apple-cider-pot-roast/\n\nRECIPE:\n\nINGREDIENTS:\n3 lbs. beef chuck roast\n1 tsp. salt\n¼ tsp. pepper\n2 Tbsp. vegetable oil\n1 cup apple cider\n1 cup beef broth\n2 Tbsp. Worcestershire sauce\n4 cloves garlic, Minced\n1 Tbsp. tomato paste\n1 Tbsp. dijon mustard\n2 tsp. chopped fresh rosemary, or 1 teaspoon dried\n2 tsp. chopped fresh thyme leaves, or 1 teaspoon dried\n1 lbs. baby carrots\n1 lbs. baby potatoes, halved or quartered depending on size\n\nINSTRUCTIONS:\nSeason the chuck roast on both sides with salt and pepper. You can use more or less depending on your preferences.\nHeat the vegetable oil in a cast iron skillet or large pan over medium-high heat. Sear the chuck roast until browned on all sides, about 3-4 minutes per side. Remove the roast from the skillet and set aside.\nIn a large mixing bowl, whisk together the apple cider, beef broth, Worcestershire sauce, minced garlic, tomato paste, dijon mustard, chopped rosemary, and chopped thyme. Whisk until thoroughly combined and set aside.\nPlace the baby carrots and baby potatoes in the bottom of a slow cooker.\nCarefully transfer the seared chuck roast onto the bed of vegetables in the slow cooker.\nPour the apple cider mixture over the roast and vegetables in the slow cooker.\nCover the slow cooker and cook on LOW heat for 8-10 hours or on HIGH heat for 5-6 hours, until the meat is tender and easily shreds with a fork.\nOnce cooked, remove the chuck roast from the slow cooker and let it rest for a few minutes before slicing or shredding it.\nServe the pot roast with the cooked baby carrots, potatoes and a ladle of the flavorful cooking liquid, Garnish with fresh thyme, parsley and rosemary sprigs. Enjoy!\n\nFAN MAIL:\n\nTHE MAGICAL SLOW COOKER\nSARAH OLSON\nPO BOX 70586\nSPRINGFIELD, OR 97475\n\nmusic copyright: BTBVHUL27JLRFTP2",
+							Duration:     "PT1M24S",
+							EmbedURL:     "https://www.youtube.com/embed/DHi5xnDnv1k?feature=oembed",
+							Name:         "🍎Slow Cooker Apple Cider Pot Roast",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://i.ytimg.com/vi/DHi5xnDnv1k/hqdefault.jpg"},
+							UploadDate:   time.Date(2024, 12, 6, 7, 7, 16, 0, time.UTC),
+						},
 					},
 				},
-				Instructions: &models.Instructions{
-					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "In a large bowl whisk the apple sauce, cashew butter and egg until fully combined."},
-						{Type: "HowToStep", Text: "Then add in the almond flour, tapioca flour, baking powder, sea salt, and cinnamon. Combine with a mixing spoon until a thick batter forms. It will be thick but still moist!"},
-						{Type: "HowToStep", Text: "Heat ghee or butter in a pan over medium heat. Once the pan is hot, scoop the batter using a cookie scoop or about 1/4 cup full of batter. I like to cook 3 at a time."},
-						{Type: "HowToStep", Text: "Place some blueberries onto the pancakes while on pan and cook for about 3 minutes. Flip gently, and continue cooking for about 2 minutes over medium-low heat."},
-						{Type: "HowToStep", Text: "Repeat with remaining batter then serve with maple syrup, extra butter and toppings of choice. I love coconut cream or cashew butter!"},
-					},
-				},
-				Name:      "Fluffy Paleo Blueberry Pancakes",
-				PrepTime:  "PT5M",
-				TotalTime: "PT20M",
-				Yield:     &models.Yield{Value: 6},
-				URL:       "https://thenutritiouskitchen.co/fluffy-paleo-blueberry-pancakes/",
 			},
 		},
 		{
@@ -1444,7 +1429,7 @@ func TestScraper_T(t *testing.T) {
 				CookTime:      "PT1H",
 				Cuisine:       &models.Cuisine{Value: "Mexican"},
 				DateCreated:   "2016-11-25T08:43:41-08:00",
-				DateModified:  "2023-11-23",
+				DateModified:  "2024-11-26",
 				DatePublished: "2016-11-25",
 				Description: &models.Description{
 					Value: "This spicy, warming turkey pozole rojo soup is a flavorful way to use all of your turkey leftovers. Easy, and warming, it’s perfect palate-awakener for the day after Thanksgiving.",
@@ -1566,8 +1551,8 @@ func TestScraper_T(t *testing.T) {
 				CookTime:      "PT10M",
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "American"},
-				DateModified:  "2024-03-08T19:38:00 EST",
-				DatePublished: "2007-10-12T09:33:50 EDT",
+				DateModified:  "2024-03-08T19:38:00-0500",
+				DatePublished: "2007-10-12T09:33:50-0400",
 				Description: &models.Description{
 					Value: "Ree Drummond's fool-proof recipe for making eggs Benedict features perfectly poached eggs and a creamy, dreamy homemade Hollandaise sauce.",
 				},

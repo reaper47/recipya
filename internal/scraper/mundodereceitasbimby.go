@@ -19,7 +19,7 @@ func scrapeMundodereceitasbimby(root *goquery.Document) (models.RecipeSchema, er
 	rs.DateCreated = rs.DatePublished
 	rs.CookTime = strings.ReplaceAll(getItempropContent(root, "cookTime"), "min", "M")
 	getIngredients(&rs, root.Find("li[itemprop=recipeIngredient]"))
-	getInstructions(&rs, root.Find("ol[itemprop=recipeInstructions] div[itemprop=itemListElement]"))
+	getInstructions(&rs, root.Find("div[itemprop=recipeInstructions] div[itemprop=itemListElement]"))
 
 	nodes := root.Find("meta[itemprop=tool]")
 	rs.Tools.Values = make([]models.HowToItem, 0, nodes.Length())

@@ -3,7 +3,6 @@ package scraper
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"strings"
 )
 
@@ -24,44 +23,37 @@ func scrapeLekkerenSimpel(root *goquery.Document) (models.RecipeSchema, error) {
 
 	getInstructions(&rs, root.Find(".entry__content p"))
 
-	times := root.Find("span:contains('bereidingstijd')").First().Text()
-	if times == "" {
-		times = root.Find("span:contains('oventijd')").First().Text()
-	}
-
-	if times != "" {
-		parts := strings.Split(strings.TrimSpace(times), "  ")
-
-		unit := "H"
-		if strings.Contains(parts[0], "min") {
-			unit = "M"
+	times, _ := root.Find(".entry__container .recipe__meta span:contains('bereidingstijd')").Html()
+	parts := strings.Split(times, "<br/>")
+	if len(parts) == 1 {
+		timeParts := strings.Split(parts[0], " ")
+		var time string
+		if len(timeParts) == 3 {
+			time = "PT" + timeParts[0] + "M"
+		} else {
+			time = "PT" + timeParts[0] + "H" + timeParts[2] + "M"
 		}
 
-		if len(parts) == 2 {
-			str := "PT" + regex.Digit.FindString(parts[0]) + unit
-			if strings.Contains(parts[0], "bereidingstijd") {
-				rs.PrepTime = str
-			} else {
-				rs.CookTime = str
-			}
-
-			unit = "H"
-			if strings.Contains(parts[1], "min") {
-				unit = "M"
-			}
-			str = "PT" + regex.Digit.FindString(parts[1]) + unit
-			if strings.Contains(parts[1], "bereidingstijd") {
-				rs.PrepTime = str
-			} else {
-				rs.CookTime = str
-			}
+		if strings.Contains(parts[0], "oven") {
+			rs.CookTime = time
 		} else {
-			str := "PT" + regex.Digit.FindString(parts[0]) + unit
-			if strings.Contains(parts[0], "bereidingstijd") {
-				rs.PrepTime = str
-			} else {
-				rs.CookTime = str
-			}
+			rs.PrepTime = time
+		}
+	} else if len(parts) == 2 {
+		prepTime := strings.Join(strings.Fields(parts[0]), " ")
+		prepParts := strings.Split(prepTime, " ")
+		if len(prepParts) == 3 {
+			rs.PrepTime = "PT" + prepParts[0] + "M"
+		} else {
+			rs.PrepTime = "PT" + prepParts[0] + "H" + prepParts[2] + "M"
+		}
+
+		cookTime := strings.Join(strings.Fields(parts[1]), " ")
+		cookParts := strings.Split(cookTime, " ")
+		if len(cookParts) == 3 {
+			rs.CookTime = "PT" + cookParts[0] + "M"
+		} else {
+			rs.CookTime = "PT" + cookParts[0] + "H" + cookParts[2] + "M"
 		}
 	}
 

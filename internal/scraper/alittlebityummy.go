@@ -30,5 +30,9 @@ func scrapeALittleBitYummy(root *goquery.Document) (models.RecipeSchema, error) 
 		}
 	})
 
+	for i, s := range rs.Instructions.Values {
+		rs.Instructions.Values[i].Text = strings.Join(strings.Fields(s.Text), " ")
+	}
+
 	return rs, nil
 }

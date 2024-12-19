@@ -10,7 +10,7 @@
 	<meta property="og:image" content="/images/cover_img/tomatsuppe1.jpg">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#F7F6F3">
-	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
 	<link rel="icon" type="image/svg+xml" sizes="any" href="/images/icons/gurki-logo.svg">
 	<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -44,7 +44,10 @@
 					<div id="menu-ingredient-list">
 					</div>
 					<hr>
-					<button id="copy-clipboard" onclick="copyToClipboard()"><img src="/images/icons/copy-clipboard-white2.svg" height="30" alt="copy clipboard icon"></button>
+					<div id="CopyBox">
+						<button id="copy-clipboard" onclick="copyToClipboard()"><img src="/images/icons/copy-clipboard-white2.svg" height="30" alt="copy clipboard icon"></button>
+						<p>Kopier</p>
+					</div>
 				</div>
 
 			</div>
@@ -65,10 +68,6 @@
 					<div id="shoppingcart">
 						<button onclick="openNav()"><img src="/images/icons/handleliste.svg" height="30" alt="shopping list icon"></button>
 					</div>
-
-					<!--<div id="menubtn">-->
-					<!--	<button><img src="/images/icons/hamburger-icon-5.svg" height="26"></button>-->
-					<!--</div>-->
 				</div>
 			</div>
 
@@ -87,19 +86,25 @@
 
 					<hr>
 
-					<!--<form method="POST" action="/shoppingcarts/add"> -->
 					<form id="myForm">
 						<input type="hidden" name="id" id="id" value="41" >
 						<input type="hidden" name="title" id="title" value="Tomatsuppe" >
-
 					</form>
 
 					<div id="controls">
 						<div id="CartBox">
-							<button id="addToCart" type="submit" form="myForm"><img src="/images/icons/add-square-trolley.svg" alt="add to shoppingcart icon"></button>
-							<span class="tooltiptext"></span>
+							<div id="CartButtonBox">
+								<button id="addToCart" type="submit" form="myForm"><img src="/images/icons/add-square-trolley.svg" alt="add to shoppingcart icon"></button>
+								<span class="tooltiptext"></span>
+							</div>
+							<p>Legg i handlelisten</p>
 						</div>
-							<button id="credits"><img src="/images/icons/hyperlink-icon-white.svg" alt="hyperlink icon"></button>
+						<div id="CreditBox">
+							<div id="CreditButtonBox">
+								<a href="https://trinesmatblogg.no/recipe/hjemmelaget-tomatsuppe-2/" target="_blank"><button id="credits"><img src="/images/icons/hyperlink-icon-white.svg" alt="hyperlink icon"></button></a>
+							</div>
+							<p>Original oppskrift</p>
+						</div>
 					</div>
 
 					<div id="result"></div>
@@ -201,8 +206,8 @@
 <li>Kjør suppen med en stavmikser eller lignende, til du får en jevn suppe. Tilsett eventuelt mer vann eller kraft hvis du synes suppen blir for tykk. Smak til med nykvernet sort pepper og salt.</li>
 </ul> </div>
 
-					<img src="/images/end_img/tomatsuppe3.jpg" alt="end image" >
-					<p id="date">7. December 2023</p>
+					<img src="/images/end_img/tomatsuppe3.jpg" alt="end image">
+					<p id="date">7. Desember 2023</p>
 				</div>
 			</div>
 		</div>

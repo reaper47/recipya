@@ -179,7 +179,7 @@ func TestScraper_K(t *testing.T) {
 						"6 tablespoons (75g) vegetable oil",
 						"2 large eggs",
 						"1/4 teaspoon nutmeg",
-						"1 1/2 teaspoons lemon zest (grated rind)",
+						"1 1/2 teaspoons lemon zest",
 						"1 1/2 teaspoons King Arthur Pure Vanilla Extract",
 						"1 cup (113g) King Arthur Golden Wheat Flour",
 						"3/4 cup (90g) King Arthur Unbleached All-Purpose Flour",
@@ -652,7 +652,7 @@ func TestScraper_K(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "Indonesie"},
 				DatePublished: "2024-06-26T17:38:06+02:00",
-				Description:   &models.Description{Value: "Daging Smoor heerlijk gestoofd Indisch rundvlees ook voor slowcooker is een lekker recept, Deze stoofpot is heel gemakkelijk te maken.Vlees in gedeelten aanbraden, alle andere ingrediënten erbij en dan ....Stoven maar ! Uitermate geschikt voor de slowcooker omdat je er dan dan geen omkijken meer naar hebt. Maar ook in de pan gemakkelijk te aken. \nWij hebben ervan gesmuld."},
+				Description:   &models.Description{Value: "Daging Smoor heerlijk gestoofd Indisch rundvlees ook voor slowcooker is een lekker recept, Deze stoofpot is heel gemakkelijk te maken.Vlees in gedeelten aanbraden, alle andere ingrediënten erbij en dan ....Stoven maar ! Uitermate geschikt voor de slowcooker omdat je er dan dan geen omkijken meer naar hebt. Maar ook in de pan gemakkelijk te maken. \nWij hebben ervan gesmuld."},
 				Keywords:      &models.Keywords{},
 				Image:         &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -694,7 +694,7 @@ func TestScraper_K(t *testing.T) {
 							Type: "HowToStep",
 						},
 						{
-							Text: "* **Op dit moment kan het vlees in de slowcooker (6 uur op low)",
+							Text: "* **Op dit moment kan het vlees in de slowcooker (6 uur op low de laagste stand)",
 							Type: "HowToStep",
 						},
 					},
@@ -729,13 +729,13 @@ func TestScraper_K(t *testing.T) {
 				Image:           &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"1 tomato",
 						"0 red onion",
 						"1 chili pepper",
 						"1 cup(s) cilantro, fresh",
 						"1 lime",
 						"1 cup(s) cheese, shredded",
 						"egg",
+						"1 tomato",
 						"pepper",
 						"salt",
 						"butter",
@@ -835,6 +835,22 @@ func TestScraper_K(t *testing.T) {
 				TotalTime: "PT95M",
 				Yield:     &models.Yield{Value: 1},
 				URL:       "https://kristineskitchenblog.com/blackberry-pie/",
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:      "VideoObject",
+							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1721052383/rm8lqyzrqklcauolhhps.mp4",
+							Description: "From the sweet, juicy blackberry pie filling that's brightened with a touch of lemon to the homemade pie crust, every single bite of this blackberry pie is worth celebrating.",
+							Duration:    "PT78S",
+							EmbedURL:    "https://video.mediavine.com/videos/rm8lqyzrqklcauolhhps.js",
+							Name:        "Blackberry Pie",
+							ThumbnailURL: &models.ThumbnailURL{
+								Value: "https://mediavine-res.cloudinary.com/image/upload/s--bDlCnC_r--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1721052511/zr4sw4pivzhzstm9bixz.jpg",
+							},
+							UploadDate: time.Date(2024, 7, 15, 14, 10, 47, 0, time.UTC),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -846,8 +862,11 @@ func TestScraper_K(t *testing.T) {
 				Category:      &models.Category{Value: "Dodatki do dań"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{Value: "Polska"},
+				DateCreated:   "2020-08-27T14:21:24+02:00",
+				DateModified:  "2020-08-27T14:35:56+02:00",
+				DatePublished: "2020-08-27T14:32:45+02:00",
 				Description: &models.Description{
-					Value: "Lekka surówka do obiadu ze świeżego ogórka, śmietany lub jogurtu oraz koperku. Bardzo prosta, idealnie nadająca się do wielu dań obiadowych. Mizeria najsmaczniejsza jest z ziemniakami najlepiej młodymi i jakimś mięsem np. kotletem mielonym lub schabowym.\nMy najbardziej lubimy kremową mizerię z miękkimi, cienkimi plasterkami ogórka doprawioną nie tylko solą i pieprzem, ale również (aby była słodko- winna) sokiem z cytryny i cukrem. A jak u Ciebie przygotowuje się mizerię?",
+					Value: "Lekka surówka do obiadu ze świeżego ogórka, śmietany lub jogurtu oraz koperku. Bardzo prosta, idealnie nadająca się do wielu dań obiadowych. Mizeria najsmaczniejsza jest z ziemniakami najlepiej młodymi i jakimś mięsem np. kotletem mielonym lub schabowym. My najbardziej lubimy kremową mizerię z miękkimi, cienkimi plasterkami ogórka doprawioną nie tylko solą i pieprzem, ale również (aby była słodko- winna) sokiem z cytryny i cukrem. A jak u Ciebie przygotowuje się mizerię?",
 				},
 				Keywords: &models.Keywords{Values: "przepis, mizeria, surówka z ogórków, mizeria z octem i śmietaną, tradycyjna mizeria, klasyczna mizeria, domowa mizeria"},
 				Image:    &models.Image{Value: anUploadedImage.String()},
@@ -877,7 +896,18 @@ func TestScraper_K(t *testing.T) {
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
 				URL:             "https://www.kuchnia-domowa.pl/przepisy/dodatki-do-dan/548-mizeria",
-				Video:           &models.Videos{},
+				Video: &models.Videos{
+					Values: []models.VideoObject{
+						{
+							AtType:       "VideoObject",
+							ContentURL:   "https://kuchnia-domowa.pl/dodatki/548-mizeria",
+							Description:  "Lekka surówka do obiadu ze świeżego ogórka, śmietany lub jogurtu oraz koperku. Bardzo prosta, idealnie nadająca się do wielu dań obiadowych. Mizeria najsmaczniejsza jest z ziemniakami najlepiej młodymi i jakimś mięsem np. kotletem mielonym lub schabowym. My najbardziej lubimy kremową mizerię z miękkimi, cienkimi plasterkami ogórka doprawioną nie tylko solą i pieprzem, ale również (aby była słodko- winna) sokiem z cytryny i cukrem. A jak u Ciebie przygotowuje się mizerię?",
+							Name:         "Mizeria",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://kuchnia-domowa.pl/images/content/548/mizeria.webp"},
+							UploadDate:   time.Date(2020, 8, 27, 14, 32, 45, 0, time.FixedZone("+2", 2*60*60)),
+						},
+					},
+				},
 			},
 		},
 		{
@@ -889,7 +919,7 @@ func TestScraper_K(t *testing.T) {
 				Category:      &models.Category{Value: "uncategorized"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
-				DatePublished: "2018-06-21T00:25:43+02:00",
+				DatePublished: "2018-06-21T00:25:43+00:00",
 				Description: &models.Description{
 					Value: "Zatočte s mäsom a zasýťte hladné bruchá svojich najmilších. Pripravte im na obed bravčovú roládu so syrom a šunkou s lahodným zemiakovým pyré podľa Marcela. Budú sa zalizovať až za ušami!",
 				},
@@ -901,7 +931,7 @@ func TestScraper_K(t *testing.T) {
 						"čierne korenie v mlynčeku Kania", "200 g prosciutto cotto Dulano Selection",
 						"čerstvá šalvia", "150 g ementálu Milbona (plátky)",
 						"olivový olej Primadonna",
-						"hladká múka Castello (na obalenie a do výpeku)", "1 lyžica masla Pilos",
+						"hladká múka Belbake (na obalenie a do výpeku)", "1 lyžica masla Pilos",
 						"100 ml suchého bieleho vína", "trochu vývaru alebo vody na podliatie",
 						"1 kg zemiakov", "300 ml plnotučného mlieka Pilos", "80 g masla Pilos",
 						"čerstvá pažítka", "125 g rukoly", "trochu citrónovej šťavy",
