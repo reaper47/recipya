@@ -103,8 +103,6 @@ func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService
 	switch host {
 	case "bergamot":
 		rs, err = s.scrapeBergamot(rawURL)
-	case "foodbag":
-		rs, err = s.scrapeFoodbag(rawURL)
 	case "gousto":
 		rs, err = s.scrapeGousto(rawURL)
 	case "madewithlau":

@@ -52,7 +52,7 @@ type madeWithLau struct {
 
 func (s *Scraper) scrapeMadeWithLau(rawURL string) (models.RecipeSchema, error) {
 	parts := strings.Split(rawURL, "/")
-	apiURL := "https://www.madewithlau.com/api/trpc/recipe.bySlug,recipe.latest,course.inlinePreview?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22slug%22%3A%22" + parts[len(parts)-1] + "%22%7D%7D%2C%221%22%3A%7B%22json%22%3A%7B%22numberOfRecipes%22%3A7%7D%7D%2C%222%22%3A%7B%22json%22%3A%7B%22slug%22%3A%22elements-of-flavor%22%7D%7D%7D"
+	apiURL := "https://www.madewithlau.com/api/trpc/recipe.bySlug,recipe.latest,course.inlinePreview,recipe.getRecipeYouTubeDetails?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22slug%22%3A%22" + parts[len(parts)-1] + "%22%7D%7D%2C%221%22%3A%7B%22json%22%3A%7B%22numberOfRecipes%22%3A7%7D%7D%2C%222%22%3A%7B%22json%22%3A%7B%22slug%22%3A%22elements-of-flavor%22%7D%7D%2C%223%22%3A%7B%22json%22%3A%7B%22videoId%22%3A%22lWJpa0MRHAs%22%7D%7D%7D"
 
 	req, err := http.NewRequest(http.MethodGet, apiURL, nil)
 	if err != nil {

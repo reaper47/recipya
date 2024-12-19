@@ -159,7 +159,7 @@ func TestScraper_G(t *testing.T) {
 						{Text: "Slice, serve & enjoy.", Type: "HowToStep"},
 					},
 				},
-				Name:            "Fruit & Nut Rocky RoadCoconut BarsCourgette, Rye & Lavender Cookies",
+				Name:            "VEGAN BRISKET",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H",
 				ThumbnailURL:    &models.ThumbnailURL{},
