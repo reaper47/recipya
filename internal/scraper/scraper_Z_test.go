@@ -16,8 +16,6 @@ func TestScraper_Z(t *testing.T) {
 				Category:      &models.Category{Value: "uncategorized"},
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
-				DateModified:  "2021-08-16T12:03:26+02:00",
-				DatePublished: "2021-08-16T12:03:26+02:00",
 				Description: &models.Description{
 					Value: "Am besten lässt man den Kohlrabi roh und hobelt ihn in hauchdünne Scheiben. Für ein vegetarisches Carpaccio ganz in Weiß kommen dann noch Fenchel und Fior di Latte hinzu.",
 				},
@@ -95,7 +93,7 @@ func TestScraper_Z(t *testing.T) {
 				DatePublished:   "2020-09-01",
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
-				TotalTime:       "PT-477927H13M52S",
+				TotalTime:       "PT-481702H28M23S",
 				URL:             "https://www.zenbelly.com/short-ribs/",
 				Video:           &models.Videos{},
 			},

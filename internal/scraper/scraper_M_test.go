@@ -216,16 +216,15 @@ func TestScraper_M(t *testing.T) {
 				Description: &models.Description{
 					Value: "Her er min bedste opskrift på durumboller. De klassiske italienske boller, der bages med durummel, og som er gode til alt fra morgenbordet til en sandwich.",
 				},
-				Keywords: &models.Keywords{Values: "boller, hjemmebagt"},
-				Image:    &models.Image{Value: anUploadedImage.String()},
+				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"50 gram gær",
-						"500 gram vand (lunkent)",
-						"500 gram durum mel",
-						"150 gram manitoba hvedemel",
-						"10 gram bageenzymer (kan udelades)",
-						"12 gram salt",
+						"50 g gær",
+						"500 g vand (lunkent)",
+						"500 g durum mel",
+						"150 g manitoba hvedemel",
+						"10 g bageenzymer (kan udelades)",
+						"12 g salt",
 					},
 				},
 				Instructions: &models.Instructions{
@@ -243,7 +242,7 @@ func TestScraper_M(t *testing.T) {
 						{Type: "HowToStep", Text: "Bag dine durumboller i cirka 12 minutter - eller indtil de er færdige."},
 					},
 				},
-				Name: "Durumboller (nemme italienske boller med durum mel)",
+				Name: "Durumboller",
 				NutritionSchema: &models.NutritionSchema{
 					Calories:       "191",
 					Carbohydrates:  "40",
@@ -440,15 +439,17 @@ func TestScraper_M(t *testing.T) {
 				},
 				Instructions: &models.Instructions{
 					Values: []models.HowToItem{
-						{Type: "HowToStep", Text: "Ha alt det tørre i en bolle og spe med litt av melken om gangen. Rør godt mellom hver gang for å få en glatt røre uten melklumper."},
-						{Type: "HowToStep", Text: "Rør inn eggene og tilsett smeltet smør. La røren svelle i 1/2 time. Juster røren med litt vann eller melk om den er for tykk."},
-						{Type: "HowToStep", Text: "Stek vaflene og server dem gjerne varme."},
+						{Type: "HowToStep", Text: "Ha mel, sukker, bakepulver og kardemomme i en bolle."},
+						{Type: "HowToStep", Text: "Spe med litt av melken om gangen. R&oslash;r godt mellom hver gang for &aring; f&aring; en glatt r&oslash;re uten melklumper."},
+						{Type: "HowToStep", Text: "R&oslash;r inn egg og tilsett smeltet sm&oslash;r. La r&oslash;ren svelle i 1/2 time. Juster r&oslash;ren med litt vann eller melk om den er for tykk."},
+						{Type: "HowToStep", Text: "Stek vaflene i et vaffeljern, og legg over p&aring; rist. Server dem gjerne varme."},
 					},
 				},
-				Name:      "Vafler",
-				TotalTime: "PT40M",
-				Yield:     &models.Yield{Value: 1},
-				URL:       "https://www.matprat.no/oppskrifter/tradisjon/vafler/",
+				Name:            "Vafler",
+				NutritionSchema: &models.NutritionSchema{Calories: "2244"},
+				TotalTime:       "PT40M",
+				Yield:           &models.Yield{Value: 1},
+				URL:             "https://www.matprat.no/oppskrifter/tradisjon/vafler/",
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
@@ -774,12 +775,11 @@ func TestScraper_M(t *testing.T) {
 			name: "mindmegette.hu",
 			in:   "https://www.mindmegette.hu/karamellas-lavasuti.recept/",
 			want: models.RecipeSchema{
-				AtContext:     atContext,
-				AtType:        &models.SchemaType{Value: "Recipe"},
-				Category:      &models.Category{Value: "Aprósütemény"},
-				CookingMethod: &models.CookingMethod{},
-				Cuisine:       &models.Cuisine{},
-				CookTime:      "PT1H",
+				AtContext: atContext,
+				AtType:    &models.SchemaType{Value: "Recipe"},
+				Category:  &models.Category{Value: "Aprósütemény"},
+				CookTime:  "PT1H",
+				Cuisine:   &models.Cuisine{Value: "magyar"},
 				Description: &models.Description{
 					Value: "A karamellás lávasüti egy igen csábító édesség a hét szinte bármely napján. Éppen ezért nem csak különleges alkalmakkor kell elővenni a receptet, hanem amikor csak kedved tartja.",
 				},
@@ -789,6 +789,7 @@ func TestScraper_M(t *testing.T) {
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
+						"A karamellhez (1 bögre 2,5 dl):",
 						"0.66 bögre 1,5%-os tej",
 						"0.33 bögre habtejszín",
 						"0.5 bögre sózatlan vaj",
@@ -796,6 +797,7 @@ func TestScraper_M(t *testing.T) {
 						"0.5 bögre barnacukor",
 						"1 tk só",
 						"1 tk vaníliakivonat",
+						"A süteményekhez:",
 						"10 ek vaj",
 						"0.75 bögre barnacukor",
 						"1 db tojás",
@@ -807,16 +809,23 @@ func TestScraper_M(t *testing.T) {
 						"fahéjas cukor",
 					},
 				},
-				Instructions:    &models.Instructions{Values: []models.HowToItem{}},
-				Name:            "Karamellás lávasüti receptje  |  Mindmegette.hu",
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "A karamell elkészítéséhez egy kenyérsütő formát sütőpapírral kibélelünk. Egy közepes lábasban közepesen magas lángon felmelegítjük a tejet, a tejszínt és a vajat, amíg a vaj elolvad. Hozzáadjuk a kristály- és barnacukrot, jól összekeverjük, majd forrásig melegítjük. Amikor bugyogni kezd, levesszük a lángot és állandó keverés mellett addig melegítjük, míg a keverék hőmérséklete, a cukrászhőmérőn, eléri a 120 fokot."},
+						{Type: "HowToStep", Text: "Az edényt levesszük a tűzről, és belekeverjük a sót és a vaníliát. A karamellt az előkészített sütőformába öntjük, és hagyjuk teljesen kihűlni és megszilárdulni (12 órát). Ha nem kívánunk házi karamellt készíteni, vehetünk bolti tejkaramellát helyette."},
+						{Type: "HowToStep", Text: "A kihűlt karamellt kivesszük az sütőedényből, körülbelül 2 centis négyzetekre vágjuk. Ehhez a recepthez 12 négyzetre lesz szükség. ( A felesleget légmentesen záródó tárolóedényben tarthatjuk el.)"},
+						{Type: "HowToStep", Text: "A vajat és a barnacukrot simára krémesítjük - használhatunk kézi vagy elektromos habverőt, vagy egy keverőlapáttal szerelt álló konyhai robotgépet. Hozzáadjuk a tojást és a vaníliát. A keverékre szitáljuk a lisztet, a sütőport, a fahéjat és a sót, majd belekeverjük. Addig keverjük, míg a liszt már nem látható – a tészta nem fog teljesen összeállni, de nyomásra nem esik szét."},
+						{Type: "HowToStep", Text: "A tésztát egy fagyiskanállal adagoljuk. Minden tészta darabot kézzel kilapítunk (nem fog tapadni) és egy karamell darabot nyomunk a közepébe, és a tésztával teljesen körbe borítjuk. A tésztát tenyerünk között labdává formáljuk és mindegyiket megforgatjuk a fahéjas cukorban."},
+						{Type: "HowToStep", Text: "A sütiket a sütőpapírral bélelt tepsibe helyezzük, egymástól 5 centiméterre, és 190 fokra előmelegített sütőben 12-14 percig sütjük, míg a szélei épphogy megbarnulnak (ha tovább sütjük, a karamell kifolyhat a közepéből."},
+						{Type: "HowToStep", Text: "A sütiket 10 percig a tepsiben hűlni hagyjuk. A süteményeket fogyaszthatjuk most, vagy lehűthetjük és felhasználáskor 160 fokon újramelegítjük, esetleg, miután összeállítjuk, hűtőbe tehetjük, és később is kisüthetjük."},
+					},
+				},
+				Name:            "Karamellás lávasüti",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H",
-				ThumbnailURL:    &models.ThumbnailURL{},
-				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				TotalTime:       "PT2H",
 				Yield:           &models.Yield{Value: 16},
 				URL:             "https://www.mindmegette.hu/karamellas-lavasuti.recept/",
-				Video:           &models.Videos{},
 			},
 		},
 		{
@@ -1048,16 +1057,12 @@ func TestScraper_M(t *testing.T) {
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
-							AtType:      "VideoObject",
-							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1647128793/yemcp9snxykca2cicvwx.mp4",
-							Description: "The best fettuccine alfredo recipe. How to make alfredo sauce from scratch using the freshest ingredients. Fettuccine pasta with creamy alfredo sauce.",
-							Duration:    "PT75S",
-							EmbedURL:    "https://video.mediavine.com/videos/yemcp9snxykca2cicvwx.js",
-							Name:        "Fettuccine Alfredo",
-							ThumbnailURL: &models.ThumbnailURL{
-								Value: "https://mediavine-res.cloudinary.com/image/upload/s--AbemOh-x--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1647128897/fyuikq1vvpe2ccsr7zil.jpg",
-							},
-							UploadDate: time.Date(2022, 3, 12, 23, 48, 20, 0, time.UTC),
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/Obtem9Eg.mp4",
+							Description:  "The best fettuccine alfredo recipe. How to make alfredo sauce from scratch using the freshest ingredients. Fettuccine pasta with creamy alfredo sauce.",
+							Name:         "Fettuccine Alfredo",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/Obtem9Eg-720.jpg"},
+							UploadDate:   time.Date(2022, 3, 12, 0, 0, 0, 0, time.UTC),
 						},
 					},
 				},
@@ -1363,7 +1368,6 @@ func TestScraper_M(t *testing.T) {
 				AtType:        &models.SchemaType{Value: "Recipe"},
 				Category:      &models.Category{Value: "Entradas"},
 				CookingMethod: &models.CookingMethod{},
-				CookTime:      "PT0M",
 				Cuisine:       &models.Cuisine{},
 				DateCreated:   "2012-09-10",
 				DateModified:  "2015-11-06",
@@ -1469,16 +1473,12 @@ func TestScraper_M(t *testing.T) {
 				Video: &models.Videos{
 					Values: []models.VideoObject{
 						{
-							AtType:      "VideoObject",
-							ContentURL:  "https://mediavine-res.cloudinary.com/video/upload/t_original/v1646933624/a7syuib4chpdofspjb98.mp4",
-							Description: "Pistachio Pudding Cake is a simple bundt cake to make any time of year. Made with a cake mix and pistachio pudding mix, this cake can be topped with a simple glaze or any number of frostings for a delicious crowd-pleasing dessert.",
-							Duration:    "PT64S",
-							EmbedURL:    "https://video.mediavine.com/videos/a7syuib4chpdofspjb98.js",
-							Name:        "Pistachio Pudding Cake",
-							ThumbnailURL: &models.ThumbnailURL{
-								Value: "https://mediavine-res.cloudinary.com/video/upload/s--20mrVB9o--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1646933624/a7syuib4chpdofspjb98.jpg",
-							},
-							UploadDate: time.Date(2022, 3, 10, 17, 34, 8, 0, time.UTC),
+							AtType:       "VideoObject",
+							ContentURL:   "https://content.jwplatform.com/videos/ZGLaQFSb.mp4",
+							Description:  "Pistachio Pudding Cake is a simple bundt cake to make any time of year. Made with a cake mix and pistachio pudding mix, this cake can be topped with a simple glaze or any number of frostings for a delicious crowd-pleasing dessert.",
+							Name:         "Pistachio Pudding Cake",
+							ThumbnailURL: &models.ThumbnailURL{Value: "https://content.jwplatform.com/thumbs/ZGLaQFSb-720.jpg"},
+							UploadDate:   time.Date(2022, 3, 10, 0, 0, 0, 0, time.UTC),
 						},
 					},
 				},

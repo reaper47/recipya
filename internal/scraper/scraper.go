@@ -103,8 +103,6 @@ func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService
 	switch host {
 	case "bergamot":
 		rs, err = s.scrapeBergamot(rawURL)
-	case "foodbag":
-		rs, err = s.scrapeFoodbag(rawURL)
 	case "gousto":
 		rs, err = s.scrapeGousto(rawURL)
 	case "madewithlau":
@@ -115,8 +113,6 @@ func (s *Scraper) scrapeSpecial(host, rawURL string, files services.FilesService
 			return models.RecipeSchema{}, true, err
 		}
 		rs, err = s.scrapeMonsieurCuisine(doc, rawURL, files)
-	case "quitoque":
-		rs, err = s.scrapeQuitoque(rawURL)
 	default:
 		isSpecial = false
 	}

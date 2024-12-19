@@ -13,7 +13,7 @@ func scrapeGazoakleychef(root *goquery.Document) (models.RecipeSchema, error) {
 
 	rs.DateModified = getPropertyContent(root, "article:modified_time")
 	rs.Image.Value = getPropertyContent(root, "og:image")
-	rs.Name = root.Find(".entry-title").Text()
+	rs.Name = root.Find(".entry-header .entry-title").First().Text()
 
 	root.Find(".entry-quick-info div.row div").Each(func(_ int, sel *goquery.Selection) {
 		c := strings.TrimSpace(sel.Text())

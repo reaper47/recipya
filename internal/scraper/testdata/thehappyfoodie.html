@@ -18,9 +18,18 @@
 		<!-- - https://thehappyfoodie.co.uk--><script>
     // Get the value when the page first starts loading
     var referer = document.referrer;
-    console.log("RefererOriginal: " + referer);
-    var refererValue = "";
-    console.log("Referer Value: " + refererValue);
+    
+    let previousPage = '';
+    const isExternal = document.referrer.split("/")[2] !== location.hostname;
+    if (localStorage.getItem('previousPageTime') && !isExternal)  {
+        const age = Date.now() - parseInt(localStorage.getItem('previousPageTime'));
+        //if older than 10 mins assume new journey (ms)
+        if (age < 600000) {
+            previousPage = localStorage.getItem('previousPage')
+        }
+    }
+
+    const pageName = 'THF:recipes:leek-and-lentil-gratin';
 
 // Function to capture book information and push it to the data layer
 function capturePageLoadEvent() {
@@ -118,9 +127,9 @@ function capturePageLoadEvent() {
         },
                 pageInfo: {
                         pageID:"21524",
-            pageName:"THF:recipes:leek-and-lentil-gratin",
+            pageName: pageName,
             pageType:"recipe-page",
-            previousPage: refererValue,
+            previousPage: previousPage,
             referringURL: referer,
             pageURL:"https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/",
             breadCrumbs: "THF>Recipes>Leek-and-lentil-gratin",
@@ -145,13 +154,24 @@ function capturePageLoadEvent() {
 document.addEventListener('DOMContentLoaded', function(){
     capturePageLoadEvent();
 
-    const pageUrl = window.location.href;
-    const storedData = JSON.parse(localStorage.getItem(pageUrl));
+    //if we persisted an interaction node, push it and clear for some reason
+    const storedData = localStorage.getItem('interaction');
 
     if (storedData) {
-        window.adobeDataLayer.push(...storedData);
-        localStorage.removeItem(pageUrl);
+        var interactionObj = JSON.parse(storedData);
+
+        window.adobeDataLayer.push({   
+            event: 'interaction',    
+            eventInfo: {},
+            interaction: interactionObj
+        });
+
+        localStorage.removeItem('interaction')
     }
+
+    //store for future ref
+    localStorage.setItem('previousPage', pageName);
+    localStorage.setItem('previousPageTime', Date.now());
 });
 </script>
 
@@ -245,7 +265,7 @@ OneTrust.OnConsentChanged(function() {
 	var dataLayer = dataLayer || [];
 </script>
 <!-- End Google Tag Manager for WordPress by gtm4wp.com -->
-	<!-- This site is optimized with the Yoast SEO Premium plugin v19.7 (Yoast SEO v23.0) - https://yoast.com/wordpress/plugins/seo/ -->
+	<!-- This site is optimized with the Yoast SEO Premium plugin v19.7 (Yoast SEO v24.0) - https://yoast.com/wordpress/plugins/seo/ -->
 	<title>Rukmini Iyer Leek, Lentil, and Feta Gratin | One-tin Vegetarian Recipe</title>
 	<meta name="description" content="A creamy, cheesy, and deeply comforting dish, Rukmini Iyer&#039;s one-tin vegetarian gratin also happens to be packed with nutritious Puy lentils." />
 	<link rel="canonical" href="https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/" />
@@ -270,6 +290,7 @@ OneTrust.OnConsentChanged(function() {
 <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
 <link rel='dns-prefetch' href='//fonts.googleapis.com' />
 <link rel='dns-prefetch' href='//use.fontawesome.com' />
+<link rel="alternate" type="application/rss+xml" title="The Happy Foodie &raquo; Leek and Puy Lentil Gratin with a Crunchy Feta Topping Comments Feed" href="https://thehappyfoodie.co.uk/recipes/leek-and-lentil-gratin/feed/" />
 <script type="text/javascript">
 /* <![CDATA[ */
 window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/thehappyfoodie.co.uk\/wp-includes\/js\/wp-emoji-release.min.js"}};
@@ -301,31 +322,35 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
 .wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
 </style>
 <style id='global-styles-inline-css' type='text/css'>
-body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
-.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
 :where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
 :where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
-.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
 </style>
 <link rel='stylesheet' id='wppopups-base-css' href='https://thehappyfoodie.co.uk/wp-content/plugins/wp-popups-lite/src/assets/css/wppopups-base.css?ver=2.2.0.1' type='text/css' media='all' />
 <link rel='stylesheet' id='google-fonts-css' href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro%3Aital%2Cwght%400%2C400%3B0%2C600%3B1%2C400&#038;display=swap' type='text/css' media='all' />
 <link rel='stylesheet' id='bootstrap-css' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css' type='text/css' media='all' />
 <link rel='stylesheet' id='font-awesome-css' href='https://use.fontawesome.com/releases/v5.15.2/css/all.css' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css' href='https://thehappyfoodie.co.uk/wp-includes/css/dashicons.min.css' type='text/css' media='all' />
 <link rel='stylesheet' id='owl-carousel-css' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css' type='text/css' media='all' />
 <link rel='stylesheet' id='owl-carousel-theme-css' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css' type='text/css' media='all' />
 <link rel='stylesheet' id='styles-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/style.css?ver=2.10.0' type='text/css' media='all' />
-<link rel='stylesheet' id='tf-happy-foodie-2023-styles-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/css/tf-happy-foodie-2023.css?ver=3.7.6' type='text/css' media='screen' />
-<link rel='stylesheet' id='tf-happy-foodie-banner-styles-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/css/tf-happy-foodie-banner.css?ver=3.7.6' type='text/css' media='screen' />
-<link rel='stylesheet' id='tf-happy-foodie-2021-print-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/css/tf-happy-foodie-2021-print.css?ver=3.7.6' type='text/css' media='print' />
+<link rel='stylesheet' id='tf-happy-foodie-2023-styles-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/css/tf-happy-foodie-2023.css?ver=3.7.7' type='text/css' media='screen' />
+<link rel='stylesheet' id='tf-happy-foodie-banner-styles-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/css/tf-happy-foodie-banner.css?ver=3.7.7' type='text/css' media='screen' />
+<link rel='stylesheet' id='tf-happy-foodie-2021-print-css' href='https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/css/tf-happy-foodie-2021-print.css?ver=3.7.7' type='text/css' media='print' />
 <link rel='stylesheet' id='searchwp-forms-css' href='https://thehappyfoodie.co.uk/wp-content/plugins/searchwp/assets/css/frontend/search-forms.css?ver=4.3.15' type='text/css' media='all' />
 <script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
 <script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js?ver=2.3.4" id="owl-carousel-js-js"></script>
-<link rel="https://api.w.org/" href="https://thehappyfoodie.co.uk/wp-json/" /><link rel="alternate" type="application/json" href="https://thehappyfoodie.co.uk/wp-json/wp/v2/recipes/21524" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://thehappyfoodie.co.uk/xmlrpc.php?rsd" />
+<link rel="https://api.w.org/" href="https://thehappyfoodie.co.uk/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://thehappyfoodie.co.uk/wp-json/wp/v2/recipes/21524" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://thehappyfoodie.co.uk/xmlrpc.php?rsd" />
 <link rel='shortlink' href='https://thehappyfoodie.co.uk/?p=21524' />
-<link rel="alternate" type="application/json+oembed" href="https://thehappyfoodie.co.uk/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F" />
-<link rel="alternate" type="text/xml+oembed" href="https://thehappyfoodie.co.uk/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F&#038;format=xml" />
-<!--Code generated by SNIP (Structured Data Plugin) for WordPress. See rich-snippets.io for more information.Post ID is 19996.--><script data-snippet_id="snip-613f7064b4688" type="application/ld+json">{
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://thehappyfoodie.co.uk/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://thehappyfoodie.co.uk/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F&#038;format=xml" />
+<!--Code generated by SNIP (Structured Data Plugin) for WordPress. See rich-snippets.io for more information.Post ID is 19997.--><script data-snippet_id="snip-672a3f46b6fbb" type="application/ld+json">{
+    "bestRating": "5",
+    "@context": "http:\/\/schema.org",
+    "@type": "Rating"
+}</script><!--Code generated by SNIP (Structured Data Plugin) for WordPress. See rich-snippets.io for more information.Post ID is 19996.--><script data-snippet_id="snip-613f7064b4688" type="application/ld+json">{
     "recipeInstructions": "<p>Preheat the oven to 180\u00b0C fan\/200\u00b0C\/gas 6. Put the butter and garlic into a roasting tin and pop into the oven to melt while you get on with slicing the leeks.<\/p>\n<p>Mix the sliced leeks with the melted garlic butter, season well with the sea salt and black pepper, then return to the oven to roast for 20 minutes.<\/p>\n<p>After 20 minutes, stir through the Puy lentils, cr\u00e8me fra\u00eeche and another good scatter of sea salt, then top with the feta cheese and breadcrumbs. Drizzle with the olive oil, then return to the oven for a further 20\u201325 minutes, until golden brown on top.<\/p>\n<p>Serve the gratin hot, with a mustard or balsamic dressed green salad alongside.<\/p>\n",
     "cookTime": "PT40M",
     "recipeCuisine": "French",
@@ -355,7 +380,7 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 <!-- Google Tag Manager for WordPress by gtm4wp.com -->
 <!-- GTM Container placement set to footer -->
 <script data-cfasync="false" data-pagespeed-no-defer>
-	var dataLayer_content = {"pageTitle":"Rukmini Iyer Leek, Lentil, and Feta Gratin | One-tin Vegetarian Recipe","pagePostType":"recipes","pagePostType2":"single-recipes","pagePostDate":"February 7, 2022","pagePostDateYear":2022,"pagePostDateMonth":2,"pagePostDateDay":7,"pagePostDateDayName":"Monday","pagePostDateHour":10,"pagePostDateMinute":14,"pagePostDateIso":"2022-02-07T10:14:10+00:00","pagePostDateUnix":1644228850,"pagePostTerms":{"diets":["Vegetarian"],"main_ingredients":["Feta","Leek","Lentil"],"dishes":["One Pot"],"cooking_methods":["One-pot"],"occasions":["Valentine's Day"],"recipe_types":["Dinner","Main Course"],"cuisines":["French"],"feature_categories":["Make it tonight"],"recipe_tags":["Easy","Quick"],"meta":{"hf_recipe_summary":"A creamy, cheesy, and deeply comforting dish, Rukmini Iyer's one-tin vegetarian gratin also happens to be packed with nutritious Puy lentils.","hf_recipe_introduction":"This filling gratin, with its crisp feta topping, is perfect comfort food – the dining equivalent of sitting cosily on the sofa under a blanket. It’s good for batch cooking for the week ahead, as any leftovers will keep well for a couple of days in the fridge. This dish is a favourite among friends who helped try out the recipes.","hf_recipe_essential_kit":"","hf_recipe_method":"Preheat the oven to 180°C fan\/200°C\/gas 6. Put the butter and garlic into a roasting tin and pop into the oven to melt while you get on with slicing the leeks.\r\n\r\nMix the sliced leeks with the melted garlic butter, season well with the sea salt and black pepper, then return to the oven to roast for 20 minutes.\r\n\r\nAfter 20 minutes, stir through the Puy lentils, crème fraîche and another good scatter of sea salt, then top with the feta cheese and breadcrumbs. Drizzle with the olive oil, then return to the oven for a further 20–25 minutes, until golden brown on top.\r\n\r\nServe the gratin hot, with a mustard or balsamic dressed green salad alongside.","hf_recipe_yield":"Serves 4 generously ","hf_recipe_prep_time_hours":0,"hf_recipe_prep_time_minutes":10,"hf_recipe_cook_time_hours":0,"hf_recipe_cook_time_minutes":40,"hf_recipe_published_date":"","hf_recipe_ingredients_0_ingredient_amount":"30g ","hf_recipe_ingredients_0_ingredient_name":"butter","hf_recipe_ingredients_0_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_1_ingredient_amount":"3 cloves of  ","hf_recipe_ingredients_1_ingredient_name":"garlic, crushed","hf_recipe_ingredients_1_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_2_ingredient_amount":"500g ","hf_recipe_ingredients_2_ingredient_name":"leeks, thinly sliced","hf_recipe_ingredients_2_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_3_ingredient_amount":"2 tsp","hf_recipe_ingredients_3_ingredient_name":"sea salt","hf_recipe_ingredients_3_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_4_ingredient_amount":"","hf_recipe_ingredients_4_ingredient_name":"freshly ground black pepper","hf_recipe_ingredients_4_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_5_ingredient_amount":"500g ","hf_recipe_ingredients_5_ingredient_name":"vac-packed cooked Puy lentils","hf_recipe_ingredients_5_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_6_ingredient_amount":"450ml ","hf_recipe_ingredients_6_ingredient_name":"crème fraîche","hf_recipe_ingredients_6_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_7_ingredient_amount":"125g ","hf_recipe_ingredients_7_ingredient_name":"feta cheese, crumbled","hf_recipe_ingredients_7_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_8_ingredient_amount":"50g ","hf_recipe_ingredients_8_ingredient_name":"panko or fresh white breadcrumbs","hf_recipe_ingredients_8_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_9_ingredient_amount":"1 tbsp","hf_recipe_ingredients_9_ingredient_name":"olive oil","hf_recipe_ingredients_9_use_ingredient_name_as_heading":0,"hf_recipe_ingredients":10,"hf_recipe_full_image":"","hf_recipe_recommendation_blocks_0_recommendation":"book_title","hf_recipe_recommendation_blocks_1_recommendation":"main_ingredient","hf_recipe_recommendation_blocks_2_recommendation":"diet","hf_recipe_recommendation_blocks":3,"hf_recipe_authors_link":"a:1:{i:0;s:4:\"2782\";}","hf_recipe_books_link":"a:1:{i:0;s:4:\"2280\";}","hf_recipe_old_id":"","hf_recipe_old_order_number":"","hf_recipe_old_extras":"","hf_recipe_old_types":"","hf_recipe_old_diets":"","hf_recipe_old_occasions":"","hf_recipe_old_main_ingredients":"","hf_recipe_old_quick":"","hf_recipe_old_easy":"","hf_recipe_old_freezer_friendly":"","hf_recipe_old_family_friendly":"","hf_recipe_old_category":"","hf_recipe_prep_time":"","hf_recipe_cook_time":"","mihdan_index_now_last_update":1707754659}},"postCountOnPage":1,"postCountTotal":1};
+	var dataLayer_content = {"pageTitle":"Rukmini Iyer Leek, Lentil, and Feta Gratin | One-tin Vegetarian Recipe","pagePostType":"recipes","pagePostType2":"single-recipes","pagePostDate":"February 7, 2022","pagePostDateYear":2022,"pagePostDateMonth":2,"pagePostDateDay":7,"pagePostDateDayName":"Monday","pagePostDateHour":10,"pagePostDateMinute":14,"pagePostDateIso":"2022-02-07T10:14:10+00:00","pagePostDateUnix":1644228850,"pagePostTerms":{"diets":["Vegetarian"],"main_ingredients":["Feta","Leek","Lentil"],"dishes":["One Pot"],"cooking_methods":["One-pot"],"occasions":["Valentine's Day"],"recipe_types":["Dinner","Main Course"],"cuisines":["French"],"feature_categories":["Make it tonight"],"recipe_tags":["Easy","Quick"],"meta":{"hf_recipe_summary":"A creamy, cheesy, and deeply comforting dish, Rukmini Iyer's one-tin vegetarian gratin also happens to be packed with nutritious Puy lentils.","hf_recipe_introduction":"This filling gratin, with its crisp feta topping, is perfect comfort food – the dining equivalent of sitting cosily on the sofa under a blanket. It’s good for batch cooking for the week ahead, as any leftovers will keep well for a couple of days in the fridge. This dish is a favourite among friends who helped try out the recipes.","hf_recipe_essential_kit":"","hf_recipe_method":"Preheat the oven to 180°C fan\/200°C\/gas 6. Put the butter and garlic into a roasting tin and pop into the oven to melt while you get on with slicing the leeks.\r\n\r\nMix the sliced leeks with the melted garlic butter, season well with the sea salt and black pepper, then return to the oven to roast for 20 minutes.\r\n\r\nAfter 20 minutes, stir through the Puy lentils, crème fraîche and another good scatter of sea salt, then top with the feta cheese and breadcrumbs. Drizzle with the olive oil, then return to the oven for a further 20–25 minutes, until golden brown on top.\r\n\r\nServe the gratin hot, with a mustard or balsamic dressed green salad alongside.","hf_recipe_yield":"Serves 4 generously ","hf_recipe_prep_time_hours":0,"hf_recipe_prep_time_minutes":10,"hf_recipe_cook_time_hours":0,"hf_recipe_cook_time_minutes":40,"hf_recipe_published_date":"","hf_recipe_ingredients_0_ingredient_amount":"30g ","hf_recipe_ingredients_0_ingredient_name":"butter","hf_recipe_ingredients_0_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_1_ingredient_amount":"3 cloves of  ","hf_recipe_ingredients_1_ingredient_name":"garlic, crushed","hf_recipe_ingredients_1_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_2_ingredient_amount":"500g ","hf_recipe_ingredients_2_ingredient_name":"leeks, thinly sliced","hf_recipe_ingredients_2_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_3_ingredient_amount":"2 tsp","hf_recipe_ingredients_3_ingredient_name":"sea salt","hf_recipe_ingredients_3_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_4_ingredient_amount":"","hf_recipe_ingredients_4_ingredient_name":"freshly ground black pepper","hf_recipe_ingredients_4_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_5_ingredient_amount":"500g ","hf_recipe_ingredients_5_ingredient_name":"vac-packed cooked Puy lentils","hf_recipe_ingredients_5_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_6_ingredient_amount":"450ml ","hf_recipe_ingredients_6_ingredient_name":"crème fraîche","hf_recipe_ingredients_6_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_7_ingredient_amount":"125g ","hf_recipe_ingredients_7_ingredient_name":"feta cheese, crumbled","hf_recipe_ingredients_7_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_8_ingredient_amount":"50g ","hf_recipe_ingredients_8_ingredient_name":"panko or fresh white breadcrumbs","hf_recipe_ingredients_8_use_ingredient_name_as_heading":0,"hf_recipe_ingredients_9_ingredient_amount":"1 tbsp","hf_recipe_ingredients_9_ingredient_name":"olive oil","hf_recipe_ingredients_9_use_ingredient_name_as_heading":0,"hf_recipe_ingredients":10,"hf_recipe_full_image":"","hf_recipe_recommendation_blocks_0_recommendation":"book_title","hf_recipe_recommendation_blocks_1_recommendation":"main_ingredient","hf_recipe_recommendation_blocks_2_recommendation":"diet","hf_recipe_recommendation_blocks":3,"hf_recipe_authors_link":"a:1:{i:0;s:4:\"2782\";}","hf_recipe_books_link":"a:1:{i:0;s:4:\"2280\";}","hf_recipe_old_id":"","hf_recipe_old_order_number":"","hf_recipe_old_extras":"","hf_recipe_old_types":"","hf_recipe_old_diets":"","hf_recipe_old_occasions":"","hf_recipe_old_main_ingredients":"","hf_recipe_old_quick":"","hf_recipe_old_easy":"","hf_recipe_old_freezer_friendly":"","hf_recipe_old_family_friendly":"","hf_recipe_old_category":"","hf_recipe_prep_time":"","hf_recipe_cook_time":"","mihdan_index_now_last_update":1707754659,"rating":"a:2:{s:12:\"rating_count\";i:3;s:14:\"average_rating\";d:5;}"}},"postCountOnPage":1,"postCountTotal":1};
 	dataLayer.push( dataLayer_content );
 </script>
 <script data-cfasync="false">
@@ -681,7 +706,7 @@ section.hf-snapshot-cta-sidebar {
 <li id="menu-item-11424" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11424"><a href="https://thehappyfoodie.co.uk/features/">Features</a></li>
 <li id="menu-item-11357" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11357"><a href="https://thehappyfoodie.co.uk/chefs/">Authors</a></li>
 <li id="menu-item-18999" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18999"><a href="https://thehappyfoodie.co.uk/best-uk-cookbook-ebook-deals-discounts/">eBook Deals</a></li>
-<li id="menu-item-20934" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20934"><a href="https://thehappyfoodie.co.uk/recipes/occasions/barbecue/">BBQ Recipes</a></li>
+<li id="menu-item-20934" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20934"><a href="https://thehappyfoodie.co.uk/recipes/occasions/christmas/">Christmas</a></li>
 </ul></div>	</div>
 
 	<div class="header__flyout__social">
@@ -704,7 +729,24 @@ section.hf-snapshot-cta-sidebar {
 
 			</div>
 
-</div><div class="header__top-bar">
+</div><div class="hf-promo-banner header__banner align-self-xl-center dark" style="--desktop-image: url('https://thehappyfoodie.co.uk/wp-content/uploads/2024/12/christmas-banner-desktop.jpg'); --mobile-image: url('https://thehappyfoodie.co.uk/wp-content/uploads/2024/12/Christmas-banner-mobile.jpg');">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-auto d-flex flex-row align-items-baseline">
+              <a href="https://thehappyfoodie.co.uk/articles/christmas-2024-gift-guide-the-best-cookbooks-to-give-this-year/" class="text-link">
+                      <h3>Our Christmas 2024 Gift Guide: Ottolenghi, Mary Berry &amp; More                              <span class="arrow-link">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="11" fill="#FABC2F"/>
+                    <path d="M13.7713 11.4659L9.43127 7.1411C8.90391 6.61558 9.27608 5.71484 10.0206 5.71484C10.2415 5.71484 10.4534 5.8024 10.6099 5.95834L16.1367 11.4659L10.6503 16.9023C10.4944 17.0568 10.2838 17.1434 10.0643 17.1434C9.3208 17.1434 8.95021 16.2429 9.47836 15.7196L13.7713 11.4659Z" fill="#000000"/>
+                  </svg>
+                </span>
+                          </h3>
+                  </a>
+            </div>
+    </div>
+  </div>
+</div>
+<div class="header__top-bar">
   <div class="container">
     <div class="row">
       <div class="col d-flex align-items-center align-items-xl-start">
@@ -749,7 +791,7 @@ section.hf-snapshot-cta-sidebar {
 
 	<div class="header__right-col__menu d-none d-xl-block">
 		<div class="menu-main-menu-right-container"><ul id="menu-main-menu-right" class="menu"><li id="menu-item-11354" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11354"><a href="https://thehappyfoodie.co.uk/chefs/">Authors</a></li>
-<li id="menu-item-20933" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20933"><a href="https://thehappyfoodie.co.uk/recipes/occasions/barbecue/">BBQ Recipes</a></li>
+<li id="menu-item-20933" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20933"><a href="https://thehappyfoodie.co.uk/recipes/occasions/christmas/">Christmas</a></li>
 <li id="menu-item-18998" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18998"><a href="https://thehappyfoodie.co.uk/best-uk-cookbook-ebook-deals-discounts/">Deals</a></li>
 </ul></div>	</div>
 
@@ -804,7 +846,7 @@ section.hf-snapshot-cta-sidebar {
 </li>
 <li  id="menu-item-45" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown menu-item-45 nav-item"><a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link" id="menu-item-dropdown-45"><div class="item-name" itemprop="name">Diet</div></a>
 <ul aria-labelledby="menu-item-dropdown-45">
-	<li  id="menu-item-11340" class="menu-item menu-item-type-taxonomy menu-item-object-diets current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11340 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/vegetarian/" class="dropdown-item"><div class="item-name" itemprop="name">Vegetarian</div></a></li>
+	<li  id="menu-item-11340" class="menu-item menu-item-type-taxonomy menu-item-object-diets menu-item-11340 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/vegetarian/" class="dropdown-item"><div class="item-name" itemprop="name">Vegetarian</div></a></li>
 	<li  id="menu-item-11341" class="menu-item menu-item-type-taxonomy menu-item-object-diets menu-item-11341 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/vegan/" class="dropdown-item"><div class="item-name" itemprop="name">Vegan</div></a></li>
 	<li  id="menu-item-11342" class="menu-item menu-item-type-taxonomy menu-item-object-diets menu-item-11342 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/gluten-free/" class="dropdown-item"><div class="item-name" itemprop="name">Gluten-Free</div></a></li>
 </ul>
@@ -813,10 +855,10 @@ section.hf-snapshot-cta-sidebar {
 <ul aria-labelledby="menu-item-dropdown-46">
 	<li  id="menu-item-26490" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-26490 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/cooking-methods/baking/" class="dropdown-item"><div class="item-name" itemprop="name">Baking</div></a></li>
 	<li  id="menu-item-11344" class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11344 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/family-friendly/" class="dropdown-item"><div class="item-name" itemprop="name">Family Friendly</div></a></li>
-	<li  id="menu-item-11345" class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11345 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/quick/" class="dropdown-item"><div class="item-name" itemprop="name">Quick</div></a></li>
-	<li  id="menu-item-11343" class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11343 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/easy/" class="dropdown-item"><div class="item-name" itemprop="name">Easy</div></a></li>
+	<li  id="menu-item-11345" class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11345 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/quick/" class="dropdown-item"><div class="item-name" itemprop="name">Quick</div></a></li>
+	<li  id="menu-item-11343" class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11343 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/easy/" class="dropdown-item"><div class="item-name" itemprop="name">Easy</div></a></li>
 	<li  id="menu-item-11346" class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11346 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/freezer-friendly/" class="dropdown-item"><div class="item-name" itemprop="name">Freezer Friendly</div></a></li>
-	<li  id="menu-item-11348" class="menu-item menu-item-type-taxonomy menu-item-object-dishes current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11348 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/dishes/one-pot/" class="dropdown-item"><div class="item-name" itemprop="name">One Pot</div></a></li>
+	<li  id="menu-item-11348" class="menu-item menu-item-type-taxonomy menu-item-object-dishes menu-item-11348 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/dishes/one-pot/" class="dropdown-item"><div class="item-name" itemprop="name">One Pot</div></a></li>
 </ul>
 </li>
 </ul></div>
@@ -903,7 +945,7 @@ section.hf-snapshot-cta-sidebar {
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11352"><a href="https://thehappyfoodie.co.uk/books/">Books</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11425"><a href="https://thehappyfoodie.co.uk/features/">Features</a></li>
 </ul></div><div class="menu-main-menu-right-container"><ul id="menu-main-menu-right-1" class="menu" itemscope itemtype="http://www.schema.org/SiteNavigationElement"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11354"><a href="https://thehappyfoodie.co.uk/chefs/">Authors</a></li>
-<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20933"><a href="https://thehappyfoodie.co.uk/recipes/occasions/barbecue/">BBQ Recipes</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20933"><a href="https://thehappyfoodie.co.uk/recipes/occasions/christmas/">Christmas</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18998"><a href="https://thehappyfoodie.co.uk/best-uk-cookbook-ebook-deals-discounts/">Deals</a></li>
 </ul></div>				</div>
 
@@ -961,7 +1003,7 @@ section.hf-snapshot-cta-sidebar {
 </li>
 <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown menu-item-45 nav-item"><a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link" id="menu-item-dropdown-45"><div class="item-name" itemprop="name">Diet</div></a>
 <ul aria-labelledby="menu-item-dropdown-45">
-	<li  class="menu-item menu-item-type-taxonomy menu-item-object-diets current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11340 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/vegetarian/" class="dropdown-item"><div class="item-name" itemprop="name">Vegetarian</div></a></li>
+	<li  class="menu-item menu-item-type-taxonomy menu-item-object-diets menu-item-11340 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/vegetarian/" class="dropdown-item"><div class="item-name" itemprop="name">Vegetarian</div></a></li>
 	<li  class="menu-item menu-item-type-taxonomy menu-item-object-diets menu-item-11341 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/vegan/" class="dropdown-item"><div class="item-name" itemprop="name">Vegan</div></a></li>
 	<li  class="menu-item menu-item-type-taxonomy menu-item-object-diets menu-item-11342 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/diets/gluten-free/" class="dropdown-item"><div class="item-name" itemprop="name">Gluten-Free</div></a></li>
 </ul>
@@ -970,10 +1012,10 @@ section.hf-snapshot-cta-sidebar {
 <ul aria-labelledby="menu-item-dropdown-46">
 	<li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-26490 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/cooking-methods/baking/" class="dropdown-item"><div class="item-name" itemprop="name">Baking</div></a></li>
 	<li  class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11344 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/family-friendly/" class="dropdown-item"><div class="item-name" itemprop="name">Family Friendly</div></a></li>
-	<li  class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11345 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/quick/" class="dropdown-item"><div class="item-name" itemprop="name">Quick</div></a></li>
-	<li  class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11343 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/easy/" class="dropdown-item"><div class="item-name" itemprop="name">Easy</div></a></li>
+	<li  class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11345 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/quick/" class="dropdown-item"><div class="item-name" itemprop="name">Quick</div></a></li>
+	<li  class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11343 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/easy/" class="dropdown-item"><div class="item-name" itemprop="name">Easy</div></a></li>
 	<li  class="menu-item menu-item-type-taxonomy menu-item-object-recipe_tags menu-item-11346 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/recipe-tags/freezer-friendly/" class="dropdown-item"><div class="item-name" itemprop="name">Freezer Friendly</div></a></li>
-	<li  class="menu-item menu-item-type-taxonomy menu-item-object-dishes current-recipes-ancestor current-menu-parent current-recipes-parent active menu-item-11348 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/dishes/one-pot/" class="dropdown-item"><div class="item-name" itemprop="name">One Pot</div></a></li>
+	<li  class="menu-item menu-item-type-taxonomy menu-item-object-dishes menu-item-11348 nav-item"><a itemprop="url" href="https://thehappyfoodie.co.uk/recipes/dishes/one-pot/" class="dropdown-item"><div class="item-name" itemprop="name">One Pot</div></a></li>
 </ul>
 </li>
 </ul></div>
@@ -990,7 +1032,7 @@ section.hf-snapshot-cta-sidebar {
 			</header>
 
 		<!-- current author: 2782 : -->
-    <div id="content">
+    <div id="content" class="content-with-top-banner">
                 <div class="hf-section tf-search-summary-section tf-summary-single-recipe">
             <div class="container">
                 <div class="tf-search-summary__wrapper">
@@ -1131,6 +1173,20 @@ section.hf-snapshot-cta-sidebar {
 	</div>
 
 </section>
+<div class="hf-metadata__rating-row">
+		<div class="hf-metadata__rating"><p class="stars"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></p> (3 ratings)</div>	
+		
+	<div class="hf-metadata__rate-comment">
+		<a href="#review-recipe">Rate this recipe</a>
+						
+				 
+					<a href="#commentlist"> 
+						<span>3 Comments</span>
+					</a>
+				 
+	</div>
+</div>
+
                 </div>
 
                 	
@@ -1163,7 +1219,7 @@ section.hf-snapshot-cta-sidebar {
         <div class="hf-social-print__inner d-flex">
 
           <div class="hf-social-print__social">
-            <div class="hf-social-share d-flex"><a class="hf-social-link hf-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F" target="popup" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F','popup','width=600,height=400'); return false;" data-social="facebook" data-action="share"><span></span></a><a class="hf-social-link hf-social-twitter" href="https://twitter.com/intent/tweet?text=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping&amp;url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F" target="popup" onclick="window.open('https://twitter.com/intent/tweet?text=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping&amp;url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F','popup','width=600,height=400'); return false;" data-social="twitter" data-action="share"><span></span></a><a class="hf-social-link hf-social-pinterest" href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F&amp;media=https://thehappyfoodie.co.uk/wp-content/uploads/2022/02/Rukmini-Iyer-Leek-and-Lentil-Gratin-scaled.jpg&amp;description=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping" target="popup" onclick="window.open('https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F&amp;media=https://thehappyfoodie.co.uk/wp-content/uploads/2022/02/Rukmini-Iyer-Leek-and-Lentil-Gratin-scaled.jpg&amp;description=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping','popup','width=600,height=400'); return false;" data-social="pinterest" data-action="share"><span></span></a><a class="hf-social-link hf-social-email" href="/cdn-cgi/l/email-protection#e1de9294838b848295dcb2898093888f86c1ad84848ac4d3d1808f85c4d3d1b19498c4d3d1ad848f95888dc4d3d1a6938095888fc4d3d196889589c4d3d180c4d3d1a293948f828998c4d3d1a7849580c4d3d1b58e9191888f86c7808c91da838e8598dca28984828ac18e9495c195898892c18d888f8ac18e8fc1b58984c1a980919198c1a78e8e858884c196848392889584c18995959192c4d2a0c4d3a7c4d3a79589848980919198878e8e858884cf828ecf948ac4d3a793848288918492c4d3a78d84848acc808f85cc8d848f95888dcc86938095888fc4d3a7cf" title="Share by Email" data-social="email" data-action="share"><span></span></a></div>          </div>
+            <div class="hf-social-share d-flex"><a class="hf-social-link hf-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F" target="popup" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F','popup','width=600,height=400'); return false;" data-social="facebook" data-action="share"><span></span></a><a class="hf-social-link hf-social-twitter" href="https://twitter.com/intent/tweet?text=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping&amp;url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F" target="popup" onclick="window.open('https://twitter.com/intent/tweet?text=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping&amp;url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F','popup','width=600,height=400'); return false;" data-social="twitter" data-action="share"><span></span></a><a class="hf-social-link hf-social-pinterest" href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F&amp;media=https://thehappyfoodie.co.uk/wp-content/uploads/2022/02/Rukmini-Iyer-Leek-and-Lentil-Gratin-scaled.jpg&amp;description=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping" target="popup" onclick="window.open('https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fthehappyfoodie.co.uk%2Frecipes%2Fleek-and-lentil-gratin%2F&amp;media=https://thehappyfoodie.co.uk/wp-content/uploads/2022/02/Rukmini-Iyer-Leek-and-Lentil-Gratin-scaled.jpg&amp;description=Leek%20and%20Puy%20Lentil%20Gratin%20with%20a%20Crunchy%20Feta%20Topping','popup','width=600,height=400'); return false;" data-social="pinterest" data-action="share"><span></span></a><a class="hf-social-link hf-social-email" href="/cdn-cgi/l/email-protection#1b24686e79717e786f2648737a6972757c3b577e7e703e292b7a757f3e292b4b6e623e292b577e756f72773e292b5c697a6f72753e292b6c726f733e292b7a3e292b58696e757873623e292b5d7e6f7a3e292b4f746b6b72757c3d7a766b2079747f622658737e78703b746e6f3b6f7372683b777275703b74753b4f737e3b537a6b6b623b5d74747f727e3b6c7e7968726f7e3b736f6f6b683e285a3e295d3e295d6f737e737a6b6b627d74747f727e357874356e703e295d697e78726b7e683e295d777e7e70367a757f36777e756f7277367c697a6f72753e295d35" title="Share by Email" data-social="email" data-action="share"><span></span></a></div>          </div>
 
           <div class="hf-social-print__print">
             <button onclick="window.print();" class="d-flex align-items-center">Print</button>
@@ -1317,7 +1373,7 @@ function displayAllRetailers() {
 	retailersBtnText.classList.remove('rotate');
   } else {
     dots.style.display = "none";
-    retailersBtnText.innerHTML = "see less retailers"; 
+    retailersBtnText.innerHTML = "see fewer retailers"; 
     moreText.style.display = "inline"; 
 	retailersBtnText.classList.add('rotate');
   }
@@ -1540,7 +1596,137 @@ function displayAllRetailers() {
 
 	</section>
 
-<!-- deal goes here --><!-- booklink: Array --><!-- bookID: 2280 --><!-- dealLink: Array --><!-- NULL
+
+<section class="hf-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="reviews-general-info" id="review-recipe"> 
+                    <h2>Reviews</h2>
+                    
+                    <p class="average-rating"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span> 5 out of 5 stars</p><p>3 Ratings</p>                    
+                     
+                </div>
+
+                <p class="intro-text">Have you tried this recipe? Let us know how it went by leaving a comment below.</p>
+
+                	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title"> <small><a rel="nofollow" id="cancel-comment-reply-link" href="/recipes/leek-and-lentil-gratin/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://thehappyfoodie.co.uk/wp-comments-post.php?wpe-comment-post=happyfoodie" method="post" id="commentform" class="comment-form">    <label for="rating">Your rating<span class="required">*</span></label>
+    <fieldset class="comments-rating">
+        <span class="rating-container">
+                            <input type="radio" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>
+                            <input type="radio" id="rating-4" name="rating" value="4" /><label for="rating-4">4</label>
+                            <input type="radio" id="rating-3" name="rating" value="3" /><label for="rating-3">3</label>
+                            <input type="radio" id="rating-2" name="rating" value="2" /><label for="rating-2">2</label>
+                            <input type="radio" id="rating-1" name="rating" value="1" /><label for="rating-1">1</label>
+                        <input type="radio" id="rating-0" class="star-cb-clear" name="rating" value="0" /><label for="rating-0">0</label>
+        </span>
+    </fieldset>
+    <p class="comment-form-comment"><label for="comment">Your review</label><textarea id="comment" name="comment" placeholder="What did you think of this recipe?" rows="4"></textarea></p><p class="comment-form-author"><label for="author">Name *</label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" autocomplete="name" /></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='21524' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p></form>	</div><!-- #respond -->
+	<p class="comment_text_after">Thank you for your rating. Our team will get back to any queries as soon as possible.</p>
+                <p class="form-allowed">Please note: Moderation is enabled and may delay your comment being posted. There is no need
+                    to resubmit your comment. By posting a comment you are agreeing to the website <a href="https://www.penguin.co.uk/company/about-us/notices/terms---conditions.html" target="_blank">Terms of Use</a>.
+                </p>
+            
+            
+                            <h3 class="comments-title" id="comment-list">
+                    3 Comments                </h3>
+
+                <ol class="commentlist" id="commentlist">
+                            <div id="comment-1190" class="comment even thread-even depth-1">
+        <article id="div-comment-1190" class="comment-body">
+            <footer class="comment-meta">
+                <div class="comment-author vcard">
+                                        <img src="https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/img/user-avatar.jpg" alt="default user avatar" />
+                    <b class="fn">Paula</b>                </div><!-- .comment-author -->
+
+                <p class="stars"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></p>
+                <div class="comment-content truncated">
+                    <p>Tasty and easier to make than I expected. Can I freeze it?</p>
+ 
+                </div><!-- .comment-content -->
+
+                <p class="comment-more">
+                    <a>See more</a>
+                </p>
+                
+                <div class="comment-metadata">
+                    <span><time datetime="2024-10-03T18:48:00+01:00">
+                        03/10/2024                    </time></span>
+                                    </div><!-- .comment-metadata -->
+
+                            </footer><!-- .comment-meta -->
+
+        </article><!-- .comment-body -->
+        </div><!-- #comment-## -->
+        <div id="comment-1068" class="comment odd alt thread-odd thread-alt depth-1">
+        <article id="div-comment-1068" class="comment-body">
+            <footer class="comment-meta">
+                <div class="comment-author vcard">
+                                        <img src="https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/img/user-avatar.jpg" alt="default user avatar" />
+                    <b class="fn">Pk</b>                </div><!-- .comment-author -->
+
+                <p class="stars"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></p>
+                <div class="comment-content truncated">
+                    <p>So so delicious</p>
+ 
+                </div><!-- .comment-content -->
+
+                <p class="comment-more">
+                    <a>See more</a>
+                </p>
+                
+                <div class="comment-metadata">
+                    <span><time datetime="2024-09-30T12:31:37+01:00">
+                        30/09/2024                    </time></span>
+                                    </div><!-- .comment-metadata -->
+
+                            </footer><!-- .comment-meta -->
+
+        </article><!-- .comment-body -->
+        </div><!-- #comment-## -->
+        <div id="comment-852" class="comment even thread-even depth-1">
+        <article id="div-comment-852" class="comment-body">
+            <footer class="comment-meta">
+                <div class="comment-author vcard">
+                                        <img src="https://thehappyfoodie.co.uk/wp-content/themes/tf-happy-foodie-2021/img/user-avatar.jpg" alt="default user avatar" />
+                    <b class="fn">Emily</b>                </div><!-- .comment-author -->
+
+                <p class="stars"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></p>
+                <div class="comment-content truncated">
+                    <p>Straight forward to make and so delicious! I used seasoned panko instead of bread crumbs and it was lovely. Will definitely make again</p>
+ 
+                </div><!-- .comment-content -->
+
+                <p class="comment-more">
+                    <a>See more</a>
+                </p>
+                
+                <div class="comment-metadata">
+                    <span><time datetime="2024-09-24T00:58:26+01:00">
+                        24/09/2024                    </time></span>
+                                    </div><!-- .comment-metadata -->
+
+                            </footer><!-- .comment-meta -->
+
+        </article><!-- .comment-body -->
+        </div><!-- #comment-## -->
+                </ol><!-- end .comment-list -->
+                
+                <div class="show-comments-container">
+                    <button class="show-comments-button" id="showCommentsBtn" onclick="showMoreComments()">Show more comments</button>
+                </div>
+
+                
+                 
+
+            </div> 
+        </div>
+    </div>
+</section><!-- deal goes here --><!-- booklink: Array --><!-- bookID: 2280 --><!-- dealLink: Array --><!-- NULL
 1--><!-- dealid:  --><!-- dealid:  --><!-- empty -->
 
 
@@ -1824,7 +2010,7 @@ function displayAllRetailers() {
 
 	</section>
 
-<!-- random number =: 5 -->
+<!-- random number =: 2 -->
 	<section class="hf-section hf-grid hf-grid-recipes " data-component-name="recipes">
 
 		<div class="container">
@@ -1844,7 +2030,7 @@ function displayAllRetailers() {
 					<div class="hf-grid__inner grid-2">
 
 						<!--fwp-loop-->
-<!-- bid: 21527 -->
+<!-- bid: 28920 -->
 
 <div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-main">
 
@@ -1852,58 +2038,60 @@ function displayAllRetailers() {
 
                     <div class="tf-ribbon"><span></span></div>
         
-		<a href="https://thehappyfoodie.co.uk/recipes/meliz-bergs-red-lentil-soup-mercimek-corbasi/">
-			<img width="780" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2023/10/Red-Lentil-Soup-780x1024.png" class="attachment-large size-large wp-post-image" alt="Meliz Red Lentil Soup" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2023/10/Red-Lentil-Soup-780x1024.png 780w, https://thehappyfoodie.co.uk/wp-content/uploads/2023/10/Red-Lentil-Soup-228x300.png 228w, https://thehappyfoodie.co.uk/wp-content/uploads/2023/10/Red-Lentil-Soup-768x1009.png 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2023/10/Red-Lentil-Soup-1169x1536.png 1169w, https://thehappyfoodie.co.uk/wp-content/uploads/2023/10/Red-Lentil-Soup.png 1506w" sizes="(max-width: 780px) 100vw, 780px" />		</a>
+		<a href="https://thehappyfoodie.co.uk/recipes/mary-berrys-miso-aubergine-with-lentil-and-veggie-stir-fry/">
+			<img width="683" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-683x1024.jpg" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-683x1024.jpg 683w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-200x300.jpg 200w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-768x1152.jpg 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-1024x1536.jpg 1024w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-1365x2048.jpg 1365w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/08/Mary-Berry-Foolproof-Dinners_Miso-Aubergine-scaled.jpg 1707w" sizes="(max-width: 683px) 100vw, 683px" />		</a>
 	</div>
 
 
 	<div class="hf-grid-card__text d-md-flex flex-md-column justify-content-md-between">
 		<h2>
-			<a href="https://thehappyfoodie.co.uk/recipes/meliz-bergs-red-lentil-soup-mercimek-corbasi/">
-				Meliz Berg&#8217;s Red Lentil Soup (Mercimek Çorbası)			</a>
+			<a href="https://thehappyfoodie.co.uk/recipes/mary-berrys-miso-aubergine-with-lentil-and-veggie-stir-fry/">
+				Mary Berry&#8217;s Miso Aubergine with Lentil and Veggie Stir-fry			</a>
 		</h2>
 
 					<div class="hf-grid-card__text__author d-flex align-items-center">
+									<div class="hf-grid-card__text__author__image">
+						<img width="150" height="150" src="https://thehappyfoodie.co.uk/wp-content/uploads/2021/05/mary-berry-classic-small-4-820dfd4b-5fcd-4db0-8bfb-7c2f3f19c542_s600x0_c1200x701_l0x468-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Mary Berry" decoding="async" />					</div>
 									<div class="hf-grid-card__text__author__text">
 						<p>
 							<span>
-								by Meliz Berg							</span>
-							<!-- usingbid: 21527 -->								<span>
-									from <a href="https://thehappyfoodie.co.uk/books/melizs-kitchen-simple-turkish-cypriot-comfort-food-and-fresh-family-feasts/">Meliz's Kitchen</a>
+								by <a href="https://thehappyfoodie.co.uk/chefs/mary-berry/">Mary Berry</a>							</span>
+							<!-- usingbid: 28920 -->								<span>
+									from <a href="https://thehappyfoodie.co.uk/books/marys-foolproof-dinners-mary-berry-cookbook/">Mary&#8217;s Foolproof Dinners</a>
 								</span>
 													</p>
 					</div>
 							</div>
 			</div>
 
-</div><!-- bid: 26376 -->
+</div><!-- bid: 27425 -->
 
-<div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-main">
+<div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-snapshot">
 
 	<div class="hf-grid-card__image hf-grid-card__image-ribbon-wrp">
 
                     <div class="tf-ribbon"><span></span></div>
         
-		<a href="https://thehappyfoodie.co.uk/recipes/nadiya-hussains-dhansak-bake/">
-			<img width="683" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2023/09/Nadiya-Simple-Spices_Dansak_Bake-BBC2-683x1024.jpg" class="attachment-large size-large wp-post-image" alt="Nadiya Simple Spices Dhansak Bake" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2023/09/Nadiya-Simple-Spices_Dansak_Bake-BBC2-683x1024.jpg 683w, https://thehappyfoodie.co.uk/wp-content/uploads/2023/09/Nadiya-Simple-Spices_Dansak_Bake-BBC2-200x300.jpg 200w, https://thehappyfoodie.co.uk/wp-content/uploads/2023/09/Nadiya-Simple-Spices_Dansak_Bake-BBC2-768x1152.jpg 768w" sizes="(max-width: 683px) 100vw, 683px" />		</a>
+		<a href="https://thehappyfoodie.co.uk/recipes/tomato-and-ginger-dal-with-buttered-spinach-rice-and-jammy-eggs/">
+			<img width="768" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/TOMATO_DAAL_MINI_recipe-768x1024.jpg" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/TOMATO_DAAL_MINI_recipe-768x1024.jpg 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/TOMATO_DAAL_MINI_recipe-225x300.jpg 225w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/TOMATO_DAAL_MINI_recipe-1152x1536.jpg 1152w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/TOMATO_DAAL_MINI_recipe-1536x2048.jpg 1536w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/TOMATO_DAAL_MINI_recipe-scaled.jpg 1920w" sizes="(max-width: 768px) 100vw, 768px" />		</a>
 	</div>
 
 
 	<div class="hf-grid-card__text d-md-flex flex-md-column justify-content-md-between">
 		<h2>
-			<a href="https://thehappyfoodie.co.uk/recipes/nadiya-hussains-dhansak-bake/">
-				Nadiya Hussain&#8217;s Dhansak Bake			</a>
+			<a href="https://thehappyfoodie.co.uk/recipes/tomato-and-ginger-dal-with-buttered-spinach-rice-and-jammy-eggs/">
+				Tomato and Ginger Dal with Buttered Spinach Rice and Jammy Eggs			</a>
 		</h2>
 
 					<div class="hf-grid-card__text__author d-flex align-items-center">
 									<div class="hf-grid-card__text__author__image">
-						<img width="150" height="150" src="https://thehappyfoodie.co.uk/wp-content/uploads/2021/05/nadiya-author-page-photo-ad568a6f-ff27-4011-814b-e3215c89d416-150x150.jpeg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="Nadiya Hussain" decoding="async" />					</div>
+						<img width="150" height="150" src="https://thehappyfoodie.co.uk/wp-content/uploads/2023/01/RukminiIyer_15-c-Emily-Marthick-Mindful-Chef-crop-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" />					</div>
 									<div class="hf-grid-card__text__author__text">
 						<p>
 							<span>
-								by <a href="https://thehappyfoodie.co.uk/chefs/nadiya-hussain/">Nadiya Hussain</a>							</span>
-							<!-- usingbid: 26376 -->								<span>
-									from <a href="https://thehappyfoodie.co.uk/books/nadiyas-simple-spices/">Nadiya’s Simple Spices</a>
+								by <a href="https://thehappyfoodie.co.uk/chefs/rukmini-iyer/">Rukmini Iyer</a>							</span>
+							<!-- usingbid: 27425 -->								<span>
+									from <a href="https://thehappyfoodie.co.uk/books/the-green-cookbook/">The Green Cookbook</a>
 								</span>
 													</p>
 					</div>
@@ -1920,7 +2108,7 @@ function displayAllRetailers() {
 
 	</section>
 
-<!-- random number =: 6 -->
+<!-- random number =: 2 -->
 	<section class="hf-section hf-grid hf-grid-recipes " data-component-name="recipes">
 
 		<div class="container">
@@ -1939,55 +2127,64 @@ function displayAllRetailers() {
 					
 					<div class="hf-grid__inner grid-2">
 
-						<!-- nopebid: 26376 resetting -->
+						<!-- bid: 29414 -->
 
-<div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-snapshot">
-
-	<div class="hf-grid-card__image hf-grid-card__image-ribbon-wrp">
-
-                    <div class="tf-ribbon"><span></span></div>
-        
-		<a href="https://thehappyfoodie.co.uk/recipes/crisp-parmesan-olive-and-sun-dried-tomato-polenta-bites/">
-			<img width="768" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/POLENTA_BITES_recipes-768x1024.png" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/POLENTA_BITES_recipes-768x1024.png 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/POLENTA_BITES_recipes-225x300.png 225w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/POLENTA_BITES_recipes-1152x1536.png 1152w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/POLENTA_BITES_recipes-1536x2048.png 1536w" sizes="(max-width: 768px) 100vw, 768px" />		</a>
-	</div>
-
-
-	<div class="hf-grid-card__text d-md-flex flex-md-column justify-content-md-between">
-		<h2>
-			<a href="https://thehappyfoodie.co.uk/recipes/crisp-parmesan-olive-and-sun-dried-tomato-polenta-bites/">
-				Crisp Parmesan, Olive and Sun-dried Tomato Polenta Bites			</a>
-		</h2>
-
-			</div>
-
-</div><!-- bid: 27425 -->
-
-<div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-snapshot">
+<div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-main">
 
 	<div class="hf-grid-card__image hf-grid-card__image-ribbon-wrp">
 
                     <div class="tf-ribbon"><span></span></div>
         
-		<a href="https://thehappyfoodie.co.uk/recipes/crispy-baked-ravioli-with-sour-cream-and-chive-dip/">
-			<img width="768" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/CRISPY_RAVIOLI_RUKMINI_0305-768x1024.jpg" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/CRISPY_RAVIOLI_RUKMINI_0305-768x1024.jpg 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/CRISPY_RAVIOLI_RUKMINI_0305-225x300.jpg 225w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/CRISPY_RAVIOLI_RUKMINI_0305-1152x1536.jpg 1152w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/CRISPY_RAVIOLI_RUKMINI_0305-1536x2048.jpg 1536w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/06/CRISPY_RAVIOLI_RUKMINI_0305-scaled.jpg 1920w" sizes="(max-width: 768px) 100vw, 768px" />		</a>
+		<a href="https://thehappyfoodie.co.uk/recipes/seema-pankhanias-french-onion-gnocchi/">
+			<img width="768" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/HH-Seema-Pankhania-Craveable-Day-6-French-onion-Gnocchi-007-copy-3-768x1024.jpg" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/HH-Seema-Pankhania-Craveable-Day-6-French-onion-Gnocchi-007-copy-3-768x1024.jpg 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/HH-Seema-Pankhania-Craveable-Day-6-French-onion-Gnocchi-007-copy-3-225x300.jpg 225w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/HH-Seema-Pankhania-Craveable-Day-6-French-onion-Gnocchi-007-copy-3-1152x1536.jpg 1152w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/HH-Seema-Pankhania-Craveable-Day-6-French-onion-Gnocchi-007-copy-3-1536x2048.jpg 1536w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/HH-Seema-Pankhania-Craveable-Day-6-French-onion-Gnocchi-007-copy-3-scaled.jpg 1920w" sizes="(max-width: 768px) 100vw, 768px" />		</a>
 	</div>
 
 
 	<div class="hf-grid-card__text d-md-flex flex-md-column justify-content-md-between">
 		<h2>
-			<a href="https://thehappyfoodie.co.uk/recipes/crispy-baked-ravioli-with-sour-cream-and-chive-dip/">
-				Crispy Baked Ravioli with Sour Cream and Chive Dip			</a>
+			<a href="https://thehappyfoodie.co.uk/recipes/seema-pankhanias-french-onion-gnocchi/">
+				Seema Pankhania&#8217;s French Onion Gnocchi			</a>
 		</h2>
 
 					<div class="hf-grid-card__text__author d-flex align-items-center">
-									<div class="hf-grid-card__text__author__image">
-						<img width="150" height="150" src="https://thehappyfoodie.co.uk/wp-content/uploads/2023/01/RukminiIyer_15-c-Emily-Marthick-Mindful-Chef-crop-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" />					</div>
 									<div class="hf-grid-card__text__author__text">
 						<p>
 							<span>
-								by <a href="https://thehappyfoodie.co.uk/chefs/rukmini-iyer/">Rukmini Iyer</a>							</span>
-							<!-- usingbid: 27425 -->								<span>
-									from <a href="https://thehappyfoodie.co.uk/books/the-green-cookbook/">The Green Cookbook</a>
+								by Seema Pankhania							</span>
+							<!-- usingbid: 29414 -->								<span>
+									from <a href="https://thehappyfoodie.co.uk/books/craveable-all-i-want-to-eat-seema-pankhania/">Craveable: All I want to eat</a>
+								</span>
+													</p>
+					</div>
+							</div>
+			</div>
+
+</div><!-- bid: 29785 -->
+
+<div class="d-md-flex flex-md-column hf-grid-card tf-recipe-col tf-recipe-main">
+
+	<div class="hf-grid-card__image hf-grid-card__image-ribbon-wrp">
+
+                    <div class="tf-ribbon"><span></span></div>
+        
+		<a href="https://thehappyfoodie.co.uk/recipes/bored-of-lunchs-slow-cooker-queen-of-puddings/">
+			<img width="683" height="1024" src="https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-683x1024.jpg" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-683x1024.jpg 683w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-200x300.jpg 200w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-768x1152.jpg 768w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-1024x1536.jpg 1024w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-1365x2048.jpg 1365w, https://thehappyfoodie.co.uk/wp-content/uploads/2024/11/BOL184_Queen-of-Puddings-scaled.jpg 1707w" sizes="(max-width: 683px) 100vw, 683px" />		</a>
+	</div>
+
+
+	<div class="hf-grid-card__text d-md-flex flex-md-column justify-content-md-between">
+		<h2>
+			<a href="https://thehappyfoodie.co.uk/recipes/bored-of-lunchs-slow-cooker-queen-of-puddings/">
+				Bored of Lunch&#8217;s Slow Cooker Queen of Puddings			</a>
+		</h2>
+
+					<div class="hf-grid-card__text__author d-flex align-items-center">
+									<div class="hf-grid-card__text__author__text">
+						<p>
+							<span>
+								by Nathan Anthony							</span>
+							<!-- usingbid: 29785 -->								<span>
+									from <a href="https://thehappyfoodie.co.uk/books/bored-of-lunch-six-ingredient-slow-cooker/">Bored of Lunch Six Ingredient Slow Cooker</a>
 								</span>
 													</p>
 					</div>
@@ -2169,7 +2366,7 @@ function displayAllRetailers() {
 								<div class="col-10 col-xl-8">
 									<div class="footer__penguin-text-img__text">
 										<p>&copy;1995 - 2024 Penguin Books Ltd. Registered number: 861590 England.</p>
-										<p>Registered office: 20 Vauxhall Bridge Road, London, SW1V 2SA UK.</p>
+										<p>Registered office: One Embassy Gardens, 8 Viaduct Gardens, London, SW11 7BW, UK.</p>
 									</div>
 								</div>
 
@@ -2249,7 +2446,7 @@ function displayAllRetailers() {
     </div>
   </div>
 
-</div>
+</div><style>#wp-comment-cookies-consent {margin-right:10px;}</style><script>jQuery('.comment-form-cookies-consent label').text('Save my details in this browser for the next time I comment.');</script>
 <!-- GTM Container placement set to footer -->
 <!-- Google Tag Manager (noscript) -->
 				<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PPVMQJ3" height="0" width="0" style="display:none;visibility:hidden" aria-hidden="true"></iframe></noscript>
@@ -2294,9 +2491,6 @@ function displayAllRetailers() {
 <link rel='stylesheet' id='gform_theme_components-css' href='https://thehappyfoodie.co.uk/wp-content/plugins/gravityforms/assets/css/dist/theme-components.min.css?ver=2.7.13' type='text/css' media='all' />
 <link rel='stylesheet' id='gform_theme_ie11-css' href='https://thehappyfoodie.co.uk/wp-content/plugins/gravityforms/assets/css/dist/theme-ie11.min.css?ver=2.7.13' type='text/css' media='all' />
 <link rel='stylesheet' id='gform_theme-css' href='https://thehappyfoodie.co.uk/wp-content/plugins/gravityforms/assets/css/dist/theme.min.css?ver=2.7.13' type='text/css' media='all' />
-<script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/dist/vendor/wp-polyfill-inert.min.js?ver=3.1.2" id="wp-polyfill-inert-js"></script>
-<script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.14.0" id="regenerator-runtime-js"></script>
-<script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0" id="wp-polyfill-js"></script>
 <script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/dist/hooks.min.js?ver=2810c76e705dd1a53b18" id="wp-hooks-js"></script>
 <script type="text/javascript" id="wppopups-js-extra">
 /* <![CDATA[ */
@@ -2321,7 +2515,7 @@ wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
 	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
 	localeData[""].domain = domain;
 	wp.i18n.setLocaleData( localeData, domain );
-} )( "default", {"translation-revision-date":"2023-08-08 16:08:07+0000","generator":"GlotPress\/4.0.0-alpha.7","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n != 1;","lang":"en_GB"},"Notifications":["Notifications"]}},"comment":{"reference":"wp-includes\/js\/dist\/a11y.js"}} );
+} )( "default", {"translation-revision-date":"2024-07-09 16:06:37+0000","generator":"GlotPress\/4.0.1","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n != 1;","lang":"en_GB"},"Notifications":["Notifications"]}},"comment":{"reference":"wp-includes\/js\/dist\/a11y.js"}} );
 /* ]]> */
 </script>
 <script type="text/javascript" src="https://thehappyfoodie.co.uk/wp-includes/js/dist/a11y.min.js?ver=d90eebea464f6c09bfd5" id="wp-a11y-js"></script>
@@ -2431,6 +2625,23 @@ var gform_theme_config = {"common":{"form":{"honeypot":{"version_hash":"1f4f0c12
         })
     }
 </script>
-<!-- end: datalayer footer scripts -->
+<!-- end: datalayer footer scripts --><!-- datalayer.php -->
+<script>
+function fireSocialLinkEvent(socialNetwork, socialLink) {
+    var trimmedValue = socialNetwork.replace("social_", "");
+    window.adobeDataLayer = window.adobeDataLayer|| [];
+    window.adobeDataLayer.push({
+        event: "interaction",
+        eventInfo: {},
+        interaction: {
+            allSocialclicks: `follow:${trimmedValue}`,
+            destinationUrl: `https://${socialLink}`,
+            linkName: trimmedValue,
+            navigationElement: `footer:${trimmedValue}`,
+        }
+    });
+}
+</script>
+
 	</body>
 </html>
