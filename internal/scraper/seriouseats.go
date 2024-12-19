@@ -33,7 +33,11 @@ func scrapeSeriousEats(root *goquery.Document) (models.RecipeSchema, error) {
 	getIngredients(&rs, root.Find("ul.structured-ingredients__list li"))
 	getInstructions(&rs, root.Find("#section--instructions_1-0 ol li > p"))
 
-	yield, _ := strconv.Atoi(regex.Digit.FindString(root.Find("div.recipe-serving").Text()))
+	yieldStr := regex.Digit.FindString(root.Find("div.recipe-serving").Text())
+	yield, err := strconv.ParseInt(yieldStr, 10, 16)
+	if err != nil {
+		yield = 0 // or handle the error as appropriate
+	}
 	rs.Yield.Value = int16(yield)
 
 	root.Find("#toc-special-equipment").Next().Next().Children().Each(func(_ int, sel *goquery.Selection) {
