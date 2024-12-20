@@ -15,7 +15,6 @@ COPY ./.git ./.git
 COPY ./.gitmodules ./.gitmodules
 COPY ./internal ./internal
 COPY ./main.go ./
-COPY ./docs ./docs
 COPY ./web ./web
 
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
