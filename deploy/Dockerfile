@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN apk add --update nodejs npm gcc g++ musl-dev git
 RUN go install github.com/a-h/templ/cmd/templ@latest
-RUN CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
+RUN CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@0.129.0
 ENV PATH="/go/bin:${PATH}"
 
 COPY ../go.mod ../go.sum ./
