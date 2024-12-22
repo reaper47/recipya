@@ -36,6 +36,7 @@
         <method importPath="archive/zip" receiver="*ReadCloser" name="Close" />
         <method importPath="database/sql" receiver="*Tx" name="Rollback" />
         <method importPath="net" receiver="Listener" name="Close" />
+        <method importPath="io/fs" receiver="File" name="Close" />
       </methods>
     </inspection_tool>
   </profile>

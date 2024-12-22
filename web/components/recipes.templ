@@ -1947,7 +1947,7 @@ templ ListRecipes(data templates.Data) {
 						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 							src={ "/data/images/thumbnails/" + r.Images[0].String() + ".webp" }
 						} else {
-							src="/static/img/recipes/placeholder.webp"
+							src="/data/images/placeholder.recipe.webp"
 						}
 						alt={ "Image for the " + r.Name + " recipe" }
 					/>
@@ -2225,7 +2225,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										style="object-fit: cover"
 										alt="Image of the recipe"
 										class="w-full max-h-80 md:max-h-[34rem]"
-										src="/static/img/recipes/placeholder.webp"
+										src="/data/images/placeholder.recipe.webp"
 									/>
 								case 1:
 									if len(data.Recipe.Images) == 1 {
@@ -2237,7 +2237,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 											if data.IsImagesExist[0] {
 												src={ "/data/images/" + data.Recipe.Images[0].String() + ".webp" }
 											} else {
-												src="/static/img/recipes/placeholder.webp"
+												src="/data/images/placeholder.recipe.webp"
 											}
 										/>
 									} else {
@@ -2262,7 +2262,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													if data.IsImagesExist[i] {
 														src={ "/data/images/" + img.String() + ".webp" }
 													} else {
-														src="/static/img/recipes/placeholder.webp"
+														src="/data/images/placeholder.recipe.webp"
 													}
 												/>
 												<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">

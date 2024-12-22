@@ -9,6 +9,7 @@ import (
 	"github.com/briandowns/spinner"
 	"github.com/disintegration/imaging"
 	"github.com/gen2brain/webp"
+	"github.com/reaper47/recipya/web"
 	"image/jpeg"
 	"io"
 	"net"
@@ -96,6 +97,38 @@ func moveFileStructure() {
 
 	if count == len(dirs) {
 		_ = os.RemoveAll(filepath.Join(exeDir, "data"))
+	}
+
+	// Move placeholder.webp to images dir
+	_, err = os.Stat(filepath.Join(ImagesDir, "placeholder.recipe.original.webp"))
+	if os.IsNotExist(err) {
+		openFile, err := web.StaticFS.Open("static/img/recipes/placeholder.webp")
+		if err != nil {
+			return
+		}
+		defer openFile.Close()
+
+		fRecipe, err := os.Create(filepath.Join(ImagesDir, "placeholder.recipe.webp"))
+		if err != nil {
+			panic(err)
+		}
+		defer fRecipe.Close()
+
+		io.Copy(fRecipe, openFile)
+
+		openFileCookbook, err := web.StaticFS.Open("static/img/cookbooks-new/placeholder.webp")
+		if err != nil {
+			panic(err)
+		}
+		defer openFileCookbook.Close()
+
+		fCookbook, err := os.Create(filepath.Join(ImagesDir, "placeholder.cookbook.webp"))
+		if err != nil {
+			panic(err)
+		}
+		defer fCookbook.Close()
+
+		io.Copy(fCookbook, openFileCookbook)
 	}
 }
 
