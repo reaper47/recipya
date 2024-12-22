@@ -563,6 +563,22 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		}
 	})
 
+	t.Run("add a website that has already been added", func(t *testing.T) {
+		repo := prepare()
+		defer func() {
+			srv.Repository = repo
+		}()
+		aURL := "urls=https://www.bestrecipes/brazilian"
+		sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(aURL))
+		readMessage(t, c, 4)
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(aURL))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		assertWebsocket(t, c, 4, `{"type":"toast","fileName":"","data":"","toast":{"action":"View /recipes/1","background":"alert-info","message":"Fetched: 0. Skipped: 0. Existing: 1.","title":"Operation Successful"}}`)
+		t.Fail()
+	})
+
 	t.Run("add many valid URLs from supported websites", func(t *testing.T) {
 		repo := prepare()
 		defer func() {

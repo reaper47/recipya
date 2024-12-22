@@ -119,6 +119,9 @@ type RepositoryService interface {
 	// Recipe gets the user's recipe of the given id.
 	Recipe(id, userID int64) (*models.Recipe, error)
 
+	// RecipeWithSource gets the user's recipe with the given source.
+	RecipeWithSource(source string, userID int64) (*models.Recipe, error)
+
 	// Recipes gets the user's recipes.
 	Recipes(userID int64, opts models.SearchOptionsRecipes) models.Recipes
 
