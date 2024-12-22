@@ -385,6 +385,13 @@ const SelectRecipe = baseSelectRecipe + `
 		AND ur.user_id = ?
 	LIMIT 1`
 
+// SelectRecipeWithSource fetches a user's recipe based on the source.
+const SelectRecipeWithSource = baseSelectRecipe + `
+	INNER JOIN user_recipe AS ur ON ur.recipe_id = recipes.id
+	WHERE recipes.url = ?
+		AND ur.user_id = ?
+	LIMIT 1`
+
 // SelectRecipesAll fetches all the user's recipes.
 const SelectRecipesAll = baseSelectRecipe + `
 	WHERE recipes.id IN (SELECT recipe_id FROM user_recipe WHERE user_id = ?)
@@ -435,7 +442,7 @@ const SelectRecipeUserExist = `
 
 // SelectReport fetches the report of the given ID belonging to the user.
 const SelectReport = `
-	SELECT id, title, success, error_reason
+	SELECT id, title, success, warning, error_reason, action
 	FROM report_logs
 	WHERE report_id = (SELECT id FROM reports WHERE id = ? AND user_id = ?)`
 

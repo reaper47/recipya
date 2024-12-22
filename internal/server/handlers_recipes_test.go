@@ -563,6 +563,35 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		}
 	})
 
+	t.Run("add a website that has already been added", func(t *testing.T) {
+		repo := prepare()
+		defer func() {
+			srv.Repository = repo
+		}()
+		aURL := "urls=https://www.bestrecipes/brazilian"
+		sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(aURL))
+		readMessage(t, c, 4)
+
+		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader(aURL))
+
+		assertStatus(t, rr.Code, http.StatusAccepted)
+		assertWebsocket(t, c, 4, `{"type":"toast","fileName":"","data":"","toast":{"action":"View /recipes/1","background":"alert-warning","message":"The recipe exists.","title":"Operation Warning"}}`)
+		wantReportLogs := []models.ReportLog{
+			{
+				Title:     "https://www.bestrecipes/brazilian",
+				IsWarning: true,
+				Action:    "/recipes/1",
+			},
+		}
+		if !cmp.Equal(repo.Reports[1][1].Logs, wantReportLogs) {
+			t.Log(cmp.Diff(repo.Reports[1][1].Logs, wantReportLogs))
+			t.Fail()
+		}
+		if len(repo.RecipesRegistered[1]) != 1 {
+			t.Fatal("expected 1 recipe")
+		}
+	})
+
 	t.Run("add many valid URLs from supported websites", func(t *testing.T) {
 		repo := prepare()
 		defer func() {
@@ -572,7 +601,7 @@ func TestHandlers_Recipes_AddWebsite(t *testing.T) {
 		rr := sendHxRequestAsLoggedIn(srv, http.MethodPost, uri, formHeader, strings.NewReader("urls=https://www.example.com\nhttps://www.hello.com\nhttp://helloiam.bob.com\njesus.com"))
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		assertWebsocket(t, c, 6, `{"type":"toast","fileName":"","data":"","toast":{"action":"View /reports?view=latest","background":"alert-info","message":"Fetched 3 recipes. 0 skipped","title":"Operation Successful"}}`)
+		assertWebsocket(t, c, 6, `{"type":"toast","fileName":"","data":"","toast":{"action":"View /reports?view=latest","background":"alert-info","message":"Fetched: 3. Skipped: 0.","title":"Operation Successful"}}`)
 		if len(repo.Reports[1]) != 1 {
 			t.Fatalf("got reports %v but want one report added", repo.Reports[1])
 		}

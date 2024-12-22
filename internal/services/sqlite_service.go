@@ -170,7 +170,13 @@ func (s *SQLiteService) AddRecipes(recipes models.Recipes, userID int64, progres
 		}
 
 		id, err := s.addRecipe(r, userID, settings)
-		logs = append(logs, models.NewReportLog(r.Name, err))
+
+		action := "retry"
+		if err == nil {
+			action = "/recipes/" + strconv.FormatInt(r.ID, 10)
+		}
+
+		logs = append(logs, models.NewReportLog(r.Name, err == nil, err, action))
 		if err != nil {
 			errs = append(errs, err)
 			slog.Error("Skipped recipe", "recipe", r, userIDAttr, "error", err)
@@ -505,7 +511,7 @@ func (s *SQLiteService) AddReport(report models.Report, userID int64) {
 	}
 
 	for _, l := range report.Logs {
-		_, err = tx.ExecContext(ctx, statements.InsertReportLog, report.ID, l.Title, l.IsSuccess, l.Error)
+		_, err = tx.ExecContext(ctx, statements.InsertReportLog, report.ID, l.Title, l.IsSuccess, l.IsWarning, l.Error, l.Action)
 		if err != nil {
 			slog.Error("AddReport.InsertReportLog failed", userIDAttr, reportAttr, "log", l, "error", err)
 			continue
@@ -1242,18 +1248,27 @@ func (s *SQLiteService) Recipe(id, userID int64) (*models.Recipe, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
 	defer cancel()
 
-	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	row := tx.QueryRowContext(ctx, statements.SelectRecipe, id, userID)
+	row := s.DB.QueryRowContext(ctx, statements.SelectRecipe, id, userID)
 	r, err := scanRecipe(row, false)
 	if err != nil {
 		return nil, err
 	}
-	return r, tx.Commit()
+
+	return r, nil
+}
+
+// RecipeWithSource gets the user's recipe with the given source.
+func (s *SQLiteService) RecipeWithSource(source string, userID int64) (*models.Recipe, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), shortCtxTimeout)
+	defer cancel()
+
+	row := s.DB.QueryRowContext(ctx, statements.SelectRecipeWithSource, source, userID)
+	r, err := scanRecipe(row, false)
+	if err != nil {
+		return nil, err
+	}
+
+	return r, nil
 }
 
 // Recipes gets the user's recipes.
@@ -1419,13 +1434,22 @@ func (s *SQLiteService) Report(id, userID int64) ([]models.ReportLog, error) {
 		var (
 			l         models.ReportLog
 			isSuccess int64
+			isWarning int64
+			action    sql.NullString
 		)
 
-		err = rows.Scan(&l.ID, &l.Title, &isSuccess, &l.Error)
+		err = rows.Scan(&l.ID, &l.Title, &isSuccess, &isWarning, &l.Error, &action)
 		if err != nil {
 			return nil, err
 		}
+
+		if action.Valid {
+			l.Action = action.String
+		}
+
+		l.IsError = l.Error != ""
 		l.IsSuccess = isSuccess == 1
+		l.IsWarning = isWarning == 1
 
 		logs = append(logs, l)
 	}
