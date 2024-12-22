@@ -18,7 +18,9 @@ services:
     ports:
       - "<host-port>:8078"
     volumes:
-      - "recipya-data:/root/.config/Recipya"
+      - "recipya-data:/app/.config/Recipya"
+    # Default to user and group 1000
+    user: "${UID:-1000}:${GID:-1000}"
 
 volumes:
   recipya-data:
