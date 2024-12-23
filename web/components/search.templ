@@ -162,7 +162,7 @@ templ cookbookSearchRecipes(data templates.Data) {
 								if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 									src={ fmt.Sprintf("/data/images/%s.webp", r.Images[0]) }
 								} else {
-									src="/data/images/placeholder.recipe.webp"
+									src="/data/images/Placeholders/placeholder.recipe.webp"
 								}
 								alt="Recipe image"
 								class="w-28 h-full object-cover"

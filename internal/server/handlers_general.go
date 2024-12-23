@@ -2,6 +2,7 @@ package server
 
 import (
 	"errors"
+	"github.com/reaper47/recipya/web"
 	"io"
 	"log/slog"
 	"net/http"
@@ -78,6 +79,114 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	_ = components.SimplePage("Page Not Found", "The page you requested to view is not found. Please go back to the main page.").Render(r.Context(), w)
+}
+
+func (s *Server) placeholderPostHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
+		name := r.FormValue("name")
+		if name != "recipe" && name != "cookbook" {
+			s.Brokers.SendToast(models.NewErrorFormToast("Only the recipe or cookbook placeholder can be updated."), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		r.Body = http.MaxBytesReader(w, r.Body, 1<<24)
+
+		err := r.ParseMultipartForm(1 << 24)
+		if err != nil {
+			msg := "Could not parse the form."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		images, ok := r.MultipartForm.File["images"]
+		if !ok {
+			msg := "Could not retrieve the image from the form."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		if len(images) == 0 {
+			msg := "No image has been uploaded."
+			slog.Error(msg, userIDAttr, "error", err)
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		f, err := images[0].Open()
+		if err != nil {
+			msg := "Could not open the image from the form."
+			slog.Error(msg, "error", err, userIDAttr)
+			s.Brokers.SendToast(models.NewErrorFormToast(msg), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		defer f.Close()
+
+		imageUUID, err := s.Files.UploadImage(f)
+		if err != nil {
+			msg := "Error uploading image."
+			slog.Error(msg, "error", err, userIDAttr)
+			s.Brokers.SendToast(models.NewErrorFilesToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		imageUUIDAttr := slog.String("imageUUID", imageUUID.String())
+
+		from := filepath.Join(app.ImagesDir, imageUUID.String()+app.ImageExt)
+		to := filepath.Join(app.ImagesDir, "Placeholders", "placeholder."+name+app.ImageExt)
+		err = os.Rename(from, to)
+		if err != nil {
+			msg := "Error moving compressed placeholder image."
+			slog.Error(msg, "error", err, imageUUIDAttr, userIDAttr)
+			s.Brokers.SendToast(models.NewErrorFilesToast(msg), userID)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	})
+}
+
+func (s *Server) restorePlaceholderPostHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		name := "recipe"
+		path := "static/img/recipes/placeholder.webp"
+		if r.FormValue("name") == "cookbook" {
+			name = "cookbook"
+			path = "static/img/cookbooks-new/placeholder.webp"
+		}
+
+		userID := getUserID(r)
+		userIDAttr := slog.Int64("userID", userID)
+
+		openFile, err := web.StaticFS.Open(path)
+		if err != nil {
+			msg := "Error opening the public file."
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+			slog.Error(msg, "error", err, userIDAttr)
+			return
+		}
+		defer openFile.Close()
+
+		f, err := os.Create(filepath.Join(app.ImagesDir, "Placeholders", "placeholder."+name+".webp"))
+		if err != nil {
+			msg := "Error creating placeholder file."
+			s.Brokers.SendToast(models.NewErrorGeneralToast(msg), userID)
+			slog.Error(msg, "error", err, userIDAttr)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer f.Close()
+
+		io.Copy(f, openFile)
+	}
 }
 
 func (s *Server) userInitialsHandler() http.HandlerFunc {

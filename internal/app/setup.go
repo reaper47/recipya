@@ -100,7 +100,13 @@ func moveFileStructure() {
 	}
 
 	// Move placeholder.webp to images dir
-	_, err = os.Stat(filepath.Join(ImagesDir, "placeholder.recipe.original.webp"))
+	placeholdersDir := filepath.Join(ImagesDir, "Placeholders")
+	err = os.MkdirAll(placeholdersDir, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	
+	_, err = os.Stat(filepath.Join(placeholdersDir, "placeholder.recipe.webp"))
 	if os.IsNotExist(err) {
 		openFile, err := web.StaticFS.Open("static/img/recipes/placeholder.webp")
 		if err != nil {
@@ -108,7 +114,7 @@ func moveFileStructure() {
 		}
 		defer openFile.Close()
 
-		fRecipe, err := os.Create(filepath.Join(ImagesDir, "placeholder.recipe.webp"))
+		fRecipe, err := os.Create(filepath.Join(placeholdersDir, "placeholder.recipe.webp"))
 		if err != nil {
 			panic(err)
 		}
@@ -122,7 +128,7 @@ func moveFileStructure() {
 		}
 		defer openFileCookbook.Close()
 
-		fCookbook, err := os.Create(filepath.Join(ImagesDir, "placeholder.cookbook.webp"))
+		fCookbook, err := os.Create(filepath.Join(placeholdersDir, "placeholder.cookbook.webp"))
 		if err != nil {
 			panic(err)
 		}

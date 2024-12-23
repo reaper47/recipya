@@ -132,7 +132,72 @@ templ settingsRecipes(data templates.Data) {
 				hx-trigger="click"
 			/>
 		</div>
+		<div class="divider m-0"></div>
+		<div class="flex justify-between items-center text-sm">
+			<details class="w-full">
+				<summary class="font-semibold cursor-default">Placeholders</summary>
+				<div class="flex flex-wrap gap-2 p-2 flex-row">
+					<div class="max-w-60">
+						<p class="text-center mb-1 font-medium underline">Recipe</p>
+						<form
+							hx-post="/placeholder"
+							hx-encoding="multipart/form-data"
+							hx-swap="none"
+							_="on htmx:afterRequest call reloadImg('/data/images/Placeholders/placeholder.recipe.webp')"
+						>
+							<img src="/data/images/Placeholders/placeholder.recipe.webp" alt="Recipe placeholder" class="w-60 h-60"/>
+							<input type="hidden" name="name" value="recipe"/>
+							<input type="file" name="images" class="file-input file-input-bordered file-input-sm max-w-60 mt-1"/>
+							<button class="btn btn-neutral btn-sm btn-block my-1">Update</button>
+						</form>
+						<button
+							class="btn btn-error btn-sm btn-block"
+							hx-post="/placeholder/restore"
+							hx-vals='js:{t: "recipe"}'
+							hx-swap="none"
+							_="on htmx:afterRequest call reloadImg('/data/images/Placeholders/placeholder.recipe.webp')"
+						>
+							Restore original
+						</button>
+					</div>
+					<div class="max-w-60">
+						<p class="text-center mb-1 font-medium underline">Cookbook</p>
+						<form
+							hx-post="/placeholder"
+							hx-encoding="multipart/form-data"
+							hx-swap="none"
+							_="on htmx:afterRequest call reloadImg('/data/images/Placeholders/placeholder.cookbook.webp')"
+						>
+							<img src="/data/images/Placeholders/placeholder.cookbook.webp" alt="Cookbook placeholder" class="w-60 h-60"/>
+							<input type="hidden" name="name" value="cookbook"/>
+							<input type="file" name="images" class="file-input file-input-bordered file-input-sm max-w-60 mt-1"/>
+							<button class="btn btn-neutral btn-sm btn-block my-1">Update</button>
+						</form>
+						<button
+							class="btn btn-error btn-sm btn-block"
+							hx-post="/placeholder/restore"
+							hx-vals='js:{name: "cookbook"}'
+							hx-swap="none"
+							_="on htmx:afterRequest call reloadImg('/data/images/Placeholders/placeholder.cookbook.webp')"
+						>
+							Restore original
+						</button>
+					</div>
+				</div>
+			</details>
+		</div>
 	</div>
+	<script defer>
+	    async function reloadImg(url) {
+            await fetch(url, { cache: 'reload', mode: 'same-origin' })
+            document.body.querySelectorAll(`img[src='${url}']`)
+                .forEach(img => img.src = url)
+
+            if (navigator.userAgent.toLowerCase().includes('firefox')) {
+                window.location.reload(true);
+            }
+        }
+	</script>
 }
 
 templ settingsRecipesCategoryEmpty() {

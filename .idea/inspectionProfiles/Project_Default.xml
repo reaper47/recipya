@@ -37,6 +37,7 @@
         <method importPath="database/sql" receiver="*Tx" name="Rollback" />
         <method importPath="net" receiver="Listener" name="Close" />
         <method importPath="io/fs" receiver="File" name="Close" />
+        <method importPath="mime/multipart" receiver="File" name="Close" />
       </methods>
     </inspection_tool>
   </profile>
