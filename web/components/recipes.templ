@@ -2,6 +2,7 @@ package components
 
 import (
 	"fmt"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"strconv"
@@ -1280,7 +1281,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 													alt=""
 													class="object-cover mb-2 w-full max-h-[39rem]"
 													if data.IsImagesExist[i] {
-														src={ "/data/images/" + image.String() + ".webp" }
+														src={ "/data/images/" + image.String() + app.ImageExt }
 													} else {
 														src=""
 													}
@@ -1292,7 +1293,7 @@ templ editRecipe(data *templates.ViewRecipeData) {
 															accept="image/*,video/*"
 															name="images"
 															class="file-input file-input-sm file-input-bordered w-full max-w-sm"
-															value={ "/data/images/" + image.String() + ".webp" }
+															value={ "/data/images/" + image.String() + app.ImageExt }
 															_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                                   on dragleave or drop set the target's style.background to ''
                                                                   on drop or change
@@ -1799,7 +1800,7 @@ templ fuck(data *templates.ViewRecipeData) {
 				alt=""
 				class="object-cover mb-2 w-full max-h-[39rem]"
 				if data.IsImagesExist[i] {
-					src={ "/data/images/" + image.String() + ".webp" }
+					src={ "/data/images/" + image.String() + app.ImageExt }
 				} else {
 					src=""
 				}
@@ -1811,7 +1812,7 @@ templ fuck(data *templates.ViewRecipeData) {
 						accept="image/*,video/*"
 						name="images"
 						class="file-input file-input-sm file-input-bordered w-full max-w-sm"
-						value={ "/data/images/" + image.String() + ".webp" }
+						value={ "/data/images/" + image.String() + app.ImageExt }
 						_="on dragover or dragenter halt the event then set the target's style.background to 'lightgray'
                                                                   on dragleave or drop set the target's style.background to ''
                                                                   on drop or change
@@ -1945,9 +1946,9 @@ templ ListRecipes(data templates.Data) {
 					<img
 						class="h-28 w-24 object-cover rounded-t-lg sm:h-40 sm:min-w-full sm:w-full"
 						if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
-							src={ "/data/images/thumbnails/" + r.Images[0].String() + ".webp" }
+							src={ "/data/images/thumbnails/" + r.Images[0].String() + app.ImageExt }
 						} else {
-							src="/static/img/recipes/placeholder.webp"
+							src="/data/images/Placeholders/placeholder.recipe.webp"
 						}
 						alt={ "Image for the " + r.Name + " recipe" }
 					/>
@@ -2225,7 +2226,7 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 										style="object-fit: cover"
 										alt="Image of the recipe"
 										class="w-full max-h-80 md:max-h-[34rem]"
-										src="/static/img/recipes/placeholder.webp"
+										src="/data/images/Placeholders/placeholder.recipe.webp"
 									/>
 								case 1:
 									if len(data.Recipe.Images) == 1 {
@@ -2235,9 +2236,9 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 											alt="Image of the recipe"
 											class="w-full max-h-80  md:max-h-[34rem]"
 											if data.IsImagesExist[0] {
-												src={ "/data/images/" + data.Recipe.Images[0].String() + ".webp" }
+												src={ "/data/images/" + data.Recipe.Images[0].String() + app.ImageExt }
 											} else {
-												src="/static/img/recipes/placeholder.webp"
+												src="/data/images/Placeholders/placeholder.recipe.webp"
 											}
 										/>
 									} else {
@@ -2260,9 +2261,9 @@ templ viewRecipe(data *templates.ViewRecipeData, isAuthenticated bool) {
 													alt="Image of the recipe"
 													class="w-full max-h-80  md:max-h-[34rem]"
 													if data.IsImagesExist[i] {
-														src={ "/data/images/" + img.String() + ".webp" }
+														src={ "/data/images/" + img.String() + app.ImageExt }
 													} else {
-														src="/static/img/recipes/placeholder.webp"
+														src="/data/images/Placeholders/placeholder.recipe.webp"
 													}
 												/>
 												<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">

@@ -125,7 +125,7 @@ templ CookbookRecipes(data templates.Data) {
 							if len(r.Images) > 0 && data.Functions.IsUUIDValid(r.Images[0]) && data.Functions.IsImageExists(r.Images[0]) {
 								src={ fmt.Sprintf("/data/images/%s.webp", r.Images[0]) }
 							} else {
-								src="/static/img/recipes/placeholder.webp"
+								src="/data/images/Placeholders/placeholder.recipe.webp"
 							}
 							alt="Recipe image"
 							class="object-cover"
@@ -345,7 +345,7 @@ templ cookbookGrid(cookbook templates.CookbookView) {
 				if cookbook.IsImageExists {
 					src={ fmt.Sprintf("/data/images/%s.webp", cookbook.Image) }
 				} else {
-					src="/static/img/cookbooks-new/placeholder.webp"
+					src="/data/images/Placeholders/placeholder.cookbook.webp"
 				}
 				onClick={ cookbookImageClick(fmt.Sprintf("#cookbook-image-%d", cookbook.ID)) }
 				alt="Cookbook image"
@@ -396,7 +396,7 @@ templ cookbookList(cookbook templates.CookbookView) {
 				if cookbook.IsImageExists {
 					src={ fmt.Sprintf("/data/images/%s.webp", cookbook.Image) }
 				} else {
-					src="/static/img/cookbooks-new/placeholder.webp"
+					src="/data/images/Placeholders/placeholder.cookbook.webp"
 				}
 				alt="Cookbook image"
 			/>

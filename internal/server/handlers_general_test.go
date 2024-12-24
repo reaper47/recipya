@@ -155,6 +155,16 @@ func TestHandlers_General_Index(t *testing.T) {
 	})
 }
 
+func TestHandlers_General_Placeholder(t *testing.T) {
+	srv, ts, c := createWSServer()
+	defer c.CloseNow()
+
+	t.Run("must be logged in", func(t *testing.T) {
+		assertMustBeLoggedIn(t, srv, http.MethodPost, ts.URL+"/placeholder")
+		assertMustBeLoggedIn(t, srv, http.MethodPost, ts.URL+"/placeholder/restore")
+	})
+}
+
 func TestHandlers_General_Update(t *testing.T) {
 	srv, ts, c := createWSServer()
 	defer c.CloseNow()
