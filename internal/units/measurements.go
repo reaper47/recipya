@@ -8,6 +8,7 @@ import (
 	"github.com/neurosnap/sentences"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"github.com/reaper47/recipya/internal/utils/regex"
+	"log/slog"
 	"math"
 	"regexp"
 	"slices"
@@ -761,7 +762,12 @@ func ConvertSentence(input string, from, to System) (string, error) {
 		return input, errors.New("the measurement system is unchanged")
 	}
 
+	if regex.UnitMetric.MatchString(input) && regex.UnitImperial.MatchString(input) {
+		return input, nil
+	}
+
 	input = ReplaceVulgarFractions(input)
+	input = sumQuantitiesWithSeparator(input)
 
 	var (
 		irregular string
@@ -797,6 +803,59 @@ func ConvertSentence(input string, from, to System) (string, error) {
 		return irregular, returnErr
 	}
 	return converted, nil
+}
+
+func sumQuantitiesWithSeparator(input string) string {
+	excluded := []string{
+		"to",   // English
+		"à",    // French
+		"zu",   // German
+		"para", // Portuguese
+		"до",   // Ukrainian
+		"için", // Turkish
+		"kwa",  // Swahili
+		"naar", // Dutch
+		"προς", // Greek
+		"do",   // Polish
+		"till", // Swedish
+	}
+
+	matches := regex.QuantityWithSeparator.FindAllStringSubmatch(input, -1)
+	if len(matches) > 0 && len(matches[0]) > 3 && !slices.ContainsFunc(excluded, func(s string) bool {
+		return strings.Contains(matches[0][0], s)
+	}) {
+		inputAttr := slog.String("input", input)
+
+		left, err := strconv.ParseFloat(matches[0][1], 64)
+		if err != nil {
+			slog.Warn("Could not convert left quantity from string to integer", inputAttr, "integer", matches[0][1])
+		}
+
+		var right float64
+		parts := strings.Split(matches[0][2], "/")
+		if len(parts) > 1 {
+			a, err := strconv.ParseFloat(parts[0], 64)
+			if err != nil {
+				slog.Warn("Could not convert numerator from string to integer", inputAttr, "integer", parts[0])
+			}
+
+			b, err := strconv.ParseFloat(parts[1], 64)
+			if err != nil {
+				slog.Warn("Could not convert denominator from string to integer", inputAttr, "integer", parts[1])
+			}
+
+			right = a / b
+		} else {
+			right, err = strconv.ParseFloat(matches[0][2], 64)
+			if err != nil {
+				slog.Warn("Could not convert right quantity from string to integer", inputAttr, "integer", matches[0][2])
+			}
+		}
+
+		return regex.QuantityWithSeparator.ReplaceAllString(input, strconv.FormatFloat(left+right, 'f', -1, 64))
+	}
+
+	return input
 }
 
 func parseIrregularQuantity(input string, matches []string, re *regexp.Regexp, to System) (string, error) {

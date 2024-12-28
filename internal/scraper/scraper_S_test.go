@@ -75,8 +75,8 @@ func TestScraper_S(t *testing.T) {
 						"1 large egg, at room temperature",
 						"1 teaspoon salt",
 						"14 Tablespoons (196g) unsalted butter, cold",
-						"2 and 1/2 cups (313g) all-purpose flour (spooned &amp; leveled), plus more for generously flouring hands, surface, and dough",
-						"2/3 cup filling (see recipe notes for options &amp; cheese filling)",
+						"2 and 1/2 cups (313g) all-purpose flour (spooned & leveled), plus more for generously flouring hands, surface, and dough",
+						"2/3 cup filling (see recipe notes for options & cheese filling)",
 						"1 large egg",
 						"2 Tablespoons (30ml) milk",
 						"1 cup (120g) confectioners’ sugar",
@@ -194,7 +194,7 @@ func TestScraper_S(t *testing.T) {
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"2 large boneless skinless chicken breasts", "Salt &amp; pepper (to taste)",
+						"2 large boneless skinless chicken breasts", "Salt & pepper (to taste)",
 						"Flour (for dredging)", "1 tablespoon olive oil",
 						"2 tablespoons butter (divided)", "1 whole head garlic (cloves peeled)",
 						"1/2 cup chicken broth or stock", "1/2 teaspoon lemon juice",
@@ -971,7 +971,7 @@ func TestScraper_S(t *testing.T) {
 						"1 tablespoon Dijon mustard",
 						"4 tablespoons pickle juice",
 						"2 tablespoons water",
-						"Coarse salt &amp; black pepper (to taste)",
+						"Coarse salt & black pepper (to taste)",
 					},
 				},
 				Instructions: &models.Instructions{
@@ -1952,7 +1952,7 @@ func TestScraper_S(t *testing.T) {
 					Values: []string{
 						"4 chicken breasts (roughly 2 lbs; boneless skinless chicken thighs may also be used * see note 1)",
 						"11.5 oz can of corn kernels (drained; 341 mL)",
-						"15 oz can of black beans (drained &amp; rinsed; optional)",
+						"15 oz can of black beans (drained & rinsed; optional)",
 						"1 red onion (sliced into strips)",
 						"1/2 cup chicken stock",
 						"2 cloves garlic",

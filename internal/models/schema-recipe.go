@@ -500,7 +500,7 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 		}
 		k.Values = strings.TrimSpace(strings.Join(xs, ","))
 	case map[string]any:
-		fmt.Println("fuck")
+		fmt.Println("oops")
 	}
 
 	k.Values = strings.TrimRight(k.Values, ",")
@@ -604,6 +604,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 		{"&#339;", "œ"},
 		{"&#233;", "é"},
 		{"&#239;", "ï"},
+		{"&amp;", "&"},
 	}
 
 	for _, v := range xv {

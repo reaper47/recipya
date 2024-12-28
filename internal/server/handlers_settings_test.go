@@ -607,7 +607,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 						"4.73 dl semisweet chocolate chips",
 					},
 					Instructions: []string{
-						"Preheat the oven to 177 °C (175 °C).",
+						"Preheat the oven to 350 degrees F (175 degrees C).",
 						"Stir in flour, chocolate chips, and walnuts.",
 						"Drop spoonfuls of dough 5.08 cm apart onto ungreased baking sheets.",
 						"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
@@ -642,10 +642,7 @@ func TestHandlers_Settings_MeasurementSystems(t *testing.T) {
 			system: units.ImperialSystem,
 			want: models.Recipes{
 				{
-					Description: "Preheat the oven to 351 °F (351 °F). " +
-						"Stir in flour, chocolate chips, and walnuts. " +
-						"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. " +
-						"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+					Description: "Preheat the oven to 177 °C (351 °F). Stir in flour, chocolate chips, and walnuts. Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
 					Ingredients: []string{
 						"1 cup butter, softened",
 						"2 eggs",

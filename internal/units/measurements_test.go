@@ -402,6 +402,13 @@ func TestConvertSentence(t *testing.T) {
 			want: "Rope with 5 ml of rice.",
 		},
 		{
+			name: "tsp to mL special",
+			in:   "1 and 1/2 teaspoons cornstarch*",
+			from: units.ImperialSystem,
+			to:   units.MetricSystem,
+			want: "7.5 ml cornstarch*",
+		},
+		{
 			name: "tsp to dL",
 			in:   "Rope with 200tsp. of rice.",
 			from: units.ImperialSystem,
@@ -547,6 +554,13 @@ func TestConvertSentence(t *testing.T) {
 			from: units.ImperialSystem,
 			to:   units.MetricSystem,
 			want: "Rope with 946.35 L of rice.",
+		},
+		{
+			name: "no conversion required",
+			in:   "2 and 1/4 cups (280g) all-purpose flour (spooned & leveled)",
+			from: units.ImperialSystem,
+			to:   units.MetricSystem,
+			want: "2 and 1/4 cups (280g) all-purpose flour (spooned & leveled)",
 		},
 	}
 	for _, tc := range testcases {

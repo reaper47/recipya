@@ -143,10 +143,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 		{
 			name: "imperial to metric",
 			in: models.Recipe{
-				Description: "Preheat the oven to 351 °F (177 °C). " +
-					"Stir in flour, chocolate chips, and walnuts. " +
-					"Drop spoonfuls of dough 1.18 inches apart onto ungreased baking sheets. " +
-					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
+				Description: "Preheat the oven to 351 °F (177 °C). Stir in flour, chocolate chips, and walnuts. Drop spoonfuls of dough 3 cm apart onto ungreased baking sheets. Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
 				Ingredients: []string{
 					"1 cup butter, softened",
 					"2 eggs",
@@ -166,7 +163,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 			},
 			to: units.MetricSystem,
 			want: models.Recipe{
-				Description: "Preheat the oven to 177 °C (177 °C). " +
+				Description: "Preheat the oven to 351 °F (177 °C). " +
 					"Stir in flour, chocolate chips, and walnuts. " +
 					"Drop spoonfuls of dough 3 cm apart onto ungreased baking sheets. " +
 					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",
@@ -181,7 +178,7 @@ func TestRecipe_ConvertMeasurementSystem(t *testing.T) {
 					"14.79 ml plus 5 ml adobo sauce (or to taste (from canned chipotle peppers))",
 				},
 				Instructions: []string{
-					"Preheat the oven to 177 °C (175 °C).",
+					"Preheat the oven to 350 degrees F (175 degrees C).",
 					"Stir in flour, chocolate chips, and walnuts.",
 					"Drop spoonfuls of dough 5.08 cm apart onto ungreased baking sheets.",
 					"Bake in the preheated oven until edges are nicely browned, about 10 minutes.",

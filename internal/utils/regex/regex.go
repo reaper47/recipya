@@ -17,6 +17,9 @@ var DimensionPattern = regexp.MustCompile(`(\d+)\s*x\s*(\d+).`)
 // Quantity detects quantities, i.e. 1ml, 1 ml, 1l and 1 l.
 var Quantity = regexp.MustCompile(`(?i)\d+\s*((ml|l\b)(°[cf])?|°[cf])`)
 
+// QuantityWithSeparator detects quantities separated by a word.
+var QuantityWithSeparator = regexp.MustCompile(`(?i)(\d+)\s+[a-zA-Z]+\s+(\d+(/\d+)?)`)
+
 // Regular expressions related to HTML.
 var (
 	// URL matches an HTTP or HTTPS address.
