@@ -160,6 +160,24 @@ func TestRegex_Quantity(t *testing.T) {
 	}
 }
 
+func TestRegex_QuantityWithSeparator(t *testing.T) {
+	valid := []string{
+		"1 and 1/2 teaspoons vanilla extract",
+	}
+	assertRegex(t, valid, regex.QuantityWithSeparator)
+
+	invalid := []string{
+		"1 teaspoon vanilla extract",
+	}
+	for _, s := range invalid {
+		t.Run("regex is invalid "+s, func(t *testing.T) {
+			if regex.QuantityWithSeparator.MatchString(s) {
+				t.Errorf("got true when want false for %q", s)
+			}
+		})
+	}
+}
+
 func TestRegex_Anchor(t *testing.T) {
 	t.Run("anchor is valid", func(t *testing.T) {
 		a := `<a slot="guide-links-primary" href="https://www.youtube.com/about/press/" style="display: none;">`

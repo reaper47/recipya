@@ -986,7 +986,7 @@ func TestScraper_A(t *testing.T) {
 					Values: []string{
 						"3 ounces cream cheese", "3 ounces quality blue cheese, crumbled",
 						"1/2 cup half and half", "1/4 cup sour cream",
-						"1/2 teaspoon Simon &amp; Garfunkel Seasoning or Poultry Seasoning",
+						"1/2 teaspoon Simon & Garfunkel Seasoning or Poultry Seasoning",
 						"1/2 cup melted salted butter", "2 cloves minced or pressed garlic",
 						"1/2 cup Frank's Original RedHot Sauce",
 						"24  whole chicken wings ((about 4 pounds (1.8 kg) for 24 whole wings))",

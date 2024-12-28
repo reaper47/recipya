@@ -226,6 +226,12 @@ func (s *SQLiteService) addRecipe(r models.Recipe, userID int64, settings models
 		}
 	}
 
+	if settings.MeasurementSystem == units.ImperialSystem {
+		for i, ingredient := range r.Ingredients {
+			r.Ingredients[i] = units.ReplaceDecimalFractions(ingredient)
+		}
+	}
+
 	tx, err := s.DB.BeginTx(ctx, &sql.TxOptions{})
 	if err != nil {
 		return 0, err
@@ -390,7 +396,6 @@ func (s *SQLiteService) addRecipeTx(ctx context.Context, tx *sql.Tx, r models.Re
 	r.Ingredients = slices.DeleteFunc(extensions.Unique(r.Ingredients), func(s string) bool { return s == "" })
 	for i, ingredient := range r.Ingredients {
 		var ingredientID int64
-		ingredient = units.ReplaceDecimalFractions(ingredient)
 		err = tx.QueryRowContext(ctx, statements.InsertIngredient, ingredient).Scan(&ingredientID)
 		if err != nil {
 			return 0, err

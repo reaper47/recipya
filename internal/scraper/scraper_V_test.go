@@ -346,7 +346,7 @@ func TestScraper_V(t *testing.T) {
 						"200 to 250 grams Paneer ((Indian cottage cheese) - cubed or diced)",
 						"1 teaspoon dry fenugreek leaves ((kasuri methi) - optional)",
 						"½ to 1 teaspoon Garam Masala (or tandoori masala)",
-						"2 to 3 tablespoons light cream (or half &amp; half or 1 to 2 tablespoons heavy cream - optional)",
+						"2 to 3 tablespoons light cream (or half & half or 1 to 2 tablespoons heavy cream - optional)",
 						"¼ to 1 teaspoon sugar (- optional, add as required depending on the sourness of the tomatoes)",
 						"salt (as required)",
 						"1 to 2 tablespoons coriander leaves (- chopped, (cilantro) - optional)",

@@ -822,7 +822,7 @@ func TestScraper_G(t *testing.T) {
 						"1 lime",
 						"1 garlic clove",
 						"&#8203;25g cashew nuts",
-						"&#8203;10g coriander &amp; mint",
+						"&#8203;10g coriander & mint",
 						"&#8203;80g spinach",
 						"&#8203;130g bulgur wheat",
 						"&#8203;160g blanched peas",
