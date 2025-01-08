@@ -7,6 +7,7 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/web/components"
+	"log/slog"
 	"net/http"
 	"slices"
 )
@@ -19,6 +20,7 @@ func (s *Server) reportsHandler() http.HandlerFunc {
 		if err != nil {
 			s.Brokers.SendToast(models.NewErrorDBToast("Failed to fetch reports."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
+			slog.Error("Failed to fetch reports.", "error", err)
 			return
 		}
 
@@ -42,6 +44,7 @@ func (s *Server) reportsHandler() http.HandlerFunc {
 				if err != nil {
 					s.Brokers.SendToast(models.NewErrorDBToast("Failed to fetch report."), userID)
 					w.WriteHeader(http.StatusInternalServerError)
+					slog.Error("Failed to fetch view reports", "error", err)
 					return
 				}
 				isHighlightFirst = true
@@ -74,6 +77,7 @@ func (s *Server) reportsReportHandler() http.HandlerFunc {
 		if err != nil {
 			s.Brokers.SendToast(models.NewErrorDBToast("Failed to fetch report."), userID)
 			w.WriteHeader(http.StatusInternalServerError)
+			slog.Error("Failed to fetch reports", "error", err)
 			return
 		}
 

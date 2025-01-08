@@ -552,7 +552,7 @@ func TestScraper_A(t *testing.T) {
 				},
 				Name:      "Foolproof Homemade Bagels Recipe",
 				PrepTime:  "PT20M",
-				TotalTime: "PT-477909H17M45S",
+				TotalTime: "PT-481700H5M43S",
 				Yield:     &models.Yield{Value: 8},
 				URL:       "https://alexandracooks.com/2018/08/16/very-good-bagels-easy-ish-too/",
 				Video: &models.Videos{
@@ -624,7 +624,7 @@ func TestScraper_A(t *testing.T) {
 							Type: "HowToStep",
 						},
 						{
-							Text: "Add the blueberries evenly to the baking pan until they cover the dough. In a small bowl mix together the 3 teaspoons of\u00a0corn starch and 1/4 cup of sugar. Then evenly sprinkle the sugar mixture on top.",
+							Text: "Add the blueberries evenly to the baking pan until they cover the dough. In a small bowl mix together the 3 teaspoons of corn starch and 1/4 cup of sugar. Then evenly sprinkle the sugar mixture on top.",
 							Type: "HowToStep",
 						},
 						{
@@ -986,7 +986,7 @@ func TestScraper_A(t *testing.T) {
 					Values: []string{
 						"3 ounces cream cheese", "3 ounces quality blue cheese, crumbled",
 						"1/2 cup half and half", "1/4 cup sour cream",
-						"1/2 teaspoon Simon &amp; Garfunkel Seasoning or Poultry Seasoning",
+						"1/2 teaspoon Simon & Garfunkel Seasoning or Poultry Seasoning",
 						"1/2 cup melted salted butter", "2 cloves minced or pressed garlic",
 						"1/2 cup Frank's Original RedHot Sauce",
 						"24  whole chicken wings ((about 4 pounds (1.8 kg) for 24 whole wings))",
@@ -1168,7 +1168,7 @@ func TestScraper_A(t *testing.T) {
 						{
 							Type:  "HowToTool",
 							Name:  "The Best Rasp-Style Graters",
-							Image: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1:1,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/35193_can-rasp-style-graters-8639-square",
+							Image: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1:1,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/SPS_Rasp-Graters_Hero_518_jja67y",
 						},
 						{
 							Type:  "HowToTool",
@@ -1188,7 +1188,7 @@ func TestScraper_A(t *testing.T) {
 							ThumbnailURL: &models.ThumbnailURL{
 								Value: "https://res.cloudinary.com/hksqkdlah/image/upload/ar_16:9,c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low,w_150/2362_sfs-summer-blueberry-bundt-cake-bw-36-vid-thumb",
 							},
-							UploadDate: time.Date(2013, 3, 26, 13, 11, 0, 0, time.UTC),
+							UploadDate: time.Date(2013, 3, 26, 9, 11, 0, 0, time.UTC),
 						},
 					},
 				},
@@ -1495,6 +1495,7 @@ func TestScraper_A(t *testing.T) {
 				AtContext: "https://schema.org",
 				AtType:    &models.SchemaType{Value: "Recipe"},
 				Category:  &models.Category{Value: "Huvudrätt, Kvällsmat, Lunch, Middag"},
+				CookTime:  "PT00M",
 				Description: &models.Description{
 					Value: "Supersnabb vardagspasta med krämig sås. Vill du göra rätten vegetarisk, tillsätt färdigkokta bönor eller kikärtor istället för kyckling. Klart!",
 				},
@@ -1522,6 +1523,7 @@ func TestScraper_A(t *testing.T) {
 					Fat:           "22",
 					Protein:       "34",
 				},
+				PrepTime:  "PT00M",
 				TotalTime: "PT00M",
 				Yield:     &models.Yield{Value: 4},
 				URL:       "https://www.arla.se/recept/kycklingpasta-med-spenat-och-grillade-gronsaker/",

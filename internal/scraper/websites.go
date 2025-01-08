@@ -115,6 +115,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		switch host {
 		case "eatwell101":
 			return scrapeEatwell101(doc)
+		case "epicurious":
+			return scrapeEpicurious(doc)
 		case "etenvaneefke":
 			return scrapEetenvaneefke(doc)
 		case "expressen":
@@ -128,6 +130,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeFarmhousedelivery(doc)
 		case "felix":
 			return scrapeFelix(doc)
+		case "finedininglovers":
+			return scrapeFineDiningLovers(doc)
 		case "fitmencook":
 			return scrapeFitMenCook(doc)
 		case "foodnetwork":
@@ -313,6 +317,13 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 		default:
 			return parseWebsite(doc)
 		}
+	case 'q':
+		switch host {
+		case "quitoque":
+			return scrapeQuitoque(doc)
+		default:
+			return parseWebsite(doc)
+		}
 	case 'r':
 		switch host {
 		case "radiofrance":
@@ -340,6 +351,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeSaboresajinomoto(doc)
 		case "sallys-blog":
 			return scrapeSallysblog(doc)
+		case "seriouseats":
+			return scrapeSeriousEats(doc)
 		case "smittenkitchen":
 			return scrapeSmittenKitchen(doc)
 		case "southerncastiron":

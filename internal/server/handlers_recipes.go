@@ -579,12 +579,13 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 		go func() {
 			var (
-				count     atomic.Int64
-				processed int
-				progress  = make(chan models.Progress)
-				report    = models.NewReport(models.ImportReportType)
-				total     = len(validURLs)
-				recipeIDs = make([]int64, 0, total)
+				countSuccess atomic.Int64
+				countWarning atomic.Int64
+				processed    int
+				progress     = make(chan models.Progress)
+				report       = models.NewReport(models.ImportReportType)
+				total        = len(validURLs)
+				recipeIDs    = make([]int64, 0, total)
 			)
 
 			s.Brokers.SendProgress(fmt.Sprintf("Fetching 1/%d", total), 1, total, userID)
@@ -598,28 +599,37 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 							progress <- models.Progress{Total: total}
 						}()
 
-						rs, err := s.Scraper.Scrape(u, s.Files)
+						retryAction := "retry"
+						var ids []int64
+						recipe, err := s.Repository.RecipeWithSource(u, userID)
 						if err != nil {
-							report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
-							return
+							rs, err := s.Scraper.Scrape(u, s.Files)
+							if err != nil {
+								report.Logs = append(report.Logs, models.NewReportLog(u, false, err, retryAction))
+								return
+							}
+
+							recipe, err = rs.Recipe()
+							if err != nil {
+								report.Logs = append(report.Logs, models.NewReportLog(u, false, err, retryAction))
+								return
+							}
+
+							ids, _, err = s.Repository.AddRecipes(models.Recipes{*recipe}, userID, nil)
+							if err != nil {
+								report.Logs = append(report.Logs, models.NewReportLog(u, false, err, retryAction))
+								return
+							}
+
+							report.Logs = append(report.Logs, models.NewReportLog(u, true, err, "/recipes/"+strconv.FormatInt(ids[0], 10)))
+							countSuccess.Add(1)
+						} else {
+							ids = []int64{recipe.ID}
+							report.Logs = append(report.Logs, models.NewReportLog(u, false, nil, "/recipes/"+strconv.FormatInt(recipe.ID, 10)))
+							countWarning.Add(1)
 						}
 
-						recipe, err := rs.Recipe()
-						if err != nil {
-							report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
-							return
-						}
-
-						ids, _, err := s.Repository.AddRecipes(models.Recipes{*recipe}, userID, nil)
-						if err != nil {
-							report.Logs = append(report.Logs, models.ReportLog{Error: err.Error(), Title: u})
-							return
-						}
-
-						report.Logs = append(report.Logs, models.ReportLog{IsSuccess: true, Title: u})
 						recipeIDs = append(recipeIDs, ids[0])
-
-						count.Add(1)
 					}(rawURL)
 				}
 			}()
@@ -639,21 +649,32 @@ func (s *Server) recipesAddWebsiteHandler() http.HandlerFunc {
 
 			var (
 				toast      models.Toast
-				numSuccess = count.Load()
+				numSuccess = countSuccess.Load()
+				numWarning = countWarning.Load()
 			)
 
-			if numSuccess == 0 && total == 1 {
-				msg := "Fetching the recipe failed."
-				toast = models.NewErrorToast("Operation Failed", msg, "View /reports?view=latest")
-				slog.Error(msg, userIDAttr)
-			} else if numSuccess == 1 && total == 1 {
-				msg := "Recipe has been added to your collection."
-				toast = models.NewInfoToast("Operation Successful", msg, fmt.Sprintf("View /recipes/%d", recipeIDs[0]))
-				slog.Info(msg, userIDAttr, "recipeID", recipeIDs[0])
+			if total == 1 {
+				if numWarning == 1 {
+					recipeID := recipeIDs[0]
+					viewRecipeLink := fmt.Sprintf("View /recipes/%d", recipeID)
+					msg := "The recipe exists."
+					toast = models.NewWarningToast("Operation Warning", msg, viewRecipeLink)
+					slog.Warn(msg, userIDAttr, "recipeID", recipeID)
+				} else if numSuccess == 0 {
+					msg := "Fetching the recipe failed."
+					toast = models.NewErrorToast("Operation Failed", msg, "View /reports?view=latest")
+					slog.Error(msg, userIDAttr)
+				} else if numSuccess == 1 {
+					recipeID := recipeIDs[0]
+					viewRecipeLink := fmt.Sprintf("View /recipes/%d", recipeID)
+					msg := "Recipe has been added to your collection."
+					toast = models.NewInfoToast("Operation Successful", msg, viewRecipeLink)
+					slog.Info(msg, userIDAttr, "recipeID", recipeID)
+				}
 			} else {
-				skipped := int64(total) - numSuccess
-				toast = models.NewInfoToast("Operation Successful", fmt.Sprintf("Fetched %d recipes. %d skipped", numSuccess, skipped), "View /reports?view=latest")
-				slog.Info("Fetched recipes", userIDAttr, "recipes", recipeIDs, "fetched", numSuccess, "skipped", skipped, "total", total)
+				numSkipped := int64(total) - (numSuccess + numWarning)
+				toast = models.NewInfoToast("Operation Successful", fmt.Sprintf("Fetched: %d. Skipped: %d.", numSuccess, numSkipped), "View /reports?view=latest")
+				slog.Info("Fetched recipes", userIDAttr, "recipes", recipeIDs, "fetched", numSuccess, "skipped", numSkipped, "existing", numWarning, "total", total)
 			}
 
 			s.Brokers.SendToast(toast, userID)

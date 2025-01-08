@@ -53,7 +53,7 @@ func scrapeInstantPot(root *goquery.Document) (models.RecipeSchema, error) {
 		rs.PrepTime = prep
 	}
 
-	getIngredients(&rs, root.Find(".article__ingredients").First().Find("li"))
+	getIngredients(&rs, root.Find(".article__ingredients").Last().Find("li"))
 	getInstructions(&rs, root.Find(".article__instructions").First().Find("li"))
 
 	return rs, nil

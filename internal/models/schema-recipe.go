@@ -500,7 +500,7 @@ func (k *Keywords) UnmarshalJSON(data []byte) error {
 		}
 		k.Values = strings.TrimSpace(strings.Join(xs, ","))
 	case map[string]any:
-		fmt.Println("fuck")
+		fmt.Println("oops")
 	}
 
 	k.Values = strings.TrimRight(k.Values, ",")
@@ -604,6 +604,7 @@ func (i *Ingredients) UnmarshalJSON(data []byte) error {
 		{"&#339;", "œ"},
 		{"&#233;", "é"},
 		{"&#239;", "ï"},
+		{"&amp;", "&"},
 	}
 
 	for _, v := range xv {
@@ -986,17 +987,67 @@ func (n *NutritionSchema) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case map[string]any:
-		n.Calories = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["calories"]), ",", "."))
-		n.Carbohydrates = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["carbohydrateContent"]), ",", "."))
-		n.Cholesterol = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["cholesterolContent"]), ",", "."))
-		n.Fat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fatContent"]), ",", "."))
-		n.SaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["saturatedFatContent"]), ",", "."))
-		n.UnsaturatedFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["unsaturatedFatContent"]), ",", "."))
-		n.TransFat = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["transFatContent"]), ",", "."))
-		n.Protein = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["proteinContent"]), ",", "."))
-		n.Sugar = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sugarContent"]), ",", "."))
-		n.Sodium = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["sodiumContent"]), ",", "."))
-		n.Fiber = regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x["fiberContent"]), ",", "."))
+		extract := func(nutrition string) string {
+			return regex.Digit.FindString(strings.ReplaceAll(extensions.ConvertToString(x[nutrition]), ",", "."))
+		}
+
+		if _, ok := x["calories"]; ok {
+			n.Calories = extract("calories")
+		}
+
+		if _, ok := x["carbohydrateContent"]; ok {
+			n.Carbohydrates = extract("carbohydrateContent")
+		} else if _, ok = x["carbs"]; ok {
+			n.Carbohydrates = extract("carbs")
+		}
+
+		if _, ok := x["cholesterolContent"]; ok {
+			n.Cholesterol = extract("cholesterolContent")
+		}
+
+		if _, ok := x["fatContent"]; ok {
+			n.Fat = extract("fatContent")
+		} else if _, ok = x["fat"]; ok {
+			n.Fat = extract("fat")
+		}
+
+		if _, ok := x["saturatedFatContent"]; ok {
+			n.SaturatedFat = extract("saturatedFatContent")
+		} else if _, ok = x["saturatedFat"]; ok {
+			n.SaturatedFat = extract("saturatedFat")
+		}
+
+		if _, ok := x["unsaturatedFatContent"]; ok {
+			n.UnsaturatedFat = extract("unsaturatedFatContent")
+		}
+
+		if _, ok := x["transFatContent"]; ok {
+			n.TransFat = extract("transFatContent")
+		}
+
+		if _, ok := x["proteinContent"]; ok {
+			n.Protein = extract("proteinContent")
+		} else if _, ok = x["protein"]; ok {
+			n.Protein = extract("protein")
+		}
+
+		if _, ok := x["sugarContent"]; ok {
+			n.Sugar = extract("sugarContent")
+		} else if _, ok = x["sugars"]; ok {
+			n.Sugar = extract("sugars")
+		}
+
+		if _, ok := x["sodiumContent"]; ok {
+			n.Sodium = extract("sodiumContent")
+		} else if _, ok = x["salt"]; ok {
+			n.Sodium = extract("salt")
+		}
+
+		if _, ok := x["fiberContent"]; ok {
+			n.Fiber = extract("fiberContent")
+		} else if _, ok = x["fibre"]; ok {
+			n.Fiber = extract("fibre")
+		}
 
 		if val := extensions.ConvertToString(x["servingSize"]); val != "" {
 			xs := strings.Split(val, " ")

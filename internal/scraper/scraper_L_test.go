@@ -217,7 +217,7 @@ func TestScraper_L(t *testing.T) {
 					Value: "Unser beliebtes Rezept für Gemüsepfanne mit Hähnchen, Zuckerschoten und Brokkoli und mehr als 45.000 weitere kostenlose Rezepte auf LECKER.de.",
 				},
 				Keywords: &models.Keywords{
-					Values: "Hähnchen,Geflügel,Fleisch,Zutaten,Mittagessen,Mahlzeit,Rezepte,Abendbrot,Low Carb,Gesundes Essen,Hauptgerichte,Menüs,Brokkoli,Kohl,Gemüse,Zuckerschoten,Gemüsepfanne,Pfannengerichte",
+					Values: "Zutaten,Fleisch,Geflügel,Hähnchen,Brokkoli,Hauptgerichte,Low Carb,Zuckerschoten,Gemüsepfanne,Mittagessen,Abendbrot",
 				},
 				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
@@ -331,9 +331,8 @@ func TestScraper_L(t *testing.T) {
 				Description: &models.Description{
 					Value: "Gek op soesjes en gek op kaas? Dan wil je deze Gougères, een hartige kaassoesjes uit de Franse keuken, vast een keer proberen.",
 				},
-				Name:     "Gougères",
-				PrepTime: "PT20M",
-				Image:    &models.Image{Value: anUploadedImage.String()},
+				Name:  "Gougères",
+				Image: &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
 						"90 gr gruyere kaas",
@@ -364,6 +363,7 @@ func TestScraper_L(t *testing.T) {
 				},
 				Keywords:        &models.Keywords{},
 				NutritionSchema: &models.NutritionSchema{},
+				PrepTime:        "PT20M",
 				ThumbnailURL:    &models.ThumbnailURL{},
 				Tools:           &models.Tools{Values: []models.HowToItem{}},
 				Yield:           &models.Yield{Value: 4},
@@ -525,7 +525,7 @@ func TestScraper_L(t *testing.T) {
 				Category:  &models.Category{Value: "Mittagessen, Abendessen"},
 				Cuisine:   &models.Cuisine{Value: "Deutschland"},
 				Description: &models.Description{
-					Value: "Rezept für Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln » Über 597x nachgekocht » 40min Zubereitung » 10 Zutaten » 558 kcal/Portion",
+					Value: "Schweinemedaillons mit Ofenkartoffeln, Butterbohnen und Rosmarinbröseln: Lass dich von Lidl Kochen inspirieren und probiere das Rezept direkt aus! ▶ 40min Zubereitung, 10 Zutaten, 558 kcal/Portion.",
 				},
 				Keywords: &models.Keywords{
 					Values: "Bohnen, Buschbohnen, Kartoffeln, Schwein, Schweinelende, Schweinefilet, einfach, lecker, leicht, Mittagessen, Abendessen, NährwertKompass 7-8, Deutschland, Gäste, Familie, Hauptspeise, Fleisch, Gemüse, Schweinefleisch, Einfaches Mittagessen, Einfaches Abendessen, Einfache Familienrezepte, Abendessen für Gäste, Familien Mittagessen, Familien Abendessen",
@@ -553,6 +553,9 @@ func TestScraper_L(t *testing.T) {
 					Calories: "558",
 				},
 				PrepTime: "PT40M",
+				ThumbnailURL: &models.ThumbnailURL{
+					Value: "https://www.lidl-kochen.de/images/recipe-wide/804963/schweinemedaillons-mit-ofenkartoffeln-butterbohnen-und-rosmarinbroeseln-147914.jpg",
+				},
 				Tools: &models.Tools{
 					Values: []models.HowToItem{
 						{Type: "HowToTool", Text: "große Schüssel", Quantity: 1},

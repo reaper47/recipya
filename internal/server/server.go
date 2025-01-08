@@ -89,6 +89,8 @@ func (s *Server) mountHandlers() {
 	mux.HandleFunc("GET /{$}", s.indexHandler)
 	mux.Handle("GET /download/{tmpFile}", s.mustBeLoggedInMiddleware(s.downloadHandler()))
 	mux.Handle("GET /fetch", s.mustBeLoggedInMiddleware(s.fetchHandler()))
+	mux.Handle("POST /placeholder", s.mustBeLoggedInMiddleware(s.placeholderPostHandler()))
+	mux.Handle("POST /placeholder/restore", s.mustBeLoggedInMiddleware(s.restorePlaceholderPostHandler()))
 	mux.Handle("GET /user-initials", s.mustBeLoggedInMiddleware(s.userInitialsHandler()))
 	mux.Handle("GET /update", s.mustBeLoggedInMiddleware(s.updateHandler()))
 	mux.Handle("GET /update/check", s.mustBeLoggedInMiddleware(s.updateCheckHandler()))

@@ -125,8 +125,8 @@ const InsertReport = `
 
 // InsertReportLog is the query to add a log to a report.
 const InsertReportLog = `
-	INSERT INTO report_logs (report_id, title, success, error_reason) 
-	VALUES (?, ?, ?, ?)`
+	INSERT INTO report_logs (report_id, title, success, warning, error_reason, action) 
+	VALUES (?, ?, ?, ?, ?, ?)`
 
 // InsertShareLink is the query to add a recipe share link to the database.
 const InsertShareLink = `

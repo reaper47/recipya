@@ -539,6 +539,23 @@ func (m *mockRepository) Recipe(id, userID int64) (*models.Recipe, error) {
 	return nil, errors.New("recipe not found")
 }
 
+func (m *mockRepository) RecipeWithSource(source string, userID int64) (*models.Recipe, error) {
+	/*if m.RecipeFunc != nil {
+		return m.RecipeFunc(id, userID)
+	}*/
+
+	if recipes, ok := m.RecipesRegistered[userID]; ok {
+		idx := slices.IndexFunc(recipes, func(r models.Recipe) bool {
+			return r.URL == source
+		})
+		if idx == -1 {
+			return nil, errors.New("recipe not found")
+		}
+		return &recipes[idx], nil
+	}
+	return nil, errors.New("recipe not found")
+}
+
 func (m *mockRepository) Recipes(userID int64, opts models.SearchOptionsRecipes) models.Recipes {
 	if recipes, ok := m.RecipesRegistered[userID]; ok {
 		return recipes

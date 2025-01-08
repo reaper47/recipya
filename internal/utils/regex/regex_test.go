@@ -160,6 +160,24 @@ func TestRegex_Quantity(t *testing.T) {
 	}
 }
 
+func TestRegex_QuantityWithSeparator(t *testing.T) {
+	valid := []string{
+		"1 and 1/2 teaspoons vanilla extract",
+	}
+	assertRegex(t, valid, regex.QuantityWithSeparator)
+
+	invalid := []string{
+		"1 teaspoon vanilla extract",
+	}
+	for _, s := range invalid {
+		t.Run("regex is invalid "+s, func(t *testing.T) {
+			if regex.QuantityWithSeparator.MatchString(s) {
+				t.Errorf("got true when want false for %q", s)
+			}
+		})
+	}
+}
+
 func TestRegex_Anchor(t *testing.T) {
 	t.Run("anchor is valid", func(t *testing.T) {
 		a := `<a slot="guide-links-primary" href="https://www.youtube.com/about/press/" style="display: none;">`
@@ -473,6 +491,7 @@ func TestRegex_UnitImperial(t *testing.T) {
 		"10 metres", "10 meters", "1 metre", "1 meter", "5m", "5 m",
 		"10 litres", "10 liters", "1 litre", "1 liter", "5l", "5 l",
 		"275°c", "275 °c", "275 degrees celsius", "275 celsius", "275 degree celsius",
+		"1 Mozzarella-Kugel",
 	}
 	for _, s := range invalid {
 		t.Run(s, func(t *testing.T) {

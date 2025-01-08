@@ -19,7 +19,7 @@ func scrapeRezeptwelt(root *goquery.Document) (models.RecipeSchema, error) {
 	rs.PrepTime = strings.Replace(getItempropContent(root, "performTime"), "min", "M", 1)
 	rs.Cuisine.Value = getItempropContent(root, "recipeCuisine")
 	rs.Keywords.Values = getItempropContent(root, "keywords")
-	getInstructions(&rs, root.Find("ol[itemprop=recipeInstructions] li"))
+	getInstructions(&rs, root.Find("ol.steps-list li"))
 	rs.Yield.Value = findYield(root.Find("span[itemprop=recipeYield]").Text())
 
 	nodes := root.Find("meta[itemprop=tool]")

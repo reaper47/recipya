@@ -159,7 +159,7 @@ func TestScraper_G(t *testing.T) {
 						{Text: "Slice, serve & enjoy.", Type: "HowToStep"},
 					},
 				},
-				Name:            "VEGAN BRISKETChicken Of The Woods SchnitzelCilantro Marinated TempehElderflower Cocktail",
+				Name:            "VEGAN BRISKET",
 				NutritionSchema: &models.NutritionSchema{},
 				PrepTime:        "PT1H",
 				ThumbnailURL:    &models.ThumbnailURL{},
@@ -185,7 +185,7 @@ func TestScraper_G(t *testing.T) {
 				Image:    &models.Image{Value: anUploadedImage.String()},
 				Ingredients: &models.Ingredients{
 					Values: []string{
-						"2 Stück Quitten", "2 Stück Pastinaken", "1 Stück Möhre",
+						"2 Stück Quitte", "2 Stück Pastinake", "1 Stück Möhre",
 						"2 Scheiben Ingwer", "1/2 Stück Zwiebel", "150 ml Kokosmilch",
 						"200 ml Gemüsebrühe", "2 Esslöffel Sahne", "2 Esslöffel Rapsöl",
 						"1 Prise Salz", "1 Prise Pfeffer",
@@ -360,8 +360,8 @@ func TestScraper_G(t *testing.T) {
 				Category:      &models.Category{Value: "Tortas e bolos"},
 				CookingMethod: &models.CookingMethod{Value: "Americana"},
 				Cuisine:       &models.Cuisine{Value: "Americana"},
-				DateModified:  "2023-12-12T07:02:11.772Z",
-				DatePublished: "2022-03-30T19:43:06.164Z",
+				DateModified:  "2023-12-12T04:02:11.772-03:00",
+				DatePublished: "2022-03-30T16:43:06.164-03:00",
 				Description: &models.Description{
 					Value: "Veja como fazer cheesecake com geleia de frutas vermelhas. Receita é feita em camadas, sendo a massa feita com biscoito maisena e manteiga; recheio com leite condensado, cream cheese, ovos, sal e creme de leite e cobertura com geleia caseira de frutas vermelhas, feita com morango, blueberry, amora, framboesa, água e açúcar.",
 				},
@@ -762,7 +762,7 @@ func TestScraper_G(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				CookTime:      "PT0S",
 				Cuisine:       &models.Cuisine{},
-				DatePublished: "2023-08-08T15:26:30.306375 EDT",
+				DatePublished: "2023-08-08T15:26:30.306375-0400",
 				Description: &models.Description{
 					Value: "Balsamic Chicken Caprese is roasted to perfection and topped with melty mozzarella, fresh basil and ripe heirloom tomatoes.",
 				},
@@ -822,7 +822,7 @@ func TestScraper_G(t *testing.T) {
 						"1 lime",
 						"1 garlic clove",
 						"&#8203;25g cashew nuts",
-						"&#8203;10g coriander &amp; mint",
+						"&#8203;10g coriander & mint",
 						"&#8203;80g spinach",
 						"&#8203;130g bulgur wheat",
 						"&#8203;160g blanched peas",
@@ -1008,7 +1008,7 @@ func TestScraper_G(t *testing.T) {
 				CookingMethod: &models.CookingMethod{},
 				Cuisine:       &models.Cuisine{},
 				DatePublished: "2017-03-30T00:00:00Z",
-				DateModified:  "2021-07-16T15:18:02.087Z",
+				DateModified:  "2024-08-08T15:54:42.577Z",
 				Description: &models.Description{
 					Value: "Scott Hallsworth's tasty barbecued poussin recipe is packed with bold Japanese flavours.",
 				},

@@ -128,7 +128,7 @@ func TestScraper_V(t *testing.T) {
 						{Type: "HowToStep", Text: "To Freeze: This cake freezes beautifully, iced or uniced. Simply allow the cake to cool completely, ice the cake or not, then freeze individual pieces on a sheet pan. Once frozen wrap snugly in plastic wrap or store in a lidded container. Store in freezer then thaw at room temperature for about two hours before enjoying. If iced, take the plastic wrap off before thawing so the icing doesn&#039;t stick.I&#039;ve only tested freezing the iced cake for up to two days. Uniced will freeze well for up to two weeks. Unwrap and thaw at room temperature, covered with a cake dome."},
 					},
 				},
-				Name: "Carrot Cake Bread Recipe",
+				Name: "Moist and Tender Carrot Cake Bread",
 				NutritionSchema: &models.NutritionSchema{
 					Calories:       "476",
 					Carbohydrates:  "38",
@@ -346,7 +346,7 @@ func TestScraper_V(t *testing.T) {
 						"200 to 250 grams Paneer ((Indian cottage cheese) - cubed or diced)",
 						"1 teaspoon dry fenugreek leaves ((kasuri methi) - optional)",
 						"½ to 1 teaspoon Garam Masala (or tandoori masala)",
-						"2 to 3 tablespoons light cream (or half &amp; half or 1 to 2 tablespoons heavy cream - optional)",
+						"2 to 3 tablespoons light cream (or half & half or 1 to 2 tablespoons heavy cream - optional)",
 						"¼ to 1 teaspoon sugar (- optional, add as required depending on the sourness of the tomatoes)",
 						"salt (as required)",
 						"1 to 2 tablespoons coriander leaves (- chopped, (cilantro) - optional)",
