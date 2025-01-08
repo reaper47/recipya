@@ -1135,6 +1135,8 @@ func convertMeasurement(m Measurement, to System) Measurement {
 
 // DetectMeasurementSystem determines the System used in the text.
 func DetectMeasurementSystem(s string) System {
+	s = string(strip([]byte(s)))
+
 	if regex.BeginsWithWord.MatchString(s) {
 		return InvalidSystem
 	}
@@ -1150,6 +1152,20 @@ func DetectMeasurementSystem(s string) System {
 	}
 
 	return InvalidSystem
+}
+
+func strip(s []byte) []byte {
+	n := 0
+	for _, b := range s {
+		if ('a' <= b && b <= 'z') ||
+			('A' <= b && b <= 'Z') ||
+			('0' <= b && b <= '9') ||
+			b == ' ' {
+			s[n] = b
+			n++
+		}
+	}
+	return s[:n]
 }
 
 func isMatchValid(indexes []int) bool {
