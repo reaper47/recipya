@@ -491,6 +491,7 @@ func TestRegex_UnitImperial(t *testing.T) {
 		"10 metres", "10 meters", "1 metre", "1 meter", "5m", "5 m",
 		"10 litres", "10 liters", "1 litre", "1 liter", "5l", "5 l",
 		"275°c", "275 °c", "275 degrees celsius", "275 celsius", "275 degree celsius",
+		"1 Mozzarella-Kugel",
 	}
 	for _, s := range invalid {
 		t.Run(s, func(t *testing.T) {

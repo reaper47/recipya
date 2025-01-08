@@ -45,10 +45,10 @@ var Time = regexp.MustCompile(`(?i)(\d+\s?h\s*)?(\d+\s?(?:m\b|min|minute|minutte
 var Unit = regexp.MustCompile(`(?i)((?:\d*\.?\d+\s*to\s*)?(?:\d*\s*\d+/)?(?:\d+-\d*/?)?\d*\.?\d+)-?\s*(centimeters?|centimetres?|cm\b|cups?|deciliters?|decilitres?|dl\b|feet|foot|ft\.?\b|′|fluid\s*ounces|fl\.?\s*oz\.*|fluid\s*oz\.?|gallons?|gals?\b|milliliters?|millilitres?|ml\b|millimeters?|millimetres?|mm\b|grams?|grammes?|\d*g\b|inches?|inch|in\b|["”]|kilograms?|kilogrammes?|kg|milligrams?|milligrammes?|mg\b|meters?|metres?|m\b|ounces?|oz\.?|pints?|fl\.?\s*pt\.?|pt\.?|pounds?|lbs?\.?\b|lb\.?\b|#|quarts?|fl\.?\s*qt\.?|qt\.?\b|liters?|litres?|l\b|tablespoons?|ss|tbsp\.?\w*|teaspoons?|ts\w?\.?|tsp\.?\w*|yards?|degrees?\s*celsius|degrees?\s*c|celsius|°?\s?c\b|degrees?\s*fahrenheit|degrees?\s*f|fahrenheit|°?\s?f\b)`)
 
 // UnitImperial matches an imperial unit.
-var UnitImperial = regexp.MustCompile(`(?i)(cups?|feet|foot|ft\.?\b|′|fluid\s*ounces|fl\.?\s*oz\.*|fluid\s*oz\.?|gallons?|gals?\b|inches?|inch|\d\s?in\b|["”]|ounces?|oz\.?|pints?|fl\.?\s*pt\.?|pt\.?\b|pounds?|lbs?\.?\b|lb\.?\b|#|quarts?|fl\.?\s*qt\.?|qt\.?\b|tablespoons?|tbsp\.?\w*|teaspoons?|tsp\.?\w*|yards?|degrees?\s*fahrenheit|degrees?\s*f|fahrenheit|\b°?f\b)`)
+var UnitImperial = regexp.MustCompile(`(?i)[^a-zA-Z](cups?|feet|foot|ft\.?\b|′|fluid\s*ounces?|fl\.?\s*oz\.*|fluid\s*oz\.?|gallons?|gals?\b|inches?|inch|\d\s?in\b|["”]|ounces?|oz\.?|pints?|fl\.?\s*pt\.?|pt\.?\b|pounds?|lbs?\.?\b|lb\.?\b|#|quarts?|fl\.?\s*qt\.?|qt\.?\b|tablespoons?|tbsp\.?\w*|teaspoons?|tsp\.?\w*|yards?|degrees?\s*fahrenheit|degrees?\s*f|fahrenheit|\b°?f\b)`)
 
 // UnitMetric matches a metric unit.
-var UnitMetric = regexp.MustCompile(`(?i)(centimeters?|centimetres?|cm\b|deciliters?|decilitres?|dl\b|millimeters?|millimetres?|mm\b|grams?|grammes?|\b\d*g\b|kilograms?|kilogrammes?|kg|milligrams?|milligrammes?|mg\b|meters?|metres?|\b\d*m\b|milliliters?|millilitres?|ml\b|liters?|litres?|\b\d*l\b|degrees?\s*celsius|degrees?\s*c|celsius|\b°?c\b)`)
+var UnitMetric = regexp.MustCompile(`(?i)[^a-zA-Z](centimeters?|centimetres?|cm\b|deciliters?|decilitres?|dl\b|millimeters?|millimetres?|mm\b|grams?|grammes?|\d*g\b|kilograms?|kilogrammes?|kg|milligrams?|milligrammes?|mg\b|meters?|metres?|\d*m\b|milliliters?|millilitres?|ml\b|liters?|litres?|\d*l\b|degrees?\s*celsius|degrees?\s*c|celsius|\b°?c\b)`)
 
 // WildcardURL matches a Recipya URL with wildcards.
 var WildcardURL = regexp.MustCompile(`/(cookbooks|recipes|download)/\d+(/\w+(/\d+)?)?$`)
