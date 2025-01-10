@@ -81,13 +81,13 @@ func TestMealieImport(t *testing.T) {
 		Keywords: []string{"Vegetable Bowl Recipe", "Roasted Vegetable Bowls", "Green Tahini"},
 		Name:     "Roasted Vegetable Bowls with Green Tahini",
 		Nutrition: models.Nutrition{
-			Calories:           "322 kcal",
-			Fiber:              "6.7g",
-			Protein:            "6.1g",
-			Sodium:             "302.3g",
-			Sugars:             "6.9g",
-			TotalCarbohydrates: "24.7g",
-			TotalFat:           "24.6g",
+			Calories:           "322",
+			Fiber:              "6.7",
+			Protein:            "6.1",
+			Sodium:             "302.3",
+			Sugars:             "6.9",
+			TotalCarbohydrates: "24.7",
+			TotalFat:           "24.6",
 		},
 		Times:     models.Times{Prep: 15 * time.Minute, Cook: 30 * time.Minute},
 		Tools:     []models.HowToItem{},
@@ -97,4 +97,9 @@ func TestMealieImport(t *testing.T) {
 	}
 	want := models.Recipes{r, r, r}
 	assertRecipes(t, got, want, files)
+}
+
+func testMealie(t testing.TB, mealieRecipe string, wantRecipe models.Recipes) {
+	t.Helper()
+
 }
