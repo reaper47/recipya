@@ -1,4 +1,4 @@
-# Documentation for the environment variables: https://recipes.musicavis.ca/guide/docs/installation/docker/#environment-variables
+# Documentation for the environment variables: https://recipes.musicavis.ca/docs/installation/docker/#environment-variables
 services:
   web:
     image: reaper99/recipya:nightly
