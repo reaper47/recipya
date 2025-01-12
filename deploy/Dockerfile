@@ -16,6 +16,7 @@ COPY ./internal ./internal
 COPY ./main.go ./
 COPY ./web ./web
 
+RUN go generate ./...
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/recipya main.go
 
 # Deploy the application binary into a lean image
@@ -30,8 +31,9 @@ RUN ffmpeg -version
 
 RUN adduser -D recipya
 USER recipya:recipya
+RUN mkdir -p /home/recipya/.config/Recipya
 COPY --from=build-stage /app/recipya .
 
-EXPOSE 8080
+EXPOSE 8078
 
 ENTRYPOINT ["/app/recipya", "serve"]
