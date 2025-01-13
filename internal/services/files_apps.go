@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/integrations"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"io"
@@ -321,7 +322,14 @@ func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
 	case '{':
 		var rs models.RecipeSchema
 		err = json.Unmarshal(buf, &rs)
-		xrs = append(xrs, rs)
+
+		if rs.Ingredients == nil && rs.Instructions == nil {
+			var m integrations.MealieRecipe
+			err = json.Unmarshal(buf, &m)
+			xrs = append(xrs, m.Schema())
+		} else {
+			xrs = append(xrs, rs)
+		}
 	case '[':
 		err = json.Unmarshal(buf, &xrs)
 	default:
