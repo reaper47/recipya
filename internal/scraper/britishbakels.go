@@ -42,7 +42,7 @@ func scrapeBritishBakels(root *goquery.Document) (models.RecipeSchema, error) {
 		if isLeft {
 			numRight = 0
 		} else {
-			numRight += 1
+			numRight++
 		}
 
 		if numRight == 2 {

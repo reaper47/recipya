@@ -36,8 +36,8 @@ type mealieRecipeResponse struct {
 	Name                string           `json:"name"`
 	Slug                string           `json:"slug"`
 	Image               string           `json:"image"`
-	RecipeServings      int              `json:"recipe_servings"`
-	RecipeYieldQuantity int              `json:"recipe_yield_quantity"`
+	RecipeServings      float64          `json:"recipe_servings"`
+	RecipeYieldQuantity float64          `json:"recipe_yield_quantity"`
 	RecipeYield         string           `json:"recipe_yield"`
 	TotalTime           string           `json:"total_time"`
 	PrepTime            string           `json:"prep_time"`
@@ -51,7 +51,7 @@ type mealieRecipeResponse struct {
 		Slug string `json:"slug"`
 	} `json:"tags"`
 	Tools              []models.HowToItem  `json:"tools"`
-	Rating             int                 `json:"rating"`
+	Rating             float64             `json:"rating"`
 	OrgURL             string              `json:"org_url"`
 	DateAdded          string              `json:"date_added"`
 	DateUpdated        string              `json:"date_updated"`
@@ -79,8 +79,8 @@ func (m *mealieRecipeResponse) UnmarshalJSON(data []byte) error {
 		Slug  string `json:"slug"`
 		Image string `json:"image"`
 
-		RecipeServings      int `json:"recipe_servings"`
-		RecipeYieldQuantity int `json:"recipe_yield_quantity"`
+		RecipeServings      float64 `json:"recipe_servings"`
+		RecipeYieldQuantity float64 `json:"recipe_yield_quantity"`
 
 		RecipeYield    string `json:"recipe_yield"`
 		RecipeYieldOld string `json:"recipeYield"`
@@ -108,7 +108,7 @@ func (m *mealieRecipeResponse) UnmarshalJSON(data []byte) error {
 			Slug string `json:"slug"`
 		} `json:"tags"`
 		Tools  []models.HowToItem `json:"tools"`
-		Rating int                `json:"rating"`
+		Rating float64            `json:"rating"`
 
 		OrgURL    string `json:"org_url"`
 		OrgURLOld string `json:"orgURL"`
@@ -168,6 +168,10 @@ func (m *mealieRecipeResponse) UnmarshalJSON(data []byte) error {
 		m.RecipeYield = temp.RecipeYield
 	} else if temp.RecipeYieldOld != "" {
 		m.RecipeYield = temp.RecipeYieldOld
+	} else if int(temp.RecipeServings) > 0 {
+		m.RecipeYield = strconv.FormatFloat(temp.RecipeServings, 'f', -1, 64)
+	} else if int(temp.RecipeYieldQuantity) > 0 {
+		m.RecipeYield = strconv.FormatFloat(temp.RecipeYieldQuantity, 'f', -1, 64)
 	}
 
 	if temp.TotalTime != "" {
@@ -186,6 +190,12 @@ func (m *mealieRecipeResponse) UnmarshalJSON(data []byte) error {
 		m.CookTime = temp.CookTime
 	} else if temp.CookTimeOld != nil {
 		m.CookTime = temp.CookTimeOld
+	}
+
+	if temp.PerformTime != "" {
+		m.PerformTime = temp.PerformTime
+	} else if temp.PerformTimeOld != "" {
+		m.PerformTime = temp.PerformTimeOld
 	}
 
 	m.Description = temp.Description
@@ -720,8 +730,12 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 				Cook: duration.From(m.PerformTime),
 			}
 
-			if m.CookTime == nil && m.PrepTime != "" && m.TotalTime != "" {
-				times.Cook = duration.From(m.TotalTime) - duration.From(m.PrepTime)
+			if m.CookTime == nil && m.PrepTime != "" {
+				if m.TotalTime != "" {
+					times.Cook = duration.From(m.TotalTime) - duration.From(m.PrepTime)
+				} else if m.PerformTime != "" {
+					times.Cook = duration.From(m.PerformTime) - duration.From(m.PrepTime)
+				}
 			}
 
 			ingredients := make([]string, 0, len(m.RecipeIngredient))

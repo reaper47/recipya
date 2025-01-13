@@ -18,7 +18,7 @@ func scrapeQuitoque(root *goquery.Document) (models.RecipeSchema, error) {
 	productTagsNode := root.Find("#product-tags")
 
 	var keywords []string
-	productTagsNode.Find("span").Each(func(i int, s *goquery.Selection) {
+	productTagsNode.Find("span").Each(func(_ int, s *goquery.Selection) {
 		keywords = append(keywords, strings.TrimSpace(s.Text()))
 	})
 	rs.Keywords.Values = strings.Join(keywords, ",")
