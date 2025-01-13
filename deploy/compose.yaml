@@ -1,4 +1,4 @@
-# Documentation for the environment variables: https://recipes.musicavis.ca/guide/docs/installation/docker/#environment-variables
+# Documentation for the environment variables: https://recipes.musicavis.ca/docs/installation/docker/#environment-variables
 services:
   web:
     image: reaper99/recipya:nightly
@@ -18,7 +18,9 @@ services:
     ports:
       - "<host-port>:8078"
     volumes:
-      - "recipya-data:/root/.config/Recipya"
+      - "recipya-data:/home/recipya/.config/Recipya"
+    # Default to user and group 1000
+    user: "${UID:-1000}:${GID:-1000}"
 
 volumes:
   recipya-data:
