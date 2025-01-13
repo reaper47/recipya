@@ -28,7 +28,8 @@ type mealieRecipesResponse struct {
 	Next *string `json:"next"`
 }
 
-type mealieRecipeResponse struct {
+// MealieRecipe represents the structure of a Mealie JSON file.
+type MealieRecipe struct {
 	ID                  string           `json:"id"`
 	UserID              string           `json:"user_id"`
 	HouseholdID         string           `json:"household_id"`
@@ -63,7 +64,75 @@ type mealieRecipeResponse struct {
 	Nutrition          nutrition           `json:"nutrition"`
 }
 
-func (m *mealieRecipeResponse) UnmarshalJSON(data []byte) error {
+func (m *MealieRecipe) Schema() models.RecipeSchema {
+	category := "uncategorized"
+	if len(m.RecipeCategory) > 0 {
+		category = m.RecipeCategory[0].Name
+	}
+
+	var yield int16
+	if m.RecipeYieldQuantity > 0 {
+		v, _ := strconv.ParseInt(m.RecipeYield, 10, 16)
+		yield = int16(v)
+	} else if m.RecipeYieldQuantity > 0 {
+		yield = int16(m.RecipeYieldQuantity)
+	} else if m.RecipeServings > 0 {
+		yield = int16(m.RecipeServings)
+	}
+
+	var cookTime string
+	if m.CookTime != nil {
+		cookTime = *m.CookTime
+	}
+
+	dateUpdated := m.DateUpdated
+	if m.UpdateAt != "" {
+		dateUpdated = m.UpdateAt
+	}
+
+	keywords := make([]string, 0, len(m.Tags))
+	for _, tag := range m.Tags {
+		keywords = append(keywords, tag.Name)
+	}
+
+	ingredients := make([]string, 0, len(m.RecipeIngredient))
+	for _, ing := range m.RecipeIngredient {
+		ingredients = append(ingredients, ing.Display)
+	}
+
+	instructions := make([]models.HowToItem, 0, len(m.RecipeInstructions))
+	for _, ins := range m.RecipeInstructions {
+		instructions = append(instructions, models.NewHowToStep(ins.Text))
+	}
+
+	tools := make([]models.HowToItem, 0, len(m.Tools))
+	for _, tool := range m.Tools {
+		tools = append(tools, models.NewHowToTool(tool.Text))
+	}
+
+	return models.RecipeSchema{
+		AtContext:       "https://schema.org",
+		AtType:          &models.SchemaType{Value: "Recipe"},
+		Category:        &models.Category{Value: category},
+		CookTime:        cookTime,
+		DateCreated:     m.DateAdded,
+		DateModified:    dateUpdated,
+		DatePublished:   m.DateAdded,
+		Description:     &models.Description{Value: m.Description},
+		Keywords:        &models.Keywords{Values: strings.Join(keywords, ",")},
+		Ingredients:     &models.Ingredients{Values: ingredients},
+		Instructions:    &models.Instructions{Values: instructions},
+		Name:            m.Name,
+		NutritionSchema: m.Nutrition.Schema(),
+		PrepTime:        m.PrepTime,
+		Tools:           &models.Tools{Values: tools},
+		TotalTime:       m.TotalTime,
+		Yield:           &models.Yield{Value: yield},
+		URL:             m.OrgURL,
+	}
+}
+
+func (m *MealieRecipe) UnmarshalJSON(data []byte) error {
 	var temp struct {
 		ID string `json:"id"`
 
@@ -431,6 +500,23 @@ type nutrition struct {
 	UnsaturatedFatContent string
 }
 
+// Schema converts the Mealie nutrition struct to a NutritionSchema one.
+func (n *nutrition) Schema() *models.NutritionSchema {
+	return &models.NutritionSchema{
+		Calories:       n.Calories,
+		Carbohydrates:  n.CarbohydrateContent,
+		Cholesterol:    n.CholesterolContent,
+		Fat:            n.FatContent,
+		Fiber:          n.FiberContent,
+		Protein:        n.ProteinContent,
+		SaturatedFat:   n.SaturatedFatContent,
+		Sodium:         n.SodiumContent,
+		Sugar:          n.SugarContent,
+		TransFat:       n.TransFatContent,
+		UnsaturatedFat: n.UnsaturatedFatContent,
+	}
+}
+
 func (n *nutrition) UnmarshalJSON(data []byte) error {
 	var temp struct {
 		Calories *string `json:"calories"`
@@ -687,7 +773,7 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 				return
 			}
 
-			var m mealieRecipeResponse
+			var m MealieRecipe
 			err = json.NewDecoder(res.Body).Decode(&m)
 			if err != nil {
 				_ = res.Body.Close()
