@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/go:1-1.22-bullseye
+FROM mcr.microsoft.com/devcontainers/go:1-1.23-bookworm
 
 RUN apt-get update && apt-get install -y curl wget git
 
