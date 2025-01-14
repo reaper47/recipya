@@ -868,16 +868,29 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 				}
 			}
 
+			normalizeTime := func(s string) string {
+				s = strings.TrimPrefix(s, "PT")
+				s = strings.Replace(s, "M", " minutes ", 1)
+				s = strings.Replace(s, "H", " hours ", 1)
+				return s
+			}
+
+			var cook string
+			if m.CookTime != nil {
+				cook = normalizeTime(*m.CookTime)
+			}
+
 			times := models.Times{
-				Prep: duration.From(m.PrepTime),
-				Cook: duration.From(m.PerformTime),
+				Prep:  duration.From(normalizeTime(m.PrepTime)),
+				Cook:  duration.From(cook),
+				Total: duration.From(normalizeTime(m.TotalTime)),
 			}
 
 			if m.CookTime == nil && m.PrepTime != "" {
 				if m.TotalTime != "" {
-					times.Cook = duration.From(m.TotalTime) - duration.From(m.PrepTime)
+					times.Cook = times.Total - times.Prep
 				} else if m.PerformTime != "" {
-					times.Cook = duration.From(m.PerformTime) - duration.From(m.PrepTime)
+					times.Cook = duration.From(normalizeTime(m.PerformTime)) - times.Prep
 				}
 			}
 
