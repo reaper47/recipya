@@ -990,12 +990,9 @@ func (s *Server) recipeScaleHandler() http.HandlerFunc {
 
 		yield, err := strconv.ParseInt(r.URL.Query().Get("yield"), 10, 16)
 		if err != nil {
-			s.Brokers.SendToast(models.NewErrorGeneralToast("No yield in the query."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
-		}
-
-		if yield <= 0 {
+		} else if yield <= 0 {
 			s.Brokers.SendToast(models.NewErrorGeneralToast("Yield must be greater than zero."), userID)
 			w.WriteHeader(http.StatusBadRequest)
 			return
