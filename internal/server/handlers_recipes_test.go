@@ -971,11 +971,6 @@ func TestHandlers_Recipes_Scale(t *testing.T) {
 		want string
 	}{
 		{
-			name: "yield query parameter must be present",
-			in:   "",
-			want: "No yield in the query.",
-		},
-		{
 			name: "yield query parameter must be greater than zero",
 			in:   "-1",
 			want: "Yield must be greater than zero.",

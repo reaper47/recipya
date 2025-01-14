@@ -80,9 +80,44 @@ func (m *MealieRecipe) Schema() models.RecipeSchema {
 		yield = int16(m.RecipeServings)
 	}
 
+	extractTimeMinutes := func(s string) int64 {
+		s = strings.TrimPrefix(s, "PT")
+
+		var t int64
+
+		before, after, found := strings.Cut(s, "H")
+		if found {
+			v, err := strconv.ParseInt(before, 10, 16)
+			if err == nil {
+				t += v
+			}
+
+			before, after, _ = strings.Cut(after, "M")
+		} else {
+			before, after, _ = strings.Cut(s, "M")
+		}
+
+		v, err := strconv.ParseInt(before, 10, 16)
+		if err == nil {
+			t += v
+		}
+
+		return t
+	}
+
 	var cookTime string
 	if m.CookTime != nil {
 		cookTime = *m.CookTime
+	} else if m.PerformTime != "" && m.PrepTime != "" {
+		minutesCook := extractTimeMinutes(m.PerformTime) - extractTimeMinutes(m.PrepTime)
+
+		if minutesCook > 60 {
+			hours := minutesCook / 60
+			minutes := minutesCook % 60
+			cookTime = "PT" + strconv.FormatInt(hours, 10) + "H" + strconv.FormatInt(minutes, 10) + "M"
+		} else {
+			cookTime = "PT" + strconv.FormatInt(minutesCook, 10) + "M"
+		}
 	}
 
 	dateUpdated := m.DateUpdated
@@ -243,28 +278,50 @@ func (m *MealieRecipe) UnmarshalJSON(data []byte) error {
 		m.RecipeYield = strconv.FormatFloat(temp.RecipeYieldQuantity, 'f', -1, 64)
 	}
 
+	normalizeTime := func(s string) string {
+		if s == "" || strings.HasPrefix(s, "PT") {
+			return s
+		}
+
+		t := "PT"
+		parts := strings.Split(s, " ")
+		if len(parts) == 2 {
+			if strings.Contains(s, "min") {
+				t += parts[0] + "M"
+			} else {
+				t += parts[0] + "H"
+			}
+		} else if len(parts) == 4 {
+			t += parts[0] + "H" + parts[1] + "M"
+		}
+
+		return t
+	}
+
 	if temp.TotalTime != "" {
-		m.TotalTime = temp.TotalTime
+		m.TotalTime = normalizeTime(temp.TotalTime)
 	} else if temp.TotalTimeOld != "" {
-		m.TotalTime = temp.TotalTimeOld
+		m.TotalTime = normalizeTime(temp.TotalTimeOld)
 	}
 
 	if temp.PrepTime != "" {
-		m.PrepTime = temp.PrepTime
+		m.PrepTime = normalizeTime(temp.PrepTime)
 	} else if temp.PrepTimeOld != "" {
-		m.PrepTime = temp.PrepTimeOld
+		m.PrepTime = normalizeTime(temp.PrepTimeOld)
 	}
 
 	if temp.CookTime != nil {
-		m.CookTime = temp.CookTime
+		s := normalizeTime(*temp.CookTime)
+		m.CookTime = &s
 	} else if temp.CookTimeOld != nil {
-		m.CookTime = temp.CookTimeOld
+		s := normalizeTime(*temp.CookTimeOld)
+		m.CookTime = &s
 	}
 
 	if temp.PerformTime != "" {
-		m.PerformTime = temp.PerformTime
+		m.PerformTime = normalizeTime(temp.PerformTime)
 	} else if temp.PerformTimeOld != "" {
-		m.PerformTime = temp.PerformTimeOld
+		m.PerformTime = normalizeTime(temp.PerformTimeOld)
 	}
 
 	m.Description = temp.Description
@@ -811,16 +868,29 @@ func MealieImport(baseURL, username, password string, client *http.Client, uploa
 				}
 			}
 
+			normalizeTime := func(s string) string {
+				s = strings.TrimPrefix(s, "PT")
+				s = strings.Replace(s, "M", " minutes ", 1)
+				s = strings.Replace(s, "H", " hours ", 1)
+				return s
+			}
+
+			var cook string
+			if m.CookTime != nil {
+				cook = normalizeTime(*m.CookTime)
+			}
+
 			times := models.Times{
-				Prep: duration.From(m.PrepTime),
-				Cook: duration.From(m.PerformTime),
+				Prep:  duration.From(normalizeTime(m.PrepTime)),
+				Cook:  duration.From(cook),
+				Total: duration.From(normalizeTime(m.TotalTime)),
 			}
 
 			if m.CookTime == nil && m.PrepTime != "" {
 				if m.TotalTime != "" {
-					times.Cook = duration.From(m.TotalTime) - duration.From(m.PrepTime)
+					times.Cook = times.Total - times.Prep
 				} else if m.PerformTime != "" {
-					times.Cook = duration.From(m.PerformTime) - duration.From(m.PrepTime)
+					times.Cook = duration.From(normalizeTime(m.PerformTime)) - times.Prep
 				}
 			}
 
