@@ -791,7 +791,7 @@ templ AddTool(tool models.HowToItem) {
 					name="tools"
 					placeholder="1 frying pan"
 					class="input input-bordered input-sm w-full"
-					if tool.Name != "" {
+					if tool.Text != "" {
 						value={ tool.StringQuantity() }
 					}
 					_="on keydown if event.key is 'Enter' halt the event then call addItem(event)"
