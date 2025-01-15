@@ -299,18 +299,18 @@ func (s *Server) recipeAddManualPostHandler() http.HandlerFunc {
 
 			for _, tool := range xs {
 				quantity := 1
-				name := tool
+				text := tool
 
 				before, after, found := strings.Cut(tool, " ")
 				if found {
 					parsed, err := strconv.Atoi(strings.TrimSpace(before))
 					if err == nil {
 						quantity = parsed
-						name = after
+						text = after
 					}
 				}
 
-				tools = append(tools, models.NewHowToTool(name, &models.HowToItem{Quantity: quantity}))
+				tools = append(tools, models.NewHowToTool(text, &models.HowToItem{Quantity: quantity}))
 			}
 		}
 
