@@ -41,19 +41,19 @@ func (h HTTP) PrepareRequestForURL(url string) (*http.Request, error) {
 		return nil, err
 	}
 
-	const mozilla = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
+	const mozilla = "Mozilla/5.0 (X11; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0"
 
 	host := h.GetHost(url)
 	switch host {
-	case "aberlehome", "bettybossi", "colruyt", "dinnerthendessert", "downshiftology", "findingtimeforcooking", "jumbo",
+	case "aberlehome", "allrecipes", "bettybossi", "colruyt", "dinnerthendessert", "downshiftology", "findingtimeforcooking", "jumbo",
 		"marmiton", "natashaskitchen", "parsleyandparm", "puurgezond", "reddit", "robinasbell", "sarahsveganguide",
 		"thekitchn", "thepalatablelife", "wellplated":
 		req.Header.Set("User-Agent", mozilla)
 	case "ah":
 		req.Header.Set("Accept-Language", "q=1.0,nl-NL,nl;en-US,en;q=0.8,fr-FR;q=0.5,fr;q=0.3")
 		req.Header.Set("User-Agent", mozilla)
-	case "chatelaine", "damndelicious":
-		req.Header.Set("User-Agent", "curl/7.68.0")
+	case "chatelaine", "damndelicious", "simplyrecipes":
+		req.Header.Set("User-Agent", "curl/8.11.0")
 		req.Header.Set("Pragma", "no-cache")
 		req.Header.Set("DNT", "1")
 		req.Header.Set("Accept-Encoding", "gzip, deflate, br")
