@@ -45,9 +45,9 @@ Follow these steps to build the project yourself:
    git clone https://github.com/reaper47/recipya.git
    ```
 2. Install the required [dependencies](https://recipya.musicavis.ca/docs/development/intro/#dependencies).
-3. [Build](https://recipes.musicavis.ca/guide/docs/development/build/) the project.
+3. [Build](https://recipya.musicavis.ca/docs/development/build/) the project.
 
-Alternatively, you may use the [development container](https://recipes.musicavis.ca/guide/docs/development/devcontainer/).
+Alternatively, you may use the [development container](https://recipya.musicavis.ca/docs/development/devcontainer/).
 Recipya's Docker [container](https://github.com/reaper47/recipya/tree/main/.devcontainer) includes all the necessary tools and dependencies 
 you need to start writing code quickly.
 
@@ -55,15 +55,15 @@ you need to start writing code quickly.
 
 #### Docker
 
-Please follow these [instructions](https://recipes.musicavis.ca/guide/docs/installation/docker/#updating-your-container-1) 
+Please follow these [instructions](https://recipya.musicavis.ca/docs/installation/docker/#updating-your-container-1) 
 to update your Docker instance.
 
 #### Release build
 
 If you installed a release build of Recipya, i.e. v1.0.0, then the software will notify you once an update is available. 
-You can [self-update](https://recipes.musicavis.ca/guide/docs/features/updater) the application from the settings dialog.
+You can [self-update](https://recipya.musicavis.ca/docs/features/updater) the application from the settings dialog.
 
-Let's explain the mechanism developers. Basically, a cron job is run [every three days]((https://github.com/reaper47/recipya/blob/main/internal/jobs/jobs.go#L70-L82))
+Let's explain the mechanism developers. Basically, a cron job is run [every three days](https://github.com/reaper47/recipya/blob/main/internal/jobs/jobs.go#L70-L82)
 to check whether there is a new GitHub release. If so, the update indicators in the UI will be enabled. Once the user presses 
 the "Update" button, the latest release is fetched, unpacked and the application restarted.
 
