@@ -63,9 +63,10 @@ type Files struct {
 }
 
 type exportData struct {
-	recipeName  string
-	recipeImage uuid.UUID
-	data        []byte
+	recipeName string
+	data       []byte
+	images     []uuid.UUID
+	videos     []models.VideoObject
 }
 
 // BackupGlobal backs up the whole database to the backup directory.
@@ -461,6 +462,7 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 				progress <- i
 			}
 
+			// Add recipe to zip
 			out, err := writer.Create(e.recipeName + "/recipe" + fileType.Ext())
 			if err != nil {
 				return nil, err
@@ -469,6 +471,46 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 			_, err = out.Write(e.data)
 			if err != nil {
 				return nil, err
+			}
+
+			// Add images to zip
+			for _, u := range e.images {
+				fileName := u.String() + app.ImageExt
+
+				file, err := os.ReadFile(filepath.Join(app.ImagesDir, fileName))
+				if err != nil {
+					return nil, err
+				}
+
+				out, err = writer.Create(e.recipeName + "/" + fileName)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = out.Write(file)
+				if err != nil {
+					return nil, err
+				}
+			}
+
+			// Add videos to zip
+			for _, video := range slices.DeleteFunc(e.videos, func(v models.VideoObject) bool { return v.ID == uuid.Nil }) {
+				fileName := video.ID.String() + app.VideoExt
+
+				file, err := os.ReadFile(filepath.Join(app.VideosDir, fileName))
+				if err != nil {
+					return nil, err
+				}
+
+				out, err = writer.Create(e.recipeName + "/" + fileName)
+				if err != nil {
+					return nil, err
+				}
+
+				_, err = out.Write(file)
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
 	case models.PDF:
@@ -516,15 +558,11 @@ func exportRecipesJSON(recipes models.Recipes) []exportData {
 			continue
 		}
 
-		var img uuid.UUID
-		if len(r.Images) > 0 {
-			img = r.Images[0]
-		}
-
 		data[i] = exportData{
-			recipeName:  r.Name,
-			recipeImage: img,
-			data:        xb,
+			recipeName: r.Name,
+			data:       xb,
+			images:     r.Images,
+			videos:     r.Videos,
 		}
 	}
 	return data
@@ -533,15 +571,9 @@ func exportRecipesJSON(recipes models.Recipes) []exportData {
 func exportRecipesPDF(recipes models.Recipes) []exportData {
 	data := make([]exportData, len(recipes))
 	for i, r := range recipes {
-		var img uuid.UUID
-		if len(r.Images) > 0 {
-			img = r.Images[0]
-		}
-
 		data[i] = exportData{
-			recipeName:  r.Name,
-			recipeImage: img,
-			data:        recipeToPDF(&r),
+			recipeName: r.Name,
+			data:       recipeToPDF(&r),
 		}
 	}
 	return data
@@ -998,9 +1030,8 @@ func (f *Files) ExportCookbook(cookbook models.Cookbook, fileType models.FileTyp
 
 func exportCookbookToPDF(cookbook *models.Cookbook) exportData {
 	return exportData{
-		recipeName:  cookbook.Title,
-		recipeImage: cookbook.Image,
-		data:        cookbookToPDF(cookbook),
+		recipeName: cookbook.Title,
+		data:       cookbookToPDF(cookbook),
 	}
 }
 

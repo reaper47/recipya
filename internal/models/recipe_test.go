@@ -1045,8 +1045,8 @@ func TestRecipe_Schema(t *testing.T) {
 	if schema.Keywords != nil && schema.Keywords.Values != "kw1,kw2,kw3" {
 		t.Errorf("wanted keywords 'kw1,kw2,kw3' but got %q", schema.Keywords)
 	}
-	v = imageUUID.String()
-	if schema.Image != nil && schema.Image.Value != v+app.ImageExt {
+	v = app.Config.Address() + "/data/images/" + imageUUID.String() + app.ImageExt
+	if schema.Image != nil && schema.Image.Value != v {
 		t.Errorf("wanted uuid %q but got %q", v, schema.Image.Value)
 	}
 

@@ -9,12 +9,14 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/integrations"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/utils/extensions"
 	"io"
 	"log/slog"
 	"mime/multipart"
+	"os"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -292,6 +294,72 @@ func (f *Files) processRecipeFiles(zr *zip.Reader) models.Recipes {
 			}
 			recipes = append(recipes, recipe)
 			recipeNumber++
+		case app.ImageExt:
+			parts := strings.Split(zf.Name, "/")
+
+			imagePath := filepath.Join(app.ImagesDir, parts[len(parts)-1])
+			_, err = os.Stat(imagePath)
+			if errors.Is(err, os.ErrNotExist) {
+				dest, err := os.Create(imagePath)
+				if err != nil {
+					slog.Error("Failed to create image file", "file", zf, "error", err)
+					continue
+				}
+
+				_, err = io.Copy(dest, openedFile)
+				if err != nil {
+					_ = dest.Close()
+					slog.Error("Failed to copy image file", "file", zf, "error", err)
+					continue
+				}
+
+				_ = dest.Close()
+			}
+
+			thumbnailPath := filepath.Join(app.ThumbnailsDir, parts[len(parts)-1])
+			_, err = os.Stat(thumbnailPath)
+			if errors.Is(err, os.ErrNotExist) {
+				thumbnail, err := os.Create(thumbnailPath)
+				if err != nil {
+					slog.Error("Failed to create thumbnail file", "file", zf, "error", err)
+					continue
+				}
+
+				imageFile, err := os.Open(imagePath)
+				if err != nil {
+					slog.Error("Failed to create image file", "file", zf, "error", err)
+					continue
+				}
+
+				_, err = io.Copy(thumbnail, imageFile)
+				if err != nil {
+					_ = imageFile.Close()
+					_ = thumbnail.Close()
+					slog.Error("Failed to copy thumbnail file", "file", zf, "error", err)
+					continue
+				}
+
+				_ = imageFile.Close()
+				_ = thumbnail.Close()
+			}
+
+		case app.VideoExt:
+			parts := strings.Split(zf.Name, "/")
+			path := filepath.Join(app.VideosDir, parts[len(parts)-1])
+			_, err = os.Stat(path)
+			if errors.Is(err, os.ErrNotExist) {
+				dest, err := os.Create(path)
+				if err != nil {
+					slog.Error("Failed to create video file", "file", zf, "error", err)
+					continue
+				}
+
+				_, err = io.Copy(dest, openedFile)
+				if err != nil {
+					slog.Error("Failed to copy video file", "file", zf, "error", err)
+					continue
+				}
+			}
 		}
 
 		_ = openedFile.Close()

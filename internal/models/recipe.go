@@ -270,9 +270,14 @@ func (r *Recipe) Scale(yield int16) {
 
 // Schema creates the schema representation of the Recipe.
 func (r *Recipe) Schema() RecipeSchema {
-	var img string
+	var thumbnail string
+	images := make([]string, 0, len(r.Images))
 	if len(r.Images) > 0 {
-		img = r.Images[0].String() + app.ImageExt
+		thumbnail = app.Config.Address() + "/data/images/" + r.Images[0].String()
+
+		for _, img := range r.Images {
+			images = append(images, app.Config.Address()+"/data/images/"+img.String()+app.ImageExt)
+		}
 	}
 
 	instructions := make([]HowToItem, 0, len(r.Instructions))
@@ -283,14 +288,18 @@ func (r *Recipe) Schema() RecipeSchema {
 	video := &Videos{Values: make([]VideoObject, 0, len(r.Videos))}
 	for i, v := range r.Videos {
 		u := app.Config.Address() + "/data/videos/" + v.ID.String() + app.VideoExt
+		if v.ContentURL == "" {
+			v.ContentURL = u
+		}
 
 		video.Values = append(video.Values, VideoObject{
 			AtType:       "VideoObject",
 			Name:         "Video #" + strconv.Itoa(i+1),
 			Description:  "A video showing how to cook " + r.Name,
-			ThumbnailURL: nil,
-			ContentURL:   u,
-			EmbedURL:     u,
+			ID:           v.ID,
+			ThumbnailURL: v.ThumbnailURL,
+			ContentURL:   v.ContentURL,
+			EmbedURL:     v.EmbedURL,
 			UploadDate:   v.UploadDate,
 			Duration:     v.Duration,
 			Expires:      time.Now().AddDate(1000, 0, 0),
@@ -309,13 +318,13 @@ func (r *Recipe) Schema() RecipeSchema {
 		DatePublished:   r.CreatedAt.Format(time.DateOnly),
 		Description:     &Description{Value: r.Description},
 		Keywords:        &Keywords{Values: strings.Join(r.Keywords, ",")},
-		Image:           &Image{Value: img},
+		Image:           &Image{Value: strings.Join(images, ";")},
 		Ingredients:     &Ingredients{Values: r.Ingredients},
 		Instructions:    &Instructions{Values: instructions},
 		Name:            r.Name,
 		NutritionSchema: r.Nutrition.Schema(strconv.Itoa(int(r.Yield))),
 		PrepTime:        formatDuration(r.Times.Prep),
-		ThumbnailURL:    &ThumbnailURL{Value: img},
+		ThumbnailURL:    &ThumbnailURL{Value: thumbnail},
 		Tools:           &Tools{Values: r.Tools},
 		TotalTime:       formatDuration(r.Times.Total),
 		Yield:           &Yield{Value: r.Yield},
