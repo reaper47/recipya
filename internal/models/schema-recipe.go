@@ -514,11 +514,7 @@ type Image struct {
 
 // MarshalJSON encodes the image.
 func (i *Image) MarshalJSON() ([]byte, error) {
-	s := i.Value
-	if s != "" {
-		s = app.Config.Address() + "/data/images/" + s
-	}
-	return json.Marshal(s)
+	return json.Marshal(i.Value)
 }
 
 // UnmarshalJSON decodes the image according to the schema (https://schema.org/image).
@@ -531,6 +527,11 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 
 	switch x := v.(type) {
 	case string:
+		baseURL := app.Config.Address()
+		if strings.HasPrefix(x, baseURL) {
+			x = strings.Replace(x, baseURL+"/data/images/", "", 1)
+			x = strings.TrimSuffix(x, app.ImageExt)
+		}
 		i.Value = x
 	case []any:
 		if len(x) > 0 {
@@ -878,6 +879,8 @@ func (v *Videos) UnmarshalJSON(data []byte) error {
 				vid.EmbedURL = vid.AtID
 				vid.IsIFrame = true
 			}
+
+			vid.ContentURL = strings.Replace(vid.ContentURL, app.Config.Address(), "", 1)
 
 			v.Values = append(v.Values, vid)
 		}

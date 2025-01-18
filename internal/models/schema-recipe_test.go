@@ -797,13 +797,7 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 				t.Errorf("got keywords %q; want %q", v, rs.Keywords.Values)
 			}
 		case "image":
-			want := "/data/images/" + rs.Image.Value
-			s := v.(string)
-			_, after, ok := strings.Cut(v.(string), "/")
-			if ok {
-				s = "/" + after
-			}
-			if s != want {
+			if v.(string) != rs.Image.Value {
 				t.Errorf("got image %q; want %q", v, rs.Image.Value)
 			}
 		case "recipeIngredient":
