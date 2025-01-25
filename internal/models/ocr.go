@@ -95,6 +95,10 @@ func (a *AzureDILayout) Recipe() Recipe {
 	for i := 0; i < len(a.AnalyzeResult.Paragraphs); i++ {
 		p := a.AnalyzeResult.Paragraphs[i]
 
+		if len(p.Content) == 1 {
+			continue
+		}
+
 		if p.Role == "sectionHeading" && strings.HasPrefix(strings.ToLower(p.Content), "utens") {
 			if i > 1 {
 				recipe.Name = a.AnalyzeResult.Paragraphs[i-1].Content
@@ -127,6 +131,12 @@ func (a *AzureDILayout) Recipe() Recipe {
 			if p.Role == "title" || p.Role == "sectionHeading" {
 				recipe.Name = p.Content
 				continue
+			} else if p.Role == "pageHeader" {
+				header := regex.Digit.ReplaceAllString(p.Content, "")
+				header = strings.ReplaceAll(header, ".", "")
+				if header != "" && len(p.Content) < 20 {
+					recipe.Category = strings.ToLower(strings.TrimSpace(header))
+				}
 			}
 			continue
 		}
@@ -140,35 +150,70 @@ func (a *AzureDILayout) Recipe() Recipe {
 			}
 		}
 
-		if len(recipe.Ingredients) == 0 && isIngredient(p.Content) {
-			var isFound bool
-			for _, line := range a.AnalyzeResult.Pages[p.BoundingRegions[0].PageNumber-1].Lines {
-				if strings.Contains(p.Content, line.Content) {
-					isFound = true
+		if recipe.Cuisine == "" && recipe.Description == "" && len(p.Content) < 20 {
+			doc, _ := prose.NewDocument(p.Content)
+			if slices.ContainsFunc(doc.Entities(), func(e prose.Entity) bool { return e.Label == "GPE" }) {
+				recipe.Cuisine = strings.ToLower(p.Content)
+				continue
+			}
+		}
+
+		if len(recipe.Ingredients) == 0 {
+			if isIngredient(p.Content) {
+				var isFound bool
+				var isSkipped bool
+				for _, line := range a.AnalyzeResult.Pages[p.BoundingRegions[0].PageNumber-1].Lines {
+					if !isSkipped {
+						if len(line.Content) < 2 {
+							continue
+						} else if strings.Contains(p.Content, line.Content) {
+							isSkipped = true
+						} else {
+							continue
+						}
+					}
+
+					if len(line.Content) < 2 {
+						continue
+					} else if strings.Contains(p.Content, line.Content) || strings.HasPrefix(strings.ToLower(line.Content), "for") {
+						isFound = true
+						recipe.Ingredients = append(recipe.Ingredients, line.Content)
+						continue
+					} else if !isFound {
+						continue
+					} else if !isIngredient(line.Content) {
+						i = slices.IndexFunc(a.AnalyzeResult.Paragraphs, func(paragraph azureDIParagraph) bool {
+							return strings.Contains(paragraph.Content, line.Content)
+						}) - 1
+						break
+					}
+
 					recipe.Ingredients = append(recipe.Ingredients, line.Content)
+				}
+				continue
+			} else if strings.HasPrefix(strings.ToUpper(p.Content), "FÜR DIE") {
+				for i2, p2 := range a.AnalyzeResult.Paragraphs[i:] {
+					diff := len(p2.Content) - len(recipe.Name)
+					if p2.Role == "title" && (diff < -3 || diff > 3) {
+						i += i2
+						break
+					}
+					recipe.Ingredients = append(recipe.Ingredients, p2.Content)
+				}
+				continue
+			} else if recipe.Description != "" {
+				if strings.HasSuffix(strings.ToLower(p.Content), "servings") {
+					parsed, err := strconv.ParseInt(regex.Digit.FindString(p.Content), 10, 16)
+					if err == nil {
+						recipe.Yield = int16(parsed)
+					}
+
 					continue
-				} else if !isFound {
-					continue
-				} else if !isIngredient(line.Content) {
-					i = slices.IndexFunc(a.AnalyzeResult.Paragraphs, func(paragraph azureDIParagraph) bool {
-						return strings.Contains(paragraph.Content, line.Content)
-					}) - 1
-					break
 				}
 
-				recipe.Ingredients = append(recipe.Ingredients, line.Content)
+				recipe.Description += "\n\n" + p.Content
+				continue
 			}
-			continue
-		} else if len(recipe.Ingredients) == 0 && strings.HasPrefix(strings.ToUpper(p.Content), "FÜR DIE") {
-			for i2, p2 := range a.AnalyzeResult.Paragraphs[i:] {
-				diff := len(p2.Content) - len(recipe.Name)
-				if p2.Role == "title" && (diff < -3 || diff > 3) {
-					i += i2
-					break
-				}
-				recipe.Ingredients = append(recipe.Ingredients, p2.Content)
-			}
-			continue
 		}
 
 		if len(recipe.Ingredients) == 0 {
@@ -177,6 +222,27 @@ func (a *AzureDILayout) Recipe() Recipe {
 		}
 
 		if len(recipe.Instructions) == 0 {
+			if isIngredient(p.Content) {
+				var isFound bool
+				for _, line := range a.AnalyzeResult.Pages[p.BoundingRegions[0].PageNumber-1].Lines {
+					if strings.Contains(p.Content, line.Content) {
+						isFound = true
+						recipe.Ingredients = append(recipe.Ingredients, line.Content)
+						continue
+					} else if !isFound {
+						continue
+					} else if !isIngredient(line.Content) {
+						i = slices.IndexFunc(a.AnalyzeResult.Paragraphs, func(paragraph azureDIParagraph) bool {
+							return strings.Contains(paragraph.Content, line.Content)
+						}) - 1
+						break
+					}
+
+					recipe.Ingredients = append(recipe.Ingredients, line.Content)
+				}
+				continue
+			}
+
 			for i2, p2 := range a.AnalyzeResult.Paragraphs[i:] {
 				if len(strings.Split(p2.Content, " ")) < 2 {
 					_, err := strconv.ParseInt(p2.Content, 10, 64)
@@ -218,7 +284,33 @@ func (a *AzureDILayout) Recipe() Recipe {
 		recipe.Description = "Recipe created using Azure AI Document Intelligence."
 	}
 
+	// Transfer ingredients in the instructions to ingredients.
+	for _, ing := range recipe.Instructions {
+		if isIngredient(ing) || strings.HasPrefix(strings.ToLower(ing), "for") {
+			recipe.Ingredients = append(recipe.Ingredients, ing)
+		} else {
+			break
+		}
+	}
+
+	elements := make(map[string]bool)
+	for _, v := range recipe.Ingredients {
+		elements[v] = true
+	}
+
+	result := make([]string, 0)
+	for _, v := range recipe.Instructions {
+		if !elements[v] {
+			result = append(result, v)
+		}
+	}
+
+	if len(result) == 0 {
+		result = append(result, "No instructions found in image.")
+	}
+
 	recipe.Ingredients = extensions.Unique(recipe.Ingredients)
+	recipe.Instructions = result
 	return recipe
 }
 
@@ -231,7 +323,7 @@ type AzureDIError struct {
 }
 
 func isIngredient(s string) bool {
-	if s == "" {
+	if s == "" || strings.Contains(strings.ToLower(s), "serving") {
 		return false
 	}
 
@@ -243,7 +335,8 @@ func isIngredient(s string) bool {
 
 	if idx == nil {
 		doc, _ := prose.NewDocument(s)
-		if doc.Tokens()[0].Tag == "IN" {
+		if doc.Tokens()[0].Tag == "IN" ||
+			slices.ContainsFunc(doc.Tokens(), func(e prose.Token) bool { return strings.Contains(e.Tag, "GPE") }) {
 			return false
 		}
 	}

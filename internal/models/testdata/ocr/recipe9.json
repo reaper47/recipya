@@ -1,0 +1,3221 @@
+{
+  "status" : "succeeded",
+  "createdDateTime" : "2025-01-21T20:55:33Z",
+  "lastUpdatedDateTime" : "2025-01-21T20:55:35Z",
+  "analyzeResult" : {
+    "apiVersion" : "2024-02-29-preview",
+    "modelId" : "prebuilt-layout",
+    "stringIndexType" : "textElements",
+    "content" : "POULTRY . 275\nJAVANESE CHICKEN CURRY Opor Ayam\n(JAVA, INDONESIA)\n-\nA gorgeous coconut-milk curry from Java, Indonesia, perfumed with lemongrass, ginger, cinnamon sticks, and coriander. It's one of the benchmark dishes by which Indonesian home cooks are judged. If a young cook's opor ayam is as rich and delicate as it should be, she is well on her way to becoming skilled in the kitchen. The dish is a perfect showcase for a high-quality free-range chicken. A whole bird, cut into small, bone-in serving pieces, will yield the best results, though whole chicken parts can be substituted without really compromising the taste of the dish. If you have the inclina- tion to make them, fried shallots are traditionally strewn on top just before the dish is served.\nDaun salam leaves, the seasoning herb prized in Indonesian cooking, helps give this dish its unique aroma. I've often seen bay leaves listed as a substitute for daun salam in recipe books on Indonesian cuisine. While bay leaves have an aggressively mentholated taste, daun salam leaves are subtle, with a faintly foresty flavor. The only thing the two herbs share in common is that they are both green leaves and grow on trees. If you are unable to find daun salam leaves, omit them. The dish will still taste exquisite.\nMAKES 4 SERVINGS\n2 tablespoons Crisp-Fried Shallots (page 84), optional\nFOR THE FLAVORING PASTE\n1 tablespoon coriander seeds\n1 fresh red Holland chile or other fresh long, hot red chile such as Fresno or cayenne, stemmed and coarsely chopped (optional, but provides subtle heat and color) 6 shallots (about 5 ounces/140 grams), coarsely chopped\n2 cloves garlic, coarsely chopped\n1 piece fresh or thawed, frozen galangal,\n11/2 inches (4 centimeters) long, peeled and thinly sliced against the grain (about 11/2 tablespoons; optional)\n1 piece fresh ginger, 2 inches (5 centimeters) long, peeled and thinly sliced against the grain (about 2 tablespoons)\nfresh-\nx an codles mes a scent ked LAste-\nTer or",
+    "pages" : [ {
+      "pageNumber" : 1,
+      "angle" : 0.6018216013908386,
+      "width" : 960,
+      "height" : 1280,
+      "unit" : "pixel",
+      "words" : [ {
+        "content" : "POULTRY",
+        "polygon" : [ 435, 23, 506, 31, 504, 42, 433, 35 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 0,
+          "length" : 7
+        }
+      }, {
+        "content" : ".",
+        "polygon" : [ 521, 33, 525, 33, 523, 44, 519, 43 ],
+        "confidence" : 0.501,
+        "span" : {
+          "offset" : 8,
+          "length" : 1
+        }
+      }, {
+        "content" : "275",
+        "polygon" : [ 540, 35, 566, 38, 565, 48, 538, 45 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 10,
+          "length" : 3
+        }
+      }, {
+        "content" : "JAVANESE",
+        "polygon" : [ 351, 80, 463, 90, 461, 106, 349, 96 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 14,
+          "length" : 8
+        }
+      }, {
+        "content" : "CHICKEN",
+        "polygon" : [ 474, 91, 567, 99, 565, 115, 472, 107 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 23,
+          "length" : 7
+        }
+      }, {
+        "content" : "CURRY",
+        "polygon" : [ 578, 99, 647, 105, 646, 121, 577, 116 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 31,
+          "length" : 5
+        }
+      }, {
+        "content" : "Opor",
+        "polygon" : [ 461, 116, 499, 119, 497, 138, 459, 134 ],
+        "confidence" : 0.992,
+        "span" : {
+          "offset" : 37,
+          "length" : 4
+        }
+      }, {
+        "content" : "Ayam",
+        "polygon" : [ 503, 120, 543, 123, 541, 141, 501, 138 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 42,
+          "length" : 4
+        }
+      }, {
+        "content" : "(JAVA,",
+        "polygon" : [ 423, 140, 473, 143, 472, 160, 421, 156 ],
+        "confidence" : 0.941,
+        "span" : {
+          "offset" : 47,
+          "length" : 6
+        }
+      }, {
+        "content" : "INDONESIA)",
+        "polygon" : [ 481, 144, 582, 152, 580, 168, 480, 161 ],
+        "confidence" : 0.97,
+        "span" : {
+          "offset" : 54,
+          "length" : 10
+        }
+      }, {
+        "content" : "-",
+        "polygon" : [ 487, 181, 516, 183, 515, 195, 487, 193 ],
+        "confidence" : 0.404,
+        "span" : {
+          "offset" : 65,
+          "length" : 1
+        }
+      }, {
+        "content" : "A",
+        "polygon" : [ 141, 212, 184, 212, 184, 262, 141, 262 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 67,
+          "length" : 1
+        }
+      }, {
+        "content" : "gorgeous",
+        "polygon" : [ 177, 209, 253, 210, 254, 231, 178, 228 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 69,
+          "length" : 8
+        }
+      }, {
+        "content" : "coconut-milk",
+        "polygon" : [ 259, 211, 375, 213, 375, 235, 260, 231 ],
+        "confidence" : 0.969,
+        "span" : {
+          "offset" : 78,
+          "length" : 12
+        }
+      }, {
+        "content" : "curry",
+        "polygon" : [ 380, 213, 424, 215, 425, 237, 381, 235 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 91,
+          "length" : 5
+        }
+      }, {
+        "content" : "from",
+        "polygon" : [ 430, 215, 469, 216, 470, 238, 430, 237 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 97,
+          "length" : 4
+        }
+      }, {
+        "content" : "Java,",
+        "polygon" : [ 475, 216, 512, 218, 512, 240, 475, 239 ],
+        "confidence" : 0.972,
+        "span" : {
+          "offset" : 102,
+          "length" : 5
+        }
+      }, {
+        "content" : "Indonesia,",
+        "polygon" : [ 519, 218, 603, 221, 602, 244, 519, 240 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 108,
+          "length" : 10
+        }
+      }, {
+        "content" : "perfumed",
+        "polygon" : [ 608, 222, 687, 225, 686, 247, 608, 244 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 119,
+          "length" : 8
+        }
+      }, {
+        "content" : "with",
+        "polygon" : [ 692, 226, 728, 227, 728, 249, 691, 247 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 128,
+          "length" : 4
+        }
+      }, {
+        "content" : "lemongrass,",
+        "polygon" : [ 733, 228, 833, 233, 832, 254, 733, 249 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 133,
+          "length" : 11
+        }
+      }, {
+        "content" : "ginger,",
+        "polygon" : [ 178, 233, 233, 234, 233, 257, 179, 255 ],
+        "confidence" : 0.992,
+        "span" : {
+          "offset" : 145,
+          "length" : 7
+        }
+      }, {
+        "content" : "cinnamon",
+        "polygon" : [ 239, 235, 325, 238, 326, 260, 240, 257 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 153,
+          "length" : 8
+        }
+      }, {
+        "content" : "sticks,",
+        "polygon" : [ 331, 238, 382, 240, 382, 262, 331, 260 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 162,
+          "length" : 7
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 388, 240, 419, 241, 419, 263, 389, 262 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 170,
+          "length" : 3
+        }
+      }, {
+        "content" : "coriander.",
+        "polygon" : [ 425, 241, 507, 244, 507, 266, 425, 263 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 174,
+          "length" : 10
+        }
+      }, {
+        "content" : "It's",
+        "polygon" : [ 514, 244, 538, 245, 538, 267, 514, 266 ],
+        "confidence" : 0.969,
+        "span" : {
+          "offset" : 185,
+          "length" : 4
+        }
+      }, {
+        "content" : "one",
+        "polygon" : [ 543, 245, 572, 246, 572, 268, 543, 267 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 190,
+          "length" : 3
+        }
+      }, {
+        "content" : "of",
+        "polygon" : [ 578, 246, 594, 247, 594, 269, 578, 268 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 194,
+          "length" : 2
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 598, 247, 625, 248, 625, 270, 598, 269 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 197,
+          "length" : 3
+        }
+      }, {
+        "content" : "benchmark",
+        "polygon" : [ 630, 248, 722, 251, 722, 273, 630, 270 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 201,
+          "length" : 9
+        }
+      }, {
+        "content" : "dishes",
+        "polygon" : [ 727, 251, 777, 253, 777, 275, 727, 274 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 211,
+          "length" : 6
+        }
+      }, {
+        "content" : "by",
+        "polygon" : [ 782, 253, 802, 254, 802, 276, 782, 276 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 218,
+          "length" : 2
+        }
+      }, {
+        "content" : "which",
+        "polygon" : [ 807, 254, 859, 256, 859, 278, 806, 276 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 221,
+          "length" : 5
+        }
+      }, {
+        "content" : "Indonesian",
+        "polygon" : [ 136, 261, 225, 263, 226, 286, 137, 284 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 227,
+          "length" : 10
+        }
+      }, {
+        "content" : "home",
+        "polygon" : [ 230, 263, 279, 264, 279, 287, 231, 286 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 238,
+          "length" : 4
+        }
+      }, {
+        "content" : "cooks",
+        "polygon" : [ 284, 264, 332, 265, 333, 289, 285, 287 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 243,
+          "length" : 5
+        }
+      }, {
+        "content" : "are",
+        "polygon" : [ 339, 265, 364, 265, 365, 290, 339, 289 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 249,
+          "length" : 3
+        }
+      }, {
+        "content" : "judged.",
+        "polygon" : [ 369, 266, 431, 267, 431, 291, 370, 290 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 253,
+          "length" : 7
+        }
+      }, {
+        "content" : "If",
+        "polygon" : [ 439, 267, 451, 268, 451, 292, 439, 291 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 261,
+          "length" : 2
+        }
+      }, {
+        "content" : "a",
+        "polygon" : [ 455, 268, 466, 268, 466, 292, 456, 292 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 264,
+          "length" : 1
+        }
+      }, {
+        "content" : "young",
+        "polygon" : [ 470, 268, 521, 270, 521, 294, 471, 292 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 266,
+          "length" : 5
+        }
+      }, {
+        "content" : "cook's",
+        "polygon" : [ 525, 270, 575, 272, 575, 295, 526, 294 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 272,
+          "length" : 6
+        }
+      }, {
+        "content" : "opor",
+        "polygon" : [ 580, 272, 611, 273, 611, 296, 581, 295 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 279,
+          "length" : 4
+        }
+      }, {
+        "content" : "ayam",
+        "polygon" : [ 616, 273, 651, 275, 651, 297, 616, 296 ],
+        "confidence" : 0.974,
+        "span" : {
+          "offset" : 284,
+          "length" : 4
+        }
+      }, {
+        "content" : "is",
+        "polygon" : [ 657, 275, 669, 275, 669, 298, 657, 298 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 289,
+          "length" : 2
+        }
+      }, {
+        "content" : "as",
+        "polygon" : [ 675, 276, 690, 276, 690, 299, 675, 298 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 292,
+          "length" : 2
+        }
+      }, {
+        "content" : "rich",
+        "polygon" : [ 695, 276, 727, 278, 727, 300, 695, 299 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 295,
+          "length" : 4
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 733, 278, 762, 279, 763, 301, 733, 300 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 300,
+          "length" : 3
+        }
+      }, {
+        "content" : "delicate",
+        "polygon" : [ 768, 280, 832, 283, 832, 303, 768, 301 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 304,
+          "length" : 8
+        }
+      }, {
+        "content" : "as",
+        "polygon" : [ 838, 283, 857, 284, 857, 304, 838, 303 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 313,
+          "length" : 2
+        }
+      }, {
+        "content" : "it",
+        "polygon" : [ 135, 288, 145, 288, 145, 312, 136, 312 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 316,
+          "length" : 2
+        }
+      }, {
+        "content" : "should",
+        "polygon" : [ 149, 288, 203, 288, 204, 313, 150, 312 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 319,
+          "length" : 6
+        }
+      }, {
+        "content" : "be,",
+        "polygon" : [ 209, 289, 232, 289, 233, 313, 210, 313 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 326,
+          "length" : 3
+        }
+      }, {
+        "content" : "she",
+        "polygon" : [ 239, 289, 266, 289, 267, 314, 239, 313 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 330,
+          "length" : 3
+        }
+      }, {
+        "content" : "is",
+        "polygon" : [ 272, 289, 285, 290, 285, 314, 273, 314 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 334,
+          "length" : 2
+        }
+      }, {
+        "content" : "well",
+        "polygon" : [ 291, 290, 326, 290, 326, 315, 291, 314 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 337,
+          "length" : 4
+        }
+      }, {
+        "content" : "on",
+        "polygon" : [ 332, 290, 353, 291, 354, 316, 332, 315 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 342,
+          "length" : 2
+        }
+      }, {
+        "content" : "her",
+        "polygon" : [ 359, 291, 388, 292, 388, 316, 360, 316 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 345,
+          "length" : 3
+        }
+      }, {
+        "content" : "way",
+        "polygon" : [ 392, 292, 425, 293, 426, 317, 393, 316 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 349,
+          "length" : 3
+        }
+      }, {
+        "content" : "to",
+        "polygon" : [ 431, 293, 447, 293, 447, 318, 431, 317 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 353,
+          "length" : 2
+        }
+      }, {
+        "content" : "becoming",
+        "polygon" : [ 453, 293, 534, 296, 534, 320, 453, 318 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 356,
+          "length" : 8
+        }
+      }, {
+        "content" : "skilled",
+        "polygon" : [ 539, 296, 592, 298, 592, 322, 539, 320 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 365,
+          "length" : 7
+        }
+      }, {
+        "content" : "in",
+        "polygon" : [ 598, 298, 614, 299, 614, 322, 598, 322 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 373,
+          "length" : 2
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 619, 299, 645, 300, 645, 323, 619, 323 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 376,
+          "length" : 3
+        }
+      }, {
+        "content" : "kitchen.",
+        "polygon" : [ 650, 300, 718, 303, 718, 326, 650, 324 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 380,
+          "length" : 8
+        }
+      }, {
+        "content" : "The",
+        "polygon" : [ 723, 304, 755, 305, 755, 327, 723, 326 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 389,
+          "length" : 3
+        }
+      }, {
+        "content" : "dish",
+        "polygon" : [ 761, 305, 795, 307, 795, 329, 760, 327 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 393,
+          "length" : 4
+        }
+      }, {
+        "content" : "is",
+        "polygon" : [ 801, 307, 813, 308, 813, 329, 801, 329 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 398,
+          "length" : 2
+        }
+      }, {
+        "content" : "a",
+        "polygon" : [ 819, 308, 830, 309, 830, 330, 819, 330 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 401,
+          "length" : 1
+        }
+      }, {
+        "content" : "perfect",
+        "polygon" : [ 130, 316, 188, 317, 190, 342, 131, 342 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 403,
+          "length" : 7
+        }
+      }, {
+        "content" : "showcase",
+        "polygon" : [ 193, 317, 272, 317, 273, 343, 195, 342 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 411,
+          "length" : 8
+        }
+      }, {
+        "content" : "for",
+        "polygon" : [ 277, 318, 303, 318, 304, 343, 278, 343 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 420,
+          "length" : 3
+        }
+      }, {
+        "content" : "a",
+        "polygon" : [ 309, 318, 318, 318, 319, 343, 310, 343 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 424,
+          "length" : 1
+        }
+      }, {
+        "content" : "high-quality",
+        "polygon" : [ 323, 318, 430, 320, 430, 345, 324, 343 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 426,
+          "length" : 12
+        }
+      }, {
+        "content" : "free-range",
+        "polygon" : [ 434, 320, 521, 323, 521, 347, 435, 345 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 439,
+          "length" : 10
+        }
+      }, {
+        "content" : "chicken.",
+        "polygon" : [ 527, 323, 594, 325, 594, 349, 528, 347 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 450,
+          "length" : 8
+        }
+      }, {
+        "content" : "A",
+        "polygon" : [ 600, 325, 613, 326, 614, 349, 600, 349 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 459,
+          "length" : 1
+        }
+      }, {
+        "content" : "whole",
+        "polygon" : [ 618, 326, 668, 328, 668, 351, 619, 349 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 461,
+          "length" : 5
+        }
+      }, {
+        "content" : "bird,",
+        "polygon" : [ 673, 328, 711, 329, 712, 352, 673, 351 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 467,
+          "length" : 5
+        }
+      }, {
+        "content" : "cut",
+        "polygon" : [ 717, 330, 743, 331, 743, 353, 717, 352 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 473,
+          "length" : 3
+        }
+      }, {
+        "content" : "into",
+        "polygon" : [ 748, 331, 782, 332, 782, 355, 749, 353 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 477,
+          "length" : 4
+        }
+      }, {
+        "content" : "small,",
+        "polygon" : [ 788, 333, 839, 335, 839, 357, 788, 355 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 482,
+          "length" : 6
+        }
+      }, {
+        "content" : "bone-in",
+        "polygon" : [ 132, 344, 195, 345, 195, 368, 132, 368 ],
+        "confidence" : 0.96,
+        "span" : {
+          "offset" : 489,
+          "length" : 7
+        }
+      }, {
+        "content" : "serving",
+        "polygon" : [ 200, 345, 261, 345, 262, 369, 200, 369 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 497,
+          "length" : 7
+        }
+      }, {
+        "content" : "pieces,",
+        "polygon" : [ 267, 345, 324, 346, 324, 371, 267, 370 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 505,
+          "length" : 7
+        }
+      }, {
+        "content" : "will",
+        "polygon" : [ 330, 346, 362, 346, 362, 371, 330, 371 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 513,
+          "length" : 4
+        }
+      }, {
+        "content" : "yield",
+        "polygon" : [ 368, 347, 409, 347, 409, 372, 368, 371 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 518,
+          "length" : 5
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 416, 347, 442, 348, 442, 373, 416, 372 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 524,
+          "length" : 3
+        }
+      }, {
+        "content" : "best",
+        "polygon" : [ 447, 348, 482, 349, 482, 374, 447, 373 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 528,
+          "length" : 4
+        }
+      }, {
+        "content" : "results,",
+        "polygon" : [ 487, 349, 546, 351, 546, 375, 487, 374 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 533,
+          "length" : 8
+        }
+      }, {
+        "content" : "though",
+        "polygon" : [ 552, 351, 610, 353, 610, 377, 552, 375 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 542,
+          "length" : 6
+        }
+      }, {
+        "content" : "whole",
+        "polygon" : [ 615, 353, 665, 355, 665, 378, 615, 377 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 549,
+          "length" : 5
+        }
+      }, {
+        "content" : "chicken",
+        "polygon" : [ 670, 355, 734, 357, 733, 380, 670, 379 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 555,
+          "length" : 7
+        }
+      }, {
+        "content" : "parts",
+        "polygon" : [ 739, 357, 781, 359, 780, 382, 739, 381 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 563,
+          "length" : 5
+        }
+      }, {
+        "content" : "can",
+        "polygon" : [ 786, 360, 815, 361, 815, 383, 786, 382 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 569,
+          "length" : 3
+        }
+      }, {
+        "content" : "be",
+        "polygon" : [ 821, 361, 843, 362, 843, 384, 820, 383 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 573,
+          "length" : 2
+        }
+      }, {
+        "content" : "substituted",
+        "polygon" : [ 130, 371, 221, 372, 221, 396, 131, 395 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 576,
+          "length" : 11
+        }
+      }, {
+        "content" : "without",
+        "polygon" : [ 227, 372, 296, 373, 297, 398, 227, 396 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 588,
+          "length" : 7
+        }
+      }, {
+        "content" : "really",
+        "polygon" : [ 301, 373, 350, 374, 350, 399, 302, 398 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 596,
+          "length" : 6
+        }
+      }, {
+        "content" : "compromising",
+        "polygon" : [ 355, 374, 479, 376, 479, 401, 356, 399 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 603,
+          "length" : 12
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 485, 376, 511, 377, 511, 402, 485, 401 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 616,
+          "length" : 3
+        }
+      }, {
+        "content" : "taste",
+        "polygon" : [ 517, 377, 556, 378, 556, 403, 517, 402 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 620,
+          "length" : 5
+        }
+      }, {
+        "content" : "of",
+        "polygon" : [ 561, 378, 576, 379, 577, 403, 562, 403 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 626,
+          "length" : 2
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 581, 379, 610, 380, 610, 404, 581, 403 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 629,
+          "length" : 3
+        }
+      }, {
+        "content" : "dish.",
+        "polygon" : [ 616, 380, 654, 381, 654, 405, 616, 404 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 633,
+          "length" : 5
+        }
+      }, {
+        "content" : "If",
+        "polygon" : [ 661, 381, 673, 381, 673, 405, 661, 405 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 639,
+          "length" : 2
+        }
+      }, {
+        "content" : "you",
+        "polygon" : [ 677, 382, 709, 383, 709, 406, 677, 405 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 642,
+          "length" : 3
+        }
+      }, {
+        "content" : "have",
+        "polygon" : [ 714, 383, 752, 384, 752, 407, 714, 406 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 646,
+          "length" : 4
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 758, 384, 784, 385, 784, 408, 757, 407 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 651,
+          "length" : 3
+        }
+      }, {
+        "content" : "inclina-",
+        "polygon" : [ 790, 385, 857, 388, 857, 410, 790, 408 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 655,
+          "length" : 8
+        }
+      }, {
+        "content" : "tion",
+        "polygon" : [ 130, 399, 160, 399, 161, 423, 131, 422 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 664,
+          "length" : 4
+        }
+      }, {
+        "content" : "to",
+        "polygon" : [ 167, 399, 182, 399, 183, 423, 168, 423 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 669,
+          "length" : 2
+        }
+      }, {
+        "content" : "make",
+        "polygon" : [ 188, 400, 233, 400, 234, 424, 189, 423 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 672,
+          "length" : 4
+        }
+      }, {
+        "content" : "them,",
+        "polygon" : [ 239, 400, 288, 401, 289, 425, 240, 424 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 677,
+          "length" : 5
+        }
+      }, {
+        "content" : "fried",
+        "polygon" : [ 295, 401, 337, 402, 337, 426, 296, 425 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 683,
+          "length" : 5
+        }
+      }, {
+        "content" : "shallots",
+        "polygon" : [ 343, 402, 408, 403, 409, 427, 344, 426 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 689,
+          "length" : 8
+        }
+      }, {
+        "content" : "are",
+        "polygon" : [ 415, 403, 441, 404, 441, 428, 415, 427 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 698,
+          "length" : 3
+        }
+      }, {
+        "content" : "traditionally",
+        "polygon" : [ 446, 404, 551, 406, 551, 430, 447, 428 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 702,
+          "length" : 13
+        }
+      }, {
+        "content" : "strewn",
+        "polygon" : [ 556, 406, 612, 408, 613, 431, 556, 430 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 716,
+          "length" : 6
+        }
+      }, {
+        "content" : "on",
+        "polygon" : [ 618, 408, 638, 409, 639, 432, 618, 432 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 723,
+          "length" : 2
+        }
+      }, {
+        "content" : "top",
+        "polygon" : [ 645, 409, 672, 409, 672, 433, 645, 432 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 726,
+          "length" : 3
+        }
+      }, {
+        "content" : "just",
+        "polygon" : [ 678, 410, 708, 411, 708, 433, 678, 433 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 730,
+          "length" : 4
+        }
+      }, {
+        "content" : "before",
+        "polygon" : [ 712, 411, 767, 412, 767, 435, 713, 434 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 735,
+          "length" : 6
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 773, 412, 799, 413, 799, 435, 773, 435 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 742,
+          "length" : 3
+        }
+      }, {
+        "content" : "dish",
+        "polygon" : [ 806, 414, 841, 415, 841, 436, 806, 436 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 746,
+          "length" : 4
+        }
+      }, {
+        "content" : "is",
+        "polygon" : [ 847, 415, 861, 415, 861, 437, 847, 436 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 751,
+          "length" : 2
+        }
+      }, {
+        "content" : "served.",
+        "polygon" : [ 126, 433, 184, 428, 185, 448, 127, 453 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 754,
+          "length" : 7
+        }
+      }, {
+        "content" : "Daun",
+        "polygon" : [ 144, 455, 180, 456, 180, 479, 144, 479 ],
+        "confidence" : 0.983,
+        "span" : {
+          "offset" : 762,
+          "length" : 4
+        }
+      }, {
+        "content" : "salam",
+        "polygon" : [ 185, 456, 223, 456, 222, 480, 185, 480 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 767,
+          "length" : 5
+        }
+      }, {
+        "content" : "leaves,",
+        "polygon" : [ 227, 456, 286, 457, 285, 481, 227, 480 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 773,
+          "length" : 7
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 291, 457, 319, 458, 318, 482, 291, 482 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 781,
+          "length" : 3
+        }
+      }, {
+        "content" : "seasoning",
+        "polygon" : [ 325, 458, 405, 459, 404, 484, 324, 482 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 785,
+          "length" : 9
+        }
+      }, {
+        "content" : "herb",
+        "polygon" : [ 410, 459, 451, 460, 451, 485, 409, 484 ],
+        "confidence" : 0.99,
+        "span" : {
+          "offset" : 795,
+          "length" : 4
+        }
+      }, {
+        "content" : "prized",
+        "polygon" : [ 456, 460, 509, 461, 508, 486, 456, 485 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 800,
+          "length" : 6
+        }
+      }, {
+        "content" : "in",
+        "polygon" : [ 515, 461, 531, 462, 530, 486, 514, 486 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 807,
+          "length" : 2
+        }
+      }, {
+        "content" : "Indonesian",
+        "polygon" : [ 536, 462, 626, 464, 626, 488, 535, 486 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 810,
+          "length" : 10
+        }
+      }, {
+        "content" : "cooking,",
+        "polygon" : [ 631, 464, 699, 465, 698, 489, 630, 488 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 821,
+          "length" : 8
+        }
+      }, {
+        "content" : "helps",
+        "polygon" : [ 703, 465, 749, 467, 748, 490, 703, 489 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 830,
+          "length" : 5
+        }
+      }, {
+        "content" : "give",
+        "polygon" : [ 754, 467, 786, 467, 785, 491, 753, 490 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 836,
+          "length" : 4
+        }
+      }, {
+        "content" : "this",
+        "polygon" : [ 791, 468, 822, 468, 822, 492, 791, 491 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 841,
+          "length" : 4
+        }
+      }, {
+        "content" : "dish",
+        "polygon" : [ 828, 469, 865, 469, 864, 492, 827, 492 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 846,
+          "length" : 4
+        }
+      }, {
+        "content" : "its",
+        "polygon" : [ 124, 487, 143, 487, 143, 510, 124, 510 ],
+        "confidence" : 0.991,
+        "span" : {
+          "offset" : 851,
+          "length" : 3
+        }
+      }, {
+        "content" : "unique",
+        "polygon" : [ 148, 487, 203, 487, 204, 510, 149, 510 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 855,
+          "length" : 6
+        }
+      }, {
+        "content" : "aroma.",
+        "polygon" : [ 208, 487, 265, 487, 266, 511, 209, 510 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 862,
+          "length" : 6
+        }
+      }, {
+        "content" : "I've",
+        "polygon" : [ 273, 487, 305, 487, 305, 511, 273, 511 ],
+        "confidence" : 0.984,
+        "span" : {
+          "offset" : 869,
+          "length" : 4
+        }
+      }, {
+        "content" : "often",
+        "polygon" : [ 310, 487, 356, 488, 357, 512, 311, 511 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 874,
+          "length" : 5
+        }
+      }, {
+        "content" : "seen",
+        "polygon" : [ 362, 488, 399, 488, 400, 512, 362, 512 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 880,
+          "length" : 4
+        }
+      }, {
+        "content" : "bay",
+        "polygon" : [ 404, 488, 434, 488, 434, 512, 405, 512 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 885,
+          "length" : 3
+        }
+      }, {
+        "content" : "leaves",
+        "polygon" : [ 439, 488, 484, 489, 484, 513, 439, 513 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 889,
+          "length" : 6
+        }
+      }, {
+        "content" : "listed",
+        "polygon" : [ 489, 489, 538, 490, 538, 514, 489, 513 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 896,
+          "length" : 6
+        }
+      }, {
+        "content" : "as",
+        "polygon" : [ 543, 490, 558, 490, 558, 514, 543, 514 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 903,
+          "length" : 2
+        }
+      }, {
+        "content" : "a",
+        "polygon" : [ 563, 490, 572, 490, 572, 515, 563, 514 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 906,
+          "length" : 1
+        }
+      }, {
+        "content" : "substitute",
+        "polygon" : [ 577, 491, 657, 492, 657, 516, 577, 515 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 908,
+          "length" : 10
+        }
+      }, {
+        "content" : "for",
+        "polygon" : [ 662, 492, 687, 493, 687, 517, 662, 516 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 919,
+          "length" : 3
+        }
+      }, {
+        "content" : "daun",
+        "polygon" : [ 692, 493, 721, 494, 721, 517, 691, 517 ],
+        "confidence" : 0.978,
+        "span" : {
+          "offset" : 923,
+          "length" : 4
+        }
+      }, {
+        "content" : "salam",
+        "polygon" : [ 726, 494, 764, 495, 764, 518, 725, 518 ],
+        "confidence" : 0.984,
+        "span" : {
+          "offset" : 928,
+          "length" : 5
+        }
+      }, {
+        "content" : "in",
+        "polygon" : [ 769, 495, 789, 496, 788, 519, 769, 519 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 934,
+          "length" : 2
+        }
+      }, {
+        "content" : "recipe",
+        "polygon" : [ 794, 496, 846, 498, 846, 520, 793, 519 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 937,
+          "length" : 6
+        }
+      }, {
+        "content" : "books",
+        "polygon" : [ 124, 515, 169, 515, 169, 538, 124, 537 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 944,
+          "length" : 5
+        }
+      }, {
+        "content" : "on",
+        "polygon" : [ 174, 515, 195, 515, 195, 538, 174, 538 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 950,
+          "length" : 2
+        }
+      }, {
+        "content" : "Indonesian",
+        "polygon" : [ 201, 515, 298, 516, 298, 540, 201, 538 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 953,
+          "length" : 10
+        }
+      }, {
+        "content" : "cuisine.",
+        "polygon" : [ 303, 516, 368, 517, 368, 541, 303, 540 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 964,
+          "length" : 8
+        }
+      }, {
+        "content" : "While",
+        "polygon" : [ 375, 517, 428, 518, 428, 542, 374, 541 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 973,
+          "length" : 5
+        }
+      }, {
+        "content" : "bay",
+        "polygon" : [ 434, 518, 460, 518, 460, 542, 434, 542 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 979,
+          "length" : 3
+        }
+      }, {
+        "content" : "leaves",
+        "polygon" : [ 464, 518, 516, 519, 516, 543, 464, 542 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 983,
+          "length" : 6
+        }
+      }, {
+        "content" : "have",
+        "polygon" : [ 521, 519, 558, 519, 558, 544, 521, 543 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 990,
+          "length" : 4
+        }
+      }, {
+        "content" : "an",
+        "polygon" : [ 563, 519, 583, 520, 582, 544, 563, 544 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 995,
+          "length" : 2
+        }
+      }, {
+        "content" : "aggressively",
+        "polygon" : [ 588, 520, 683, 521, 682, 545, 588, 544 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 998,
+          "length" : 12
+        }
+      }, {
+        "content" : "mentholated",
+        "polygon" : [ 687, 522, 795, 524, 795, 546, 687, 545 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1011,
+          "length" : 11
+        }
+      }, {
+        "content" : "taste,",
+        "polygon" : [ 800, 524, 844, 525, 844, 547, 800, 546 ],
+        "confidence" : 0.99,
+        "span" : {
+          "offset" : 1023,
+          "length" : 6
+        }
+      }, {
+        "content" : "daun",
+        "polygon" : [ 850, 525, 887, 526, 887, 547, 849, 547 ],
+        "confidence" : 0.98,
+        "span" : {
+          "offset" : 1030,
+          "length" : 4
+        }
+      }, {
+        "content" : "salam",
+        "polygon" : [ 120, 544, 154, 544, 155, 567, 120, 566 ],
+        "confidence" : 0.968,
+        "span" : {
+          "offset" : 1035,
+          "length" : 5
+        }
+      }, {
+        "content" : "leaves",
+        "polygon" : [ 159, 544, 211, 545, 211, 568, 160, 567 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1041,
+          "length" : 6
+        }
+      }, {
+        "content" : "are",
+        "polygon" : [ 216, 545, 242, 545, 243, 569, 217, 568 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1048,
+          "length" : 3
+        }
+      }, {
+        "content" : "subtle,",
+        "polygon" : [ 248, 545, 305, 545, 305, 570, 248, 569 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1052,
+          "length" : 7
+        }
+      }, {
+        "content" : "with",
+        "polygon" : [ 310, 545, 350, 545, 350, 571, 310, 570 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1060,
+          "length" : 4
+        }
+      }, {
+        "content" : "a",
+        "polygon" : [ 356, 545, 365, 546, 365, 571, 356, 571 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1065,
+          "length" : 1
+        }
+      }, {
+        "content" : "faintly",
+        "polygon" : [ 370, 546, 423, 546, 424, 572, 370, 571 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1067,
+          "length" : 7
+        }
+      }, {
+        "content" : "foresty",
+        "polygon" : [ 428, 546, 486, 547, 486, 573, 428, 572 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1075,
+          "length" : 7
+        }
+      }, {
+        "content" : "flavor.",
+        "polygon" : [ 490, 547, 544, 548, 544, 573, 491, 573 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1083,
+          "length" : 7
+        }
+      }, {
+        "content" : "The",
+        "polygon" : [ 549, 548, 584, 548, 584, 574, 550, 573 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1091,
+          "length" : 3
+        }
+      }, {
+        "content" : "only",
+        "polygon" : [ 589, 548, 625, 549, 625, 574, 589, 574 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1095,
+          "length" : 4
+        }
+      }, {
+        "content" : "thing",
+        "polygon" : [ 630, 549, 672, 550, 672, 574, 630, 574 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1100,
+          "length" : 5
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 676, 550, 705, 551, 705, 574, 677, 574 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1106,
+          "length" : 3
+        }
+      }, {
+        "content" : "two",
+        "polygon" : [ 710, 551, 741, 551, 741, 575, 710, 574 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1110,
+          "length" : 3
+        }
+      }, {
+        "content" : "herbs",
+        "polygon" : [ 746, 551, 792, 552, 792, 575, 746, 575 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1114,
+          "length" : 5
+        }
+      }, {
+        "content" : "share",
+        "polygon" : [ 798, 553, 842, 554, 842, 575, 798, 575 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1120,
+          "length" : 5
+        }
+      }, {
+        "content" : "in",
+        "polygon" : [ 848, 554, 867, 554, 867, 575, 848, 575 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 1126,
+          "length" : 2
+        }
+      }, {
+        "content" : "common",
+        "polygon" : [ 120, 573, 191, 574, 191, 598, 120, 596 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1129,
+          "length" : 6
+        }
+      }, {
+        "content" : "is",
+        "polygon" : [ 196, 574, 209, 574, 209, 598, 196, 598 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1136,
+          "length" : 2
+        }
+      }, {
+        "content" : "that",
+        "polygon" : [ 215, 574, 250, 575, 250, 599, 215, 598 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1139,
+          "length" : 4
+        }
+      }, {
+        "content" : "they",
+        "polygon" : [ 256, 575, 293, 575, 293, 600, 256, 599 ],
+        "confidence" : 0.992,
+        "span" : {
+          "offset" : 1144,
+          "length" : 4
+        }
+      }, {
+        "content" : "are",
+        "polygon" : [ 297, 575, 325, 575, 325, 600, 298, 600 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1149,
+          "length" : 3
+        }
+      }, {
+        "content" : "both",
+        "polygon" : [ 331, 576, 372, 576, 372, 601, 332, 600 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1153,
+          "length" : 4
+        }
+      }, {
+        "content" : "green",
+        "polygon" : [ 377, 576, 425, 577, 425, 602, 377, 601 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1158,
+          "length" : 5
+        }
+      }, {
+        "content" : "leaves",
+        "polygon" : [ 430, 577, 480, 577, 480, 602, 430, 602 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1164,
+          "length" : 6
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 486, 577, 516, 578, 516, 603, 486, 602 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1171,
+          "length" : 3
+        }
+      }, {
+        "content" : "grow",
+        "polygon" : [ 522, 578, 563, 578, 564, 603, 522, 603 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1175,
+          "length" : 4
+        }
+      }, {
+        "content" : "on",
+        "polygon" : [ 568, 578, 590, 578, 590, 603, 568, 603 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1180,
+          "length" : 2
+        }
+      }, {
+        "content" : "trees.",
+        "polygon" : [ 595, 579, 638, 579, 638, 603, 595, 603 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1183,
+          "length" : 6
+        }
+      }, {
+        "content" : "If",
+        "polygon" : [ 645, 579, 657, 579, 657, 603, 645, 603 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1190,
+          "length" : 2
+        }
+      }, {
+        "content" : "you",
+        "polygon" : [ 662, 579, 694, 580, 694, 603, 662, 603 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1193,
+          "length" : 3
+        }
+      }, {
+        "content" : "are",
+        "polygon" : [ 699, 580, 723, 580, 723, 603, 699, 603 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1197,
+          "length" : 3
+        }
+      }, {
+        "content" : "unable",
+        "polygon" : [ 728, 580, 784, 581, 784, 603, 728, 603 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1201,
+          "length" : 6
+        }
+      }, {
+        "content" : "to",
+        "polygon" : [ 789, 581, 807, 581, 807, 603, 789, 603 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1208,
+          "length" : 2
+        }
+      }, {
+        "content" : "find",
+        "polygon" : [ 812, 581, 848, 582, 848, 603, 812, 603 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1211,
+          "length" : 4
+        }
+      }, {
+        "content" : "daun",
+        "polygon" : [ 853, 582, 889, 582, 889, 603, 853, 603 ],
+        "confidence" : 0.987,
+        "span" : {
+          "offset" : 1216,
+          "length" : 4
+        }
+      }, {
+        "content" : "salam",
+        "polygon" : [ 118, 605, 152, 605, 152, 627, 118, 627 ],
+        "confidence" : 0.99,
+        "span" : {
+          "offset" : 1221,
+          "length" : 5
+        }
+      }, {
+        "content" : "leaves,",
+        "polygon" : [ 157, 605, 213, 604, 213, 628, 157, 627 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1227,
+          "length" : 7
+        }
+      }, {
+        "content" : "omit",
+        "polygon" : [ 219, 604, 261, 604, 261, 628, 219, 628 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1235,
+          "length" : 4
+        }
+      }, {
+        "content" : "them.",
+        "polygon" : [ 266, 604, 320, 604, 320, 628, 266, 628 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1240,
+          "length" : 5
+        }
+      }, {
+        "content" : "The",
+        "polygon" : [ 325, 604, 359, 605, 359, 629, 325, 628 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1246,
+          "length" : 3
+        }
+      }, {
+        "content" : "dish",
+        "polygon" : [ 365, 605, 400, 605, 400, 629, 365, 629 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1250,
+          "length" : 4
+        }
+      }, {
+        "content" : "will",
+        "polygon" : [ 405, 605, 438, 605, 438, 630, 405, 629 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1255,
+          "length" : 4
+        }
+      }, {
+        "content" : "still",
+        "polygon" : [ 444, 606, 474, 606, 474, 630, 444, 630 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1260,
+          "length" : 5
+        }
+      }, {
+        "content" : "taste",
+        "polygon" : [ 480, 606, 519, 607, 519, 631, 479, 631 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1266,
+          "length" : 5
+        }
+      }, {
+        "content" : "exquisite.",
+        "polygon" : [ 524, 607, 605, 609, 605, 634, 524, 632 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1272,
+          "length" : 10
+        }
+      }, {
+        "content" : "MAKES",
+        "polygon" : [ 726, 675, 784, 676, 784, 689, 727, 690 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1283,
+          "length" : 5
+        }
+      }, {
+        "content" : "4",
+        "polygon" : [ 792, 676, 802, 676, 802, 689, 793, 689 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1289,
+          "length" : 1
+        }
+      }, {
+        "content" : "SERVINGS",
+        "polygon" : [ 811, 676, 900, 675, 900, 689, 811, 689 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1291,
+          "length" : 8
+        }
+      }, {
+        "content" : "2",
+        "polygon" : [ 113, 732, 122, 732, 122, 750, 113, 750 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1300,
+          "length" : 1
+        }
+      }, {
+        "content" : "tablespoons",
+        "polygon" : [ 127, 732, 220, 732, 220, 750, 127, 750 ],
+        "confidence" : 0.991,
+        "span" : {
+          "offset" : 1302,
+          "length" : 11
+        }
+      }, {
+        "content" : "Crisp-Fried",
+        "polygon" : [ 226, 732, 318, 732, 318, 750, 226, 750 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1314,
+          "length" : 11
+        }
+      }, {
+        "content" : "Shallots",
+        "polygon" : [ 324, 732, 389, 732, 389, 750, 324, 750 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1326,
+          "length" : 8
+        }
+      }, {
+        "content" : "(page",
+        "polygon" : [ 394, 732, 441, 733, 441, 750, 394, 750 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1335,
+          "length" : 5
+        }
+      }, {
+        "content" : "84),",
+        "polygon" : [ 447, 733, 480, 733, 480, 750, 447, 750 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 1341,
+          "length" : 4
+        }
+      }, {
+        "content" : "optional",
+        "polygon" : [ 132, 766, 197, 765, 197, 781, 132, 781 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1346,
+          "length" : 8
+        }
+      }, {
+        "content" : "FOR",
+        "polygon" : [ 108, 828, 139, 829, 139, 844, 108, 843 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1355,
+          "length" : 3
+        }
+      }, {
+        "content" : "THE",
+        "polygon" : [ 147, 829, 177, 829, 177, 844, 147, 844 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1359,
+          "length" : 3
+        }
+      }, {
+        "content" : "FLAVORING",
+        "polygon" : [ 185, 830, 285, 831, 285, 845, 185, 844 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1363,
+          "length" : 9
+        }
+      }, {
+        "content" : "PASTE",
+        "polygon" : [ 295, 831, 351, 831, 351, 845, 295, 845 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 1373,
+          "length" : 5
+        }
+      }, {
+        "content" : "1",
+        "polygon" : [ 107, 860, 113, 860, 112, 878, 106, 877 ],
+        "confidence" : 0.982,
+        "span" : {
+          "offset" : 1379,
+          "length" : 1
+        }
+      }, {
+        "content" : "tablespoon",
+        "polygon" : [ 117, 861, 204, 862, 203, 880, 117, 878 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1381,
+          "length" : 10
+        }
+      }, {
+        "content" : "coriander",
+        "polygon" : [ 210, 862, 290, 863, 289, 880, 209, 880 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1392,
+          "length" : 9
+        }
+      }, {
+        "content" : "seeds",
+        "polygon" : [ 296, 863, 345, 864, 345, 879, 295, 880 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1402,
+          "length" : 5
+        }
+      }, {
+        "content" : "1",
+        "polygon" : [ 106, 893, 111, 893, 110, 910, 105, 910 ],
+        "confidence" : 0.967,
+        "span" : {
+          "offset" : 1408,
+          "length" : 1
+        }
+      }, {
+        "content" : "fresh",
+        "polygon" : [ 116, 893, 152, 894, 151, 911, 115, 910 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1410,
+          "length" : 5
+        }
+      }, {
+        "content" : "red",
+        "polygon" : [ 158, 894, 183, 894, 182, 912, 157, 911 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1416,
+          "length" : 3
+        }
+      }, {
+        "content" : "Holland",
+        "polygon" : [ 189, 894, 252, 895, 252, 913, 189, 912 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1420,
+          "length" : 7
+        }
+      }, {
+        "content" : "chile",
+        "polygon" : [ 258, 895, 298, 895, 298, 913, 258, 913 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1428,
+          "length" : 5
+        }
+      }, {
+        "content" : "or",
+        "polygon" : [ 304, 895, 321, 895, 321, 913, 303, 913 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1434,
+          "length" : 2
+        }
+      }, {
+        "content" : "other",
+        "polygon" : [ 327, 895, 372, 895, 372, 913, 326, 913 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 1437,
+          "length" : 5
+        }
+      }, {
+        "content" : "fresh",
+        "polygon" : [ 377, 895, 418, 894, 418, 912, 377, 913 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1443,
+          "length" : 5
+        }
+      }, {
+        "content" : "long,",
+        "polygon" : [ 424, 894, 464, 894, 464, 912, 424, 912 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1449,
+          "length" : 5
+        }
+      }, {
+        "content" : "hot",
+        "polygon" : [ 470, 894, 498, 893, 498, 911, 470, 911 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1455,
+          "length" : 3
+        }
+      }, {
+        "content" : "red",
+        "polygon" : [ 123, 927, 149, 927, 148, 945, 122, 944 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1459,
+          "length" : 3
+        }
+      }, {
+        "content" : "chile",
+        "polygon" : [ 155, 927, 192, 928, 191, 946, 154, 945 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1463,
+          "length" : 5
+        }
+      }, {
+        "content" : "such",
+        "polygon" : [ 197, 928, 235, 928, 234, 947, 197, 946 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1469,
+          "length" : 4
+        }
+      }, {
+        "content" : "as",
+        "polygon" : [ 241, 928, 258, 928, 258, 947, 240, 947 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1474,
+          "length" : 2
+        }
+      }, {
+        "content" : "Fresno",
+        "polygon" : [ 265, 928, 322, 929, 322, 947, 264, 947 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1477,
+          "length" : 6
+        }
+      }, {
+        "content" : "or",
+        "polygon" : [ 328, 929, 345, 929, 345, 947, 328, 947 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 1484,
+          "length" : 2
+        }
+      }, {
+        "content" : "cayenne,",
+        "polygon" : [ 351, 929, 425, 930, 425, 947, 351, 947 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1487,
+          "length" : 8
+        }
+      }, {
+        "content" : "stemmed",
+        "polygon" : [ 122, 961, 195, 961, 195, 980, 121, 978 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1496,
+          "length" : 7
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 201, 961, 232, 961, 231, 981, 201, 980 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1504,
+          "length" : 3
+        }
+      }, {
+        "content" : "coarsely",
+        "polygon" : [ 238, 961, 309, 961, 309, 981, 237, 981 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1508,
+          "length" : 8
+        }
+      }, {
+        "content" : "chopped",
+        "polygon" : [ 315, 961, 390, 961, 390, 981, 315, 981 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1517,
+          "length" : 7
+        }
+      }, {
+        "content" : "(optional,",
+        "polygon" : [ 396, 961, 478, 961, 478, 978, 396, 981 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 1525,
+          "length" : 10
+        }
+      }, {
+        "content" : "but",
+        "polygon" : [ 120, 993, 147, 994, 146, 1014, 120, 1013 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1536,
+          "length" : 3
+        }
+      }, {
+        "content" : "provides",
+        "polygon" : [ 153, 994, 223, 995, 222, 1015, 152, 1014 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1540,
+          "length" : 8
+        }
+      }, {
+        "content" : "subtle",
+        "polygon" : [ 229, 995, 281, 996, 281, 1015, 228, 1015 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1549,
+          "length" : 6
+        }
+      }, {
+        "content" : "heat",
+        "polygon" : [ 288, 996, 325, 996, 325, 1015, 287, 1015 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1556,
+          "length" : 4
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 331, 996, 361, 996, 361, 1015, 330, 1015 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1561,
+          "length" : 3
+        }
+      }, {
+        "content" : "color)",
+        "polygon" : [ 368, 996, 420, 995, 420, 1014, 367, 1015 ],
+        "confidence" : 0.987,
+        "span" : {
+          "offset" : 1565,
+          "length" : 6
+        }
+      }, {
+        "content" : "6",
+        "polygon" : [ 99, 1025, 108, 1026, 108, 1045, 99, 1044 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1572,
+          "length" : 1
+        }
+      }, {
+        "content" : "shallots",
+        "polygon" : [ 113, 1026, 172, 1028, 172, 1048, 113, 1045 ],
+        "confidence" : 0.984,
+        "span" : {
+          "offset" : 1574,
+          "length" : 8
+        }
+      }, {
+        "content" : "(about",
+        "polygon" : [ 178, 1028, 234, 1030, 234, 1050, 178, 1048 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 1583,
+          "length" : 6
+        }
+      }, {
+        "content" : "5",
+        "polygon" : [ 240, 1030, 249, 1030, 249, 1050, 240, 1050 ],
+        "confidence" : 0.959,
+        "span" : {
+          "offset" : 1590,
+          "length" : 1
+        }
+      }, {
+        "content" : "ounces/140",
+        "polygon" : [ 256, 1030, 357, 1030, 357, 1050, 255, 1050 ],
+        "confidence" : 0.976,
+        "span" : {
+          "offset" : 1592,
+          "length" : 10
+        }
+      }, {
+        "content" : "grams),",
+        "polygon" : [ 364, 1030, 428, 1029, 428, 1048, 363, 1050 ],
+        "confidence" : 0.988,
+        "span" : {
+          "offset" : 1603,
+          "length" : 7
+        }
+      }, {
+        "content" : "coarsely",
+        "polygon" : [ 118, 1063, 185, 1065, 184, 1086, 118, 1082 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1611,
+          "length" : 8
+        }
+      }, {
+        "content" : "chopped",
+        "polygon" : [ 190, 1065, 269, 1069, 268, 1088, 190, 1086 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1620,
+          "length" : 7
+        }
+      }, {
+        "content" : "2",
+        "polygon" : [ 95, 1093, 105, 1094, 104, 1115, 94, 1114 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1628,
+          "length" : 1
+        }
+      }, {
+        "content" : "cloves",
+        "polygon" : [ 110, 1094, 158, 1096, 157, 1119, 109, 1115 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1630,
+          "length" : 6
+        }
+      }, {
+        "content" : "garlic,",
+        "polygon" : [ 164, 1097, 215, 1099, 214, 1122, 163, 1119 ],
+        "confidence" : 0.989,
+        "span" : {
+          "offset" : 1637,
+          "length" : 7
+        }
+      }, {
+        "content" : "coarsely",
+        "polygon" : [ 220, 1099, 293, 1100, 293, 1123, 220, 1122 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1645,
+          "length" : 8
+        }
+      }, {
+        "content" : "chopped",
+        "polygon" : [ 299, 1100, 377, 1100, 377, 1120, 299, 1123 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1654,
+          "length" : 7
+        }
+      }, {
+        "content" : "1",
+        "polygon" : [ 519, 860, 525, 860, 525, 877, 519, 877 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1662,
+          "length" : 1
+        }
+      }, {
+        "content" : "piece",
+        "polygon" : [ 531, 860, 573, 859, 573, 877, 531, 877 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 1664,
+          "length" : 5
+        }
+      }, {
+        "content" : "fresh",
+        "polygon" : [ 578, 859, 618, 858, 618, 877, 578, 877 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1670,
+          "length" : 5
+        }
+      }, {
+        "content" : "or",
+        "polygon" : [ 623, 858, 640, 858, 640, 876, 623, 877 ],
+        "confidence" : 0.997,
+        "span" : {
+          "offset" : 1676,
+          "length" : 2
+        }
+      }, {
+        "content" : "thawed,",
+        "polygon" : [ 644, 858, 707, 858, 707, 876, 644, 876 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1679,
+          "length" : 7
+        }
+      }, {
+        "content" : "frozen",
+        "polygon" : [ 712, 858, 763, 857, 762, 876, 712, 876 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1687,
+          "length" : 6
+        }
+      }, {
+        "content" : "galangal,",
+        "polygon" : [ 768, 857, 844, 857, 844, 876, 768, 876 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1694,
+          "length" : 9
+        }
+      }, {
+        "content" : "11/2",
+        "polygon" : [ 543, 891, 578, 891, 578, 909, 543, 909 ],
+        "confidence" : 0.97,
+        "span" : {
+          "offset" : 1704,
+          "length" : 4
+        }
+      }, {
+        "content" : "inches",
+        "polygon" : [ 584, 891, 634, 890, 634, 908, 584, 909 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1709,
+          "length" : 6
+        }
+      }, {
+        "content" : "(4",
+        "polygon" : [ 639, 890, 656, 890, 656, 908, 640, 908 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1716,
+          "length" : 2
+        }
+      }, {
+        "content" : "centimeters)",
+        "polygon" : [ 662, 890, 762, 889, 762, 908, 662, 908 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1719,
+          "length" : 12
+        }
+      }, {
+        "content" : "long,",
+        "polygon" : [ 768, 889, 808, 889, 808, 907, 768, 908 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1732,
+          "length" : 5
+        }
+      }, {
+        "content" : "peeled",
+        "polygon" : [ 813, 890, 871, 890, 872, 907, 814, 907 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1738,
+          "length" : 6
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 543, 924, 573, 923, 573, 941, 543, 941 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1745,
+          "length" : 3
+        }
+      }, {
+        "content" : "thinly",
+        "polygon" : [ 578, 923, 623, 923, 623, 941, 578, 941 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1749,
+          "length" : 6
+        }
+      }, {
+        "content" : "sliced",
+        "polygon" : [ 628, 923, 674, 922, 674, 940, 628, 941 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1756,
+          "length" : 6
+        }
+      }, {
+        "content" : "against",
+        "polygon" : [ 680, 922, 738, 922, 737, 940, 680, 940 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1763,
+          "length" : 7
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 742, 922, 768, 921, 768, 940, 742, 940 ],
+        "confidence" : 0.998,
+        "span" : {
+          "offset" : 1771,
+          "length" : 3
+        }
+      }, {
+        "content" : "grain",
+        "polygon" : [ 774, 921, 815, 921, 815, 940, 774, 940 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1775,
+          "length" : 5
+        }
+      }, {
+        "content" : "(about",
+        "polygon" : [ 821, 921, 879, 922, 878, 939, 820, 940 ],
+        "confidence" : 0.994,
+        "span" : {
+          "offset" : 1781,
+          "length" : 6
+        }
+      }, {
+        "content" : "11/2",
+        "polygon" : [ 542, 956, 580, 956, 580, 974, 542, 975 ],
+        "confidence" : 0.97,
+        "span" : {
+          "offset" : 1788,
+          "length" : 4
+        }
+      }, {
+        "content" : "tablespoons;",
+        "polygon" : [ 585, 956, 688, 954, 688, 973, 585, 974 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1793,
+          "length" : 12
+        }
+      }, {
+        "content" : "optional)",
+        "polygon" : [ 693, 954, 769, 954, 769, 972, 694, 973 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1806,
+          "length" : 9
+        }
+      }, {
+        "content" : "1",
+        "polygon" : [ 520, 990, 527, 990, 527, 1009, 521, 1009 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1816,
+          "length" : 1
+        }
+      }, {
+        "content" : "piece",
+        "polygon" : [ 533, 990, 576, 989, 577, 1008, 534, 1009 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1818,
+          "length" : 5
+        }
+      }, {
+        "content" : "fresh",
+        "polygon" : [ 582, 989, 621, 988, 622, 1007, 582, 1008 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1824,
+          "length" : 5
+        }
+      }, {
+        "content" : "ginger,",
+        "polygon" : [ 627, 988, 682, 987, 682, 1006, 627, 1007 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1830,
+          "length" : 7
+        }
+      }, {
+        "content" : "2",
+        "polygon" : [ 688, 987, 697, 987, 697, 1006, 688, 1006 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1838,
+          "length" : 1
+        }
+      }, {
+        "content" : "inches",
+        "polygon" : [ 703, 987, 754, 987, 754, 1006, 703, 1006 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1840,
+          "length" : 6
+        }
+      }, {
+        "content" : "(5",
+        "polygon" : [ 759, 987, 776, 987, 776, 1005, 759, 1006 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1847,
+          "length" : 2
+        }
+      }, {
+        "content" : "centimeters)",
+        "polygon" : [ 782, 987, 888, 987, 887, 1005, 781, 1005 ],
+        "confidence" : 0.977,
+        "span" : {
+          "offset" : 1850,
+          "length" : 12
+        }
+      }, {
+        "content" : "long,",
+        "polygon" : [ 543, 1023, 585, 1022, 585, 1041, 543, 1041 ],
+        "confidence" : 0.988,
+        "span" : {
+          "offset" : 1863,
+          "length" : 5
+        }
+      }, {
+        "content" : "peeled",
+        "polygon" : [ 592, 1022, 646, 1021, 646, 1040, 592, 1040 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1869,
+          "length" : 6
+        }
+      }, {
+        "content" : "and",
+        "polygon" : [ 652, 1021, 682, 1020, 682, 1039, 652, 1040 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1876,
+          "length" : 3
+        }
+      }, {
+        "content" : "thinly",
+        "polygon" : [ 687, 1020, 733, 1020, 733, 1039, 687, 1039 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1880,
+          "length" : 6
+        }
+      }, {
+        "content" : "sliced",
+        "polygon" : [ 738, 1020, 785, 1020, 785, 1038, 738, 1039 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1887,
+          "length" : 6
+        }
+      }, {
+        "content" : "against",
+        "polygon" : [ 791, 1020, 852, 1020, 852, 1038, 791, 1038 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1894,
+          "length" : 7
+        }
+      }, {
+        "content" : "the",
+        "polygon" : [ 857, 1020, 886, 1020, 886, 1038, 857, 1038 ],
+        "confidence" : 0.999,
+        "span" : {
+          "offset" : 1902,
+          "length" : 3
+        }
+      }, {
+        "content" : "grain",
+        "polygon" : [ 544, 1058, 587, 1056, 587, 1075, 545, 1076 ],
+        "confidence" : 0.995,
+        "span" : {
+          "offset" : 1906,
+          "length" : 5
+        }
+      }, {
+        "content" : "(about",
+        "polygon" : [ 593, 1056, 647, 1054, 647, 1074, 593, 1075 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1912,
+          "length" : 6
+        }
+      }, {
+        "content" : "2",
+        "polygon" : [ 653, 1054, 662, 1054, 662, 1074, 653, 1074 ],
+        "confidence" : 0.996,
+        "span" : {
+          "offset" : 1919,
+          "length" : 1
+        }
+      }, {
+        "content" : "tablespoons)",
+        "polygon" : [ 667, 1054, 776, 1054, 776, 1070, 667, 1074 ],
+        "confidence" : 0.993,
+        "span" : {
+          "offset" : 1921,
+          "length" : 12
+        }
+      }, {
+        "content" : "fresh-",
+        "polygon" : [ 1, 69, 32, 112, 21, 123, 0, 75 ],
+        "confidence" : 0.359,
+        "span" : {
+          "offset" : 1934,
+          "length" : 6
+        }
+      }, {
+        "content" : "x",
+        "polygon" : [ 12, 150, 17, 153, 2, 167, 0, 162 ],
+        "confidence" : 0.229,
+        "span" : {
+          "offset" : 1941,
+          "length" : 1
+        }
+      }, {
+        "content" : "an",
+        "polygon" : [ 19, 156, 34, 172, 20, 186, 5, 170 ],
+        "confidence" : 0.971,
+        "span" : {
+          "offset" : 1943,
+          "length" : 2
+        }
+      }, {
+        "content" : "codles",
+        "polygon" : [ 3, 202, 37, 239, 29, 249, 0, 210 ],
+        "confidence" : 0.617,
+        "span" : {
+          "offset" : 1946,
+          "length" : 6
+        }
+      }, {
+        "content" : "mes",
+        "polygon" : [ 5, 236, 22, 257, 16, 268, 0, 248 ],
+        "confidence" : 0.871,
+        "span" : {
+          "offset" : 1953,
+          "length" : 3
+        }
+      }, {
+        "content" : "a",
+        "polygon" : [ 25, 259, 31, 265, 23, 274, 18, 270 ],
+        "confidence" : 0.775,
+        "span" : {
+          "offset" : 1957,
+          "length" : 1
+        }
+      }, {
+        "content" : "scent",
+        "polygon" : [ 5, 268, 30, 293, 23, 302, 1, 275 ],
+        "confidence" : 0.847,
+        "span" : {
+          "offset" : 1959,
+          "length" : 5
+        }
+      }, {
+        "content" : "ked",
+        "polygon" : [ 7, 290, 27, 315, 17, 327, 0, 300 ],
+        "confidence" : 0.733,
+        "span" : {
+          "offset" : 1965,
+          "length" : 3
+        }
+      }, {
+        "content" : "LAste-",
+        "polygon" : [ 1, 325, 27, 351, 20, 361, 0, 332 ],
+        "confidence" : 0.775,
+        "span" : {
+          "offset" : 1969,
+          "length" : 6
+        }
+      }, {
+        "content" : "Ter",
+        "polygon" : [ 1, 393, 15, 399, 11, 413, 0, 406 ],
+        "confidence" : 0.616,
+        "span" : {
+          "offset" : 1976,
+          "length" : 3
+        }
+      }, {
+        "content" : "or",
+        "polygon" : [ 0, 425, 13, 427, 10, 443, 0, 440 ],
+        "confidence" : 0.896,
+        "span" : {
+          "offset" : 1980,
+          "length" : 2
+        }
+      } ],
+      "lines" : [ {
+        "content" : "POULTRY . 275",
+        "polygon" : [ 434, 22, 565, 36, 564, 48, 433, 34 ],
+        "spans" : [ {
+          "offset" : 0,
+          "length" : 13
+        } ]
+      }, {
+        "content" : "JAVANESE CHICKEN CURRY",
+        "polygon" : [ 350, 79, 646, 104, 645, 121, 349, 96 ],
+        "spans" : [ {
+          "offset" : 14,
+          "length" : 22
+        } ]
+      }, {
+        "content" : "Opor Ayam",
+        "polygon" : [ 460, 116, 542, 122, 541, 140, 459, 134 ],
+        "spans" : [ {
+          "offset" : 37,
+          "length" : 9
+        } ]
+      }, {
+        "content" : "(JAVA, INDONESIA)",
+        "polygon" : [ 422, 139, 581, 151, 579, 168, 421, 156 ],
+        "spans" : [ {
+          "offset" : 47,
+          "length" : 17
+        } ]
+      }, {
+        "content" : "-",
+        "polygon" : [ 488, 181, 515, 183, 514, 195, 487, 193 ],
+        "spans" : [ {
+          "offset" : 65,
+          "length" : 1
+        } ]
+      }, {
+        "content" : "A",
+        "polygon" : [ 131, 212, 183, 214, 183, 260, 131, 262 ],
+        "spans" : [ {
+          "offset" : 67,
+          "length" : 1
+        } ]
+      }, {
+        "content" : "gorgeous coconut-milk curry from Java, Indonesia, perfumed with lemongrass,",
+        "polygon" : [ 177, 209, 832, 229, 831, 253, 177, 228 ],
+        "spans" : [ {
+          "offset" : 69,
+          "length" : 75
+        } ]
+      }, {
+        "content" : "ginger, cinnamon sticks, and coriander. It's one of the benchmark dishes by which",
+        "polygon" : [ 178, 232, 859, 255, 858, 278, 178, 254 ],
+        "spans" : [ {
+          "offset" : 145,
+          "length" : 81
+        } ]
+      }, {
+        "content" : "Indonesian home cooks are judged. If a young cook's opor ayam is as rich and delicate as",
+        "polygon" : [ 136, 261, 857, 279, 856, 304, 136, 283 ],
+        "spans" : [ {
+          "offset" : 227,
+          "length" : 88
+        } ]
+      }, {
+        "content" : "it should be, she is well on her way to becoming skilled in the kitchen. The dish is a",
+        "polygon" : [ 135, 287, 830, 304, 829, 330, 135, 311 ],
+        "spans" : [ {
+          "offset" : 316,
+          "length" : 86
+        } ]
+      }, {
+        "content" : "perfect showcase for a high-quality free-range chicken. A whole bird, cut into small,",
+        "polygon" : [ 130, 316, 838, 330, 837, 357, 130, 341 ],
+        "spans" : [ {
+          "offset" : 403,
+          "length" : 85
+        } ]
+      }, {
+        "content" : "bone-in serving pieces, will yield the best results, though whole chicken parts can be",
+        "polygon" : [ 131, 344, 842, 357, 841, 384, 131, 367 ],
+        "spans" : [ {
+          "offset" : 489,
+          "length" : 86
+        } ]
+      }, {
+        "content" : "substituted without really compromising the taste of the dish. If you have the inclina-",
+        "polygon" : [ 129, 370, 856, 384, 856, 410, 129, 394 ],
+        "spans" : [ {
+          "offset" : 576,
+          "length" : 87
+        } ]
+      }, {
+        "content" : "tion to make them, fried shallots are traditionally strewn on top just before the dish is",
+        "polygon" : [ 130, 398, 861, 412, 860, 437, 130, 421 ],
+        "spans" : [ {
+          "offset" : 664,
+          "length" : 89
+        } ]
+      }, {
+        "content" : "served.",
+        "polygon" : [ 126, 433, 183, 428, 184, 448, 128, 453 ],
+        "spans" : [ {
+          "offset" : 754,
+          "length" : 7
+        } ]
+      }, {
+        "content" : "Daun salam leaves, the seasoning herb prized in Indonesian cooking, helps give this dish",
+        "polygon" : [ 144, 455, 864, 468, 864, 492, 143, 478 ],
+        "spans" : [ {
+          "offset" : 762,
+          "length" : 88
+        } ]
+      }, {
+        "content" : "its unique aroma. I've often seen bay leaves listed as a substitute for daun salam in recipe",
+        "polygon" : [ 123, 486, 845, 494, 845, 520, 123, 509 ],
+        "spans" : [ {
+          "offset" : 851,
+          "length" : 92
+        } ]
+      }, {
+        "content" : "books on Indonesian cuisine. While bay leaves have an aggressively mentholated taste, daun",
+        "polygon" : [ 123, 514, 886, 523, 885, 547, 123, 537 ],
+        "spans" : [ {
+          "offset" : 944,
+          "length" : 90
+        } ]
+      }, {
+        "content" : "salam leaves are subtle, with a faintly foresty flavor. The only thing the two herbs share in",
+        "polygon" : [ 120, 544, 866, 551, 866, 575, 120, 567 ],
+        "spans" : [ {
+          "offset" : 1035,
+          "length" : 93
+        } ]
+      }, {
+        "content" : "common is that they are both green leaves and grow on trees. If you are unable to find daun",
+        "polygon" : [ 119, 573, 889, 581, 888, 603, 119, 598 ],
+        "spans" : [ {
+          "offset" : 1129,
+          "length" : 91
+        } ]
+      }, {
+        "content" : "salam leaves, omit them. The dish will still taste exquisite.",
+        "polygon" : [ 117, 604, 604, 607, 604, 633, 117, 628 ],
+        "spans" : [ {
+          "offset" : 1221,
+          "length" : 61
+        } ]
+      }, {
+        "content" : "MAKES 4 SERVINGS",
+        "polygon" : [ 726, 674, 899, 674, 899, 689, 726, 689 ],
+        "spans" : [ {
+          "offset" : 1283,
+          "length" : 16
+        } ]
+      }, {
+        "content" : "2 tablespoons Crisp-Fried Shallots (page 84),",
+        "polygon" : [ 113, 731, 479, 732, 479, 750, 113, 749 ],
+        "spans" : [ {
+          "offset" : 1300,
+          "length" : 45
+        } ]
+      }, {
+        "content" : "optional",
+        "polygon" : [ 131, 764, 196, 764, 196, 780, 131, 781 ],
+        "spans" : [ {
+          "offset" : 1346,
+          "length" : 8
+        } ]
+      }, {
+        "content" : "FOR THE FLAVORING PASTE",
+        "polygon" : [ 107, 828, 350, 830, 350, 845, 107, 843 ],
+        "spans" : [ {
+          "offset" : 1355,
+          "length" : 23
+        } ]
+      }, {
+        "content" : "1 tablespoon coriander seeds",
+        "polygon" : [ 106, 860, 344, 863, 344, 880, 106, 878 ],
+        "spans" : [ {
+          "offset" : 1379,
+          "length" : 28
+        } ]
+      }, {
+        "content" : "1 fresh red Holland chile or other fresh long, hot",
+        "polygon" : [ 104, 892, 497, 893, 497, 913, 104, 912 ],
+        "spans" : [ {
+          "offset" : 1408,
+          "length" : 50
+        } ]
+      }, {
+        "content" : "red chile such as Fresno or cayenne,",
+        "polygon" : [ 122, 927, 425, 929, 424, 947, 122, 945 ],
+        "spans" : [ {
+          "offset" : 1459,
+          "length" : 36
+        } ]
+      }, {
+        "content" : "stemmed and coarsely chopped (optional,",
+        "polygon" : [ 121, 960, 477, 960, 477, 981, 121, 981 ],
+        "spans" : [ {
+          "offset" : 1496,
+          "length" : 39
+        } ]
+      }, {
+        "content" : "but provides subtle heat and color)",
+        "polygon" : [ 119, 993, 419, 994, 419, 1015, 119, 1014 ],
+        "spans" : [ {
+          "offset" : 1536,
+          "length" : 35
+        } ]
+      }, {
+        "content" : "6 shallots (about 5 ounces/140 grams),",
+        "polygon" : [ 98, 1025, 427, 1028, 427, 1051, 98, 1048 ],
+        "spans" : [ {
+          "offset" : 1572,
+          "length" : 38
+        } ]
+      }, {
+        "content" : "coarsely chopped",
+        "polygon" : [ 118, 1062, 268, 1068, 267, 1089, 117, 1082 ],
+        "spans" : [ {
+          "offset" : 1611,
+          "length" : 16
+        } ]
+      }, {
+        "content" : "2 cloves garlic, coarsely chopped",
+        "polygon" : [ 94, 1093, 377, 1099, 376, 1123, 93, 1118 ],
+        "spans" : [ {
+          "offset" : 1628,
+          "length" : 33
+        } ]
+      }, {
+        "content" : "1 piece fresh or thawed, frozen galangal,",
+        "polygon" : [ 518, 858, 843, 857, 843, 875, 518, 877 ],
+        "spans" : [ {
+          "offset" : 1662,
+          "length" : 41
+        } ]
+      }, {
+        "content" : "11/2 inches (4 centimeters) long, peeled",
+        "polygon" : [ 542, 890, 871, 889, 871, 907, 542, 908 ],
+        "spans" : [ {
+          "offset" : 1704,
+          "length" : 40
+        } ]
+      }, {
+        "content" : "and thinly sliced against the grain (about",
+        "polygon" : [ 543, 922, 878, 921, 878, 939, 543, 941 ],
+        "spans" : [ {
+          "offset" : 1745,
+          "length" : 42
+        } ]
+      }, {
+        "content" : "11/2 tablespoons; optional)",
+        "polygon" : [ 542, 956, 768, 953, 768, 972, 542, 974 ],
+        "spans" : [ {
+          "offset" : 1788,
+          "length" : 27
+        } ]
+      }, {
+        "content" : "1 piece fresh ginger, 2 inches (5 centimeters)",
+        "polygon" : [ 520, 988, 887, 986, 887, 1005, 520, 1008 ],
+        "spans" : [ {
+          "offset" : 1816,
+          "length" : 46
+        } ]
+      }, {
+        "content" : "long, peeled and thinly sliced against the",
+        "polygon" : [ 543, 1021, 885, 1019, 885, 1037, 543, 1040 ],
+        "spans" : [ {
+          "offset" : 1863,
+          "length" : 42
+        } ]
+      }, {
+        "content" : "grain (about 2 tablespoons)",
+        "polygon" : [ 544, 1056, 775, 1053, 776, 1070, 544, 1075 ],
+        "spans" : [ {
+          "offset" : 1906,
+          "length" : 27
+        } ]
+      }, {
+        "content" : "fresh-",
+        "polygon" : [ 7, 69, 32, 115, 16, 123, 0, 74 ],
+        "spans" : [ {
+          "offset" : 1934,
+          "length" : 6
+        } ]
+      }, {
+        "content" : "x an",
+        "polygon" : [ 11, 150, 33, 172, 20, 187, 0, 164 ],
+        "spans" : [ {
+          "offset" : 1941,
+          "length" : 4
+        } ]
+      }, {
+        "content" : "codles",
+        "polygon" : [ 6, 202, 37, 240, 26, 249, 0, 209 ],
+        "spans" : [ {
+          "offset" : 1946,
+          "length" : 6
+        } ]
+      }, {
+        "content" : "mes a",
+        "polygon" : [ 6, 235, 31, 266, 20, 274, 0, 242 ],
+        "spans" : [ {
+          "offset" : 1953,
+          "length" : 5
+        } ]
+      }, {
+        "content" : "scent",
+        "polygon" : [ 4, 263, 30, 294, 19, 302, 0, 269 ],
+        "spans" : [ {
+          "offset" : 1959,
+          "length" : 5
+        } ]
+      }, {
+        "content" : "ked",
+        "polygon" : [ 5, 290, 26, 311, 15, 326, 0, 306 ],
+        "spans" : [ {
+          "offset" : 1965,
+          "length" : 3
+        } ]
+      }, {
+        "content" : "LAste-",
+        "polygon" : [ 4, 325, 27, 353, 17, 361, 0, 331 ],
+        "spans" : [ {
+          "offset" : 1969,
+          "length" : 6
+        } ]
+      }, {
+        "content" : "Ter",
+        "polygon" : [ 1, 393, 14, 398, 10, 413, 0, 408 ],
+        "spans" : [ {
+          "offset" : 1976,
+          "length" : 3
+        } ]
+      }, {
+        "content" : "or",
+        "polygon" : [ 0, 425, 12, 427, 10, 443, 0, 440 ],
+        "spans" : [ {
+          "offset" : 1980,
+          "length" : 2
+        } ]
+      } ],
+      "spans" : [ {
+        "offset" : 0,
+        "length" : 1982
+      } ]
+    } ],
+    "tables" : [ ],
+    "paragraphs" : [ {
+      "spans" : [ {
+        "offset" : 0,
+        "length" : 13
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 433, 34, 434, 22, 565, 36, 564, 48 ]
+      } ],
+      "role" : "pageHeader",
+      "content" : "POULTRY . 275"
+    }, {
+      "spans" : [ {
+        "offset" : 14,
+        "length" : 32
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 350, 79, 646, 104, 643, 150, 346, 124 ]
+      } ],
+      "role" : "title",
+      "content" : "JAVANESE CHICKEN CURRY Opor Ayam"
+    }, {
+      "spans" : [ {
+        "offset" : 47,
+        "length" : 17
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 422, 139, 581, 151, 580, 168, 421, 156 ]
+      } ],
+      "content" : "(JAVA, INDONESIA)"
+    }, {
+      "spans" : [ {
+        "offset" : 65,
+        "length" : 1
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 488, 181, 515, 183, 514, 195, 487, 193 ]
+      } ],
+      "content" : "-"
+    }, {
+      "spans" : [ {
+        "offset" : 67,
+        "length" : 694
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 123, 210, 858, 200, 861, 444, 126, 453 ]
+      } ],
+      "content" : "A gorgeous coconut-milk curry from Java, Indonesia, perfumed with lemongrass, ginger, cinnamon sticks, and coriander. It's one of the benchmark dishes by which Indonesian home cooks are judged. If a young cook's opor ayam is as rich and delicate as it should be, she is well on her way to becoming skilled in the kitchen. The dish is a perfect showcase for a high-quality free-range chicken. A whole bird, cut into small, bone-in serving pieces, will yield the best results, though whole chicken parts can be substituted without really compromising the taste of the dish. If you have the inclina- tion to make them, fried shallots are traditionally strewn on top just before the dish is served."
+    }, {
+      "spans" : [ {
+        "offset" : 762,
+        "length" : 520
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 119, 455, 890, 463, 888, 636, 117, 628 ]
+      } ],
+      "content" : "Daun salam leaves, the seasoning herb prized in Indonesian cooking, helps give this dish its unique aroma. I've often seen bay leaves listed as a substitute for daun salam in recipe books on Indonesian cuisine. While bay leaves have an aggressively mentholated taste, daun salam leaves are subtle, with a faintly foresty flavor. The only thing the two herbs share in common is that they are both green leaves and grow on trees. If you are unable to find daun salam leaves, omit them. The dish will still taste exquisite."
+    }, {
+      "spans" : [ {
+        "offset" : 1283,
+        "length" : 16
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 726, 674, 899, 674, 899, 689, 726, 689 ]
+      } ],
+      "content" : "MAKES 4 SERVINGS"
+    }, {
+      "spans" : [ {
+        "offset" : 1300,
+        "length" : 54
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 113, 731, 479, 732, 479, 782, 113, 781 ]
+      } ],
+      "role" : "sectionHeading",
+      "content" : "2 tablespoons Crisp-Fried Shallots (page 84), optional"
+    }, {
+      "spans" : [ {
+        "offset" : 1355,
+        "length" : 23
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 107, 828, 350, 830, 350, 845, 107, 843 ]
+      } ],
+      "content" : "FOR THE FLAVORING PASTE"
+    }, {
+      "spans" : [ {
+        "offset" : 1379,
+        "length" : 28
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 106, 860, 344, 862, 344, 880, 106, 878 ]
+      } ],
+      "content" : "1 tablespoon coriander seeds"
+    }, {
+      "spans" : [ {
+        "offset" : 1408,
+        "length" : 219
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 98, 892, 497, 893, 497, 1090, 98, 1089 ]
+      } ],
+      "content" : "1 fresh red Holland chile or other fresh long, hot red chile such as Fresno or cayenne, stemmed and coarsely chopped (optional, but provides subtle heat and color) 6 shallots (about 5 ounces/140 grams), coarsely chopped"
+    }, {
+      "spans" : [ {
+        "offset" : 1628,
+        "length" : 33
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 94, 1093, 377, 1099, 376, 1124, 93, 1118 ]
+      } ],
+      "content" : "2 cloves garlic, coarsely chopped"
+    }, {
+      "spans" : [ {
+        "offset" : 1662,
+        "length" : 41
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 518, 858, 843, 857, 843, 876, 518, 877 ]
+      } ],
+      "content" : "1 piece fresh or thawed, frozen galangal,"
+    }, {
+      "spans" : [ {
+        "offset" : 1704,
+        "length" : 111
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 542, 890, 878, 889, 878, 973, 542, 974 ]
+      } ],
+      "content" : "11/2 inches (4 centimeters) long, peeled and thinly sliced against the grain (about 11/2 tablespoons; optional)"
+    }, {
+      "spans" : [ {
+        "offset" : 1816,
+        "length" : 117
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 520, 988, 887, 986, 887, 1073, 520, 1075 ]
+      } ],
+      "content" : "1 piece fresh ginger, 2 inches (5 centimeters) long, peeled and thinly sliced against the grain (about 2 tablespoons)"
+    }, {
+      "spans" : [ {
+        "offset" : 1934,
+        "length" : 6
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 0, 76, 9, 68, 32, 115, 16, 123 ]
+      } ],
+      "content" : "fresh-"
+    }, {
+      "spans" : [ {
+        "offset" : 1941,
+        "length" : 34
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 0, 150, 37, 150, 37, 361, 0, 361 ]
+      } ],
+      "content" : "x an codles mes a scent ked LAste-"
+    }, {
+      "spans" : [ {
+        "offset" : 1976,
+        "length" : 6
+      } ],
+      "boundingRegions" : [ {
+        "pageNumber" : 1,
+        "polygon" : [ 1, 393, 14, 394, 11, 443, 0, 442 ]
+      } ],
+      "content" : "Ter or"
+    } ],
+    "styles" : [ {
+      "confidence" : 0.9,
+      "spans" : [ {
+        "offset" : 65,
+        "length" : 1
+      } ],
+      "isHandwritten" : true
+    }, {
+      "confidence" : 0.7,
+      "spans" : [ {
+        "offset" : 1965,
+        "length" : 3
+      } ],
+      "isHandwritten" : true
+    } ],
+    "contentFormat" : "text",
+    "sections" : [ {
+      "spans" : [ {
+        "offset" : 14,
+        "length" : 1968
+      } ],
+      "elements" : [ "/paragraphs/1", "/paragraphs/2", "/paragraphs/3", "/paragraphs/4", "/paragraphs/5", "/paragraphs/6", "/sections/1" ]
+    }, {
+      "spans" : [ {
+        "offset" : 1300,
+        "length" : 682
+      } ],
+      "elements" : [ "/paragraphs/7", "/paragraphs/8", "/paragraphs/9", "/paragraphs/10", "/paragraphs/11", "/paragraphs/12", "/paragraphs/13", "/paragraphs/14", "/paragraphs/15", "/paragraphs/16", "/paragraphs/17" ]
+    } ]
+  }
+}
