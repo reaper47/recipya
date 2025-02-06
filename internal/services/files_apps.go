@@ -416,16 +416,18 @@ func (f *Files) extractJSONRecipes(rd io.Reader) (models.Recipes, error) {
 		}
 
 		if rs.Image != nil && rs.Image.Value != "" {
-			img, err := uuid.Parse(filepath.Base(rs.Image.Value))
-			if err != nil {
-				img, _ = f.ScrapeAndStoreImage(rs.Image.Value)
-			}
+			images := strings.Split(rs.Image.Value, ";")
+			for _, image := range images {
+				img, err := uuid.Parse(filepath.Base(image))
+				if err != nil {
+					img, _ = f.ScrapeAndStoreImage(image)
+				}
 
-			if img != uuid.Nil {
-				r.Images = []uuid.UUID{img}
+				if img != uuid.Nil {
+					r.Images = append(r.Images, img)
+				}
 			}
 		}
-
 		if r.Name == "" || len(r.Ingredients) == 0 || len(r.Instructions) == 0 {
 			continue
 		}
