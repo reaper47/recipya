@@ -529,10 +529,16 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 	case string:
 		baseURL := app.Config.Address()
 		if strings.HasPrefix(x, baseURL) {
-			x = strings.Replace(x, baseURL+"/data/images/", "", 1)
-			x = strings.TrimSuffix(x, app.ImageExt)
+			urls := strings.Split(x, ";")
+			images := make([]string, 0, len(urls))
+			for _, url := range urls {
+				url = strings.Replace(url, baseURL+"/data/images/", "", 1)
+				images = append(images, strings.TrimSuffix(url, app.ImageExt))
+			}
+			i.Value = strings.Join(images, ";")
+		} else {
+			i.Value = x
 		}
-		i.Value = x
 	case []any:
 		if len(x) > 0 {
 			switch y := x[len(x)-1].(type) {
