@@ -1,7 +1,7 @@
 # Documentation for the environment variables: https://recipes.musicavis.ca/docs/installation/docker/#environment-variables
 services:
   web:
-    image: reaper99/recipya:nightly
+    image: reaper99/recipya:v1.2.2
     container_name: recipya
     restart: unless-stopped
     environment:
