@@ -105,7 +105,7 @@ func moveFileStructure() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	_, err = os.Stat(filepath.Join(placeholdersDir, "placeholder.recipe.webp"))
 	if os.IsNotExist(err) {
 		openFile, err := web.StaticFS.Open("static/img/recipes/placeholder.webp")
@@ -429,7 +429,7 @@ func verifyExtraSoftware() {
 	Info.IsFFmpegInstalled = err == nil
 	if !Info.IsFFmpegInstalled {
 		msg := redText("X") + " Could not find ffmpeg"
-		fmt.Printf(msg)
+		fmt.Printf("%s", msg)
 		switch runtime.GOOS {
 		case "darwin":
 			fmt.Println("\tPlease execute: brew install ffmpeg")
@@ -445,7 +445,7 @@ func verifyExtraSoftware() {
 			s.Stop()
 
 			if err != nil {
-				fmt.Printf(redText("X") + " Failed to install using winget. Please install manually: https://www.gyan.dev/ffmpeg/builds\n")
+				fmt.Printf("%s", redText("X")+" Failed to install using winget. Please install manually: https://www.gyan.dev/ffmpeg/builds\n")
 			} else {
 				fmt.Println("Please reload your command prompt to refresh the environment variables.")
 				os.Exit(0)

@@ -811,7 +811,7 @@ func TestHandlers_Cookbooks_Share(t *testing.T) {
 
 		assertStatus(t, rr.Code, http.StatusOK)
 		assertStringsInHTML(t, getBodyHTML(rr), []string{
-			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="` + ts.URL + `/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script type="text/javascript">function __templ_copyToClipboard`,
+			`<div class="grid grid-flow-col gap-2"><label><input type="url" value="` + ts.URL + `/c/33320755-82f9-47e5-bb0a-d1b55cbd3f7b" class="input input-bordered w-full" readonly="readonly"></label> <script>function __templ_copyToClipboard`,
 			`{if (window.navigator.clipboard) { navigator.clipboard.writeText(text); copy_button.textContent = "Copied!"; copy_button.setAttribute("disabled", true); copy_button.classList.toggle(".btn-disabled"); } else { alert('Your browser does not support the clipboard feature. Please copy the link manually.'); }}</script><button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick="__templ_copyToClipboard`,
 		})
 	})
