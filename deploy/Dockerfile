@@ -1,9 +1,9 @@
 # Build the application from source
-FROM golang:1.23.0-alpine AS build-stage
+FROM golang:1.24.0-alpine AS build-stage
 
 WORKDIR /app
 
-RUN apk add --update nodejs npm gcc g++ musl-dev git
+RUN apk add --update g++ gcc git musl-dev nodejs npm
 RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
 ENV PATH="/go/bin:${PATH}"

@@ -690,7 +690,7 @@ func TestRecipeSchema_Recipe(t *testing.T) {
 	}
 
 	if !slices.Equal(actualBytes, expectedBytes) {
-		t.Logf(cmp.Diff(*actual, expected))
+		t.Logf("%s", cmp.Diff(*actual, expected))
 		t.Fail()
 	}
 }

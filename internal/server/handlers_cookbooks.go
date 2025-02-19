@@ -663,6 +663,6 @@ func (s *Server) cookbookSharePostHandler() http.HandlerFunc {
 
 		slog.Info("Cookbook shared", userIDAttr, "share", share, "link", link)
 
-		_ = components.ShareLink(templates.Data{Content: link}).Render(r.Context(), w)
+		err = components.ShareLink(templates.Data{Content: link}).Render(r.Context(), w)
 	}
 }

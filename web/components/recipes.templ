@@ -2641,9 +2641,7 @@ templ ShareLink(data templates.Data) {
 		<label>
 			<input type="url" value={ data.Content } class="input input-bordered w-full" readonly="readonly"/>
 		</label>
-		<button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick={ copyToClipboard(data.Content) }>
-			Copy
-		</button>
+		<button id="copy_button" class="btn btn-neutral" title="Copy to clipboard" onClick={ copyToClipboard(data.Content) }>Copy</button>
 	</div>
 }
 

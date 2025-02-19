@@ -47,7 +47,7 @@ func test(t *testing.T, tc testcase) {
 	actual := testFile(t, tc.name, tc.in)
 
 	if !cmp.Equal(actual, tc.want) {
-		t.Logf(cmp.Diff(actual, tc.want))
+		t.Logf("%s", cmp.Diff(actual, tc.want))
 		t.Fatal()
 	}
 	_, err := actual.Recipe()
