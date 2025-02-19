@@ -84,7 +84,7 @@ func TestScraper_Bergamot(t *testing.T) {
 		Video:           &models.Videos{},
 	}
 	if !cmp.Equal(got, want) {
-		t.Logf(cmp.Diff(got, want))
+		t.Logf("%s", cmp.Diff(got, want))
 		t.Fatal()
 	}
 }
@@ -179,7 +179,7 @@ func TestScraper_Gousto(t *testing.T) {
 		Video:        &models.Videos{},
 	}
 	if !cmp.Equal(got, want) {
-		t.Logf(cmp.Diff(got, want))
+		t.Logf("%s", cmp.Diff(got, want))
 		t.Fatal()
 	}
 }
@@ -255,7 +255,7 @@ func TestScraper_MadeWithLau(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(got, want) {
-		t.Logf(cmp.Diff(got, want))
+		t.Logf("%s", cmp.Diff(got, want))
 		t.Fatal()
 	}
 }
