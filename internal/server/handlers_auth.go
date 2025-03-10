@@ -288,13 +288,7 @@ func (s *Server) loginPostHandler() http.HandlerFunc {
 			}
 		}
 
-		redirectURI := "/"
-		c, err := r.Cookie(cookieNameRedirect)
-		if c != nil && !errors.Is(err, http.ErrNoCookie) {
-			redirectURI = c.Value
-		}
-
-		w.Header().Set("HX-Redirect", redirectURI)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }
 

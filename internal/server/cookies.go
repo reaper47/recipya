@@ -11,22 +11,9 @@ import (
 )
 
 const (
-	cookieNameRedirect   = "redirect"
 	cookieNameRememberMe = "remember_me"
 	cookieNameSession    = "session"
 )
-
-// NewRedirectCookie creates a URL redirection cookie for an anonymous user.
-func NewRedirectCookie(uri string) *http.Cookie {
-	return &http.Cookie{
-		Name:     cookieNameRedirect,
-		Value:    uri,
-		Path:     "/",
-		Secure:   app.Config.IsCookieSecure(),
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	}
-}
 
 // NewSessionCookie creates a session cookie for a logged-in user.
 func NewSessionCookie(value string) *http.Cookie {
@@ -71,7 +58,7 @@ func NewRememberMeCookie(selector, validator string) *http.Cookie {
 		Expires:  time.Now().Add(30 * 24 * time.Hour),
 		Secure:   app.Config.IsCookieSecure(),
 		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
 	}
 }
 
