@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/utils/regex"
 	"io"
 	"log/slog"
 	"maps"
@@ -194,16 +193,7 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
-
-		uri := r.URL.Path
-		if uri != "/ws" {
-			_, found := excludedURIs[uri]
-			if found || regex.WildcardURL.MatchString(uri) {
-				uri = "/"
-			}
-			http.SetCookie(w, NewRedirectCookie(uri))
-		}
-
+		
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {
 			ctx := context.WithValue(r.Context(), UserIDKey, userID)

@@ -424,19 +424,6 @@ func TestHandlers_Auth_Login(t *testing.T) {
 		assertHeader(t, rr, "Location", "/")
 	})
 
-	t.Run("redirect to accessed uri after logged in", func(t *testing.T) {
-		otherURI := "/recipes/add"
-		r := httptest.NewRequest(http.MethodPost, uri, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
-		r.Header.Set("Content-Type", string(formHeader))
-		r.AddCookie(server.NewRedirectCookie(otherURI))
-
-		rr := httptest.NewRecorder()
-		srv.Router.ServeHTTP(rr, r)
-
-		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Redirect", otherURI)
-	})
-
 	t.Run("redirect to index if autologin enabled", func(t *testing.T) {
 		app.Config.Server.IsAutologin = true
 		defer func() {
@@ -476,8 +463,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=false"))
 
-		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Redirect", "/")
+		assertStatus(t, rr.Code, http.StatusSeeOther)
 		var (
 			isUserInSession   bool
 			isCookieStoresSID bool
@@ -504,9 +490,7 @@ func TestHandlers_Auth_Login(t *testing.T) {
 
 		rr := sendRequest(srv, http.MethodPost, uri, formHeader, strings.NewReader("email=test@example.com&password=123&remember-me=yes"))
 
-		assertStatus(t, rr.Code, http.StatusOK)
-		assertHeader(t, rr, "HX-Redirect", "/")
-
+		assertStatus(t, rr.Code, http.StatusSeeOther)
 		cookies := rr.Result().Cookies()
 		index := slices.IndexFunc(cookies, func(cookie *http.Cookie) bool { return cookie.Name == "remember_me" })
 		if index == -1 {
