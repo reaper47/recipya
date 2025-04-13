@@ -61,7 +61,7 @@ jobs:
           # ...build this Dockerfile...
           file: ./deploy/Dockerfile
           # ...for the following platforms
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           # Use the `tags` and `labels` parameters to tag and label the Docker image with the output from the "meta" step above
           tags: ${{ steps.meta.outputs.tags }}
