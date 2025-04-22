@@ -3,6 +3,9 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
+	"features": {
+    	"git-lfs": "latest"
+	},
 	"forwardPorts": [
 		8078
 	],
