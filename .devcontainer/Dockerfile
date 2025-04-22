@@ -8,3 +8,4 @@ RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
 RUN CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
 RUN go install github.com/go-task/task/v3/cmd/task@latest
 RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install github.com/pressly/goose/v3/cmd/goose@latest
