@@ -1193,6 +1193,75 @@ func TestScraper_G(t *testing.T) {
 				Video:           &models.Videos{},
 			},
 		},
+		{
+			name: "gutekueche.at",
+			in:   "https://www.gutekueche.at/spargelcremesuppe-rezept-3420",
+			want: models.RecipeSchema{
+				AtContext:     "https://schema.org",
+				AtType:        &models.SchemaType{Value: "Recipe"},
+				Category:      &models.Category{Value: "uncategorized"},
+				CookingMethod: &models.CookingMethod{},
+				Cuisine:       &models.Cuisine{},
+				ThumbnailURL:  &models.ThumbnailURL{},
+				Video:         &models.Videos{},
+				URL:           "https://www.gutekueche.at/spargelcremesuppe-rezept-3420",
+				Name:          "Spargelcremesuppe",
+				CookTime:      "PT45M",
+				PrepTime:      "PT20M",
+				TotalTime:     "PT65M",
+				Description: &models.Description{
+					Value: "Die Spargelcremesuppe schmeckt zart und cremig. Das Rezept bereitet allen Feinschmeckern eine Freude und gelingt garantiert.",
+				},
+				Keywords: &models.Keywords{
+					Values: "Cremesuppen Rezepte,Frühlingsrezepte,Gemüse Rezepte,Spargelrezepte,Suppenrezepte,Frühlingssuppen Rezepte",
+				},
+				Tools: &models.Tools{
+					Values: []models.HowToItem{
+						{Quantity: 1, Text: "Pürierstab - Stabmixer", Type: "HowToTool"},
+						{Quantity: 1, Text: "Zitruspresse", Type: "HowToTool"},
+						{Quantity: 1, Text: "Handmixer", Type: "HowToTool"},
+						{Quantity: 1, Text: "Schüssel", Type: "HowToTool"},
+						{Quantity: 1, Text: "Kochtopf", Type: "HowToTool"},
+					},
+				},
+				Image: &models.Image{Value: anUploadedImage.String()},
+				Ingredients: &models.Ingredients{
+					Values: []string{
+						"500 g Spargel (weiß oder grün)",
+						"500 g Gemüsesuppe bzw. Spargelfond",
+						"30 g Butter",
+						"1 Prise Zucker",
+						"2 EL Mehl",
+						"100 ml Weißwein",
+						"1 Stk Eigelb",
+						"200 ml Schlagobers",
+						"0.5 Stk Zitrone",
+						"3 Prise Muskatnuss",
+						"3 Prise Pfeffer (weiß)",
+						"1 TL Salz",
+					},
+				},
+				Instructions: &models.Instructions{
+					Values: []models.HowToItem{
+						{Type: "HowToStep", Text: "Für die Spargelcremesuppe den Spargel schälen und anschließend die Spitzen abschneiden."},
+						{Type: "HowToStep", Text: "Die Suppe zum Kochen bringen, 1 Teelöffel Butter und eine Prise Zucker zugeben."},
+						{Type: "HowToStep", Text: "Die Spargelstangen ohne Spitzen in 2 cm lange Stücke schneiden und in der Suppe etwa 20 Minuten kochen lassen. Wenn der Spargel weich ist, die Suppe vom Herd nehmen."},
+						{Type: "HowToStep", Text: "Den Spargel in der Suppe mit dem Pürierstab gut pürieren."},
+						{Type: "HowToStep", Text: "Die restliche Butter in einem Topf auf kleiner Flamme zerlassen und das Mehl gleichmäßig darüber stäuben und unter ständigem Rühren goldgelb anschwitzen"},
+						{Type: "HowToStep", Text: "Nun den Weißwein langsam unter ständigem Umrühren dazu gießen und anschließend die Spargelsuppe dazugeben - das Ganze aufkochen, dann die Spargelspitzen hinzugeben und etwa 12 Minuten sanft köcheln."},
+						{Type: "HowToStep", Text: "In der Zwischenzeit das Eigelb mit 100 ml Schlagobers in einer Schüssel verquirlen - den Rest des Schlagobers steif schlagen - und danach die Ei-Obers-Mischung vorsichtig in die Suppe einrühren."},
+						{Type: "HowToStep", Text: "Zum Schluss die Zitrone auspressen. Die Suppe mit dem Zitronensaft, dem Pfeffer, der Muskatnuss und dem Salz abschmecken."},
+					},
+				},
+				NutritionSchema: &models.NutritionSchema{
+					Calories:      "343",
+					Carbohydrates: "10.07",
+					Fat:           "27.20",
+					Protein:       "5.73",
+				},
+				Yield: &models.Yield{Value: 4},
+			},
+		},
 	}
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
