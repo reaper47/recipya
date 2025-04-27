@@ -1,0 +1,13 @@
+--- About this file:
+--- File to insert modifications to the websites table for the next release.
+---
+--- Having all the modifications in one place rather than creating separate .sql migration
+--- for each will reduce the number of files in the migrations directory.
+
+-- +goose Up
+INSERT INTO websites (host, url) 
+VALUES ('gutekueche.at', 'https://www.gutekueche.at/');
+
+-- +goose Down
+DELETE FROM websites
+WHERE host IN ('gutekueche.at');
