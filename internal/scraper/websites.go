@@ -169,6 +169,8 @@ func scrapeWebsite(doc *goquery.Document, host string) (models.RecipeSchema, err
 			return scrapeGrimGrains(doc)
 		case "grouprecipes":
 			return scrapeGrouprecipes(doc)
+		case "gutekueche":
+			return scrapeGutekueche(doc)
 		default:
 			return parseWebsite(doc)
 		}
