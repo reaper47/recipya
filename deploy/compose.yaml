@@ -18,7 +18,9 @@ services:
     ports:
       - "<host-port>:8078"
     volumes:
-      - "recipya-data:/home/recipya/.config/Recipya"
+      # For latest/nightly image:
+      # "recipya-data:/home/recipya/.config/Recipya"
+      - "recipya-data:/root/.config/Recipya"
     # Default to user and group 1000
     user: "${UID:-1000}:${GID:-1000}"
 
