@@ -88,5 +88,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: ./deploy/Dockerfile
           push: true
-          tags: reaper99/recipya:nightly,reaper99/recipya:nightly
+          tags: reaper99/recipya:nightly
           labels: ${{ steps.meta.outputs.labels }}
