@@ -80,7 +80,6 @@ jobs:
         with:
           images: |
             reaper99/recipya:nightly
-            reaper99/recipya:latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -89,5 +88,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: ./deploy/Dockerfile
           push: true
-          tags: reaper99/recipya:nightly,reaper99/recipya:latest
+          tags: reaper99/recipya:nightly
           labels: ${{ steps.meta.outputs.labels }}
