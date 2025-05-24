@@ -108,7 +108,7 @@ func TestHandlers_Integrations_TestConnection(t *testing.T) {
 
 	testcases2 := []testcase{
 		{name: "azure document intelligence", api: "azure-di"},
-		{name: "sendgrid", api: "sg"},
+		{name: "smtp", api: "smtp"},
 	}
 	for _, tc := range testcases2 {
 		t.Run("invalid credentials "+tc.name, func(t *testing.T) {
@@ -133,7 +133,7 @@ func TestHandlers_Integrations_TestConnection(t *testing.T) {
 		toast string
 	}{
 		{name: "azure document intelligence", api: "azure-di", toast: "Azure AI Document Intelligence server connection verified."},
-		{name: "sendgrid", api: "sg", toast: "Twilio SendGrid server connection verified."},
+		{name: "smtp", api: "smtp", toast: "SMTP server connection verified."},
 	}
 	for _, tc := range testcases3 {
 		t.Run("valid credentials "+tc.name, func(t *testing.T) {

@@ -43,7 +43,9 @@ func (s *Server) settingsHandler() http.HandlerFunc {
 		c := app.Config
 		if app.Config.Server.IsDemo {
 			c.Email.From = "demo@demo.com"
-			c.Email.SendGridAPIKey = "demo"
+			c.Email.Host = "smtp.gmail.com"
+			c.Email.Username = "demo@demo.com"
+			c.Email.Password = "demo-password"
 			c.Integrations.AzureDI.Key = "demo"
 			c.Integrations.AzureDI.Endpoint = "https://www.example.com"
 		}
@@ -169,7 +171,9 @@ func (s *Server) settingsConfigPutHandler() http.HandlerFunc {
 
 		if r.Form.Has("email.from") {
 			c.Email.From = r.FormValue("email.from")
-			c.Email.SendGridAPIKey = r.FormValue("email.apikey")
+			c.Email.Host = r.FormValue("email.host")
+			c.Email.Username = r.FormValue("email.username")
+			c.Email.Password = r.FormValue("email.password")
 		}
 
 		err = app.Config.Update(c)

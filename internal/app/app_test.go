@@ -115,8 +115,10 @@ func TestConfigServer_IsCookieSecure(t *testing.T) {
 func TestNewConfig(t *testing.T) {
 	base := app.ConfigFile{
 		Email: app.ConfigEmail{
-			From:           "my@email.com",
-			SendGridAPIKey: "API_KEY",
+			From:     "my@email.com",
+			Host:     "smtp.gmail.com",
+			Username: "my@email.com",
+			Password: "app password",
 		},
 		Integrations: app.ConfigIntegrations{
 			AzureDI: app.AzureDI{
@@ -133,13 +135,15 @@ func TestNewConfig(t *testing.T) {
 	}
 
 	env := map[string]string{
-		"RECIPYA_DI_ENDPOINT":    "https://{resource_di}.cognitiveservices.azure.com",
-		"RECIPYA_DI_KEY":         "KEY_1",
-		"RECIPYA_EMAIL":          "my@email.com",
-		"RECIPYA_EMAIL_SENDGRID": "API_KEY",
-		"RECIPYA_SERVER_IS_DEMO": "false",
-		"RECIPYA_SERVER_IS_PROD": "false",
-		"RECIPYA_SERVER_PORT":    "8078",
+		"RECIPYA_DI_ENDPOINT":         "https://{resource_di}.cognitiveservices.azure.com",
+		"RECIPYA_DI_KEY":              "KEY_1",
+		"RECIPYA_EMAIL":               "my@email.com",
+		"RECIPYA_EMAIL_SMTP_HOST":     "smtp.gmail.com",
+		"RECIPYA_EMAIL_SMTP_USERNAME": "my@email.com",
+		"RECIPYA_EMAIL_SMTP_PASSWORD": "app password",
+		"RECIPYA_SERVER_IS_DEMO":      "false",
+		"RECIPYA_SERVER_IS_PROD":      "false",
+		"RECIPYA_SERVER_PORT":         "8078",
 	}
 
 	t.Run("load from config file", func(t *testing.T) {
@@ -158,12 +162,12 @@ func TestNewConfig(t *testing.T) {
 	})
 
 	t.Run("load from env", func(t *testing.T) {
-		defer func() {
+		t.Cleanup(func() {
 			app.Config = app.ConfigFile{}
 			os.Clearenv()
-		}()
+		})
 		for k, v := range env {
-			_ = os.Setenv(k, v)
+			t.Setenv(k, v)
 		}
 
 		app.NewConfig(nil)

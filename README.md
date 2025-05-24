@@ -77,9 +77,7 @@ Matrix is similar to Discord but is open source.
 
 ## Sponsors
 
-I am grateful for any support that helps me continue to develop this project and to host it reliably. Your sponsorship will 
-help me pay for the SendGrid Essentials plan to increase the number of emails that can be sent. The free plan currently 
-used allows sending up to 100 emails per day.
+I am grateful for any support that motivates me to continue developing this project and to host it reliably.
 
 You can sponsor me on 
 [GitHub Sponsors](https://github.com/sponsors/reaper47) or

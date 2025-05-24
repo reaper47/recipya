@@ -280,10 +280,12 @@ func createConfigFile(path string) error {
 	r := bufio.NewReader(os.Stdin)
 	fmt.Println()
 
-	hasSendGrid := promptUser(r, "Do you have a SendGrid account? If not, important emails will not be sent [Y/n]", "n")
-	if isYes(hasSendGrid) {
-		c.Email.From = promptUser(r, "\tWhat is the email address of your SendGrid account?", "")
-		c.Email.SendGridAPIKey = promptUser(r, "\tWhat is your SendGrid API key?", "")
+	hasSMTPCredentials := promptUser(r, "Do you have access to an SMTP email service? If not, important emails will not be sent [Y/n]", "n")
+	if isYes(hasSMTPCredentials) {
+		c.Email.From = promptUser(r, "\tWhat email address should outgoing emails come from?", "")
+		c.Email.Host = promptUser(r, "\tWhat is the SMTP server host? (e.g. smtp.gmail.com, smtp.protonmail.ch)", "")
+		c.Email.Username = promptUser(r, "\tWhat is your SMTP username? (e.g. your email address)", "")
+		c.Email.Password = promptUser(r, "\tWhat is your SMTP password, app password or API key?", "")
 	}
 
 	hasOCR := promptUser(r, "Do you have an Azure AI Document Intelligence account? If not, OCR features will be disabled. [Y/n]", "n")

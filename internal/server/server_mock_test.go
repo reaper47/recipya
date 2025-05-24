@@ -1126,7 +1126,7 @@ func (m *mockIntegrations) TestConnection(api string) error {
 	}
 
 	switch api {
-	case "azure-di", "sg":
+	case "azure-di", "smtp":
 		return nil
 	default:
 		return errors.New("invalid api")

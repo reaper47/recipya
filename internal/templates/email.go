@@ -9,9 +9,9 @@ type EmailTemplate string
 
 // These constants associate an EmailTemplate with its MJML file.
 const (
-	EmailErrorAdmin     EmailTemplate = "error-admin.mjml"
-	EmailForgotPassword EmailTemplate = "forgot-password.mjml"
-	EmailIntro          EmailTemplate = "intro.mjml"
+	EmailErrorAdmin     EmailTemplate = "error-admin.gohtml"
+	EmailForgotPassword EmailTemplate = "forgot-password.gohtml"
+	EmailIntro          EmailTemplate = "intro.gohtml"
 )
 
 // String represents the email template as a string, being the file name.

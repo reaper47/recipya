@@ -2,12 +2,11 @@ package services
 
 import (
 	"errors"
+	"github.com/k3a/html2text"
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/templates"
-	"github.com/sendgrid/sendgrid-go"
-	"github.com/sendgrid/sendgrid-go/helpers/mail"
-	"jaytaylor.com/html2text"
-	"strconv"
+	"github.com/wneessen/go-mail"
+	"log/slog"
 )
 
 type request struct {
@@ -44,39 +43,12 @@ func (e *Email) Queue(to string, template templates.EmailTemplate, data any) {
 	})
 }
 
-// RateLimits gets the SendGrid API's remaining and reset rate limits.
+// RateLimits gets the SMTP server's remaining and reset rate limits.
 func (e *Email) RateLimits() (remaining int, resetUnix int64, err error) {
-	req := sendgrid.GetRequest(app.Config.Email.SendGridAPIKey, "/v3/templates", "https://api.sendgrid.com")
-
-	res, err := sendgrid.API(req)
-	if err != nil {
-		return -1, -1, err
-	}
-
-	xs, ok := res.Headers["X-Ratelimit-Remaining"]
-	if !ok {
-		return -1, -1, errors.New("cannot find the X-RateLimit-Remaining header")
-	}
-
-	rem, err := strconv.Atoi(xs[0])
-	if err != nil {
-		return -1, -1, err
-	}
-
-	xs, ok = res.Headers["X-Ratelimit-Reset"]
-	if !ok {
-		return -1, -1, errors.New("cannot find the X-RateLimit-Reset header")
-	}
-
-	reset, err := strconv.ParseInt(xs[0], 10, 64)
-	if err != nil {
-		return -1, -1, err
-	}
-
-	return rem, reset, nil
+	return 1000, 1000, nil
 }
 
-// Send sends an email using the SendGrid API.
+// Send sends an email using SMTP.
 func (e *Email) Send(to string, template templates.EmailTemplate, data any) error {
 	r := &request{
 		from:    app.Config.Email.From,
@@ -122,15 +94,38 @@ func (e *Email) SendQueue() (sent, remaining int, err error) {
 }
 
 func (r *request) sendMail() error {
-	text, err := html2text.FromString(r.body, html2text.Options{TextOnly: false})
-	if err != nil {
-		return err
-	}
+	go func() {
+		m := mail.NewMsg()
+		if err := m.From(r.from); err != nil {
+			slog.Error("SendEmail failed to set from", "error", err)
+			return
+		}
+		if err := m.To(r.to); err != nil {
+			slog.Error("SendEmail failed to set to", "error", err)
+			return
+		}
+		m.Subject(r.subject)
+		m.SetBodyString(mail.TypeTextPlain, html2text.HTML2Text(r.body))
+		m.AddAlternativeString(mail.TypeTextHTML, r.body)
 
-	client := sendgrid.NewSendClient(app.Config.Email.SendGridAPIKey)
+		client, err := mail.NewClient(
+			app.Config.Email.Host,
+			mail.WithTLSPortPolicy(mail.TLSMandatory),
+			mail.WithSMTPAuth(mail.SMTPAuthPlain),
+			mail.WithUsername(app.Config.Email.Username),
+			mail.WithPassword(app.Config.Email.Password),
+		)
+		if err != nil {
+			slog.Error("SendEmail failed to create client", "error", err)
+			return
+		}
 
-	from := mail.NewEmail("Recipya", r.from)
-	to := mail.NewEmail(r.subject, r.to)
-	_, err = client.Send(mail.NewSingleEmail(from, r.subject, to, text, r.body))
-	return err
+		err = client.DialAndSend(m)
+		if err != nil {
+			slog.Error("SendEmail failed to send email", "error", err)
+			return
+		}
+	}()
+
+	return nil
 }

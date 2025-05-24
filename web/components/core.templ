@@ -227,7 +227,7 @@ templ settingsConnections(data templates.Data) {
 		<div class="flex justify-between items-center text-sm">
 			<details class="w-full">
 				<summary class="font-semibold cursor-default">
-					Twilio SendGrid
+					SMTP Server
 					<br/>
 					<span class="text-xs font-normal">This connection is used to send emails.</span>
 				</summary>
@@ -236,13 +236,25 @@ templ settingsConnections(data templates.Data) {
 						<span class="label">
 							<span class="label-text text-sm">From</span>
 						</span>
-						<input name="email.from" type="text" placeholder="SendGrid email" value={ data.Settings.Config.Email.From } autocomplete="off" class="input input-bordered input-sm w-full"/>
+						<input name="email.from" type="text" placeholder="SMTP email" value={ data.Settings.Config.Email.From } autocomplete="off" class="input input-bordered input-sm w-full"/>
 					</label>
 					<label class="form-control w-full">
 						<span class="label">
-							<span class="label-text text-sm">SendGrid API key</span>
+							<span class="label-text text-sm">SMTP Host</span>
 						</span>
-						<input name="email.apikey" type="text" placeholder="API key" value={ data.Settings.Config.Email.SendGridAPIKey } autocomplete="off" class="input input-bordered input-sm w-full"/>
+						<input name="email.host" type="text" placeholder="smtp.gmail.com" value={ data.Settings.Config.Email.Host } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">SMTP Username</span>
+						</span>
+						<input name="email.username" type="text" placeholder="email@example.com" value={ data.Settings.Config.Email.Username } autocomplete="off" class="input input-bordered input-sm w-full"/>
+					</label>
+					<label class="form-control w-full">
+						<span class="label">
+							<span class="label-text text-sm">SMTP Password</span>
+						</span>
+						<input name="email.password" type="password" placeholder="SMTP password or app password" value={ data.Settings.Config.Email.Password } autocomplete="off" class="input input-bordered input-sm w-full"/>
 					</label>
 					<button class="btn btn-sm mt-2">Update</button>
 				</form>
