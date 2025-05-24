@@ -120,7 +120,9 @@ func (c *ConfigFile) Update(updated ConfigFile) error {
 	}
 
 	c.Email.From = updated.Email.From
-	c.Email.SendGridAPIKey = updated.Email.SendGridAPIKey
+	c.Email.Host = updated.Email.Host
+	c.Email.Username = updated.Email.Username
+	c.Email.Password = updated.Email.Password
 	c.Integrations.AzureDI.Endpoint = updated.Integrations.AzureDI.Endpoint
 	c.Integrations.AzureDI.Key = updated.Integrations.AzureDI.Key
 	c.Server.IsAutologin = updated.Server.IsAutologin
@@ -153,7 +155,9 @@ func (c *ConfigFile) Update(updated ConfigFile) error {
 		_ = os.Setenv("RECIPYA_DI_ENDPOINT", c.Integrations.AzureDI.Endpoint)
 		_ = os.Setenv("RECIPYA_DI_KEY", c.Integrations.AzureDI.Key)
 		_ = os.Setenv("RECIPYA_EMAIL", c.Email.From)
-		_ = os.Setenv("RECIPYA_EMAIL_SENDGRID", c.Email.SendGridAPIKey)
+		_ = os.Setenv("RECIPYA_EMAIL_SMTP_HOST", c.Email.Host)
+		_ = os.Setenv("RECIPYA_EMAIL_SMTP_USERNAME", c.Email.Username)
+		_ = os.Setenv("RECIPYA_EMAIL_SMTP_PASSWORD", c.Email.Password)
 		_ = os.Setenv("RECIPYA_SERVER_AUTOLOGIN", autologin)
 		_ = os.Setenv("RECIPYA_SERVER_NO_SIGNUPS", noSignups)
 		_ = os.Setenv("RECIPYA_SERVER_IS_PROD", isProd)
@@ -192,8 +196,10 @@ func (c *ConfigFile) IsCookieSecure() bool {
 
 // ConfigEmail holds email configuration variables.
 type ConfigEmail struct {
-	From           string `json:"from"`
-	SendGridAPIKey string `json:"sendGridAPIKey"`
+	From     string `json:"from"`
+	Host     string `json:"host"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 // ConfigIntegrations holds configuration data for 3rd-party services.
@@ -306,8 +312,10 @@ func NewConfig(r io.Reader) {
 
 		Config = ConfigFile{
 			Email: ConfigEmail{
-				From:           os.Getenv("RECIPYA_EMAIL"),
-				SendGridAPIKey: os.Getenv("RECIPYA_EMAIL_SENDGRID"),
+				From:     os.Getenv("RECIPYA_EMAIL"),
+				Host:     os.Getenv("RECIPYA_EMAIL_SMTP_HOST"),
+				Username: os.Getenv("RECIPYA_EMAIL_SMTP_USERNAME"),
+				Password: os.Getenv("RECIPYA_EMAIL_SMTP_PASSWORD"),
 			},
 			Integrations: ConfigIntegrations{
 				AzureDI: AzureDI{

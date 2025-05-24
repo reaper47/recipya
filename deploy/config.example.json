@@ -1,7 +1,9 @@
 {
 	"email": {
 		"from": "my@email.com",
-		"sendGridAPIKey": "API_KEY"
+		"host": "smtp.gmail.com",
+		"username": "my@email.com",
+		"password": "app password",
 	},
 	"integrations": {
 		"azureDocumentIntelligence": {

@@ -179,9 +179,9 @@ func (s *Server) forgotPasswordPostHandler(w http.ResponseWriter, r *http.Reques
 			slog.Error("Failed to send email", "data", data, "error", err)
 			s.Email.Queue(email, templates.EmailForgotPassword, data)
 
-			const content = "The email could not be sent because the SendGrid daily sent email quota has been reached. " +
+			const content = "The email could not be sent because the SMTP daily quota has been reached. " +
 				"The action has been logged. The next batch of emails will be sent tomorrow. " +
-				"You can sponsor the author of this project or buy him a coffee for him to have enough money to purchase the paid SendGrid plan to increase the limit. " +
+				"You can sponsor the author of this project to increase the limit. " +
 				"You will find the details here: https://github.com/reaper47/heavy-metal-notifier?tab=readme-ov-file#sponsors."
 
 			_ = components.SimplePage("Email Quota Reached", content).Render(r.Context(), w)

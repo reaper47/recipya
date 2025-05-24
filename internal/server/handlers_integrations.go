@@ -118,8 +118,8 @@ func (s *Server) integrationTestConnectionHandler() http.HandlerFunc {
 		switch api {
 		case "azure-di":
 			msg = "Azure AI Document Intelligence"
-		case "sg":
-			msg = "Twilio SendGrid"
+		case "smtp":
+			msg = "SMTP"
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 			return

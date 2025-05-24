@@ -206,10 +206,10 @@ type EmailService interface {
 	// Queue adds an unsent email to the queue.
 	Queue(to string, template templates.EmailTemplate, data any)
 
-	// RateLimits gets the SendGrid API's remaining and reset rate limits.
+	// RateLimits gets the SMTP server's remaining and reset rate limits.
 	RateLimits() (remaining int, resetUnix int64, err error)
 
-	// Send sends an email using the SendGrid API.
+	// Send sends an email using SMTP.
 	Send(to string, template templates.EmailTemplate, data any) error
 
 	// SendQueue sends emails in the queue until the rate limit has been reached.

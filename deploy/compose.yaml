@@ -6,7 +6,9 @@ services:
     restart: unless-stopped
     environment:
       RECIPYA_EMAIL: "my@email.com"
-      RECIPYA_EMAIL_SENDGRID: "API_KEY"
+      RECIPYA_EMAIL_SMTP_HOST: "smtp.gmail.com"
+      RECIPYA_EMAIL_SMTP_USERNAME: "my@email.com"
+      RECIPYA_EMAIL_SMTP_PASSWORD: "app password"
       RECIPYA_DI_KEY: "KEY_1"
       RECIPYA_DI_ENDPOINT: "https://{resource}.cognitiveservices.azure.com/"
       RECIPYA_SERVER_AUTOLOGIN: false
@@ -18,10 +20,9 @@ services:
     ports:
       - "<host-port>:8078"
     volumes:
-      # For latest/nightly image:
+      # For nightly image:
       # "recipya-data:/home/recipya/.config/Recipya"
       - "recipya-data:/root/.config/Recipya"
-    # Default to user and group 1000
     user: "${UID:-1000}:${GID:-1000}"
 
 volumes:

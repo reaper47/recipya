@@ -2,18 +2,19 @@ package services
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/integrations"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/sendgrid/sendgrid-go"
-	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"github.com/wneessen/go-mail"
 	"io"
 	"log/slog"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/integrations"
+	"github.com/reaper47/recipya/internal/models"
 )
 
 // NewIntegrationsService creates a new Integrations that satisfies the IntegrationsService interface.
@@ -193,15 +194,24 @@ func (i Integrations) TestConnection(api string) error {
 			return errConnFailed
 		}
 		return nil
-	case "sg":
-		client := sendgrid.NewSendClient(app.Config.Email.SendGridAPIKey)
-		res, err := client.Send(mail.NewSingleEmail(mail.NewEmail("", ""), "", mail.NewEmail("", ""), "", ""))
+	case "smtp":
+		client, err := mail.NewClient(
+			app.Config.Email.Host,
+			mail.WithTLSPortPolicy(mail.TLSMandatory),
+			mail.WithSMTPAuth(mail.SMTPAuthPlain),
+			mail.WithUsername(app.Config.Email.Username),
+			mail.WithPassword(app.Config.Email.Password),
+		)
 		if err != nil {
-			slog.Error("Failed to send request", apiAttr, "error", err)
+			slog.Error("Failed to create SMTP client", apiAttr, "error", err)
 			return err
 		}
 
-		if res.StatusCode == http.StatusUnauthorized || res.StatusCode == http.StatusNotFound {
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+
+		err = client.DialWithContext(ctx)
+		if err != nil {
 			return errConnFailed
 		}
 		return nil

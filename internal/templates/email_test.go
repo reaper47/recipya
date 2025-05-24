@@ -13,9 +13,9 @@ var emailTemplates = []templates.EmailTemplate{
 
 func TestEmailTemplate_String(t *testing.T) {
 	want := []string{
-		"error-admin.mjml",
-		"forgot-password.mjml",
-		"intro.mjml",
+		"error-admin.gohtml",
+		"forgot-password.gohtml",
+		"intro.gohtml",
 	}
 	for i, template := range emailTemplates {
 		got := template.String()
