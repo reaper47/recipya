@@ -19,6 +19,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/jdkato/prose/v2 v2.0.0
 	github.com/jung-kurt/gofpdf v1.16.2
+	github.com/k3a/html2text v1.2.1
 	github.com/neurosnap/sentences v1.1.2
 	github.com/pdfcpu/pdfcpu v0.10.2
 	github.com/pressly/goose/v3 v3.24.3
@@ -40,13 +41,12 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/ebitengine/purego v0.8.4 // indirect
 	github.com/fatih/color v1.18.0 // indirect
-	github.com/go-chi/chi/v5 v5.0.11 // indirect
+	github.com/go-chi/chi/v5 v5.2.2 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hhrutter/lzw v1.0.0 // indirect
 	github.com/hhrutter/pkcs7 v0.2.0 // indirect
 	github.com/hhrutter/tiff v1.0.2 // indirect
-	github.com/k3a/html2text v1.2.1 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/lestrrat-go/blackmagic v1.0.3 // indirect
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect
