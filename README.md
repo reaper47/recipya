@@ -17,6 +17,13 @@ It is focused on simplicity for the whole family to enjoy.
 
 ![Recipe page screenshot](.github/screenshot-recipes.webp)
 
+## :warning: Important Note
+
+The [Recipya](https://github.com/reaper47/recipya) project is currently being rewritten in Rust as
+announced [here](https://github.com/reaper47/recipya/discussions/422). The Rust project is not ready for production nor
+to selfhost.
+The user interface should look better than the original.
+
 ## Features
 
 - Manage your favorite recipes
