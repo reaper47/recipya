@@ -11,6 +11,7 @@ import (
 	"slices"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -92,7 +93,7 @@ func cleanMedia(dir fs.FS, used []string, rmFileFunc func(path string) error) (n
 	sort.Strings(used)
 
 	_ = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, _ error) error {
-		if path == "." || d.IsDir() {
+		if path == "." || d.IsDir() || strings.HasPrefix(d.Name(), "placeholder.") {
 			return nil
 		}
 

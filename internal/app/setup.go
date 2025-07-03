@@ -28,6 +28,7 @@ func setup() {
 	setupConfigFile()
 	verifyMedia()
 	verifyExtraSoftware()
+	movePlaceholders()
 
 	fmt.Println("Recipya is properly set up")
 }
@@ -100,8 +101,12 @@ func moveFileStructure() {
 	}
 
 	// Move placeholder.webp to images dir
+	movePlaceholders()
+}
+
+func movePlaceholders() {
 	placeholdersDir := filepath.Join(ImagesDir, "Placeholders")
-	err = os.MkdirAll(placeholdersDir, os.ModePerm)
+	err := os.MkdirAll(placeholdersDir, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
@@ -135,6 +140,9 @@ func moveFileStructure() {
 		defer fCookbook.Close()
 
 		io.Copy(fCookbook, openFileCookbook)
+		fmt.Println(greenText("OK") + " Placeholders in user data directory")
+	} else {
+		fmt.Println(greenText("OK") + " Placeholders in user data directory")
 	}
 }
 
