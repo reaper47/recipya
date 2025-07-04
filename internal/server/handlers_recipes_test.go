@@ -439,7 +439,7 @@ func TestHandlers_Recipes_AddOCR(t *testing.T) {
 		rr := sendReq("hello.jpg")
 
 		assertStatus(t, rr.Code, http.StatusAccepted)
-		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Recipes could not be added.","title":"Database Error"}}`
+		want := `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"OCR failed. Recipes could not be added: oops","title":"Database Error"}}`
 		assertWebsocket(t, c, 3, want)
 	})
 

@@ -501,7 +501,8 @@ func (s *Server) recipesAddOCRHandler() http.HandlerFunc {
 			recipeIDs, _, err := s.Repository.AddRecipes(recipes, id, nil)
 			if err != nil {
 				s.Brokers.HideNotification(id)
-				s.Brokers.SendToast(models.NewErrorDBToast("Recipes could not be added."), id)
+				msg := fmt.Sprintf("OCR failed. Recipes could not be added: %v", err.Error())
+				s.Brokers.SendToast(models.NewErrorDBToast(msg), id)
 				return
 			}
 
