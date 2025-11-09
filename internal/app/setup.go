@@ -6,20 +6,22 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/briandowns/spinner"
-	"github.com/disintegration/imaging"
-	"github.com/gen2brain/webp"
-	"github.com/reaper47/recipya/web"
 	"image/jpeg"
 	"io"
 	"net"
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/briandowns/spinner"
+	"github.com/disintegration/imaging"
+	"github.com/gen2brain/webp"
+	"github.com/reaper47/recipya/web"
 )
 
 func setup() {
@@ -29,6 +31,7 @@ func setup() {
 	verifyMedia()
 	verifyExtraSoftware()
 	movePlaceholders()
+	moveIcons()
 
 	fmt.Println("Recipya is properly set up")
 }
@@ -102,6 +105,9 @@ func moveFileStructure() {
 
 	// Move placeholder.webp to images dir
 	movePlaceholders()
+
+	// Move icon placeholders to images dir
+	moveIcons()
 }
 
 func movePlaceholders() {
@@ -144,6 +150,56 @@ func movePlaceholders() {
 	} else {
 		fmt.Println(greenText("OK") + " Placeholders in user data directory")
 	}
+}
+
+func moveIcons() {
+	iconsDir := filepath.Join(ImagesDir, "Icons")
+	err := os.MkdirAll(iconsDir, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	// Try to copy embedded default icons from the static filesystem.
+	files, err := web.StaticFS.ReadDir("static/img/icons")
+	if err != nil {
+		panic(err)
+	}
+
+	for _, f := range files {
+		if f.IsDir() {
+			continue
+		}
+		name := f.Name()
+
+		// check if file already exists
+		_, err := os.Stat(filepath.Join(iconsDir, name))
+		if err == nil {
+			continue
+		}
+
+		// copy file from embedded filesystem to iconsDir as it is missing
+		// srcPath := filepath.Join("static/img/icons", name)
+		srcPath := path.Join("static", "img", "icons", name)
+		src, err := web.StaticFS.Open(srcPath)
+		if err != nil {
+			panic(err)
+		}
+
+		dstPath := filepath.Join(iconsDir, name)
+		dst, err := os.Create(dstPath)
+		if err != nil {
+			_ = src.Close()
+			panic(err)
+		}
+
+		_, err = io.Copy(dst, src)
+		if err != nil {
+			panic(err)
+		}
+		_ = dst.Close()
+		_ = src.Close()
+	}
+	fmt.Println(greenText("OK") + " Icons in user data directory")
 }
 
 func moveFiles(srcDir, destDir string) error {
