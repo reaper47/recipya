@@ -8,18 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/blang/semver"
-	"github.com/disintegration/imaging"
-	"github.com/gen2brain/webp"
-	"github.com/google/go-github/v59/github"
-	"github.com/google/uuid"
-	"github.com/jung-kurt/gofpdf"
-	"github.com/pdfcpu/pdfcpu/pkg/api"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/services/statements"
-	"github.com/reaper47/recipya/internal/templates"
-	_ "golang.org/x/image/webp" // Import the WebP package to decode the WebP format.
 	"image"
 	"io"
 	"io/fs"
@@ -38,6 +26,19 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/blang/semver"
+	"github.com/disintegration/imaging"
+	"github.com/gen2brain/webp"
+	"github.com/google/go-github/v59/github"
+	"github.com/google/uuid"
+	"github.com/jung-kurt/gofpdf"
+	"github.com/pdfcpu/pdfcpu/pkg/api"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/services/statements"
+	"github.com/reaper47/recipya/internal/templates"
+	_ "golang.org/x/image/webp" // Import the WebP package to decode the WebP format.
 )
 
 const (
@@ -479,17 +480,17 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 
 				file, err := os.ReadFile(filepath.Join(app.ImagesDir, fileName))
 				if err != nil {
-					return nil, err
+					continue
 				}
 
 				out, err = writer.Create(e.recipeName + "/" + fileName)
 				if err != nil {
-					return nil, err
+					continue
 				}
 
 				_, err = out.Write(file)
 				if err != nil {
-					return nil, err
+					continue
 				}
 			}
 
@@ -499,17 +500,17 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 
 				file, err := os.ReadFile(filepath.Join(app.VideosDir, fileName))
 				if err != nil {
-					return nil, err
+					continue
 				}
 
 				out, err = writer.Create(e.recipeName + "/" + fileName)
 				if err != nil {
-					return nil, err
+					continue
 				}
 
 				_, err = out.Write(file)
 				if err != nil {
-					return nil, err
+					continue
 				}
 			}
 		}
