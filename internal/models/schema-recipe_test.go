@@ -754,51 +754,51 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 		switch k {
 		case "@context":
 			if v != rs.AtContext {
-				t.Errorf("got @context %q; want %q", v, rs.AtContext)
+				t.Errorf("got @context %v; want %v", v, rs.AtContext)
 			}
 		case "@type":
 			if v.(string) != rs.AtType.Value {
-				t.Errorf("got @type %q; want %q", v, rs.AtType)
+				t.Errorf("got @type %v; want %v", v, rs.AtType)
 			}
 		case "recipeCategory":
 			if v.(string) != rs.Category.Value {
-				t.Errorf("got recipeCategory %q; want %q", v, rs.Category.Value)
+				t.Errorf("got recipeCategory %v; want %v", v, rs.Category.Value)
 			}
 		case "cookTime":
 			if v.(string) != rs.CookTime {
-				t.Errorf("got recipeCategory %q; want %q", v, rs.CookTime)
+				t.Errorf("got recipeCategory %v; want %v", v, rs.CookTime)
 			}
 		case "cookingMethod":
 			if v.(string) != rs.CookingMethod.Value {
-				t.Errorf("got cookingMethod %q; want %q", v, rs.CookingMethod.Value)
+				t.Errorf("got cookingMethod %v; want %v", v, rs.CookingMethod.Value)
 			}
 		case "recipeCuisine":
 			if v.(string) != rs.Cuisine.Value {
-				t.Errorf("got recipeCuisine %q; want %q", v, rs.Cuisine.Value)
+				t.Errorf("got recipeCuisine %v; want %v", v, rs.Cuisine.Value)
 			}
 		case "dateCreated":
 			if v.(string) != rs.DateCreated {
-				t.Errorf("got dateCreated %q; want %q", v, rs.DateCreated)
+				t.Errorf("got dateCreated %v; want %v", v, rs.DateCreated)
 			}
 		case "dateModified":
 			if v.(string) != rs.DateModified {
-				t.Errorf("got dateModified %q; want %q", v, rs.DateModified)
+				t.Errorf("got dateModified %v; want %v", v, rs.DateModified)
 			}
 		case "datePublished":
 			if v.(string) != rs.DatePublished {
-				t.Errorf("got datePublished %q; want %q", v, rs.DatePublished)
+				t.Errorf("got datePublished %v; want %v", v, rs.DatePublished)
 			}
 		case "description":
 			if v.(string) != rs.Description.Value {
-				t.Errorf("got description %q; want %q", v, rs.Description.Value)
+				t.Errorf("got description %v; want %v", v, rs.Description.Value)
 			}
 		case "keywords":
 			if v.(string) != rs.Keywords.Values {
-				t.Errorf("got keywords %q; want %q", v, rs.Keywords.Values)
+				t.Errorf("got keywords %v; want %v", v, rs.Keywords.Values)
 			}
 		case "image":
 			if v.(string) != rs.Image.Value {
-				t.Errorf("got image %q; want %q", v, rs.Image.Value)
+				t.Errorf("got image %v; want %v", v, rs.Image.Value)
 			}
 		case "recipeIngredient":
 			xa := v.([]any)
@@ -807,7 +807,7 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 				xs = append(xs, a.(string))
 			}
 			if !slices.Equal(xs, rs.Ingredients.Values) {
-				t.Errorf("got recipeIngredient %q; want %q", v, rs.Ingredients.Values)
+				t.Errorf("got recipeIngredient %v; want %v", v, rs.Ingredients.Values)
 			}
 		case "recipeInstructions":
 			xa := v.([]any)
@@ -821,22 +821,22 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 			}
 
 			if !slices.Equal(xv, rs.Instructions.Values) {
-				t.Errorf("got recipeInstructions %q; want %q", xv, rs.Instructions.Values)
+				t.Errorf("got recipeInstructions %v; want %v", xv, rs.Instructions.Values)
 			}
 		case "name":
 			if v.(string) != rs.Name {
-				t.Errorf("got name %q; want %q", v, rs.Name)
+				t.Errorf("got name %v; want %v", v, rs.Name)
 			}
 		case "nutrition":
 			var want map[string]any
 			b, _ := json.Marshal(&rs.NutritionSchema)
 			_ = json.Unmarshal(b, &want)
 			if !cmp.Equal(v.(map[string]any), want) {
-				t.Errorf("got nutrition %q; want %q", v, want)
+				t.Errorf("got nutrition %v; want %v", v, want)
 			}
 		case "prepTime":
 			if v.(string) != rs.PrepTime {
-				t.Errorf("got prepTime %q; want %q", v, rs.PrepTime)
+				t.Errorf("got prepTime %v; want %v", v, rs.PrepTime)
 			}
 		case "thumbnailUrl":
 			want := "/data/images/thumbnails/" + rs.ThumbnailURL.Value
@@ -846,7 +846,7 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 				s = "/" + after
 			}
 			if s != want {
-				t.Errorf("got thumbnailURL %q; want %q", v, rs.ThumbnailURL.Value)
+				t.Errorf("got thumbnailURL %v; want %v", v, rs.ThumbnailURL.Value)
 			}
 		case "tool":
 			xa := v.([]any)
@@ -863,18 +863,18 @@ func TestRecipeSchema_Marshal(t *testing.T) {
 			}
 		case "totalTime":
 			if v.(string) != rs.TotalTime {
-				t.Errorf("got totalTime %q; want %q", v, rs.TotalTime)
+				t.Errorf("got totalTime %v; want %v", v, rs.TotalTime)
 			}
 		case "recipeYield":
 			if int16(v.(float64)) != rs.Yield.Value {
-				t.Errorf("got recipeYield %q; want %q", v, rs.Yield.Value)
+				t.Errorf("got recipeYield %v; want %v", v, rs.Yield.Value)
 			}
 		case "url":
 			if v.(string) != rs.URL {
-				t.Errorf("got url %q; want %q", v, rs.URL)
+				t.Errorf("got url %v; want %v", v, rs.URL)
 			}
 		default:
-			t.Errorf("invalid key %q", k)
+			t.Errorf("invalid key %v", k)
 		}
 	}
 }

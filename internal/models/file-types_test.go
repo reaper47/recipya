@@ -1,8 +1,9 @@
 package models_test
 
 import (
-	"github.com/reaper47/recipya/internal/models"
 	"testing"
+
+	"github.com/reaper47/recipya/internal/models"
 )
 
 func TestFileType_Ext(t *testing.T) {
@@ -24,7 +25,7 @@ func TestFileType_Ext(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			got := tc.in.Ext()
 			if got != tc.want {
-				t.Fatalf("got %q but want %q", got, tc.want)
+				t.Fatalf("got %v but want %v", got, tc.want)
 			}
 		})
 	}
@@ -49,7 +50,7 @@ func TestNewFileType(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			got := models.NewFileType(tc.in)
 			if got != tc.want {
-				t.Fatalf("got %q but want %q", got, tc.want)
+				t.Fatalf("got %v but want %v", got, tc.want)
 			}
 		})
 	}
