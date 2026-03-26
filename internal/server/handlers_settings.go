@@ -237,7 +237,6 @@ func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 				s.Brokers.SendToast(models.NewWarningToast("No recipes in database.", "", ""), userID)
 				return
 			}
-			slog.Info("Found recipes", "userID", userID, "numRecipes", len(recipes))
 
 			var (
 				iter       = make(chan int)
