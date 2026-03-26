@@ -2,9 +2,10 @@ package server
 
 import (
 	"errors"
-	"github.com/reaper47/recipya/web"
+	"fmt"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -17,11 +18,52 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
+
 	"github.com/reaper47/recipya/internal/app"
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
+	"github.com/reaper47/recipya/web"
 	"github.com/reaper47/recipya/web/components"
 )
+
+var (
+	forbiddenIPv4Ranges = mustParseCIDRs([]string{
+		"127.0.0.0/8",     // Loopback
+		"10.0.0.0/8",      // Private
+		"172.16.0.0/12",   // Private
+		"192.168.0.0/16",  // Private
+		"169.254.0.0/16",  // Link-local + cloud metadata (169.254.169.254)
+		"100.64.0.0/10",   // CGN / shared address space
+		"0.0.0.0/8",       // Unspecified
+		"192.0.2.0/24",    // TEST-NET-1 (RFC 5737)
+		"198.51.100.0/24", // TEST-NET-2 (RFC 5737)
+		"203.0.113.0/24",  // TEST-NET-3 (RFC 5737)
+		"198.18.0.0/15",   // Benchmarking (RFC 2544)
+		"224.0.0.0/4",     // Multicast
+		"240.0.0.0/4",     // Reserved / future (includes broadcast 255.255.255.255)
+	})
+
+	forbiddenIPv6Ranges = mustParseCIDRs([]string{
+		"::1/128",       // Loopback
+		"::/128",        // Unspecified
+		"fe80::/10",     // Link-local
+		"fc00::/7",      // Unique-local (includes fd00::/8)
+		"ff00::/8",      // Multicast
+		"::ffff:0:0/96", // IPv4-mapped — validates the embedded v4 separately
+	})
+)
+
+func mustParseCIDRs(cidrs []string) []*net.IPNet {
+	nets := make([]*net.IPNet, 0, len(cidrs))
+	for _, cidr := range cidrs {
+		_, ipNet, err := net.ParseCIDR(cidr)
+		if err != nil {
+			panic(fmt.Sprintf("invalid CIDR %q: %v", cidr, err))
+		}
+		nets = append(nets, ipNet)
+	}
+	return nets
+}
 
 func (s *Server) downloadHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +93,13 @@ func (s *Server) fetchHandler() http.HandlerFunc {
 			return
 		}
 
+		if err := validateNoSSRF(parsed); err != nil {
+			slog.Warn("fetch handler: blocked by SSRF guard", "url", rawURL, "reason", err)
+			s.Brokers.SendToast(models.NewErrorGeneralToast("Invalid URL."), userID)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		res, err := http.Get(rawURL)
 		if err != nil {
 			s.Brokers.SendToast(models.NewErrorGeneralToast("Could not fetch URL."), userID)
@@ -62,6 +111,62 @@ func (s *Server) fetchHandler() http.HandlerFunc {
 		w.Header().Set("Content-Type", res.Header.Get("Content-Type"))
 		io.Copy(w, res.Body)
 	}
+}
+
+func validateNoSSRF(parsed *url.URL) error {
+	host := parsed.Hostname()
+
+	if ip := net.ParseIP(host); ip != nil {
+		if isForbiddenIP(ip) {
+			return fmt.Errorf("forbidden IP address: %s", ip)
+		}
+		return nil
+	}
+
+	addrs, err := net.LookupHost(host)
+	if err != nil {
+		return fmt.Errorf("DNS resolution failed: %w", err)
+	}
+	if len(addrs) == 0 {
+		return fmt.Errorf("DNS resolution returned no addresses")
+	}
+
+	for _, addr := range addrs {
+		ip := net.ParseIP(addr)
+		if ip == nil {
+			continue
+		}
+		if isForbiddenIP(ip) {
+			return fmt.Errorf("forbidden IP address in DNS response: %s", ip)
+		}
+	}
+
+	return nil
+}
+
+func isForbiddenIP(ip net.IP) bool {
+	if v4 := ip.To4(); v4 != nil {
+		return isForbiddenIPv4(v4)
+	}
+	return isForbiddenIPv6(ip)
+}
+
+func isForbiddenIPv4(ip net.IP) bool {
+	for _, cidr := range forbiddenIPv4Ranges {
+		if cidr.Contains(ip) {
+			return true
+		}
+	}
+	return false
+}
+
+func isForbiddenIPv6(ip net.IP) bool {
+	for _, cidr := range forbiddenIPv6Ranges {
+		if cidr.Contains(ip) {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
