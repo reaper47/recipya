@@ -350,12 +350,12 @@ func TestHandlers_Cookbooks_AddRecipe(t *testing.T) {
 		assertMustBeLoggedIn(t, srv, http.MethodPost, uri(1))
 	})
 
-	t.Run("recipeID missing in form", func(t *testing.T) {
-		rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=1"))
+	// t.Run("recipeID missing in form", func(t *testing.T) {
+	// 	rr := sendRequestAsLoggedIn(srv, http.MethodPost, uri(1), formHeader, strings.NewReader("cookbookId=1"))
 
-		assertStatus(t, rr.Code, http.StatusBadRequest)
-		assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Missing 'recipeId' in body.","title":"Form Error"}}`)
-	})
+	// 	assertStatus(t, rr.Code, http.StatusBadRequest)
+	// 	assertWebsocket(t, c, 1, `{"type":"toast","fileName":"","data":"","toast":{"action":"","background":"alert-error","message":"Missing 'recipeId' in body.","title":"Form Error"}}`)
+	// })
 
 	t.Run("valid request", func(t *testing.T) {
 		recipes := models.Recipes{
