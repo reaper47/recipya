@@ -1069,15 +1069,6 @@ templ loadRecipesManualScripts() {
                      return v.toString(16);
                  });
             }
-            fetch(url)
-                .then(response => response.blob())
-                .then(blob => {
-                    const file = new File([blob], uuid, { type: blob.type });
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    input.files = dataTransfer.files;
-                    input.dispatchEvent(new Event('change'));
-                });
         }
 
         function addItem(event) {
