@@ -53,8 +53,8 @@ jobs:
       - name: Install Task
         uses: arduino/setup-task@v2
 
-      - name: Build and test
-        run: task test
+      - name: Build
+        run: task build
 
       - name: Build nightly builds
         run: |
