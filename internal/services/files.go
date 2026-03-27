@@ -464,7 +464,7 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 			}
 
 			// Add recipe to zip
-			e.recipeName = strings.ReplaceAll(e.recipeName, "/", "_")
+			e.recipeName = strings.ReplaceAll(e.recipeName, "/", "O_O")
 			out, err := writer.Create(e.recipeName + "/recipe" + fileType.Ext())
 			if err != nil {
 				return nil, err
