@@ -2,13 +2,6 @@ package scraper_test
 
 import (
 	"bytes"
-	"github.com/blang/semver"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v59/github"
-	"github.com/google/uuid"
-	"github.com/reaper47/recipya/internal/models"
-	"github.com/reaper47/recipya/internal/scraper"
-	"github.com/reaper47/recipya/internal/services"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -19,6 +12,14 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/blang/semver"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-github/v59/github"
+	"github.com/google/uuid"
+	"github.com/reaper47/recipya/internal/models"
+	"github.com/reaper47/recipya/internal/scraper"
+	"github.com/reaper47/recipya/internal/services"
 )
 
 const atContext = "https://schema.org"
@@ -176,7 +177,7 @@ func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.Fil
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, cookbooks []models.Cookbook, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
 	var sb strings.Builder
 	for _, recipe := range recipes {
 		sb.WriteString(recipe.Name + "-")

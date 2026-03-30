@@ -238,17 +238,21 @@ func (s *Server) settingsExportRecipesHandler() http.HandlerFunc {
 				return
 			}
 
+			cookbooks, err := s.Repository.CookbooksUser(userID)
+			if err != nil {
+				slog.Error("Failed to get cookbooks", "userID", userID, "error", err)
+			}
+
 			var (
 				iter       = make(chan int)
 				errors     = make(chan error, 1)
 				numRecipes = len(recipes)
-				err        error
 			)
 
 			var data *bytes.Buffer
 			go func() {
 				defer close(iter)
-				data, err = s.Files.ExportRecipes(recipes, fileType, iter)
+				data, err = s.Files.ExportRecipes(recipes, cookbooks, fileType, iter)
 				if err != nil {
 					errors <- err
 					return

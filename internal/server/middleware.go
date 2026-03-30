@@ -193,7 +193,7 @@ func (s *Server) mustBeLoggedInMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r.WithContext(ctx))
 			return
 		}
-		
+
 		userID := getUserIDFromSessionCookie(r)
 		if userID != -1 {
 			ctx := context.WithValue(r.Context(), UserIDKey, userID)

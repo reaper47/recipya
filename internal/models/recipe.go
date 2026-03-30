@@ -61,23 +61,23 @@ func NewBaseRecipe() Recipe {
 
 // Recipe is the struct that holds a recipe's information.
 type Recipe struct {
-	Category     string
-	CreatedAt    time.Time
-	Cuisine      string
-	Description  string
-	ID           int64
-	Images       []uuid.UUID
-	Ingredients  []string
-	Instructions []string
-	Keywords     []string
-	Name         string
-	Nutrition    Nutrition
-	Times        Times
-	Tools        []HowToItem
-	UpdatedAt    time.Time
-	URL          string
-	Videos       []VideoObject
-	Yield        int16
+	Category     string        `toml:"-"`
+	CreatedAt    time.Time     `toml:"-"`
+	Cuisine      string        `toml:"-"`
+	Description  string        `toml:"-"`
+	ID           int64         `toml:"-"`
+	Images       []uuid.UUID   `toml:"-"`
+	Ingredients  []string      `toml:"-"`
+	Instructions []string      `toml:"-"`
+	Keywords     []string      `toml:"-"`
+	Name         string        `toml:"name"`
+	Nutrition    Nutrition     `toml:"-"`
+	Times        Times         `toml:"-"`
+	Tools        []HowToItem   `toml:"-"`
+	UpdatedAt    time.Time     `toml:"-"`
+	URL          string        `toml:"-"`
+	Videos       []VideoObject `toml:"-"`
+	Yield        int16         `toml:"-"`
 }
 
 // ConvertMeasurementSystem converts a recipe to another units.System.

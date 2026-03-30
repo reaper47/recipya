@@ -4,6 +4,15 @@ import (
 	"bytes"
 	"database/sql"
 	"errors"
+	"io"
+	"log/slog"
+	"mime/multipart"
+	"os"
+	"slices"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/blang/semver"
 	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
@@ -13,14 +22,6 @@ import (
 	"github.com/reaper47/recipya/internal/services"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
-	"io"
-	"log/slog"
-	"mime/multipart"
-	"os"
-	"slices"
-	"strings"
-	"sync"
-	"time"
 )
 
 var mutex *sync.Mutex
@@ -1025,7 +1026,7 @@ func (m *mockFiles) ExportCookbook(cookbook models.Cookbook, fileType models.Fil
 	return cookbook.Title + fileType.Ext(), nil
 }
 
-func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
+func (m *mockFiles) ExportRecipes(recipes models.Recipes, _ []models.Cookbook, _ models.FileType, _ chan int) (*bytes.Buffer, error) {
 	var b bytes.Buffer
 	for _, recipe := range recipes {
 		b.WriteString(recipe.Name + "-")

@@ -3,6 +3,7 @@ module github.com/reaper47/recipya
 go 1.26.0
 
 require (
+	github.com/BurntSushi/toml v1.6.0
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/a-h/templ v0.3.1001
 	github.com/blang/semver v3.5.1+incompatible

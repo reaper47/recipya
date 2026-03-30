@@ -2,8 +2,9 @@ package models
 
 import (
 	"cmp"
-	"github.com/google/uuid"
 	"slices"
+
+	"github.com/google/uuid"
 )
 
 type count struct {
@@ -11,13 +12,17 @@ type count struct {
 	hits int
 }
 
+type Cookbooks struct {
+	Cookbooks []Cookbook `toml:"cookbooks"`
+}
+
 // Cookbook is the struct that holds information on a cookbook.
 type Cookbook struct {
-	ID      int64
-	Count   int64
-	Image   uuid.UUID
-	Recipes Recipes
-	Title   string
+	ID      int64     `toml:"id"`
+	Count   int64     `toml:"count"`
+	Image   uuid.UUID `toml:"image"`
+	Recipes Recipes   `toml:"recipes"`
+	Title   string    `toml:"title"`
 }
 
 // DominantCategories returns the `n` most common categories of recipes in the cookbook.

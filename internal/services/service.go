@@ -2,6 +2,11 @@ package services
 
 import (
 	"bytes"
+	"io"
+	"mime/multipart"
+	"net/http"
+	"time"
+
 	"github.com/blang/semver"
 	"github.com/google/go-github/v59/github"
 	"github.com/google/uuid"
@@ -9,10 +14,6 @@ import (
 	"github.com/reaper47/recipya/internal/models"
 	"github.com/reaper47/recipya/internal/templates"
 	"github.com/reaper47/recipya/internal/units"
-	"io"
-	"mime/multipart"
-	"net/http"
-	"time"
 )
 
 // RepositoryService is the interface that describes the methods required for managing the main data store.
@@ -235,7 +236,7 @@ type FilesService interface {
 	ExportCookbook(cookbook models.Cookbook, fileType models.FileType) (string, error)
 
 	// ExportRecipes creates a zip containing the recipes to export in the desired file type.
-	ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error)
+	ExportRecipes(recipes models.Recipes, cookbooks []models.Cookbook, fileType models.FileType, progress chan int) (*bytes.Buffer, error)
 
 	// ExtractRecipes extracts the recipes from the HTTP files.
 	ExtractRecipes(fileHeaders []*multipart.FileHeader) models.Recipes

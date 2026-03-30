@@ -27,6 +27,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	"github.com/blang/semver"
 	"github.com/disintegration/imaging"
 	"github.com/gen2brain/webp"
@@ -213,11 +214,17 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 		return nil
 	}
 
+	cookbooks, err := repo.CookbooksUser(userID)
+	if err != nil {
+		slog.Error("Failed to get cookbooks for user", "userID", userID, "error", err)
+		return err
+	}
+
 	userIDStr := strconv.FormatInt(userID, 10)
 	name := fmt.Sprintf("recipya.%s.zip", time.Now().Format(time.DateOnly))
 	target := filepath.Join(app.BackupPath, "users", userIDStr, name)
 
-	_, err := os.Stat(target)
+	_, err = os.Stat(target)
 	if err != nil {
 		return err
 	}
@@ -241,7 +248,7 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 		insertStatements []string
 	)
 
-	deletesSQL, insertsSQL, err := f.backupUserRecipes(zw, allRecipes, userIDStr)
+	deletesSQL, insertsSQL, err := f.backupUserRecipes(zw, allRecipes, cookbooks, userIDStr)
 	if err != nil {
 		return err
 	}
@@ -291,7 +298,12 @@ func (f *Files) backupUserData(repo RepositoryService, userID int64) error {
 	return nil
 }
 
-func (f *Files) backupUserRecipes(zw *zip.Writer, recipes models.Recipes, userID string) (deletesSQL []string, insertsSQL []string, err error) {
+func (f *Files) backupUserRecipes(
+	zw *zip.Writer,
+	recipes models.Recipes,
+	cookbooks []models.Cookbook,
+	userID string,
+) (deletesSQL []string, insertsSQL []string, err error) {
 	if len(recipes) > 0 {
 		deleteRecipesStatement := strings.TrimSpace(strings.Replace(statements.DeleteRecipesUser, "?", userID, 1))
 		deleteRecipesStatement = strings.ReplaceAll(deleteRecipesStatement, "\n", " ")
@@ -307,7 +319,7 @@ func (f *Files) backupUserRecipes(zw *zip.Writer, recipes models.Recipes, userID
 			return nil, nil, err
 		}
 
-		buf, err := f.ExportRecipes(recipes, models.JSON, nil)
+		buf, err := f.ExportRecipes(recipes, cookbooks, models.JSON, nil)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -452,7 +464,7 @@ func cleanBackups(root string) {
 }
 
 // ExportRecipes creates a zip containing the recipes to export in the desired file type.
-func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, progress chan int) (*bytes.Buffer, error) {
+func (f *Files) ExportRecipes(recipes models.Recipes, cookbooks []models.Cookbook, fileType models.FileType, progress chan int) (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	writer := zip.NewWriter(buf)
 
@@ -542,6 +554,26 @@ func (f *Files) ExportRecipes(recipes models.Recipes, fileType models.FileType, 
 		}
 	default:
 		return nil, errors.New("unsupported export file type")
+	}
+
+	if len(cookbooks) > 0 {
+		out, err := writer.Create("cookbooks.toml")
+		if err != nil {
+			return nil, err
+		}
+
+		data := models.Cookbooks{
+			Cookbooks: cookbooks,
+		}
+		xb, err := toml.Marshal(data)
+		if err != nil {
+			return nil, err
+		}
+
+		_, err = out.Write(xb)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	err := writer.Close()

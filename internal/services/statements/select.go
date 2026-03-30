@@ -78,8 +78,8 @@ func BuildSelectNutrientFDC(ingredients []string) string {
 							 FROM food
 							 WHERE ` + sb.String() + `
 								 AND ((data_type = 'sr_legacy_food' AND (food_category_id = 11 OR food_category_id = 2 OR food_category_id = 18)) OR data_type = 'survey_fndds_food' OR data_type = 'branded_food')
-							 ORDER BY 
-								 food_category_id DESC, 
+							 ORDER BY
+								 food_category_id DESC,
 								 data_type DESC,
 								 description ASC
 							 LIMIT 1)
@@ -177,7 +177,7 @@ const SelectCookbookShared = `
 
 // SelectCookbookSharedLink gets the link of a shared cookbook.
 const SelectCookbookSharedLink = `
-	SELECT link 
+	SELECT link
 	FROM share_cookbooks
 	WHERE cookbook_id = ?
 		AND user_id = ?`
@@ -210,12 +210,12 @@ var SelectCookbooks = `
 const SelectCookbooksUser = `
 	SELECT id, title, image, count
 	FROM cookbooks
-	WHERE user_id = 2`
+	WHERE user_id = ?`
 
 // SelectCounts gets the number of recipes and cookbooks belonging to the user.
 const SelectCounts = `
 	SELECT cookbooks, recipes
-	FROM counts 
+	FROM counts
 	WHERE user_id = ?`
 
 // SelectCountWebsites fetches the number of supported websites.
@@ -225,8 +225,8 @@ const SelectCountWebsites = `
 
 // SelectCuisineID gets the ID of the specified cuisine.
 const SelectCuisineID = `
-	SELECT id 
-	FROM cuisines 
+	SELECT id
+	FROM cuisines
 	WHERE name = ?`
 
 // SelectDistinctImages gets all distinct image UUIDs from the recipes table.
@@ -244,7 +244,7 @@ const SelectDistinctVideos = `
 
 // SelectKeywords fetches all keywords.
 const SelectKeywords = `
-	SELECT name 
+	SELECT name
 	FROM keywords
 	ORDER BY name`
 
@@ -371,7 +371,7 @@ const baseSelectSearchRecipe = `
 		   GROUP_CONCAT(DISTINCT keywords.name)  AS keywords,
 		   user_id,
 		   ROW_NUMBER() OVER (ORDER BY recipes.id) AS row_num
-	FROM recipes 
+	FROM recipes
 			 LEFT JOIN category_recipe ON recipes.id = category_recipe.recipe_id
 			 LEFT JOIN categories ON category_recipe.category_id = categories.id
 	    	 LEFT JOIN keyword_recipe ON recipes.id = keyword_recipe.recipe_id
@@ -448,14 +448,14 @@ const SelectReport = `
 
 // SelectReports fetches the import reports for the user.
 const SelectReports = `
-	SELECT 
-    r.id,  
-    r.created_at,  
-    r.exec_time_ns,  
+	SELECT
+    r.id,
+    r.created_at,
+    r.exec_time_ns,
     GROUP_CONCAT(l.id, ';') AS log_ids
-FROM  
+FROM
     reports r
-LEFT JOIN  
+LEFT JOIN
     report_logs l ON r.id = l.report_id
 WHERE r.report_type = ? AND r.user_id = ?
 GROUP BY r.id`
@@ -507,7 +507,7 @@ const SelectUserOne = `
 
 // SelectUsers fetches all users from the database.
 const SelectUsers = `
-	SELECT id, email 
+	SELECT id, email
 	FROM users
 	ORDER BY id`
 
