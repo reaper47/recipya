@@ -1,9 +1,6 @@
 package jobs
 
 import (
-	"github.com/go-co-op/gocron"
-	"github.com/reaper47/recipya/internal/app"
-	"github.com/reaper47/recipya/internal/services"
 	"io/fs"
 	"log/slog"
 	"os"
@@ -13,6 +10,10 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/go-co-op/gocron"
+	"github.com/reaper47/recipya/internal/app"
+	"github.com/reaper47/recipya/internal/services"
 )
 
 // ScheduleCronJobs schedules cron jobs for the web app. It starts the following jobs:
@@ -93,7 +94,17 @@ func cleanMedia(dir fs.FS, used []string, rmFileFunc func(path string) error) (n
 	sort.Strings(used)
 
 	_ = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, _ error) error {
-		if path == "." || d.IsDir() || strings.HasPrefix(d.Name(), "placeholder.") {
+		if path == "." {
+			return nil
+		}
+
+		// Skip the Icons directory to preserve application icons
+		if d.IsDir() && d.Name() == "Icons" {
+			return fs.SkipDir
+		}
+
+		// Skip the placeholder images
+		if d.IsDir() || strings.HasPrefix(d.Name(), "placeholder.") {
 			return nil
 		}
 
