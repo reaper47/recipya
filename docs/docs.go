@@ -5,5 +5,5 @@ import "embed"
 
 // FS is a read-only embedded file system containing the static documentation website.
 //
-//go:embed website/public
+//go:embed website/content
 var FS embed.FS

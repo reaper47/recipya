@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/briandowns/spinner"
 	"io"
 	"net"
 	"net/http"
@@ -15,6 +14,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/briandowns/spinner"
 )
 
 func setup(exeDir string) {
@@ -50,11 +51,15 @@ func setup(exeDir string) {
 func setupFDC() {
 	_, err := os.Stat(filepath.Join(DBBasePath, "fdc.db"))
 	if errors.Is(err, os.ErrNotExist) {
+		if isRunningInDocker() {
+			fmt.Println("Fetching the FDC database (62.6 MB)")
+		}
+
 		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 		s.Prefix = "Fetching the FDC database... "
 		s.FinalMSG = "Fetching the FDC database... " + greenText("Success") + "\n"
 		s.Start()
-		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "https://raw.githubusercontent.com/reaper47/recipya/main/deploy/fdc.db.zip")
+		err = downloadFile(filepath.Join(DBBasePath, "fdc.db.zip"), "fdc.db", "https://media.githubusercontent.com/media/reaper47/recipya/main/deploy/fdc.db.zip")
 		if err != nil {
 			fmt.Printf("\n"+redText("Error downloading FDC database")+": %s\n", err)
 			fmt.Println("Application setup will terminate")
@@ -67,21 +72,12 @@ func setupFDC() {
 	}
 }
 
-func downloadFile(path, url string) error {
+func downloadFile(path, filename, url string) error {
 	res, err := http.Get(url)
 	if err != nil {
 		return err
 	}
 	defer res.Body.Close()
-
-	if res == nil {
-		return errors.New("download file response is nil")
-	}
-
-	body := res.Body
-	if body == nil {
-		return errors.New("download file response body is nil")
-	}
 
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("file not found at %q", url)
@@ -92,7 +88,7 @@ func downloadFile(path, url string) error {
 		return err
 	}
 
-	_, err = io.Copy(out, body)
+	_, err = io.Copy(out, res.Body)
 	if err != nil {
 		return err
 	}
@@ -103,7 +99,7 @@ func downloadFile(path, url string) error {
 	}
 	defer z.Close()
 
-	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), "fdc.db"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
+	destFile, err := os.OpenFile(filepath.Join(filepath.Dir(path), filename), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, z.File[0].Mode())
 	if err != nil {
 		return err
 	}
