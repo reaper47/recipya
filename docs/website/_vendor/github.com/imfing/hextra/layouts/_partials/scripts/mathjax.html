@@ -1,0 +1,20 @@
+{{/* MathJax */}}
+{{ $mathjaxJsUrl := "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" -}}
+<script defer id="MathJax-script" src="{{ $mathjaxJsUrl }}" crossorigin="anonymous" async></script>
+<script>
+  MathJax = {
+    loader: {
+      load: ["ui/safe"],
+    },
+    tex: {
+      displayMath: [
+        ["\\[", "\\]"],
+        ["$$", "$$"],
+      ],
+      inlineMath: [
+        ["\\(", "\\)"],
+        ["$", "$"],
+      ],
+    },
+  };
+</script>

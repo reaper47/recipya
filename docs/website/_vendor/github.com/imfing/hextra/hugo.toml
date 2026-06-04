@@ -1,0 +1,16 @@
+[module]
+  [module.hugoVersion]
+    min = '0.146.0'
+
+[outputFormats]
+  [outputFormats.llms]
+    name= 'llms'
+    baseName = 'llms'
+    mediaType = 'text/plain'
+    isPlainText = true
+  [outputFormats.markdown]
+    name = 'markdown'
+    baseName = 'index'
+    mediaType = 'text/markdown'
+    isPlainText = true
+    ugly = true

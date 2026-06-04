@@ -1,0 +1,39 @@
+{{- /*
+Create a tabbed interface with the given items.
+
+@example {{< tabs >}}...{{< /tabs >}}
+*/ -}}
+
+{{- /* Unused, but required for the shortcode to work. */ -}}
+{{- .Inner -}}
+
+{{- /* Enable syncing of tabs across the page. */ -}}
+{{- $enableSync := false -}}
+{{- if or (eq .Page.Params.tabs.sync false) (eq .Page.Params.tabs.sync true) -}}
+  {{- $enableSync = .Page.Params.tabs.sync -}}
+{{- else -}}
+  {{- $enableSync = site.Params.page.tabs.sync | default false -}}
+{{- end -}}
+
+{{- $tabs := ($.Store.Get "tabs") | default slice -}}
+
+{{- /* Compatibility with previous parameter "items". */ -}}
+{{- if .Get "defaultIndex" -}}
+  {{- warnf "The 'defaultIndex' parameter of the 'tabs' shortcode is deprecated. Please use 'selected' on 'tab' instead." -}}
+{{- end -}}
+
+{{- if .Get "items" -}}
+  {{- warnf "The 'items' parameter of the 'tabs' shortcode is deprecated. Please use 'name' on 'tab' instead." -}}
+
+  {{- $items := split (.Get "items") "," -}}
+
+  {{- $temp := slice -}}
+  {{- range $i, $item := $items -}}
+    {{- $tab := index $tabs $i -}}
+    {{- $temp = $temp | append (merge $tab (dict "name" $item)) -}}
+  {{- end -}}
+
+  {{- $tabs = $temp -}}
+{{- end -}}
+
+{{- partial "shortcodes/tabs" (dict "tabs" $tabs "enableSync" $enableSync "id" .Ordinal) -}}

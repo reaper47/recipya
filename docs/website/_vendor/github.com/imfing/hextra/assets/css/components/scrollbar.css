@@ -1,0 +1,21 @@
+.hextra-scrollbar, .hextra-scrollbar * {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: oklch(55.55% 0 0 / 40%) transparent; /* Firefox */
+
+  scrollbar-gutter: stable;
+  &::-webkit-scrollbar {
+    @apply hx:w-3 hx:h-3;
+  }
+  &::-webkit-scrollbar-track {
+    @apply hx:bg-transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    @apply hx:rounded-[10px];
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    background-color: var(--tw-shadow-color);
+    background-clip: content-box;
+    @apply hx:shadow-neutral-500/20 hx:hover:shadow-neutral-500/40;
+  }
+}

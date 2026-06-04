@@ -1,0 +1,10 @@
+{{- with .Params.width -}}
+  {{- $pageWidthValues := dict "normal" "80rem" "wide" "90rem" "full" "100%" -}}
+  {{- $pageWidth := . -}}
+  {{- $maxPageWidth := (index $pageWidthValues $pageWidth) | default (index $pageWidthValues "normal") -}}
+<style>
+:root {
+  --hextra-max-page-width: {{ $maxPageWidth }};
+}
+</style>
+{{- end -}}

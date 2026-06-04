@@ -1,0 +1,25 @@
+{{- /*
+A shortcode for rendering a button with a link.
+
+@param {string} link The link of the button.
+@param {string} text The text of the button.
+@param {string} style The style of the button.
+
+@example {{< hextra/hero-button text="Get Started" link="docs" >}}
+*/ -}}
+
+{{- $link := .Get "link" -}}
+{{- $text := .Get "text" -}}
+{{- $style := .Get "style" -}}
+
+{{- $external := hasPrefix $link "http" -}}
+{{- $href := cond (hasPrefix $link "/") ($link | relURL) $link -}}
+
+<a
+  href="{{ $href }}"
+  class="not-prose hx:font-medium hx:cursor-pointer hx:px-6 hx:py-3 hx:rounded-full hx:text-center hx:text-white hx:inline-block hx:bg-primary-600 hx:hover:bg-primary-700 hx:hextra-focus-visible hx:dark:bg-primary-600 hx:dark:hover:bg-primary-700 hx:transition-all hx:ease-in hx:duration-200"
+  {{ with $style }}style="{{ . | safeCSS }}"{{ end }}
+  {{ if $external }}target="_blank" rel="noreferrer"{{ end -}}
+>
+  {{- $text -}}
+</a>

@@ -1,7 +1,8 @@
 baseURL: https://recipes.musicavis.ca/guide/
 title: Recipya
-theme: hextra
-
+module:
+  imports:
+    - path: github.com/imfing/hextra
 enableInlineShortcodes: true
 enableRobotsTXT: true
 enableGitInfo: true

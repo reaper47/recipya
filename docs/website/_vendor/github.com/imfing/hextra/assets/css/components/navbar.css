@@ -1,0 +1,50 @@
+nav {
+  .hextra-search-wrapper {
+    @apply hx:hidden hx:md:inline-block;
+  }
+}
+
+@supports (
+  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
+) {
+  .hextra-nav-container-blur {
+    @apply hx:backdrop-blur-md hx:bg-white/[.85] hx:dark:bg-dark/80!;
+  }
+}
+
+/* Hamburger Menu - Flattened Structure */
+.hextra-hamburger-menu svg g {
+  @apply hx:origin-center hx:transition-all hx:duration-100 hx:ease-out;
+}
+
+.hextra-hamburger-menu svg path {
+  @apply hx:opacity-100 hx:transition-all hx:duration-100 hx:ease-out hx:delay-100;
+}
+
+.hextra-hamburger-menu svg.open path {
+  @apply hx:transition-transform hx:duration-100 hx:ease-out hx:delay-0;
+}
+
+.hextra-hamburger-menu svg.open g {
+  @apply hx:transition-transform hx:duration-100 hx:ease-out hx:delay-100;
+}
+
+.hextra-hamburger-menu svg.open > path {
+  @apply hx:opacity-0;
+}
+
+.hextra-hamburger-menu svg.open > g:nth-of-type(1) {
+  @apply hx:rotate-45;
+}
+
+.hextra-hamburger-menu svg.open > g:nth-of-type(1) path {
+  @apply hx:translate-y-1;
+}
+
+.hextra-hamburger-menu svg.open > g:nth-of-type(2) {
+  @apply hx:-rotate-45;
+}
+
+.hextra-hamburger-menu svg.open > g:nth-of-type(2) path {
+  @apply hx:-translate-y-1;
+}

@@ -1,0 +1,16 @@
+# theme.toml template for a Hugo theme
+# See https://github.com/gohugoiox/hugoThemes#themetoml for an example
+
+name = "Hextra"
+license = "MIT"
+licenselink = "https://github.com/imfing/hextra/blob/main/LICENSE"
+description = "Modern, responsive, batteries-included Hugo theme for creating beautiful static websites."
+homepage = "https://github.com/imfing/hextra/"
+demosite = "https://imfing.github.io/hextra/"
+tags = ["Modern", "Elegant", "Blog", "Documentation", "Responsive", "Clean", "Light", "Dark", "Minimal"]
+features = ["Responsive", "Dark Mode", "Search", "Syntax Highlighting", "Multilingual", "Social", "Blog", "RSS", "Customization"]
+min_version = "0.146.0"
+
+[author]
+  name = "Xin"
+  homepage = "https://imfing.com"

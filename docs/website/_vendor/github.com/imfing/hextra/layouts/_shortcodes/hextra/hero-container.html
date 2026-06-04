@@ -1,0 +1,56 @@
+{{- /*
+A simple hero container with an image on the left side.
+
+@param {string} class The class of the container.
+@param {string} cols The number of columns (default: 2).
+@param {string} image The image of the container.
+@param {bool} imageCard Whether to display the image as a card (default: false).
+@param {string} imageClass The class of the image.
+@param {string} imageLink The link of the image.
+@param {string} imageStyle The style of the image.
+@param {string} imageTitle The title of the image.
+@param {int} imageWidth The width of the image (default: 350).
+@param {int} imageHeight The height of the image (default: 350).
+@param {string} style The style of the container.
+
+@example {{< hextra/hero-container image="image.png" imageLink="https://example.com" imageTitle="Example Image" >}}
+*/ -}}
+
+{{- $class := .Get "class" -}}
+{{- $cols := .Get "cols" | default 2 -}}
+{{- $image := .Get "image" -}}
+{{- $imageCard := .Get "imageCard" | default false -}}
+{{- $imageClass := .Get "imageClass" -}}
+{{- $imageLink := .Get "imageLink" -}}
+{{- $imageLinkExternal := hasPrefix $imageLink "http" -}}
+{{- $imageStyle := .Get "imageStyle" -}}
+{{- $imageTitle := .Get "imageTitle" -}}
+{{- $imageWidth := .Get "imageWidth" | default 350 -}}
+{{- $imageHeight := .Get "imageHeight" | default 350 -}}
+{{- $style := .Get "style" -}}
+
+{{- $css := printf "--hextra-feature-grid-cols: %v; %s" $cols $style -}}
+{{- $href := cond (hasPrefix $imageLink "/") ($imageLink | relURL) $imageLink -}}
+{{- if hasPrefix $image "/" -}}
+  {{- $image = relURL (strings.TrimPrefix "/" $image) -}}
+{{- end -}}
+
+<div
+  class="{{ $class }} hextra-feature-grid hx:grid hx:sm:max-lg:grid-cols-2 hx:max-sm:grid-cols-1 hx:gap-4 hx:w-full not-prose"
+  {{ with $css }}style="{{ . | safeCSS }}"{{ end }}
+>
+  <div class="hx:w-full">
+    {{ .Inner }}
+  </div>
+  {{- with $image }}
+  <div class="hx:mx-auto">
+    <a
+      {{ with $imageLink }}href="{{ $href }}" {{ with $imageLinkExternal }} target="_blank" rel="noreferrer"{{ end }}{{ end }}
+      {{ with $imageStyle }}style="{{ . | safeCSS }}"{{ end }}
+      class="{{ $imageClass }} {{ if $imageCard }}hextra-feature-card not-prose hx:block hx:relative hx:p-6 hx:overflow-hidden hx:rounded-3xl hx:border hx:border-gray-200 hx:hover:border-gray-300 hx:dark:border-neutral-800 hx:dark:hover:border-neutral-700 hx:before:pointer-events-none hx:before:absolute hx:before:inset-0 hx:before:bg-glass-gradient{{ end }}"
+    >
+      <img src="{{ $image }}" width="{{ $imageWidth }}" height="{{ $imageHeight }}" {{ with $imageTitle }}alt="{{ $imageTitle }}"{{ end }}/>
+    </a>
+  </div>
+  {{ end -}}
+</div>
