@@ -26,7 +26,7 @@ require (
 	github.com/pressly/goose/v3 v3.24.3
 	github.com/urfave/cli/v2 v2.27.7
 	github.com/wneessen/go-mail v0.7.1
-	golang.org/x/crypto v0.51.0
+	golang.org/x/crypto v0.52.0
 	golang.org/x/image v0.41.0
 	golang.org/x/net v0.55.0
 	golang.org/x/text v0.37.0
