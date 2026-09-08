@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "license": "MIT",
   "devDependencies": {
-    "sponsorkit": "^0.9.3"
+    "sponsorkit": "^18.0.0"
   }
 }
