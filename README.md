@@ -19,10 +19,13 @@ It is focused on simplicity for the whole family to enjoy.
 
 ## :warning: Important Note
 
-The [Recipya](https://github.com/reaper47/recipya) project is currently being rewritten in Rust as
-announced [here](https://github.com/reaper47/recipya/discussions/422). The Rust project is not ready for production nor
-to selfhost.
-The user interface should look better than the original.
+The [Recipya](https://github.com/reaper47/recipya) project is currently being rewritten in Rust as announced [here](https://github.com/reaper47/recipya/discussions/422). 
+
+The nightly version of the Rust project is ready for production and self-hosting. A live demo is available at [https://recipya.ca](https://recipya.ca).
+
+If you wish to migrate to Recipya Rust, please follow the [migration guide](https://github.com/reaper47/recipya-rs/blob/main/docs/migration-from-recipya-go-version.md) 
+
+Note that this repository (Recipya Go) will eventually be archived. 
 
 ## Features
 
